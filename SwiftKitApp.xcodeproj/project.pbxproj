@@ -7,16 +7,22 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		74DA58782C73867B00EAC80C /* SwiftKitAppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74DA58772C73867B00EAC80C /* SwiftKitAppApp.swift */; };
-		74DA587A2C73867B00EAC80C /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74DA58792C73867B00EAC80C /* ContentView.swift */; };
+		7497BE132C74A22C00001198 /* SUButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7497BE122C74A22C00001198 /* SUButton.swift */; };
+		74A10BFC2C738E8C00243662 /* ButtonsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74A10BFB2C738E8C00243662 /* ButtonsView.swift */; };
+		74A10C002C738F6A00243662 /* UKButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74A10BFF2C738F6A00243662 /* UKButton.swift */; };
+		74DA58782C73867B00EAC80C /* Root.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74DA58772C73867B00EAC80C /* Root.swift */; };
+		74DA587A2C73867B00EAC80C /* AppView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74DA58792C73867B00EAC80C /* AppView.swift */; };
 		74DA587C2C73867C00EAC80C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 74DA587B2C73867C00EAC80C /* Assets.xcassets */; };
 		74DA587F2C73867C00EAC80C /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 74DA587E2C73867C00EAC80C /* Preview Assets.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		7497BE122C74A22C00001198 /* SUButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SUButton.swift; sourceTree = "<group>"; };
+		74A10BFB2C738E8C00243662 /* ButtonsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonsView.swift; sourceTree = "<group>"; };
+		74A10BFF2C738F6A00243662 /* UKButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UKButton.swift; sourceTree = "<group>"; };
 		74DA58742C73867B00EAC80C /* SwiftKitApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftKitApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		74DA58772C73867B00EAC80C /* SwiftKitAppApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftKitAppApp.swift; sourceTree = "<group>"; };
-		74DA58792C73867B00EAC80C /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		74DA58772C73867B00EAC80C /* Root.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Root.swift; sourceTree = "<group>"; };
+		74DA58792C73867B00EAC80C /* AppView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppView.swift; sourceTree = "<group>"; };
 		74DA587B2C73867C00EAC80C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		74DA587E2C73867C00EAC80C /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -32,6 +38,31 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		7497BE112C74A20A00001198 /* SwiftUI */ = {
+			isa = PBXGroup;
+			children = (
+				7497BE122C74A22C00001198 /* SUButton.swift */,
+			);
+			path = SwiftUI;
+			sourceTree = "<group>";
+		};
+		74A10BFD2C738EFA00243662 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				7497BE112C74A20A00001198 /* SwiftUI */,
+				74A10BFE2C738F5F00243662 /* UIKit */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		74A10BFE2C738F5F00243662 /* UIKit */ = {
+			isa = PBXGroup;
+			children = (
+				74A10BFF2C738F6A00243662 /* UKButton.swift */,
+			);
+			path = UIKit;
+			sourceTree = "<group>";
+		};
 		74DA586B2C73867B00EAC80C = {
 			isa = PBXGroup;
 			children = (
@@ -51,8 +82,10 @@
 		74DA58762C73867B00EAC80C /* SwiftKitApp */ = {
 			isa = PBXGroup;
 			children = (
-				74DA58772C73867B00EAC80C /* SwiftKitAppApp.swift */,
-				74DA58792C73867B00EAC80C /* ContentView.swift */,
+				74A10BFD2C738EFA00243662 /* Components */,
+				74DA58772C73867B00EAC80C /* Root.swift */,
+				74DA58792C73867B00EAC80C /* AppView.swift */,
+				74A10BFB2C738E8C00243662 /* ButtonsView.swift */,
 				74DA587B2C73867C00EAC80C /* Assets.xcassets */,
 				74DA587D2C73867C00EAC80C /* Preview Content */,
 			);
@@ -137,8 +170,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				74DA587A2C73867B00EAC80C /* ContentView.swift in Sources */,
-				74DA58782C73867B00EAC80C /* SwiftKitAppApp.swift in Sources */,
+				74A10BFC2C738E8C00243662 /* ButtonsView.swift in Sources */,
+				7497BE132C74A22C00001198 /* SUButton.swift in Sources */,
+				74A10C002C738F6A00243662 /* UKButton.swift in Sources */,
+				74DA587A2C73867B00EAC80C /* AppView.swift in Sources */,
+				74DA58782C73867B00EAC80C /* Root.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
