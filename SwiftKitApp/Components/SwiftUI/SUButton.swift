@@ -1,9 +1,4 @@
-//
-//  SUButton.swift
-//  SwiftKitApp
-//
-//  Created by Mikhail on 20.08.2024.
-//
+// Copyright © SwiftKit. All rights reserved.
 
 import SwiftUI
 import UIKit

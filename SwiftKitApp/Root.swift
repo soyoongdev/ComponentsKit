@@ -1,9 +1,4 @@
-//
-//  Root.swift
-//  SwiftKitApp
-//
-//  Created by Mikhail on 19.08.2024.
-//
+// Copyright © SwiftKit. All rights reserved.
 
 import SwiftUI
 

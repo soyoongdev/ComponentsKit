@@ -8,6 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		7497BE132C74A22C00001198 /* SUButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7497BE122C74A22C00001198 /* SUButton.swift */; };
+		7497BE162C74DBEA00001198 /* Size.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7497BE152C74DBEA00001198 /* Size.swift */; };
+		7497BE182C74DC4000001198 /* Radius.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7497BE172C74DC4000001198 /* Radius.swift */; };
+		7497BE1A2C74DC7600001198 /* AnimationScale.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7497BE192C74DC7600001198 /* AnimationScale.swift */; };
+		7497BE1C2C74DC9400001198 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7497BE1B2C74DC9400001198 /* Color.swift */; };
+		7497BE1E2C74DCF700001198 /* ButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7497BE1D2C74DCF700001198 /* ButtonStyle.swift */; };
 		74A10BFC2C738E8C00243662 /* ButtonsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74A10BFB2C738E8C00243662 /* ButtonsView.swift */; };
 		74A10C002C738F6A00243662 /* UKButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74A10BFF2C738F6A00243662 /* UKButton.swift */; };
 		74DA58782C73867B00EAC80C /* Root.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74DA58772C73867B00EAC80C /* Root.swift */; };
@@ -18,6 +23,11 @@
 
 /* Begin PBXFileReference section */
 		7497BE122C74A22C00001198 /* SUButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SUButton.swift; sourceTree = "<group>"; };
+		7497BE152C74DBEA00001198 /* Size.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Size.swift; sourceTree = "<group>"; };
+		7497BE172C74DC4000001198 /* Radius.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Radius.swift; sourceTree = "<group>"; };
+		7497BE192C74DC7600001198 /* AnimationScale.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationScale.swift; sourceTree = "<group>"; };
+		7497BE1B2C74DC9400001198 /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
+		7497BE1D2C74DCF700001198 /* ButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonStyle.swift; sourceTree = "<group>"; };
 		74A10BFB2C738E8C00243662 /* ButtonsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonsView.swift; sourceTree = "<group>"; };
 		74A10BFF2C738F6A00243662 /* UKButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UKButton.swift; sourceTree = "<group>"; };
 		74DA58742C73867B00EAC80C /* SwiftKitApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftKitApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -46,9 +56,22 @@
 			path = SwiftUI;
 			sourceTree = "<group>";
 		};
+		7497BE142C74DBD300001198 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				7497BE152C74DBEA00001198 /* Size.swift */,
+				7497BE172C74DC4000001198 /* Radius.swift */,
+				7497BE192C74DC7600001198 /* AnimationScale.swift */,
+				7497BE1B2C74DC9400001198 /* Color.swift */,
+				7497BE1D2C74DCF700001198 /* ButtonStyle.swift */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
 		74A10BFD2C738EFA00243662 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				7497BE142C74DBD300001198 /* Shared */,
 				7497BE112C74A20A00001198 /* SwiftUI */,
 				74A10BFE2C738F5F00243662 /* UIKit */,
 			);
@@ -173,8 +196,13 @@
 				74A10BFC2C738E8C00243662 /* ButtonsView.swift in Sources */,
 				7497BE132C74A22C00001198 /* SUButton.swift in Sources */,
 				74A10C002C738F6A00243662 /* UKButton.swift in Sources */,
+				7497BE1E2C74DCF700001198 /* ButtonStyle.swift in Sources */,
 				74DA587A2C73867B00EAC80C /* AppView.swift in Sources */,
+				7497BE182C74DC4000001198 /* Radius.swift in Sources */,
+				7497BE162C74DBEA00001198 /* Size.swift in Sources */,
 				74DA58782C73867B00EAC80C /* Root.swift in Sources */,
+				7497BE1A2C74DC7600001198 /* AnimationScale.swift in Sources */,
+				7497BE1C2C74DC9400001198 /* Color.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
