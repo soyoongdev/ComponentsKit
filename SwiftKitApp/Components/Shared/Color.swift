@@ -11,6 +11,19 @@ public enum Color {
   case danger
 
   public var uiColor: UIColor {
-    return .systemBlue
+    switch self {
+    case .primary:
+      return .label
+    case .secondary:
+      return .secondaryLabel
+    case .accent:
+      return .systemBlue
+    case .success:
+      return .systemGreen
+    case .warning:
+      return .systemOrange
+    case .danger:
+      return .systemRed
+    }
   }
 }
