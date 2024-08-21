@@ -5,8 +5,8 @@ import UIKit
 open class UKButton: UIButton {
   // MARK: Properties
 
-  public var preferredSize: Size = .medium {
-    didSet { self.updateSize() }
+  public var preferredSize: ButtonSize = .medium {
+    didSet { self.sizeToFit() }
   }
   public var cornerRadius: Radius = .medium {
     didSet { self.updateRadius() }
@@ -23,6 +23,7 @@ open class UKButton: UIButton {
     willSet {
       guard let newValue else { return }
       self.titleLabel?.font = newValue
+      self.sizeToFit()
     }
   }
 
@@ -35,19 +36,23 @@ open class UKButton: UIButton {
     didSet { self.updateStyle() }
   }
 
-  private var referenceLabel = UILabel()
-  private var heightConstraint: NSLayoutConstraint?
-  private var widthConstraint: NSLayoutConstraint?
+  open override var intrinsicContentSize: CGSize {
+    return self.sizeThatFits(.init(
+      width: CGFloat.greatestFiniteMagnitude,
+      height: CGFloat.greatestFiniteMagnitude
+    ))
+  }
 
   // MARK: Initialization
 
   public override init(frame: CGRect) {
     super.init(frame: frame)
 
-    self.setup()
+    if frame.size != .zero {
+      self.preferredSize = .custom(frame.size)
+    }
+
     self.updateStyle()
-    self.updateSize()
-    // TODO: [1] Handle trait changes
   }
 
   public required init?(coder: NSCoder) {
@@ -62,23 +67,24 @@ open class UKButton: UIButton {
     self.updateRadius()
   }
 
+  // MARK: UIButton methods
+
   open override func setTitle(_ title: String?, for state: UIControl.State) {
     super.setTitle(title, for: state)
 
-    self.referenceLabel.text = title
-    self.updateSize()
+    self.sizeToFit()
   }
 
-  // MARK: Setup
-
-  private func setup() {
-    self.translatesAutoresizingMaskIntoConstraints = false
-    self.widthConstraint = self.widthAnchor.constraint(equalToConstant: 0)
-    self.widthConstraint?.priority = .defaultLow
-    self.widthConstraint?.isActive = true
-    self.heightConstraint = self.heightAnchor.constraint(equalToConstant: 0)
-    self.heightConstraint?.priority = .defaultLow
-    self.heightConstraint?.isActive = true
+  open override func sizeThatFits(_ size: CGSize) -> CGSize {
+    switch self.preferredSize {
+    case .small, .medium, .large:
+      let height = self.preferredSize.height
+      let horizontalPadding = self.preferredSize.horizontalPadding
+      let textWidth = self.titleLabel?.sizeThatFits(size).width ?? 0
+      return .init(width: textWidth + 2 * horizontalPadding, height: height)
+    case .custom(let size):
+      return size
+    }
   }
 
   // MARK: Update
@@ -113,25 +119,6 @@ open class UKButton: UIButton {
       self.backgroundColor = nil
       self.setTitleColor(color, for: .normal)
     }
-  }
-
-  public func updateSize() {
-    let height: CGFloat
-    let horizontalPadding: CGFloat
-    switch self.preferredSize {
-    case .small:
-      height = 36
-      horizontalPadding = 8
-    case .medium:
-      height = 50
-      horizontalPadding = 12
-    case .large:
-      height = 70
-      horizontalPadding = 16
-    }
-    let textWidth = self.referenceLabel.sizeThatFits(.init(width: .greatestFiniteMagnitude, height: height)).width
-    self.widthConstraint?.constant = textWidth + 2 * horizontalPadding
-    self.heightConstraint?.constant = height
   }
 
   // MARK: Helpers
