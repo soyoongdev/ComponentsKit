@@ -145,13 +145,6 @@ open class UKAlertController: UIViewController {
       self.buttonsStackView.bottom(16)
     }
   }
-
-  open override func viewDidLayoutSubviews() {
-    super.viewDidLayoutSubviews()
-
-    // TODO: [1] Replace
-    self.container.layer.cornerRadius = 20
-  }
 }
 
 // MARK: - Style Helpers
@@ -164,6 +157,7 @@ extension UKAlertController {
 
     static func container(_ view: UIView) {
       view.backgroundColor = .white
+      view.layer.cornerRadius = 20
     }
 
     static func scrollView(_ scrollView: UIScrollView) {
