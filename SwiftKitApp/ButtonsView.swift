@@ -3,7 +3,7 @@
 import SwiftUI
 import UIKit
 
-class Container: UIView {
+private class Container: UIView {
   let button: UKButton = {
     let button = UKButton()
 //    button.isEnabled = false
@@ -38,7 +38,7 @@ class Container: UIView {
   }
 }
 
-struct ContainerWrapper: UIViewRepresentable {
+private struct ContainerWrapper: UIViewRepresentable {
   func makeUIView(context: Context) -> Container {
     return Container(frame: .zero)
   }

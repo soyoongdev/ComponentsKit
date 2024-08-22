@@ -6,8 +6,11 @@ struct AppView: View {
   var body: some View {
     NavigationStack {
       List {
-        NavigationLink("Actions") {
+        NavigationLink("Buttons") {
           ButtonsView()
+        }
+        NavigationLink("Alerts") {
+          AlertsView()
         }
       }
     }

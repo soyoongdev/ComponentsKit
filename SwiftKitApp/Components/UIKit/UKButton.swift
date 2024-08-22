@@ -99,6 +99,7 @@ open class UKButton: UIButton {
     case .filled:
       self.layer.borderWidth = 0
       self.backgroundColor = color
+      // TODO: [1] Remove hardcoded color
       self.setTitleColor(.white, for: .normal)
     case .plain:
       self.layer.borderWidth = 0

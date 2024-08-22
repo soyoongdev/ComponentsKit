@@ -29,7 +29,7 @@ public enum ButtonSize {
       return 12
     case .large:
       return 16
-    case .custom(let size):
+    case .custom:
       return 0
     }
   }
