@@ -78,12 +78,18 @@ Debido a la necesidad de presentar un certificado del registro comercial de EE. 
     )
     alertController.preferredButtonsAxis = .horizontal(.fillProportionally)
 
-    let yesAction = UKAlertAction(title: "Continue", style: {
-      $0.cornerRadius = .large
-      $0.style = .filled
-      $0.preferredSize = .medium
-      $0.font = .boldSystemFont(ofSize: 16)
-    })
+    let yesAction = UKAlertAction(
+      title: "Continue",
+      style: {
+        $0.cornerRadius = .large
+        $0.style = .filled
+        $0.preferredSize = .medium
+        $0.font = .boldSystemFont(ofSize: 16)
+      },
+      action: {
+        print("confirmed")
+      }
+    )
     let noAction = UKAlertAction(title: "No, exit", style: {
       $0.style = .filled
       $0.color = .danger

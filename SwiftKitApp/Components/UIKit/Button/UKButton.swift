@@ -5,6 +5,8 @@ import UIKit
 open class UKButton: UIButton {
   // MARK: Properties
 
+  private var actions: [UIControl.Event: () -> Void] = [:]
+
   public var preferredSize: ButtonSize = .medium {
     didSet { self.sizeToFit() }
   }
@@ -128,3 +130,34 @@ open class UKButton: UIButton {
 
   }
 }
+
+  // MARK: - Events handling
+
+extension UKButton {
+  public func on(_ event: UIControl.Event, _ action: @escaping () -> Void) {
+    switch event {
+    case .touchUpInside:
+      self.addTarget(self, action: #selector(self.handleTouchUpInsideEvent), for: .touchUpInside)
+
+    case .touchUpOutside:
+      self.addTarget(self, action: #selector(self.handleTouchUpOutsideEvent), for: .touchUpOutside)
+
+    default:
+      assertionFailure("Attempting to register not supported event.")
+    }
+
+    self.actions[event] = action
+  }
+
+  @objc private func handleTouchUpInsideEvent() {
+    self.actions[.touchUpInside]?()
+  }
+
+  @objc private func handleTouchUpOutsideEvent() {
+    self.actions[.touchUpOutside]?()
+  }
+}
+
+// MARK: - UIControl.Event + Hashable
+
+extension UIControl.Event: Hashable {}

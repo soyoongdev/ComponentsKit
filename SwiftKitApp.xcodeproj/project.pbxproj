@@ -82,6 +82,7 @@
 			isa = PBXGroup;
 			children = (
 				7497BE2A2C761D9300001198 /* UIView+Layout.swift */,
+				74E7645E2C777880003E6300 /* ContentSizedScrollView.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -99,9 +100,9 @@
 		74A10BFE2C738F5F00243662 /* UIKit */ = {
 			isa = PBXGroup;
 			children = (
-				74E7645B2C77786E003E6300 /* Alert */,
 				7497BE292C761D8900001198 /* Helpers */,
-				74A10BFF2C738F6A00243662 /* UKButton.swift */,
+				74E7645B2C77786E003E6300 /* Alert */,
+				74E764602C777DE6003E6300 /* Button */,
 			);
 			path = UIKit;
 			sourceTree = "<group>";
@@ -147,11 +148,18 @@
 		74E7645B2C77786E003E6300 /* Alert */ = {
 			isa = PBXGroup;
 			children = (
-				74E7645E2C777880003E6300 /* ContentSizedScrollView.swift */,
 				74E7645C2C777874003E6300 /* UKAlertAction.swift */,
 				7497BE272C7616FA00001198 /* UKAlertController.swift */,
 			);
 			path = Alert;
+			sourceTree = "<group>";
+		};
+		74E764602C777DE6003E6300 /* Button */ = {
+			isa = PBXGroup;
+			children = (
+				74A10BFF2C738F6A00243662 /* UKButton.swift */,
+			);
+			path = Button;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

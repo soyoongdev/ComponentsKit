@@ -4,13 +4,13 @@ import UIKit
 
 public struct UKAlertAction {
   let title: String
-  let style: (UKButton) -> Void
-  let action: () -> Void
+  let style: ((UKButton) -> Void)?
+  let action: (() -> Void)?
 
   public init(
     title: String,
-    style: @escaping (UKButton) -> Void = { _ in },
-    action: @escaping () -> Void = {}
+    style: ((UKButton) -> Void)? = nil,
+    action: (() -> Void)? = nil
   ) {
     self.title = title
     self.style = style

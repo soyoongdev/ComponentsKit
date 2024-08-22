@@ -61,8 +61,12 @@ open class UKAlertController: UIViewController {
 
   open func addAction(_ action: UKAlertAction) {
     let button = UKButton()
-    action.style(button)
+    action.style?(button)
     button.setTitle(action.title, for: .normal)
+    button.on(.touchUpInside) { [weak self] in
+      self?.dismiss(animated: true)
+      action.action?()
+    }
     button.addTarget(self, action: #selector(self.handleCloseAlert), for: .touchUpInside)
 
     self.buttonsStackView.addArrangedSubview(button)
