@@ -1,5 +1,6 @@
 // Copyright © SwiftKit. All rights reserved.
 
+import SwiftKit
 import SwiftUI
 import UIKit
 
@@ -76,7 +77,7 @@ Debido a la necesidad de presentar un certificado del registro comercial de EE. 
       title: "Confirmation",
       message: self.longMessage
     )
-    alertController.preferredButtonsAxis = .horizontal(.fillProportionally)
+    alertController.preferredButtonsLayout = .horizontal(.fillProportionally)
 
     let yesAction = UKAlertAction(
       title: "Continue",

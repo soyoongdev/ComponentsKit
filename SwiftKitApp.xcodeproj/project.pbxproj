@@ -7,44 +7,24 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		7497BE132C74A22C00001198 /* SUButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7497BE122C74A22C00001198 /* SUButton.swift */; };
-		7497BE182C74DC4000001198 /* Radius.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7497BE172C74DC4000001198 /* Radius.swift */; };
-		7497BE1A2C74DC7600001198 /* AnimationScale.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7497BE192C74DC7600001198 /* AnimationScale.swift */; };
-		7497BE1C2C74DC9400001198 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7497BE1B2C74DC9400001198 /* Color.swift */; };
-		7497BE1E2C74DCF700001198 /* ButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7497BE1D2C74DCF700001198 /* ButtonStyle.swift */; };
-		7497BE242C760C3900001198 /* ButtonSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7497BE232C760C3900001198 /* ButtonSize.swift */; };
+		742F918A2C77876D00139197 /* SwiftKit in Frameworks */ = {isa = PBXBuildFile; productRef = 742F91892C77876D00139197 /* SwiftKit */; };
 		7497BE262C7613A700001198 /* AlertsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7497BE252C7613A700001198 /* AlertsView.swift */; };
-		7497BE282C7616FA00001198 /* UKAlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7497BE272C7616FA00001198 /* UKAlertController.swift */; };
-		7497BE2B2C761D9300001198 /* UIView+Layout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7497BE2A2C761D9300001198 /* UIView+Layout.swift */; };
 		74A10BFC2C738E8C00243662 /* ButtonsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74A10BFB2C738E8C00243662 /* ButtonsView.swift */; };
-		74A10C002C738F6A00243662 /* UKButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74A10BFF2C738F6A00243662 /* UKButton.swift */; };
 		74DA58782C73867B00EAC80C /* Root.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74DA58772C73867B00EAC80C /* Root.swift */; };
 		74DA587A2C73867B00EAC80C /* AppView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74DA58792C73867B00EAC80C /* AppView.swift */; };
 		74DA587C2C73867C00EAC80C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 74DA587B2C73867C00EAC80C /* Assets.xcassets */; };
 		74DA587F2C73867C00EAC80C /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 74DA587E2C73867C00EAC80C /* Preview Assets.xcassets */; };
-		74E7645D2C777874003E6300 /* UKAlertAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74E7645C2C777874003E6300 /* UKAlertAction.swift */; };
-		74E7645F2C777880003E6300 /* ContentSizedScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74E7645E2C777880003E6300 /* ContentSizedScrollView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		7497BE122C74A22C00001198 /* SUButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SUButton.swift; sourceTree = "<group>"; };
-		7497BE172C74DC4000001198 /* Radius.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Radius.swift; sourceTree = "<group>"; };
-		7497BE192C74DC7600001198 /* AnimationScale.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationScale.swift; sourceTree = "<group>"; };
-		7497BE1B2C74DC9400001198 /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
-		7497BE1D2C74DCF700001198 /* ButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonStyle.swift; sourceTree = "<group>"; };
-		7497BE232C760C3900001198 /* ButtonSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonSize.swift; sourceTree = "<group>"; };
+		742F91872C77867B00139197 /* SwiftKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = SwiftKit; sourceTree = "<group>"; };
 		7497BE252C7613A700001198 /* AlertsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertsView.swift; sourceTree = "<group>"; };
-		7497BE272C7616FA00001198 /* UKAlertController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UKAlertController.swift; sourceTree = "<group>"; };
-		7497BE2A2C761D9300001198 /* UIView+Layout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Layout.swift"; sourceTree = "<group>"; };
 		74A10BFB2C738E8C00243662 /* ButtonsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonsView.swift; sourceTree = "<group>"; };
-		74A10BFF2C738F6A00243662 /* UKButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UKButton.swift; sourceTree = "<group>"; };
 		74DA58742C73867B00EAC80C /* SwiftKitApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftKitApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		74DA58772C73867B00EAC80C /* Root.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Root.swift; sourceTree = "<group>"; };
 		74DA58792C73867B00EAC80C /* AppView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppView.swift; sourceTree = "<group>"; };
 		74DA587B2C73867C00EAC80C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		74DA587E2C73867C00EAC80C /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		74E7645C2C777874003E6300 /* UKAlertAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UKAlertAction.swift; sourceTree = "<group>"; };
-		74E7645E2C777880003E6300 /* ContentSizedScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentSizedScrollView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -52,66 +32,27 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				742F918A2C77876D00139197 /* SwiftKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		7497BE112C74A20A00001198 /* SwiftUI */ = {
+		742F91882C77876D00139197 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				7497BE122C74A22C00001198 /* SUButton.swift */,
 			);
-			path = SwiftUI;
-			sourceTree = "<group>";
-		};
-		7497BE142C74DBD300001198 /* Shared */ = {
-			isa = PBXGroup;
-			children = (
-				7497BE172C74DC4000001198 /* Radius.swift */,
-				7497BE192C74DC7600001198 /* AnimationScale.swift */,
-				7497BE1B2C74DC9400001198 /* Color.swift */,
-				7497BE1D2C74DCF700001198 /* ButtonStyle.swift */,
-				7497BE232C760C3900001198 /* ButtonSize.swift */,
-			);
-			path = Shared;
-			sourceTree = "<group>";
-		};
-		7497BE292C761D8900001198 /* Helpers */ = {
-			isa = PBXGroup;
-			children = (
-				7497BE2A2C761D9300001198 /* UIView+Layout.swift */,
-				74E7645E2C777880003E6300 /* ContentSizedScrollView.swift */,
-			);
-			path = Helpers;
-			sourceTree = "<group>";
-		};
-		74A10BFD2C738EFA00243662 /* Components */ = {
-			isa = PBXGroup;
-			children = (
-				7497BE142C74DBD300001198 /* Shared */,
-				7497BE112C74A20A00001198 /* SwiftUI */,
-				74A10BFE2C738F5F00243662 /* UIKit */,
-			);
-			path = Components;
-			sourceTree = "<group>";
-		};
-		74A10BFE2C738F5F00243662 /* UIKit */ = {
-			isa = PBXGroup;
-			children = (
-				7497BE292C761D8900001198 /* Helpers */,
-				74E7645B2C77786E003E6300 /* Alert */,
-				74E764602C777DE6003E6300 /* Button */,
-			);
-			path = UIKit;
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		74DA586B2C73867B00EAC80C = {
 			isa = PBXGroup;
 			children = (
+				742F91872C77867B00139197 /* SwiftKit */,
 				74DA58762C73867B00EAC80C /* SwiftKitApp */,
 				74DA58752C73867B00EAC80C /* Products */,
+				742F91882C77876D00139197 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -126,7 +67,6 @@
 		74DA58762C73867B00EAC80C /* SwiftKitApp */ = {
 			isa = PBXGroup;
 			children = (
-				74A10BFD2C738EFA00243662 /* Components */,
 				74DA58772C73867B00EAC80C /* Root.swift */,
 				74DA58792C73867B00EAC80C /* AppView.swift */,
 				74A10BFB2C738E8C00243662 /* ButtonsView.swift */,
@@ -145,23 +85,6 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
-		74E7645B2C77786E003E6300 /* Alert */ = {
-			isa = PBXGroup;
-			children = (
-				74E7645C2C777874003E6300 /* UKAlertAction.swift */,
-				7497BE272C7616FA00001198 /* UKAlertController.swift */,
-			);
-			path = Alert;
-			sourceTree = "<group>";
-		};
-		74E764602C777DE6003E6300 /* Button */ = {
-			isa = PBXGroup;
-			children = (
-				74A10BFF2C738F6A00243662 /* UKButton.swift */,
-			);
-			path = Button;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -178,6 +101,9 @@
 			dependencies = (
 			);
 			name = SwiftKitApp;
+			packageProductDependencies = (
+				742F91892C77876D00139197 /* SwiftKit */,
+			);
 			productName = SwiftKitApp;
 			productReference = 74DA58742C73867B00EAC80C /* SwiftKitApp.app */;
 			productType = "com.apple.product-type.application";
@@ -232,21 +158,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				74E7645D2C777874003E6300 /* UKAlertAction.swift in Sources */,
 				7497BE262C7613A700001198 /* AlertsView.swift in Sources */,
 				74A10BFC2C738E8C00243662 /* ButtonsView.swift in Sources */,
-				7497BE132C74A22C00001198 /* SUButton.swift in Sources */,
-				74A10C002C738F6A00243662 /* UKButton.swift in Sources */,
-				7497BE1E2C74DCF700001198 /* ButtonStyle.swift in Sources */,
 				74DA587A2C73867B00EAC80C /* AppView.swift in Sources */,
-				7497BE282C7616FA00001198 /* UKAlertController.swift in Sources */,
-				7497BE2B2C761D9300001198 /* UIView+Layout.swift in Sources */,
-				7497BE182C74DC4000001198 /* Radius.swift in Sources */,
-				74E7645F2C777880003E6300 /* ContentSizedScrollView.swift in Sources */,
-				7497BE242C760C3900001198 /* ButtonSize.swift in Sources */,
 				74DA58782C73867B00EAC80C /* Root.swift in Sources */,
-				7497BE1A2C74DC7600001198 /* AnimationScale.swift in Sources */,
-				7497BE1C2C74DC9400001198 /* Color.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -452,6 +367,13 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		742F91892C77876D00139197 /* SwiftKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = SwiftKit;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 74DA586C2C73867B00EAC80C /* Project object */;
 }
