@@ -2,7 +2,7 @@
 
 import UIKit
 
-public enum ButtonsAxis {
+public enum AlertButtonsLayout {
   public enum Distribution {
     case fillEqually
     case fillProportionally
@@ -18,7 +18,7 @@ open class UKAlertController: UIViewController {
   public let titleText: String?
   public let message: String?
 
-  public var preferredButtonsAxis: ButtonsAxis = .horizontal()
+  public var preferredButtonsLayout: AlertButtonsLayout = .horizontal()
 
   // MARK: Subviews
 
@@ -95,7 +95,7 @@ open class UKAlertController: UIViewController {
     Self.Style.titleLabel(self.titleLabel, text: self.titleText)
     Self.Style.messageLabel(self.messageLabel, text: self.message)
 
-    switch self.preferredButtonsAxis {
+    switch self.preferredButtonsLayout {
     case .vertical:
       Self.Style.buttonsStackView(self.buttonsStackView, axis: .vertical)
     case .horizontal(let distribution):
@@ -186,7 +186,7 @@ extension UKAlertController {
       label.numberOfLines = 0
     }
 
-    static func buttonsStackView(_ stackView: UIStackView, axis: ButtonsAxis) {
+    static func buttonsStackView(_ stackView: UIStackView, axis: AlertButtonsLayout) {
       switch axis {
       case .vertical:
         stackView.axis = .vertical
