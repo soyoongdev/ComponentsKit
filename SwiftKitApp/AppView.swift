@@ -12,7 +12,11 @@ struct AppView: View {
         NavigationLink("Alerts") {
           AlertsView()
         }
+        NavigationLink("Loadings") {
+          LoadingsView()
+        }
       }
+      .navigationTitle("SwiftKit")
     }
   }
 }
