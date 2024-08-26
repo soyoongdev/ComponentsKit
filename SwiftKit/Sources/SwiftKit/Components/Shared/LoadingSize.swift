@@ -21,4 +21,8 @@ public enum LoadingSize {
       return .init(width: minSide, height: minSide)
     }
   }
+
+  public var lineWidth: CGFloat {
+    return max(self.cgSize.width / 8, 2)
+  }
 }

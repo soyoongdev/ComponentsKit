@@ -8,7 +8,8 @@ private class Container: UIView {
   let loading: UKLoading = {
     let loading = UKLoading()
     loading.color = .accent
-    loading.size = .large
+    loading.size = .medium
+    loading.startAnimation()
     return loading
   }()
   lazy var button: UKButton = {

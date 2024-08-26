@@ -2,10 +2,6 @@
 
 import UIKit
 
-public enum LoadingStyle {
-  case spinner
-}
-
 open class UKLoading: UIView {
   // MARK: Properties
 
@@ -25,11 +21,20 @@ open class UKLoading: UIView {
   /// A Boolean value indicating whether the activity indicator is currently running its animation.
   public private(set) var isAnimating: Bool = false
 
-  public var size: LoadingSize = .medium
   public var style: LoadingStyle = .spinner
   public var color: Color = .primary {
     didSet {
       self.shapeLayer.strokeColor = self.color.uiColor.cgColor
+    }
+  }
+  public var size: LoadingSize = .medium {
+    didSet {
+      self.updateLineWidth()
+    }
+  }
+  public var lineWidth: CGFloat? {
+    didSet {
+      self.updateLineWidth()
     }
   }
 
@@ -102,6 +107,12 @@ open class UKLoading: UIView {
     if !self.isAnimating {
       self.pauseAnimation()
     }
+  }
+
+  // MARK: Update
+
+  private func updateLineWidth() {
+    self.shapeLayer.lineWidth = self.lineWidth ?? self.size.lineWidth
   }
 
   // MARK: UIView methods
