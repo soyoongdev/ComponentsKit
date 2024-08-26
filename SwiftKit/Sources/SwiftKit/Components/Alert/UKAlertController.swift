@@ -2,16 +2,6 @@
 
 import UIKit
 
-public enum AlertButtonsLayout {
-  public enum Distribution {
-    case fillEqually
-    case fillProportionally
-  }
-
-  case vertical
-  case horizontal(Distribution = .fillEqually)
-}
-
 open class UKAlertController: UIViewController {
   // MARK: Properties
 
