@@ -4,34 +4,51 @@ import SwiftKit
 import SwiftUI
 import UIKit
 
-fileprivate class Container: UIView {
+private class Container: UIView {
   let loading: UKLoading = {
-//    let loading = UKLoading()
-    let loading = UKLoading(frame: .init(origin: .zero, size: .init(width: 50, height: 50)))
-    loading.backgroundColor = .red
+    let loading = UKLoading()
+    loading.color = .accent
+    loading.size = .large
     return loading
+  }()
+  lazy var button: UKButton = {
+    let button = UKButton()
+    button.setTitle("Toggle animation", for: .normal)
+    return button
   }()
 
   override init(frame: CGRect) {
     super.init(frame: frame)
 
-    self.addSubview(self.loading)
-//    self.loading.frame = .init(origin: .zero, size: .init(width: 50, height: 50))
-//    self.loading.startAnimating()
+    self.setup()
   }
 
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
 
-  override func layoutSubviews() {
-    super.layoutSubviews()
-    self.loading.center = self.center
-//    self.loading.spin()
+  private func setup() {
+    self.addSubview(self.loading)
+    self.addSubview(self.button)
+
+    self.button.on(.touchUpInside) {
+      if self.loading.isAnimating {
+        self.loading.stopAnimation()
+      } else {
+        self.loading.startAnimation()
+      }
+    }
+
+    self.loading.size(60)
+    self.loading.centerVertically()
+    self.loading.centerHorizontally()
+
+    self.button.centerHorizontally()
+    self.button.below(of: self.loading, padding: 40)
   }
 }
 
-fileprivate struct ContainerWrapper: UIViewRepresentable {
+private struct ContainerWrapper: UIViewRepresentable {
   func makeUIView(context: Context) -> Container {
     return Container(frame: .zero)
   }
