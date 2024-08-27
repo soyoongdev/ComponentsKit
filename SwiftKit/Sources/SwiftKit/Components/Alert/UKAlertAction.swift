@@ -3,17 +3,14 @@
 import UIKit
 
 public struct UKAlertAction {
-  let title: String
-  let style: ((UKButton) -> Void)?
+  let model: ButtonVM
   let action: (() -> Void)?
 
   public init(
-    title: String,
-    style: ((UKButton) -> Void)? = nil,
+    model: ButtonVM = .init(),
     action: (() -> Void)? = nil
   ) {
-    self.title = title
-    self.style = style
+    self.model = model
     self.action = action
   }
 }

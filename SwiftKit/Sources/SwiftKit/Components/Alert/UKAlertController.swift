@@ -52,8 +52,7 @@ open class UKAlertController: UIViewController {
 
   open func addAction(_ action: UKAlertAction) {
     let button = UKButton()
-    action.style?(button)
-    button.setTitle(action.title, for: .normal)
+    button.model = action.model
     button.on(.touchUpInside) { [weak self] in
       self?.dismiss(animated: true)
       action.action?()

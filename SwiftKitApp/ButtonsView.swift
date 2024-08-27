@@ -7,14 +7,15 @@ import UIKit
 private class Container: UIView {
   let button: UKButton = {
     let button = UKButton()
+    button.model.title = "Tap me please"
 //    button.isEnabled = false
 //    button.cornerRadius = .small
 //    button.preferredSize = .large
 //    button.animationScale = .medium
 //    button.style = .bordered(.medium)
 //    button.color = .primary
-    button.font = .boldSystemFont(ofSize: 16)
-    button.setTitle("Tap me please", for: .normal)
+//    button.font = .boldSystemFont(ofSize: 16)
+//    button.setTitle("Tap me please", for: .normal)
     return button
   }()
 

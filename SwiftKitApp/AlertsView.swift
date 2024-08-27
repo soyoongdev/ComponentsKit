@@ -7,15 +7,19 @@ import UIKit
 private class Container: UIViewController {
   let defaultAlertButton: UKButton = {
     let button = UKButton()
-    button.font = .boldSystemFont(ofSize: 16)
-    button.setTitle("Default alert", for: .normal)
+    button.model = .init(
+      font: .boldSystemFont(ofSize: 16),
+      title: "Default alert"
+    )
     return button
   }()
 
   let customAlertButton: UKButton = {
     let button = UKButton()
-    button.font = .boldSystemFont(ofSize: 16)
-    button.setTitle("Custom alert", for: .normal)
+    button.model = .init(
+      font: .boldSystemFont(ofSize: 16),
+      title: "Custom alert"
+    )
     return button
   }()
 
@@ -80,26 +84,32 @@ Debido a la necesidad de presentar un certificado del registro comercial de EE. 
     alertController.preferredButtonsLayout = .horizontal(.fillProportionally)
 
     let yesAction = UKAlertAction(
-      title: "Continue",
-      style: {
-        $0.cornerRadius = .large
-        $0.style = .filled
-        $0.preferredSize = .medium
-        $0.font = .boldSystemFont(ofSize: 16)
-      },
+      model: .init(
+        cornerRadius: .large,
+        font: .boldSystemFont(ofSize: 16),
+        preferredSize: .medium,
+        style: .filled,
+        title: "Continue"
+      ),
       action: {
         print("confirmed")
       }
     )
-    let noAction = UKAlertAction(title: "No, exit", style: {
-      $0.style = .filled
-      $0.color = .danger
-      $0.font = .monospacedSystemFont(ofSize: 16, weight: .medium)
-    })
-    let mbAction = UKAlertAction(title: "Mb later", style: {
-      $0.style = .plain
-      $0.color = .warning
-    })
+    let noAction = UKAlertAction(
+      model: .init(
+        color: .danger,
+        font: .boldSystemFont(ofSize: 16),
+        style: .filled,
+        title: "No, exit"
+      )
+    )
+    let mbAction = UKAlertAction(
+      model: .init(
+        color: .warning,
+        style: .plain,
+        title: "Mb later"
+      )
+    )
 
     alertController.addAction(yesAction)
     alertController.addAction(noAction)

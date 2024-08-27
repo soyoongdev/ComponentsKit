@@ -2,40 +2,28 @@
 
 import UIKit
 
-open class UKButton: UIButton {
+open class UKButton: UIButton, ConfigurableComponent {
   // MARK: Properties
 
   private var actions: [UIControl.Event: () -> Void] = [:]
 
-  public var preferredSize: ButtonSize = .medium {
-    didSet { self.sizeToFit() }
-  }
-  public var cornerRadius: ComponentRadius = .medium {
-    didSet { self.updateRadius() }
-  }
-  public var style: ButtonStyle = .filled {
-    didSet { self.updateStyle() }
-  }
-  public var color: ComponentColor = .primary {
-    didSet { self.updateStyle() }
-  }
-  public var animationScale: AnimationScale = .medium
-
-  public var font: UIFont? {
-    willSet {
-      guard let newValue else { return }
-      self.titleLabel?.font = newValue
-      self.sizeToFit()
+  public var model: ButtonVM = .init() {
+    didSet {
+      self.update(oldValue)
     }
   }
+
+  // MARK: UIButton Properties
 
   public override var isHighlighted: Bool {
     didSet {
-      self.transform = self.isHighlighted ? .init(scaleX: self.animationScale.value, y: self.animationScale.value) : .identity
+      self.transform = self.isHighlighted
+      ? .init(
+        scaleX: self.model.animationScale.value,
+        y: self.model.animationScale.value
+      )
+      : .identity
     }
-  }
-  public override var isEnabled: Bool {
-    didSet { self.updateStyle() }
   }
 
   open override var intrinsicContentSize: CGSize {
@@ -51,10 +39,10 @@ open class UKButton: UIButton {
     super.init(frame: frame)
 
     if frame.size != .zero {
-      self.preferredSize = .custom(frame.size)
+      self.model.preferredSize = .custom(frame.size)
     }
 
-    self.updateStyle()
+    self.update(nil)
   }
 
   public required init?(coder: NSCoder) {
@@ -66,7 +54,7 @@ open class UKButton: UIButton {
   open override func layoutSubviews() {
     super.layoutSubviews()
 
-    self.updateRadius()
+    self.layer.cornerRadius = self.model.cornerRadius.value(for: self.bounds.height)
   }
 
   // MARK: UIButton methods
@@ -78,10 +66,10 @@ open class UKButton: UIButton {
   }
 
   open override func sizeThatFits(_ size: CGSize) -> CGSize {
-    switch self.preferredSize {
+    switch self.model.preferredSize {
     case .small, .medium, .large:
-      let height = self.preferredSize.height
-      let horizontalPadding = self.preferredSize.horizontalPadding
+      let height = self.model.preferredSize.height
+      let horizontalPadding = self.model.preferredSize.horizontalPadding
       let textWidth = self.titleLabel?.sizeThatFits(size).width ?? 0
       return .init(width: textWidth + 2 * horizontalPadding, height: height)
     case .custom(let size):
@@ -91,19 +79,25 @@ open class UKButton: UIButton {
 
   // MARK: Update
 
-  public func updateRadius() {
-    self.layer.cornerRadius = self.cornerRadius.value(for: self.bounds.height)
-  }
+  public func update(_ oldModel: ButtonVM?) {
+    self.layer.cornerRadius = self.model.cornerRadius.value(for: self.bounds.height)
 
-  public func updateStyle() {
-    let color = self.isEnabled
-    ? self.color.main.uiColor
-    : self.color.main.uiColor.withAlphaComponent(0.5)
-    switch self.style {
+    self.setTitle(self.model.title, for: .normal)
+    self.titleLabel?.font = self.model.font
+
+    self.isEnabled = self.model.isEnabled
+    self.layer.borderWidth = self.model.borderWidth
+
+    let color = self.model.isEnabled
+    ? self.model.color.main.uiColor
+    : self.model.color.main.uiColor.withAlphaComponent(
+      SwiftKitConfig.shared.layout.disabledOpacity
+    )
+    switch self.model.style {
     case .filled:
       self.layer.borderWidth = 0
       self.backgroundColor = color
-      self.setTitleColor(self.color.contrast.uiColor, for: .normal)
+      self.setTitleColor(self.model.color.contrast.uiColor, for: .normal)
     case .plain:
       self.layer.borderWidth = 0
       self.backgroundColor = nil
@@ -113,6 +107,10 @@ open class UKButton: UIButton {
       self.layer.borderColor = color.cgColor
       self.backgroundColor = nil
       self.setTitleColor(color, for: .normal)
+    }
+
+    if self.model.shouldUpdateSize(oldModel) {
+      self.sizeToFit()
     }
   }
 

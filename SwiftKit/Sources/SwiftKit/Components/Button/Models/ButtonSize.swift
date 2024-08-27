@@ -2,7 +2,7 @@
 
 import Foundation
 
-public enum ButtonSize {
+public enum ButtonSize: Equatable {
   case small
   case medium
   case large
