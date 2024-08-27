@@ -2,22 +2,31 @@
 
 import Foundation
 
-public enum AnimationScale {
-  case none
-  case small
-  case medium
-  case large
+public struct AnimationScale {
+  var value: CGFloat
 
-  public var coef: CGFloat {
-    switch self {
-    case .none:
-      return 1
-    case .small:
-      return 0.99
-    case .medium:
-      return 0.98
-    case .large:
-      return 0.95
+  init(_ value: CGFloat) {
+    self.value = value
+  }
+}
+
+extension AnimationScale {
+  public static var none: Self {
+    return Self(1.0)
+  }
+  public static var small: Self {
+    return Self(SwiftKitConfig.shared.layout.animationScale.small)
+  }
+  public static var medium: Self {
+    return Self(SwiftKitConfig.shared.layout.animationScale.medium)
+  }
+  public static var large: Self {
+    return Self(SwiftKitConfig.shared.layout.animationScale.large)
+  }
+  public static func custom(_ value: CGFloat) -> Self {
+    guard value >= 0 && value <= 1.0 else {
+      fatalError("Animation scale value should be between 0 and 1")
     }
+    return Self(value)
   }
 }

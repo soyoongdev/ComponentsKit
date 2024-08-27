@@ -10,7 +10,7 @@ open class UKButton: UIButton {
   public var preferredSize: ButtonSize = .medium {
     didSet { self.sizeToFit() }
   }
-  public var cornerRadius: Radius = .medium {
+  public var cornerRadius: ComponentRadius = .medium {
     didSet { self.updateRadius() }
   }
   public var style: ButtonStyle = .filled {
@@ -31,7 +31,7 @@ open class UKButton: UIButton {
 
   public override var isHighlighted: Bool {
     didSet {
-      self.transform = self.isHighlighted ? .init(scaleX: self.animationScale.coef, y: self.animationScale.coef) : .identity
+      self.transform = self.isHighlighted ? .init(scaleX: self.animationScale.value, y: self.animationScale.value) : .identity
     }
   }
   public override var isEnabled: Bool {
@@ -92,7 +92,7 @@ open class UKButton: UIButton {
   // MARK: Update
 
   public func updateRadius() {
-    self.layer.cornerRadius = self.bounds.height * self.cornerRadius.coef
+    self.layer.cornerRadius = self.cornerRadius.value(for: self.bounds.height)
   }
 
   public func updateStyle() {
@@ -108,17 +108,8 @@ open class UKButton: UIButton {
       self.layer.borderWidth = 0
       self.backgroundColor = nil
       self.setTitleColor(color, for: .normal)
-    case .bordered(let size):
-      switch size {
-      case .small:
-        self.layer.borderWidth = 1
-      case .medium:
-        self.layer.borderWidth = 2
-      case .large:
-        self.layer.borderWidth = 3
-      case .custom(let value):
-        self.layer.borderWidth = value
-      }
+    case .bordered(let borderWidth):
+      self.layer.borderWidth = borderWidth.value
       self.layer.borderColor = color.cgColor
       self.backgroundColor = nil
       self.setTitleColor(color, for: .normal)

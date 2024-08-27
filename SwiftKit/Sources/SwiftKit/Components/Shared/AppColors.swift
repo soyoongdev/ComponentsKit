@@ -4,24 +4,24 @@ import Foundation
 
 public struct AppColors {
   /// The color for the main background of your interface.
-  let background: Color
+  public var background: Color
   /// The color for content layered on top of the main background.
-  let secondaryBackground: Color
+  public var secondaryBackground: Color
   /// The color for text labels that contain primary content.
-  let label: Color
+  public var label: Color
   /// The color for text labels that contain secondary content.
-  let secondaryLabel: Color
+  public var secondaryLabel: Color
   /// The color for thin borders or divider lines that allows some underlying content to be visible.
-  let divider: Color
-  let overlay: Color // used for modal, popover, etc.
-  let primary: ComponentColor
-  let secondary: ComponentColor
-  let accent: ComponentColor
-  let success: ComponentColor
-  let warning: ComponentColor
-  let danger: ComponentColor
+  public var divider: Color
+  public var overlay: Color // used for modal, popover, etc.
+  public var primary: ComponentColor
+  public var secondary: ComponentColor
+  public var accent: ComponentColor
+  public var success: ComponentColor
+  public var warning: ComponentColor
+  public var danger: ComponentColor
 
-  public init(
+  init(
     background: Color,
     secondaryBackground: Color,
     label: Color,
@@ -85,6 +85,24 @@ extension AppColors {
       contrast: .init(universal: .uiColor(.white))
     )
   )
+}
+
+// MARK: AppColors + Extending
+
+extension AppColors {
+  public func extending(
+    _ transform: ( _ config: inout Self) -> Void
+  ) -> Self {
+    var instance = self
+    transform(&instance)
+    return instance
+  }
+
+  public static func extendingDefault(
+    _ transform: ( _ config: inout Self) -> Void
+  ) -> Self {
+    return Self.default.extending(transform)
+  }
 }
 
 // MARK: - AppColors + Config

@@ -9,6 +9,7 @@ open class UKAlertController: UIViewController {
   public let message: String?
 
   public var preferredButtonsLayout: AlertButtonsLayout = .horizontal()
+  public var cornerRadius: PopoverRadius = .medium
 
   // MARK: Subviews
 
@@ -80,7 +81,7 @@ open class UKAlertController: UIViewController {
 
   func style() {
     Self.Style.mainView(self.view)
-    Self.Style.container(self.container)
+    Self.Style.container(self.container, radius: self.cornerRadius.value)
     Self.Style.scrollView(self.scrollView)
     Self.Style.titleLabel(self.titleLabel, text: self.titleText)
     Self.Style.messageLabel(self.messageLabel, text: self.message)
@@ -145,9 +146,9 @@ extension UKAlertController {
       view.backgroundColor = .black.withAlphaComponent(0.5)
     }
 
-    static func container(_ view: UIView) {
+    static func container(_ view: UIView, radius: CGFloat) {
       view.backgroundColor = .white
-      view.layer.cornerRadius = 20
+      view.layer.cornerRadius = radius
     }
 
     static func scrollView(_ scrollView: UIScrollView) {

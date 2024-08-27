@@ -3,11 +3,8 @@
 import Foundation
 
 public struct SwiftKitConfig {
-  let colors: AppColors
-
-  public init(colors: AppColors) {
-    self.colors = colors
-  }
+  public var colors: AppColors
+  public var layout: Layout
 }
 
 // MARK: - SwiftKitConfig + Shared
@@ -19,7 +16,26 @@ extension SwiftKitConfig {
 // MARK: - SwiftKitConfig + Default
 
 extension SwiftKitConfig {
-  public static var `default`: Self = .init(
-    colors: .default
+  fileprivate static var `default`: Self = .init(
+    colors: .default,
+    layout: .default
   )
+}
+
+// MARK: SwiftKitConfig + Extending
+
+extension SwiftKitConfig {
+  public func extending(
+    _ transform: ( _ config: inout Self) -> Void
+  ) -> Self {
+    var instance = self
+    transform(&instance)
+    return instance
+  }
+
+  public static func extendingDefault(
+    _ transform: ( _ config: inout Self) -> Void
+  ) -> Self {
+    return Self.default.extending(transform)
+  }
 }
