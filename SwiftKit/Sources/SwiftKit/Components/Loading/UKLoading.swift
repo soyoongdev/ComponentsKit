@@ -22,9 +22,9 @@ open class UKLoading: UIView {
   public private(set) var isAnimating: Bool = false
 
   public var style: LoadingStyle = .spinner
-  public var color: Color = .primary {
+  public var color: ComponentColor = .primary {
     didSet {
-      self.shapeLayer.strokeColor = self.color.uiColor.cgColor
+      self.shapeLayer.strokeColor = self.color.main.uiColor.cgColor
     }
   }
   public var size: LoadingSize = .medium {
@@ -88,7 +88,7 @@ open class UKLoading: UIView {
   }
 
   private func setupLayer() {
-    self.shapeLayer.strokeColor = self.color.uiColor.cgColor
+    self.shapeLayer.strokeColor = self.color.main.uiColor.cgColor
     self.shapeLayer.fillColor = UIColor.clear.cgColor
     self.shapeLayer.lineWidth = 6.0
     self.shapeLayer.lineCap = .round

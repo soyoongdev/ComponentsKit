@@ -16,7 +16,7 @@ open class UKButton: UIButton {
   public var style: ButtonStyle = .filled {
     didSet { self.updateStyle() }
   }
-  public var color: Color = .primary {
+  public var color: ComponentColor = .primary {
     didSet { self.updateStyle() }
   }
   public var animationScale: AnimationScale = .medium
@@ -96,13 +96,14 @@ open class UKButton: UIButton {
   }
 
   public func updateStyle() {
-    let color = self.isEnabled ? self.color.uiColor : self.color.uiColor.withAlphaComponent(0.5)
+    let color = self.isEnabled
+    ? self.color.main.uiColor
+    : self.color.main.uiColor.withAlphaComponent(0.5)
     switch self.style {
     case .filled:
       self.layer.borderWidth = 0
       self.backgroundColor = color
-      // TODO: [1] Remove hardcoded color
-      self.setTitleColor(.white, for: .normal)
+      self.setTitleColor(self.color.contrast.uiColor, for: .normal)
     case .plain:
       self.layer.borderWidth = 0
       self.backgroundColor = nil

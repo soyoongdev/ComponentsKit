@@ -7,7 +7,7 @@ import UIKit
 private class Container: UIView {
   let loading: UKLoading = {
     let loading = UKLoading()
-    loading.color = .accent
+    loading.color = .danger
     loading.size = .medium
     loading.startAnimation()
     return loading
@@ -29,6 +29,8 @@ private class Container: UIView {
   }
 
   private func setup() {
+    self.backgroundColor = AppColors.Base.background.uiColor
+
     self.addSubview(self.loading)
     self.addSubview(self.button)
 
