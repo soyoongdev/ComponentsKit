@@ -28,10 +28,10 @@ public struct SUButton: View {
   public var body: some View {
     Text(self.model.title)
       .lineLimit(1)
-      .padding(.leading, self.model.leadingPadding)
-      .padding(.trailing, self.model.trailingPadding)
-      .padding(.top, self.model.topPadding)
-      .padding(.bottom, self.model.bottomPadding)
+      .padding(.leading, self.model.leadingInset)
+      .padding(.trailing, self.model.trailingInset)
+      .padding(.top, self.model.topInset)
+      .padding(.bottom, self.model.bottomInset)
       .frame(
         maxWidth: self.model.width,
         maxHeight: self.model.height

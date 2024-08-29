@@ -14,7 +14,7 @@ private class Container: UIView {
   }()
   lazy var button: UKButton = {
     let button = UKButton()
-    button.setTitle("Toggle animation", for: .normal)
+    button.model.title = "Toggle animation"
     return button
   }()
 
@@ -34,7 +34,8 @@ private class Container: UIView {
     self.addSubview(self.loading)
     self.addSubview(self.button)
 
-    self.button.on(.touchUpInside) {
+    self.button.action = { [weak self] in
+      guard let self else { return }
       if self.loading.isAnimating {
         self.loading.stopAnimation()
       } else {

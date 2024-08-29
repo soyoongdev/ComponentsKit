@@ -5,38 +5,29 @@ import SwiftUI
 import UIKit
 
 private class Container: UIView {
-  let button: UKButton = {
-    let button = UKButton()
-    button.model.title = "Tap me please"
-//    button.isEnabled = false
-    button.model.cornerRadius = .medium
-    button.model.size = .custom(
-      width: .constant(.infinity),
-      height: .constant(50)
-    )
-//    button.animationScale = .medium
-//    button.style = .bordered(.medium)
-//    button.color = .primary
-//    button.font = .boldSystemFont(ofSize: 16)
-//    button.setTitle("Tap me please", for: .normal)
-    return button
-  }()
+  let button = UKButton(
+    model: ButtonVM {
+      $0.title = "Tap"
+      $0.cornerRadius = .medium
+      $0.size = .medium
+    }
+  )
 
   override init(frame: CGRect) {
     super.init(frame: frame)
 
     self.addSubview(self.button)
 
-    self.button.translatesAutoresizingMaskIntoConstraints = false
-    self.button.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
-    self.button.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20).isActive = true
-    self.button.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -20).isActive = true
+    self.button.centerVertically()
+    self.button.centerHorizontally()
 
-    self.button.addTarget(self, action: #selector(self.handleTap), for: .touchUpInside)
-  }
-
-  @objc private func handleTap() {
-    print("123")
+    self.button.action = { [weak self] in
+      self?.button.model.title = [
+        "hello",
+        "hello world",
+        "hello world hello world"
+      ].randomElement()!
+    }
   }
 
   required init?(coder: NSCoder) {
@@ -66,49 +57,49 @@ struct ButtonsView: View {
     $0.cornerRadius = .full
   }
 
-//  var body: some View {
-//    ContainerWrapper()
-//  }
-
   var body: some View {
-    SUButton(model: .init {
-      $0.title = "Toggle"
-      $0.animationScale = .medium
-      $0.style = .bordered(.medium)
-      $0.color = .accent
-      $0.size = .medium.fullWidth
-//      $0.size = .medium.fullWidth
-//      $0.contentInsets = .init(top: 10, leading: 0, bottom: 0, trailing: 0)
-    }) {
-      self.model.isEnabled.toggle()
-    }
-    .padding()
-    SUButton(
-      self.$model,
-//      model: model,
-//      model: .init(
-//        title: "Tap me please",
-//        animationScale: .large,
-//        cornerRadius: .full
-//      ),
-//      label: {
-//        HStack {
-//          Image(systemName: "phone")
-//          Text("hello")
-//            .padding(.vertical, 10)
-//        }
-//      },
-      action: {
-          print(132)
-          self.model.title = [
-            "title 1",
-            "title 2",
-            "title 3"
-          ].randomElement()!
-          self.model.color = [ComponentColor.accent, ComponentColor.primary, ComponentColor.secondary].randomElement()!
-        }
-    )
+    ContainerWrapper()
   }
+
+//  var body: some View {
+//    SUButton(model: .init {
+//      $0.title = "Toggle"
+//      $0.animationScale = .medium
+//      $0.style = .bordered(.medium)
+//      $0.color = .accent
+//      $0.size = .medium.fullWidth
+////      $0.size = .medium.fullWidth
+////      $0.contentInsets = .init(top: 10, leading: 0, bottom: 0, trailing: 0)
+//    }) {
+//      self.model.isEnabled.toggle()
+//    }
+//    .padding()
+//    SUButton(
+//      self.$model,
+////      model: model,
+////      model: .init(
+////        title: "Tap me please",
+////        animationScale: .large,
+////        cornerRadius: .full
+////      ),
+////      label: {
+////        HStack {
+////          Image(systemName: "phone")
+////          Text("hello")
+////            .padding(.vertical, 10)
+////        }
+////      },
+//      action: {
+//          print(132)
+//          self.model.title = [
+//            "title 1",
+//            "title 2",
+//            "title 3"
+//          ].randomElement()!
+//          self.model.color = [ComponentColor.accent, ComponentColor.primary, ComponentColor.secondary].randomElement()!
+//        }
+//    )
+//  }
 }
 
 #Preview {

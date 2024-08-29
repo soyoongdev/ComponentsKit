@@ -77,16 +77,20 @@ extension ButtonVM {
       return self.mainColor
     }
   }
-
-  func shouldUpdateSize(_ oldModel: Self?) -> Bool {
-    return self.size != oldModel?.size
-    || self.font != oldModel?.font
-  }
 }
 
 // MARK: UIKit Helpers
 
 extension ButtonVM {
+  var insets: UIEdgeInsets {
+    return .init(
+      top: self.topInset,
+      left: self.leadingInset,
+      bottom: self.bottomInset,
+      right: self.trailingInset
+    )
+  }
+
   func preferredSize(for contentSize: CGSize) -> CGSize {
     let width: CGFloat
     switch self.size.width {
@@ -105,6 +109,15 @@ extension ButtonVM {
     }
 
     return .init(width: width, height: height)
+  }
+
+  func shouldUpdateSize(_ oldModel: Self?) -> Bool {
+    return self.size != oldModel?.size
+    || self.font != oldModel?.font
+  }
+
+  func shouldUpdateInsets(_ oldModel: Self?) -> Bool {
+    return self.insets != oldModel?.insets
   }
 }
 
@@ -127,38 +140,34 @@ extension ButtonVM {
       return value
     }
   }
-
-  var leadingPadding: CGFloat {
+  var leadingInset: CGFloat {
     switch self.size.width {
-    case .dynamic(let leadingPadding, _):
-      return leadingPadding
+    case .dynamic(let leadingInset, _):
+      return leadingInset
     case .constant:
       return 0
     }
   }
-
-  var trailingPadding: CGFloat {
+  var trailingInset: CGFloat {
     switch self.size.width {
-    case .dynamic(_, let trailingPadding):
-      return trailingPadding
+    case .dynamic(_, let trailingInset):
+      return trailingInset
     case .constant:
       return 0
     }
   }
-
-  var topPadding: CGFloat {
+  var topInset: CGFloat {
     switch self.size.height {
-    case .dynamic(let topPadding, _):
-      return topPadding
+    case .dynamic(let topInset, _):
+      return topInset
     case .constant:
       return 0
     }
   }
-
-  var bottomPadding: CGFloat {
+  var bottomInset: CGFloat {
     switch self.size.height {
-    case .dynamic(_, let bottomPadding):
-      return bottomPadding
+    case .dynamic(_, let bottomInset):
+      return bottomInset
     case .constant:
       return 0
     }

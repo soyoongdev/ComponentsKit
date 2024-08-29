@@ -37,8 +37,8 @@ private class Container: UIViewController {
     self.customAlertButton.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
     self.customAlertButton.topAnchor.constraint(equalTo: self.defaultAlertButton.bottomAnchor, constant: 20).isActive = true
 
-    self.defaultAlertButton.addTarget(self, action: #selector(self.handleOpenDefaultAlert), for: .touchUpInside)
-    self.customAlertButton.addTarget(self, action: #selector(self.handleOpenCustomAlert), for: .touchUpInside)
+    self.defaultAlertButton.action = self.handleOpenDefaultAlert
+    self.customAlertButton.action = self.handleOpenCustomAlert
   }
 
   let longMessage = """

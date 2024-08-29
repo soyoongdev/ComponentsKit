@@ -4,11 +4,11 @@ import UIKit
 
 public struct UKAlertAction {
   let model: ButtonVM
-  let action: (() -> Void)?
+  let action: () -> Void
 
   public init(
     model: ButtonVM = .init(),
-    action: (() -> Void)? = nil
+    action: @escaping () -> Void = {}
   ) {
     self.model = model
     self.action = action
