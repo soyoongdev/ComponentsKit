@@ -7,19 +7,19 @@ import UIKit
 private class Container: UIViewController {
   let defaultAlertButton: UKButton = {
     let button = UKButton()
-    button.model = .init(
-      font: .boldSystemFont(ofSize: 16),
-      title: "Default alert"
-    )
+    button.model = .init {
+      $0.title = "Default alert"
+      $0.font = .boldSystemFont(ofSize: 16)
+    }
     return button
   }()
 
   let customAlertButton: UKButton = {
     let button = UKButton()
-    button.model = .init(
-      font: .boldSystemFont(ofSize: 16),
-      title: "Custom alert"
-    )
+    button.model = .init {
+      $0.title = "Custom alert"
+      $0.font = .boldSystemFont(ofSize: 16)
+    }
     return button
   }()
 
@@ -84,31 +84,31 @@ Debido a la necesidad de presentar un certificado del registro comercial de EE. 
     alertController.preferredButtonsLayout = .horizontal(.fillProportionally)
 
     let yesAction = UKAlertAction(
-      model: .init(
-        cornerRadius: .large,
-        font: .boldSystemFont(ofSize: 16),
-        preferredSize: .medium,
-        style: .filled,
-        title: "Continue"
-      ),
+      model: .init {
+        $0.title = "Continue"
+        $0.cornerRadius = .large
+        $0.font = .boldSystemFont(ofSize: 16)
+        $0.size = .medium
+        $0.style = .filled
+      },
       action: {
         print("confirmed")
       }
     )
     let noAction = UKAlertAction(
-      model: .init(
-        color: .danger,
-        font: .boldSystemFont(ofSize: 16),
-        style: .filled,
-        title: "No, exit"
-      )
+      model: .init {
+        $0.title = "No, exit"
+        $0.color = .danger
+        $0.font = .boldSystemFont(ofSize: 16)
+        $0.style = .filled
+      }
     )
     let mbAction = UKAlertAction(
-      model: .init(
-        color: .warning,
-        style: .plain,
-        title: "Mb later"
-      )
+      model: .init {
+        $0.title = "Mb later"
+        $0.color = .warning
+        $0.style = .plain
+      }
     )
 
     alertController.addAction(yesAction)

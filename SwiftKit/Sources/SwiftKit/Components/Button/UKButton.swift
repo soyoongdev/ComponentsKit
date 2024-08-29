@@ -7,7 +7,7 @@ open class UKButton: UIButton, ConfigurableComponent {
 
   private var actions: [UIControl.Event: () -> Void] = [:]
 
-  public var model: ButtonVM = .init() {
+  public var model: ButtonVM {
     didSet {
       self.update(oldValue)
     }
@@ -27,20 +27,14 @@ open class UKButton: UIButton, ConfigurableComponent {
   }
 
   open override var intrinsicContentSize: CGSize {
-    return self.sizeThatFits(.init(
-      width: CGFloat.greatestFiniteMagnitude,
-      height: CGFloat.greatestFiniteMagnitude
-    ))
+    return self.sizeThatFits(UIView.layoutFittingExpandedSize)
   }
 
   // MARK: Initialization
 
-  public override init(frame: CGRect) {
-    super.init(frame: frame)
-
-    if frame.size != .zero {
-      self.model.preferredSize = .custom(frame.size)
-    }
+  public init(model: ButtonVM = .init()) {
+    self.model = model
+    super.init(frame: .zero)
 
     self.update(nil)
   }
@@ -57,24 +51,13 @@ open class UKButton: UIButton, ConfigurableComponent {
     self.layer.cornerRadius = self.model.cornerRadius.value(for: self.bounds.height)
   }
 
-  // MARK: UIButton methods
-
-  open override func setTitle(_ title: String?, for state: UIControl.State) {
-    super.setTitle(title, for: state)
-
-    self.sizeToFit()
-  }
-
   open override func sizeThatFits(_ size: CGSize) -> CGSize {
-    switch self.model.preferredSize {
-    case .small, .medium, .large:
-      let height = self.model.preferredSize.height
-      let horizontalPadding = self.model.preferredSize.horizontalPadding
-      let textWidth = self.titleLabel?.sizeThatFits(size).width ?? 0
-      return .init(width: textWidth + 2 * horizontalPadding, height: height)
-    case .custom(let size):
-      return size
-    }
+    let contentSize = self.titleLabel?.sizeThatFits(size) ?? .zero
+    let preferredSize = self.model.preferredSize(for: contentSize)
+    return .init(
+      width: min(preferredSize.width, size.width),
+      height: min(preferredSize.height, size.height)
+    )
   }
 
   // MARK: Update
@@ -88,29 +71,13 @@ open class UKButton: UIButton, ConfigurableComponent {
     self.isEnabled = self.model.isEnabled
     self.layer.borderWidth = self.model.borderWidth
 
-    let color = self.model.isEnabled
-    ? self.model.color.main.uiColor
-    : self.model.color.main.uiColor.withAlphaComponent(
-      SwiftKitConfig.shared.layout.disabledOpacity
-    )
-    switch self.model.style {
-    case .filled:
-      self.layer.borderWidth = 0
-      self.backgroundColor = color
-      self.setTitleColor(self.model.color.contrast.uiColor, for: .normal)
-    case .plain:
-      self.layer.borderWidth = 0
-      self.backgroundColor = nil
-      self.setTitleColor(color, for: .normal)
-    case .bordered(let borderWidth):
-      self.layer.borderWidth = borderWidth.value
-      self.layer.borderColor = color.cgColor
-      self.backgroundColor = nil
-      self.setTitleColor(color, for: .normal)
-    }
+    self.layer.borderWidth = self.model.borderWidth
+    self.layer.borderColor = self.model.borderColor.cgColor
+    self.backgroundColor = self.model.backgroundColor
+    self.setTitleColor(self.model.foregroundColor, for: .normal)
 
     if self.model.shouldUpdateSize(oldModel) {
-      self.sizeToFit()
+//      self.sizeToFit()
     }
   }
 

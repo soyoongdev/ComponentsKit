@@ -3,37 +3,25 @@
 import UIKit
 
 public struct ButtonVM {
-  public var animationScale: AnimationScale
-  public var color: ComponentColor
-  public var cornerRadius: ComponentRadius
-  public var font: UIFont
-  public var isEnabled: Bool
-  public var preferredSize: ButtonSize
-  public var style: ButtonStyle
-  public var title: String
+  public var title: String = ""
+  public var animationScale: AnimationScale = .medium
+  public var color: ComponentColor = .primary
+  public var cornerRadius: ComponentRadius = .medium
+  public var font: UIFont?
+  public var isEnabled: Bool = true
+  public var size: ButtonSize = .medium
+  public var style: ButtonStyle = .filled
 
-  public init(
-    animationScale: AnimationScale = .medium,
-    color: ComponentColor = .primary,
-    cornerRadius: ComponentRadius = .medium,
-    font: UIFont = .systemFont(ofSize: 16),
-    isEnabled: Bool = true,
-    preferredSize: ButtonSize = .medium,
-    style: ButtonStyle = .filled,
-    title: String = ""
-  ) {
-    self.title = title
-    self.preferredSize = preferredSize
-    self.cornerRadius = cornerRadius
-    self.style = style
-    self.color = color
-    self.animationScale = animationScale
-    self.font = font
-    self.isEnabled = isEnabled
+  public init(_ transform: (_ model: inout Self) -> Void) {
+    var defaultValue = Self()
+    transform(&defaultValue)
+    self = defaultValue
   }
+
+  public init() {}
 }
 
-// MARK: Helpers
+// MARK: Shared Helpers
 
 extension ButtonVM {
   // TODO: [1] The model should not depend on uikit
@@ -52,7 +40,7 @@ extension ButtonVM {
     )
   }
 
-  public var backgroundColor: UIColor {
+  var backgroundColor: UIColor {
     switch self.style {
     case .filled:
       return self.mainColor
@@ -61,7 +49,7 @@ extension ButtonVM {
     }
   }
 
-  public var foregroundColor: UIColor {
+  var foregroundColor: UIColor {
     switch self.style {
     case .filled:
       return self.contrastColor
@@ -72,7 +60,7 @@ extension ButtonVM {
     }
   }
 
-  public var borderWidth: CGFloat {
+  var borderWidth: CGFloat {
     switch self.style {
     case .filled, .plain:
       return 0.0
@@ -81,9 +69,98 @@ extension ButtonVM {
     }
   }
 
-  public func shouldUpdateSize(_ oldModel: Self?) -> Bool {
-    return self.preferredSize != oldModel?.preferredSize
+  var borderColor: UIColor {
+    switch self.style {
+    case .filled, .plain:
+      return .clear
+    case .bordered(let borderWidth):
+      return self.mainColor
+    }
+  }
+
+  func shouldUpdateSize(_ oldModel: Self?) -> Bool {
+    return self.size != oldModel?.size
     || self.font != oldModel?.font
-    || self.title != oldModel?.title
+  }
+}
+
+// MARK: UIKit Helpers
+
+extension ButtonVM {
+  func preferredSize(for contentSize: CGSize) -> CGSize {
+    let width: CGFloat
+    switch self.size.width {
+    case .dynamic(let leadingInset, let trailingInset):
+      width = contentSize.width + leadingInset + trailingInset
+    case .constant(let value):
+      width = value
+    }
+
+    let height: CGFloat
+    switch self.size.height {
+    case .dynamic(let topInset, let bottomInset):
+      height = contentSize.height + topInset + bottomInset
+    case .constant(let value):
+      height = value
+    }
+
+    return .init(width: width, height: height)
+  }
+}
+
+// MARK: SwiftUI Helpers
+
+extension ButtonVM {
+  var height: CGFloat? {
+    switch self.size.height {
+    case .dynamic:
+      return nil
+    case .constant(let value):
+      return value
+    }
+  }
+  var width: CGFloat? {
+    switch self.size.width {
+    case .dynamic:
+      return nil
+    case .constant(let value):
+      return value
+    }
+  }
+
+  var leadingPadding: CGFloat {
+    switch self.size.width {
+    case .dynamic(let leadingPadding, _):
+      return leadingPadding
+    case .constant:
+      return 0
+    }
+  }
+
+  var trailingPadding: CGFloat {
+    switch self.size.width {
+    case .dynamic(_, let trailingPadding):
+      return trailingPadding
+    case .constant:
+      return 0
+    }
+  }
+
+  var topPadding: CGFloat {
+    switch self.size.height {
+    case .dynamic(let topPadding, _):
+      return topPadding
+    case .constant:
+      return 0
+    }
+  }
+
+  var bottomPadding: CGFloat {
+    switch self.size.height {
+    case .dynamic(_, let bottomPadding):
+      return bottomPadding
+    case .constant:
+      return 0
+    }
   }
 }

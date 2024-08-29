@@ -4,81 +4,89 @@ import SwiftUI
 import UIKit
 
 public struct SUButton: View {
-  @State public var model: ButtonVM
+  @Binding private var model: ButtonVM
+  @State private var viewFrame: CGRect = .zero
   @State private var isPressed: Bool
+  private var action: () -> Void
 
-  public init(model: ButtonVM = .init()) {
-    self.model = model
+  public init(
+    _ model: Binding<ButtonVM>,
+    action: @escaping () -> Void = {}
+  ) {
+    self._model = model
+    self.action = action
     self.isPressed = false
   }
 
+  public init(
+    model: ButtonVM,
+    action: @escaping () -> Void = {}
+  ) {
+    self.init(.constant(model), action: action)
+  }
+
   public var body: some View {
-    Button(action: {
-      print("123")
-    }, label: {
-      Text(self.model.title)
-        .padding(.horizontal, self.model.preferredSize.horizontalPadding)
-        .foregroundStyle(SwiftUI.Color(self.model.foregroundColor))
-        .gesture(DragGesture(minimumDistance: 0.0)
-          .onChanged { _ in self.isPressed = true }
-          .onEnded { _ in self.isPressed = false })
-        .onTapGesture {
-          print("1234")
-        }
-    })
-    .frame(height: self.model.preferredSize.height)
-    .background(SwiftUI.Color(self.model.backgroundColor))
-    .clipShape(
-      RoundedRectangle(cornerRadius: self.model.cornerRadius.value(for: 100))
-    )
-    .scaleEffect(self.isPressed ? 0.98 : 1, anchor: .center)
-//    .animation(.linear(duration: 0.1), value: self.isPressed)
-//    .buttonStyle(ScaleButtonStyle(model: self.model))
-//    .frame(height: self.model.preferredSize.height)
-//    .background(SwiftUI.Color(self.model.color.main.uiColor))
-//    .foregroundStyle(SwiftUI.Color(self.model.color.contrast.uiColor))
-//    .clipShape(
-//      RoundedRectangle(cornerRadius: self.model.cornerRadius.value(for: 100))
-////        .on
-////        .scal
-//    )
-  }
-}
-
-struct ScaleButtonStyle: SwiftUI.ButtonStyle {
-  @State var model: ButtonVM
-
-  func makeBody(configuration: Configuration) -> some View {
-    configuration.label
-//      .padding(.all)
-      .frame(height: self.model.preferredSize.height)
-      .padding(.horizontal)
-      .foregroundStyle(SwiftUI.Color(self.model.color.contrast.uiColor))
-      .background(SwiftUI.Color(self.model.color.main.uiColor))
-      .clipShape(
-        RoundedRectangle(cornerRadius: self.model.cornerRadius.value(for: 100))
+    Text(self.model.title)
+      .lineLimit(1)
+      .padding(.leading, self.model.leadingPadding)
+      .padding(.trailing, self.model.trailingPadding)
+      .padding(.top, self.model.topPadding)
+      .padding(.bottom, self.model.bottomPadding)
+      .frame(
+        maxWidth: self.model.width,
+        maxHeight: self.model.height
       )
-      .scaleEffect(configuration.isPressed ? 0.98 : 1)
-      .animation(.linear)
+      .foregroundStyle(SwiftUI.Color(self.model.foregroundColor))
+      .background(
+        GeometryReader { proxy in
+          SwiftUI.Color(self.model.backgroundColor)
+            .preference(key: ViewFrameKey.self, value: proxy.frame(in: .local))
+        }
+      )
+      .onPreferenceChange(ViewFrameKey.self) { value in
+        self.viewFrame = value
+      }
+      .gesture(DragGesture(minimumDistance: 0.0)
+        .onChanged { _ in
+          self.isPressed = true
+        }
+        .onEnded { value in
+          defer { self.isPressed = false }
 
+          if self.viewFrame.contains(value.location) {
+            self.action()
+          }
+        }
+      )
+      .disabled(!self.model.isEnabled)
+      .clipShape(
+        RoundedRectangle(
+          cornerRadius: self.model.cornerRadius.value(
+            for: self.model.height ?? .infinity
+          )
+        )
+      )
+      .overlay {
+        RoundedRectangle(
+          cornerRadius: self.model.cornerRadius.value(
+            for: self.model.height ?? .infinity
+          )
+        )
+        .stroke(
+          SwiftUI.Color(self.model.borderColor),
+          lineWidth: self.model.borderWidth
+        )
+      }
+      .scaleEffect(self.isPressed ? 0.98 : 1, anchor: .center)
   }
 }
 
-// struct SUButton: UIViewRepresentable {
-//  func makeUIView(context: Context) -> UKButton {
-////    return UKButton(frame: .zero)
-//    let button = UKButton()
-//    button.model = .init(
-//      animationScale: .large,
-//      color: .primary,
-//      cornerRadius: .large,
-//      font: .boldSystemFont(ofSize: 16),
-//      title: "Tap me"
-//    )
-//    return button
-//  }
-//
-//  func updateUIView(_ uiView: UKButton, context: Context) {
-//
-//  }
-// }
+// MARK: - Helpers
+
+private struct ViewFrameKey: PreferenceKey {
+  static var defaultValue: CGRect = .zero
+
+  static func reduce(value: inout CGRect, nextValue: () -> CGRect) {
+    value = nextValue()
+  }
+}
