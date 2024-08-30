@@ -1,22 +1,14 @@
 import UIKit
 
-public struct ButtonVM {
+public struct ButtonVM: ComponentVM {
   public var title: String = ""
   public var animationScale: AnimationScale = .medium
   public var color: ComponentColor = .primary
   public var cornerRadius: ComponentRadius = .medium
-  public var font: UIFont?
+  public var font: UIFont? = nil
   public var isEnabled: Bool = true
   public var size: ButtonSize = .medium
   public var style: ButtonStyle = .filled
-
-  public init(_ transform: (_ model: inout Self) -> Void) {
-    var defaultValue = Self()
-    transform(&defaultValue)
-    self = defaultValue
-  }
-
-  public init() {}
 }
 
 // MARK: Shared Helpers
