@@ -148,6 +148,7 @@ open class UKButton: UIView, ConfigurableComponent {
       self.titleLabelConstraints.updateInsets(self.model.insets)
     }
     if self.model.shouldUpdateSize(oldModel) {
+      self.invalidateIntrinsicContentSize()
       self.setNeedsLayout()
     }
   }
