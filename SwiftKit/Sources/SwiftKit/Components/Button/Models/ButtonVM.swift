@@ -5,10 +5,12 @@ public struct ButtonVM: ComponentVM {
   public var animationScale: AnimationScale = .medium
   public var color: ComponentColor = .primary
   public var cornerRadius: ComponentRadius = .medium
-  public var font: UIFont? = nil
+  public var font: UIFont?
   public var isEnabled: Bool = true
   public var size: ButtonSize = .medium
   public var style: ButtonStyle = .filled
+
+  public init() {}
 }
 
 // MARK: Shared Helpers

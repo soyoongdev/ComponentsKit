@@ -5,5 +5,5 @@ protocol ConfigurableComponent {
 
   var model: Model { get set }
 
-  func update(_ oldModel: Model?)
+  func update(_ oldModel: Model)
 }

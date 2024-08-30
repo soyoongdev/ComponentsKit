@@ -1,4 +1,4 @@
-protocol ComponentVM {
+public protocol ComponentVM {
   init()
   init(_ transform: (_ model: inout Self) -> Void)
   func updating(_ transform: (_ model: inout Self) -> Void) -> Self
@@ -6,17 +6,17 @@ protocol ComponentVM {
 }
 
 extension ComponentVM {
-  init(_ transform: (_ model: inout Self) -> Void) {
+  public init(_ transform: (_ model: inout Self) -> Void) {
     var defaultValue = Self()
     transform(&defaultValue)
     self = defaultValue
   }
-  func updating(_ transform: (_ model: inout Self) -> Void) -> Self {
+  public func updating(_ transform: (_ model: inout Self) -> Void) -> Self {
     var copy = self
     transform(&copy)
     return copy
   }
-  mutating func update(_ transform: (_ model: inout Self) -> Void) {
+  public mutating func update(_ transform: (_ model: inout Self) -> Void) {
     self = self.updating(transform)
   }
 }

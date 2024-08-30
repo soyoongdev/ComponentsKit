@@ -1,9 +1,9 @@
 import UIKit
 
-public struct Color {
+public struct Color: Equatable {
   // MARK: ColorRepresentable
 
-  public enum ColorRepresentable {
+  public enum ColorRepresentable: Equatable {
     case rgba(r: CGFloat, g: CGFloat, b: CGFloat, a: CGFloat)
     case hex(String)
     case uiColor(UIColor)

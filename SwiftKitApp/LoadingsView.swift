@@ -3,18 +3,17 @@ import SwiftUI
 import UIKit
 
 private class Container: UIView {
-  let loading: UKLoading = {
-    let loading = UKLoading()
-    loading.color = .danger
-    loading.size = .medium
-    loading.startAnimation()
-    return loading
-  }()
-  lazy var button: UKButton = {
-    let button = UKButton()
-    button.model.title = "Toggle animation"
-    return button
-  }()
+  let loading = UKLoading(
+    model: LoadingVM {
+      $0.color = .danger
+      $0.size = .medium
+    }
+  )
+  let button = UKButton(
+    model: ButtonVM {
+      $0.title = "Toggle animation"
+    }
+  )
 
   override init(frame: CGRect) {
     super.init(frame: frame)
@@ -34,10 +33,8 @@ private class Container: UIView {
 
     self.button.action = { [weak self] in
       guard let self else { return }
-      if self.loading.isAnimating {
-        self.loading.stopAnimation()
-      } else {
-        self.loading.startAnimation()
+      self.loading.model.update {
+        $0.isAnimating.toggle()
       }
     }
 

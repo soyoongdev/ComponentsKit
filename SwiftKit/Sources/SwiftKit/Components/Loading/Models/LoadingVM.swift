@@ -1,0 +1,52 @@
+import Foundation
+
+public struct LoadingVM: ComponentVM, Equatable {
+  public var color: ComponentColor = .primary
+  public var isAnimating: Bool = true
+  public var lineWidth: CGFloat?
+  public var size: LoadingSize = .medium
+  public var style: LoadingStyle = .spinner
+
+  public init() {}
+}
+
+// MARK: Shared Helpers
+
+extension LoadingVM {
+  var loadingLineWidth: CGFloat {
+    return self.lineWidth ?? max(self.preferredSize.width / 8, 2)
+  }
+  var preferredSize: CGSize {
+    switch self.style {
+    case .spinner:
+      switch self.size {
+      case .small:
+        return .init(width: 24, height: 24)
+      case .medium:
+        return .init(width: 36, height: 36)
+      case .large:
+        return .init(width: 48, height: 48)
+      case .custom(let size):
+        let minSide = min(size.height, size.width)
+        return .init(width: minSide, height: minSide)
+      }
+    }
+  }
+}
+
+// MARK: UIKit Helpers
+
+extension LoadingVM {
+  func shouldStartAnimating(_ oldModel: Self) -> Bool {
+    return self.isAnimating && !oldModel.isAnimating
+  }
+  func shouldStopAnimating(_ oldModel: Self) -> Bool {
+    return !self.isAnimating && oldModel.isAnimating
+  }
+  func shouldUpdateShapePath(_ oldModel: Self) -> Bool {
+    return self.size != oldModel.size || self.lineWidth != oldModel.lineWidth
+  }
+  func shouldUpdateSize(_ oldModel: Self) -> Bool {
+    return self.size != oldModel.size
+  }
+}

@@ -1,39 +1,18 @@
 import UIKit
 
-open class UKLoading: UIView {
+open class UKLoading: UIView, ConfigurableComponent {
   // MARK: Properties
 
-  /// A Boolean value that controls whether the activity indicator is hidden when the animation is stopped.
-  ///
-  /// If the value of this property is true (the default), the receiver sets its `isHidden` property (UIView) to true when 
-  /// receiver is not animating. If the hidesWhenStopped property is false, the receiver is not hidden when animation stops.
-  /// You stop an animating progress indicator with the stopAnimating() method.
-  public var hidesWhenStopped: Bool = false {
+  public var model: LoadingVM {
     didSet {
-      if !self.isAnimating {
-        self.isHidden = self.hidesWhenStopped
-      }
+      self.update(oldValue)
     }
   }
 
-  /// A Boolean value indicating whether the activity indicator is currently running its animation.
-  public private(set) var isAnimating: Bool = false
+  // MARK: UIView Properties
 
-  public var style: LoadingStyle = .spinner
-  public var color: ComponentColor = .primary {
-    didSet {
-      self.shapeLayer.strokeColor = self.color.main.uiColor.cgColor
-    }
-  }
-  public var size: LoadingSize = .medium {
-    didSet {
-      self.updateLineWidth()
-    }
-  }
-  public var lineWidth: CGFloat? {
-    didSet {
-      self.updateLineWidth()
-    }
+  open override var intrinsicContentSize: CGSize {
+    return self.sizeThatFits(UIView.layoutFittingExpandedSize)
   }
 
   // MARK: Layers
@@ -42,14 +21,12 @@ open class UKLoading: UIView {
 
   // MARK: Initializers
 
-  public override init(frame: CGRect) {
-    super.init(frame: frame)
-
-    if frame.size != .zero {
-      self.size = .custom(frame.size)
-    }
+  public init(model: LoadingVM = .init()) {
+    self.model = model
+    super.init(frame: .zero)
 
     self.setup()
+    self.update(self.model)
   }
 
   public required init?(coder: NSCoder) {
@@ -69,7 +46,6 @@ open class UKLoading: UIView {
     self.layer.addSublayer(self.shapeLayer)
 
     self.addSpinnerAnimation()
-    self.pauseAnimation()
 
     NotificationCenter.default.addObserver(
       self,
@@ -83,10 +59,16 @@ open class UKLoading: UIView {
       name: UIApplication.didBecomeActiveNotification,
       object: nil
     )
+
+    if #available(iOS 17.0, *) {
+      self.registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (view: Self, _: UITraitCollection) in
+        view.handleTraitChanges()
+      }
+    }
   }
 
   private func setupLayer() {
-    self.shapeLayer.strokeColor = self.color.main.uiColor.cgColor
+    self.shapeLayer.strokeColor = self.model.color.main.uiColor.cgColor
     self.shapeLayer.fillColor = UIColor.clear.cgColor
     self.shapeLayer.lineWidth = 6.0
     self.shapeLayer.lineCap = .round
@@ -94,7 +76,7 @@ open class UKLoading: UIView {
   }
 
   @objc func handleAppWillMoveToBackground() {
-    if self.isAnimating {
+    if self.model.isAnimating {
       self.pauseAnimation()
     }
   }
@@ -102,43 +84,38 @@ open class UKLoading: UIView {
     self.addSpinnerAnimation()
     self.resumeAnimation()
 
-    if !self.isAnimating {
+    if !self.model.isAnimating {
       self.pauseAnimation()
     }
   }
 
   // MARK: Update
 
-  private func updateLineWidth() {
-    self.shapeLayer.lineWidth = self.lineWidth ?? self.size.lineWidth
-  }
+  public func update(_ oldModel: LoadingVM) {
+    self.shapeLayer.lineWidth = self.model.loadingLineWidth
+    self.shapeLayer.strokeColor = self.model.color.main.uiColor.cgColor
 
-  // MARK: UIView methods
-
-  open override func sizeThatFits(_: CGSize) -> CGSize {
-    return self.size.cgSize
-  }
-
-  // MARK: Loading methods
-
-  public func startAnimation() {
-    guard !self.isAnimating else { return }
-
-    if self.hidesWhenStopped {
-      self.isHidden = false
+    if self.model.shouldStartAnimating(oldModel) {
+      self.resumeAnimation()
+    } else if self.model.shouldStopAnimating(oldModel) {
+      self.pauseAnimation()
     }
-
-    self.resumeAnimation()
-    self.isAnimating = true
+    if self.model.shouldUpdateSize(oldModel) {
+      self.invalidateIntrinsicContentSize()
+      self.setNeedsLayout()
+    }
   }
 
-  public func stopAnimation() {
-    if self.hidesWhenStopped {
-      self.isHidden = true
-    }
-
-    self.pauseAnimation()
-    self.isAnimating = false
+  private func updateShapePath() {
+    let radius = self.model.preferredSize.height / 2 - self.shapeLayer.lineWidth / 2
+    let center = CGPoint(x: self.bounds.midX, y: self.bounds.midY)
+    self.shapeLayer.path = UIBezierPath(
+      arcCenter: center,
+      radius: radius,
+      startAngle: 0,
+      endAngle: 2 * .pi,
+      clockwise: true
+    ).cgPath
   }
 
   // MARK: Layout
@@ -148,10 +125,24 @@ open class UKLoading: UIView {
 
     // Adjust the layer's frame to fit within the view's bounds
     self.shapeLayer.frame = self.bounds
+    self.updateShapePath()
+  }
 
-    let radius = self.size.cgSize.height / 2 - self.shapeLayer.lineWidth / 2
-    let center = CGPoint(x: self.bounds.midX, y: self.bounds.midY)
-    self.shapeLayer.path = UIBezierPath(arcCenter: center, radius: radius, startAngle: 0, endAngle: 2 * .pi, clockwise: true).cgPath
+  // MARK: UIView methods
+
+  open override func sizeThatFits(_ size: CGSize) -> CGSize {
+    let preferredSize = self.model.preferredSize
+    return .init(
+      width: min(preferredSize.width, size.width),
+      height: min(preferredSize.height, size.height)
+    )
+  }
+
+  open override func traitCollectionDidChange(
+    _ previousTraitCollection: UITraitCollection?
+  ) {
+    super.traitCollectionDidChange(previousTraitCollection)
+    self.handleTraitChanges()
   }
 
   // MARK: Helpers
@@ -201,5 +192,9 @@ open class UKLoading: UIView {
     strokeStartAnimation.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
     strokeStartAnimation.repeatCount = .infinity
     self.shapeLayer.add(strokeStartAnimation, forKey: "strokeStartAnimation")
+  }
+
+  private func handleTraitChanges() {
+    self.update(self.model)
   }
 }

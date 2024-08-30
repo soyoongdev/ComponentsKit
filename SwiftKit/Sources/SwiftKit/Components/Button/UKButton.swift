@@ -47,14 +47,67 @@ open class UKButton: UIView, ConfigurableComponent {
     self.setup()
     self.style()
     self.layout()
-    self.update(nil)
+    self.update(model)
   }
 
   public required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
 
-  // MARK: Lifecycle
+  // MARK: Setup
+
+  func setup() {
+    self.addSubview(self.titleLabel)
+  }
+
+  // MARK: Style
+
+  func style() {
+    Self.Style.titleLabel(self.titleLabel)
+  }
+
+  // MARK: Layout
+
+  func layout() {
+    self.titleLabelConstraints = self.titleLabel.pinToEdges(.all, insets: self.model.insets)
+    self.titleLabel.centerVertically()
+    self.titleLabel.centerHorizontally()
+
+    self.titleLabelConstraints.leading?.priority = .defaultHigh
+    self.titleLabelConstraints.top?.priority = .defaultHigh
+    self.titleLabelConstraints.trailing?.priority = .defaultHigh
+    self.titleLabelConstraints.bottom?.priority = .defaultHigh
+  }
+
+  open override func layoutSubviews() {
+    super.layoutSubviews()
+
+    self.layer.cornerRadius = self.model.cornerRadius.value(for: self.bounds.height)
+  }
+
+  // MARK: Update
+
+  public func update(_ oldModel: ButtonVM) {
+    self.layer.cornerRadius = self.model.cornerRadius.value(for: self.bounds.height)
+
+    self.titleLabel.text = self.model.title
+    self.titleLabel.font = self.model.font
+
+    self.layer.borderWidth = self.model.borderWidth
+    self.layer.borderColor = self.model.borderColor.cgColor
+    self.backgroundColor = self.model.backgroundColor
+    self.titleLabel.textColor = self.model.foregroundColor
+
+    if self.model.shouldUpdateInsets(oldModel) {
+      self.titleLabelConstraints.updateInsets(self.model.insets)
+    }
+    if self.model.shouldUpdateSize(oldModel) {
+      self.invalidateIntrinsicContentSize()
+      self.setNeedsLayout()
+    }
+  }
+
+  // MARK: UIView methods
 
   open override func sizeThatFits(_ size: CGSize) -> CGSize {
     let contentSize = self.titleLabel.sizeThatFits(size)
@@ -98,59 +151,6 @@ open class UKButton: UIView, ConfigurableComponent {
     self.isHighlighted = false
   }
 
-  // MARK: Setup
-
-  func setup() {
-    self.addSubview(self.titleLabel)
-  }
-
-  // MARK: Style
-
-  func style() {
-    Self.Style.titleLabel(self.titleLabel)
-  }
-
-  // MARK: Layout
-
-  func layout() {
-    self.titleLabelConstraints = self.titleLabel.pinToEdges(.all, insets: self.model.insets)
-    self.titleLabel.centerVertically()
-    self.titleLabel.centerHorizontally()
-
-    self.titleLabelConstraints.leading?.priority = .defaultHigh
-    self.titleLabelConstraints.top?.priority = .defaultHigh
-    self.titleLabelConstraints.trailing?.priority = .defaultHigh
-    self.titleLabelConstraints.bottom?.priority = .defaultHigh
-  }
-
-  open override func layoutSubviews() {
-    super.layoutSubviews()
-
-    self.layer.cornerRadius = self.model.cornerRadius.value(for: self.bounds.height)
-  }
-
-  // MARK: Update
-
-  public func update(_ oldModel: ButtonVM?) {
-    self.layer.cornerRadius = self.model.cornerRadius.value(for: self.bounds.height)
-
-    self.titleLabel.text = self.model.title
-    self.titleLabel.font = self.model.font
-
-    self.layer.borderWidth = self.model.borderWidth
-    self.layer.borderColor = self.model.borderColor.cgColor
-    self.backgroundColor = self.model.backgroundColor
-    self.titleLabel.textColor = self.model.foregroundColor
-
-    if self.model.shouldUpdateInsets(oldModel) {
-      self.titleLabelConstraints.updateInsets(self.model.insets)
-    }
-    if self.model.shouldUpdateSize(oldModel) {
-      self.invalidateIntrinsicContentSize()
-      self.setNeedsLayout()
-    }
-  }
-
   // MARK: Helpers
 
   @objc open func handleTraitChanges() {
@@ -167,34 +167,3 @@ extension UKButton {
     }
   }
 }
-
-  // MARK: - Events handling
-
-// extension UKButton {
-//  public func on(_ event: UIControl.Event, _ action: @escaping () -> Void) {
-//    switch event {
-//    case .touchUpInside:
-//      self.addTarget(self, action: #selector(self.handleTouchUpInsideEvent), for: .touchUpInside)
-//
-//    case .touchUpOutside:
-//      self.addTarget(self, action: #selector(self.handleTouchUpOutsideEvent), for: .touchUpOutside)
-//
-//    default:
-//      assertionFailure("Attempting to register not supported event.")
-//    }
-//
-//    self.actions[event] = action
-//  }
-//
-//  @objc private func handleTouchUpInsideEvent() {
-//    self.actions[.touchUpInside]?()
-//  }
-//
-//  @objc private func handleTouchUpOutsideEvent() {
-//    self.actions[.touchUpOutside]?()
-//  }
-// }
-//
-// MARK: - UIControl.Event + Hashable
-//
-// extension UIControl.Event: Hashable {}
