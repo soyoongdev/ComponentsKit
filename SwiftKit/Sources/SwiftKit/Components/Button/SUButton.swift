@@ -4,25 +4,18 @@ import SwiftUI
 import UIKit
 
 public struct SUButton: View {
-  @Binding private var model: ButtonVM
-  @State private var viewFrame: CGRect = .zero
-  @State private var isPressed: Bool
+  private var model: ButtonVM
   private var action: () -> Void
 
-  public init(
-    _ model: Binding<ButtonVM>,
-    action: @escaping () -> Void = {}
-  ) {
-    self._model = model
-    self.action = action
-    self.isPressed = false
-  }
+  @State private var viewFrame: CGRect = .zero
+  @State private var isPressed: Bool = false
 
   public init(
     model: ButtonVM,
     action: @escaping () -> Void = {}
   ) {
-    self.init(.constant(model), action: action)
+    self.model = model
+    self.action = action
   }
 
   public var body: some View {
