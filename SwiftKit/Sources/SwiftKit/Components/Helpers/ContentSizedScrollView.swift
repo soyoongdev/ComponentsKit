@@ -1,5 +1,3 @@
-// Copyright © SwiftKit. All rights reserved.
-
 import UIKit
 
 public final class ContentSizedScrollView: UIScrollView {

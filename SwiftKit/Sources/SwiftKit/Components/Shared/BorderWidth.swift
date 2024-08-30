@@ -1,5 +1,3 @@
-// Copyright © SwiftKit. All rights reserved.
-
 import Foundation
 
 public struct BorderWidth {

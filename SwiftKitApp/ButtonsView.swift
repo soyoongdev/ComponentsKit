@@ -1,5 +1,3 @@
-// Copyright © SwiftKit. All rights reserved.
-
 import SwiftKit
 import SwiftUI
 import UIKit
@@ -22,6 +20,11 @@ private class Container: UIView {
     self.button.centerHorizontally()
 
     self.button.action = { [weak self] in
+      self?.button.model.size = [
+        ButtonSize.small,
+        ButtonSize.medium,
+        ButtonSize.large
+      ].randomElement()!
       self?.button.model.title = [
         "hello",
         "hello world",
@@ -36,6 +39,7 @@ private class Container: UIView {
 
   override func layoutSubviews() {
     super.layoutSubviews()
+    self.backgroundColor = .red
     self.button.center = self.center
   }
 }
@@ -59,6 +63,8 @@ struct ButtonsView: View {
 
   var body: some View {
     ContainerWrapper()
+      .frame(width: .infinity, height: 100)
+    Spacer()
   }
 
 //  var body: some View {
@@ -75,8 +81,7 @@ struct ButtonsView: View {
 //    }
 //    .padding()
 //    SUButton(
-//      self.$model,
-////      model: model,
+//      model: model,
 ////      model: .init(
 ////        title: "Tap me please",
 ////        animationScale: .large,
@@ -90,7 +95,6 @@ struct ButtonsView: View {
 ////        }
 ////      },
 //      action: {
-//          print(132)
 //          self.model.title = [
 //            "title 1",
 //            "title 2",

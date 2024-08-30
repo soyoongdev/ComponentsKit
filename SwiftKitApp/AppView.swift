@@ -1,5 +1,3 @@
-// Copyright © SwiftKit. All rights reserved.
-
 import SwiftUI
 
 struct AppView: View {

@@ -1,5 +1,3 @@
-// Copyright © SwiftKit. All rights reserved.
-
 import SwiftKit
 import SwiftUI
 import UIKit
