@@ -35,6 +35,7 @@ private class Container: UIView {
       guard let self else { return }
       self.loading.model.update {
         $0.isAnimating.toggle()
+//        $0.speed -= 0.2
       }
     }
 
@@ -58,9 +59,39 @@ private struct ContainerWrapper: UIViewRepresentable {
 }
 
 struct LoadingsView: View {
+  @State var model = LoadingVM {
+    $0.isAnimating = true
+  }
+
   var body: some View {
 //    ContainerWrapper()
-    SULoading()
+    VStack {
+      SULoading(model: model)
+      SUButton(
+        model: ButtonVM {
+          $0.title = "Toggle animation"
+        }
+      ) {
+        self.model.isAnimating.toggle()
+      }
+      .padding(.top, 20)
+      HStack {
+        SUButton(
+          model: ButtonVM {
+            $0.title = "Slow down"
+          }
+        ) {
+          self.model.speed -= 0.2
+        }
+        SUButton(
+          model: ButtonVM {
+            $0.title = "Speed Up"
+          }
+        ) {
+          self.model.speed += 0.2
+        }
+      }
+    }
   }
 }
 

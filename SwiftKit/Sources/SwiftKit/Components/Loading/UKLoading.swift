@@ -72,7 +72,7 @@ open class UKLoading: UIView, ConfigurableComponent {
     self.shapeLayer.fillColor = UIColor.clear.cgColor
     self.shapeLayer.lineWidth = 6.0
     self.shapeLayer.lineCap = .round
-    self.shapeLayer.strokeEnd = 0.0
+    self.shapeLayer.strokeEnd = 0.75
   }
 
   @objc func handleAppWillMoveToBackground() {
@@ -103,6 +103,10 @@ open class UKLoading: UIView, ConfigurableComponent {
     if self.model.shouldUpdateSize(oldModel) {
       self.invalidateIntrinsicContentSize()
       self.setNeedsLayout()
+    }
+    if self.model.shouldUpdateAnimation(oldModel) {
+      self.shapeLayer.removeAllAnimations()
+      self.addSpinnerAnimation()
     }
   }
 
@@ -170,28 +174,10 @@ open class UKLoading: UIView, ConfigurableComponent {
     let rotationAnimation = CABasicAnimation(keyPath: "transform.rotation.z")
     rotationAnimation.fromValue = 0
     rotationAnimation.toValue = CGFloat.pi * 2
-    rotationAnimation.duration = 2.0
+    rotationAnimation.duration = 0.8 * self.model.speed
     rotationAnimation.repeatCount = .infinity
     rotationAnimation.timingFunction = CAMediaTimingFunction(name: .linear)
     self.shapeLayer.add(rotationAnimation, forKey: "rotationAnimation")
-
-    // Stroke end animation
-    let strokeEndAnimation = CAKeyframeAnimation(keyPath: "strokeEnd")
-    strokeEndAnimation.keyTimes = [0.0, 0.475, 0.95, 1.0]
-    strokeEndAnimation.values = [0, 0.8, 0.95, 1.0]
-    strokeEndAnimation.duration = 1.5
-    strokeEndAnimation.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
-    strokeEndAnimation.repeatCount = .infinity
-    self.shapeLayer.add(strokeEndAnimation, forKey: "strokeEndAnimation")
-
-    // Stroke start animation
-    let strokeStartAnimation = CAKeyframeAnimation(keyPath: "strokeStart")
-    strokeStartAnimation.keyTimes = [0.0, 0.475, 0.95, 1.0]
-    strokeStartAnimation.values = [0.0, 0.1, 0.8, 1.0]
-    strokeStartAnimation.duration = 1.5
-    strokeStartAnimation.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
-    strokeStartAnimation.repeatCount = .infinity
-    self.shapeLayer.add(strokeStartAnimation, forKey: "strokeStartAnimation")
   }
 
   private func handleTraitChanges() {

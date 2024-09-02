@@ -1,23 +1,27 @@
 import SwiftUI
+import Combine
 
 public struct SULoading: View {
-  private let model: LoadingVM
-  private let strokeAnimationDuration = 1.5
+  private var model: LoadingVM
 
-  @State private var rotation: CGFloat = 0.0
-  @State private var trimEnd: CGFloat = 0.0
-  @State private var trimStart: CGFloat = 0.0
+  @State private var rotationAnimationTimer: AnyCancellable?
+  @State private var rotationAngle: CGFloat = 0.0
 
   public init(model: LoadingVM = .init()) {
     self.model = model
   }
 
   public var body: some View {
-    Circle()
-      .trim(
-        from: self.trimStart,
-        to: self.trimEnd
+    Path { path in
+      path.addArc(
+        center: self.model.center,
+        radius: self.model.radius,
+        startAngle: .degrees(0),
+        endAngle: .degrees(360),
+        clockwise: true
       )
+    }
+      .trim(from: 0, to: 0.75)
       .stroke(
         SwiftUI.Color(self.model.color.main.uiColor),
         style: StrokeStyle(
@@ -27,74 +31,43 @@ public struct SULoading: View {
           miterLimit: 0
         )
       )
+      .rotationEffect(.degrees(self.rotationAngle))
       .frame(
         width: self.model.preferredSize.width,
-        height: self.model.preferredSize.height
+        height: self.model.preferredSize.height,
+        alignment: .center
       )
-      .rotationEffect(.radians(self.rotation))
-      .animation(
-        .linear(duration: 2.0)
-        .repeatForever(autoreverses: false),
-        value: self.rotation
-      )
+      .rotationEffect(.radians(2 * .pi * 0.15))
       .onAppear {
-        self.rotation = 2 * .pi
-        self.animateTrimEnd()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
-          self.animateTrimStart()
+        self.startRotationAnimation()
+      }
+      .onChange(of: self.model.isAnimating) { isAnimating in
+        if isAnimating {
+          self.startRotationAnimation()
+        } else {
+          self.removeRotationAnimation()
+        }
+      }
+      .onChange(of: self.model.speed) { _ in
+        self.removeRotationAnimation()
+        self.startRotationAnimation()
+      }
+  }
+
+  private func startRotationAnimation() {
+    self.rotationAnimationTimer = Timer
+      .publish(every: 0.1, on: .main, in: .common)
+      .autoconnect()
+      .receive(on: DispatchQueue.main)
+      .sink { _ in
+        withAnimation {
+          self.rotationAngle += 40 * max(0, self.model.speed)
         }
       }
   }
 
-  private func animateTrimStart() {
-    self.trimStart = 0.0
-
-    withAnimation(
-      .easeInOut(duration: strokeAnimationDuration * 0.475)
-    ) {
-      self.trimStart = 0.1
-    }
-    withAnimation(
-      .easeInOut(duration: strokeAnimationDuration * 0.475)
-      .delay(strokeAnimationDuration * 0.475)
-    ) {
-      self.trimStart = 0.8
-    }
-    withAnimation(
-      .easeInOut(duration: strokeAnimationDuration * 0.1)
-      .delay(strokeAnimationDuration * 0.95)
-    ) {
-      self.trimStart = 1.0
-    }
-
-    DispatchQueue.main.asyncAfter(deadline: .now() + strokeAnimationDuration) {
-      self.animateTrimStart()
-    }
-  }
-
-  private func animateTrimEnd() {
-    self.trimEnd = 0.0
-
-    withAnimation(
-      .easeInOut(duration: strokeAnimationDuration * 0.475)
-    ) {
-      self.trimEnd = 0.8
-    }
-    withAnimation(
-      .easeInOut(duration: strokeAnimationDuration * 0.475)
-      .delay(strokeAnimationDuration * 0.475)
-    ) {
-      self.trimEnd = 0.95
-    }
-    withAnimation(
-      .easeInOut(duration: strokeAnimationDuration * 0.1)
-      .delay(strokeAnimationDuration * 0.95)
-    ) {
-      self.trimEnd = 1.0
-    }
-
-    DispatchQueue.main.asyncAfter(deadline: .now() + strokeAnimationDuration) {
-      self.animateTrimEnd()
-    }
+  private func removeRotationAnimation() {
+    self.rotationAnimationTimer?.cancel()
+    self.rotationAnimationTimer = nil
   }
 }
