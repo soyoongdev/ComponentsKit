@@ -59,9 +59,8 @@ private struct ContainerWrapper: UIViewRepresentable {
 
 struct LoadingsView: View {
   var body: some View {
-    ContainerWrapper()
-//    SUButton()
-//      .frame(width: 200, height: 50)
+//    ContainerWrapper()
+    SULoading()
   }
 }
 
