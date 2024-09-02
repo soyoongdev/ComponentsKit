@@ -65,7 +65,7 @@ extension ButtonVM {
     switch self.style {
     case .filled, .plain:
       return .clear
-    case .bordered(let borderWidth):
+    case .bordered:
       return self.mainColor
     }
   }
