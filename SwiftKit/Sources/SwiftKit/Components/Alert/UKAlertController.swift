@@ -49,7 +49,10 @@ open class UKAlertController: UIViewController {
   // MARK: Add actions
 
   open func addAction(_ action: UKAlertAction) {
-    let button = UKButton(model: action.model, action: action.action)
+    let button = UKButton(model: action.model, action: { [weak self] in
+      action.action()
+      self?.dismiss(animated: true)
+    })
     self.buttonsStackView.addArrangedSubview(button)
   }
 
