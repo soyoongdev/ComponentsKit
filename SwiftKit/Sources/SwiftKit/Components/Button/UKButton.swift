@@ -1,6 +1,6 @@
 import UIKit
 
-open class UKButton: UIView, ConfigurableComponent {
+open class UKButton: UIView, UKComponent {
   // MARK: Properties
 
   public var action: () -> Void

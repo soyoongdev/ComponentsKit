@@ -1,6 +1,6 @@
 import UIKit
 
-open class UKLoading: UIView, ConfigurableComponent {
+open class UKLoading: UIView, UKComponent {
   // MARK: Properties
 
   public var model: LoadingVM {

@@ -1,6 +1,6 @@
 import UIKit
 
-public struct Color: Equatable {
+public struct ThemeColor: Equatable {
   // MARK: ColorRepresentable
 
   public enum ColorRepresentable: Equatable {

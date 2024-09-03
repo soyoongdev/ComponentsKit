@@ -1,6 +1,6 @@
 import Foundation
 
-protocol ConfigurableComponent {
+public protocol UKComponent {
   associatedtype Model
 
   var model: Model { get set }

@@ -26,7 +26,7 @@ private class Container: UIView {
   }
 
   private func setup() {
-    self.backgroundColor = AppColors.Base.background.uiColor
+    self.backgroundColor = Palette.Base.background.uiColor
 
     self.addSubview(self.loading)
     self.addSubview(self.button)
