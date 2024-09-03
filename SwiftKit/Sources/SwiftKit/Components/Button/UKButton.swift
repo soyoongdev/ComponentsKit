@@ -91,7 +91,7 @@ open class UKButton: UIView, UKComponent {
     self.layer.cornerRadius = self.model.cornerRadius.value(for: self.bounds.height)
 
     self.titleLabel.text = self.model.title
-    self.titleLabel.font = self.model.font
+    self.titleLabel.font = self.model.preferredFont.uiFont
 
     self.layer.borderWidth = self.model.borderWidth
     self.layer.borderColor = self.model.borderColor?.uiColor.cgColor

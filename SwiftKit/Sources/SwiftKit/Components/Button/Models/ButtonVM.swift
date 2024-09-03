@@ -5,7 +5,7 @@ public struct ButtonVM: ComponentVM {
   public var animationScale: AnimationScale = .medium
   public var color: ComponentColor = .primary
   public var cornerRadius: ComponentRadius = .medium
-  public var font: UIFont?
+  public var font: Typography?
   public var isEnabled: Bool = true
   public var size: ButtonSize = .medium
   public var style: ButtonStyle = .filled
@@ -66,6 +66,23 @@ extension ButtonVM {
       return nil
     case .bordered:
       return self.mainColor
+    }
+  }
+
+  var preferredFont: Typography {
+    if let font {
+      return font
+    }
+
+    switch self.size.height {
+    case ButtonSize.small.height:
+      return Typography.Component.small
+    case ButtonSize.medium.height:
+      return Typography.Component.medium
+    case ButtonSize.large.height:
+      return Typography.Component.large
+    default:
+      return Typography.Component.medium
     }
   }
 }

@@ -20,6 +20,7 @@ public struct SUButton: View {
 
   public var body: some View {
     Text(self.model.title)
+      .font(self.model.preferredFont.font)
       .lineLimit(1)
       .padding(.leading, self.model.leadingInset)
       .padding(.trailing, self.model.trailingInset)

@@ -7,7 +7,7 @@ private class Container: UIViewController {
     let button = UKButton()
     button.model = .init {
       $0.title = "Default alert"
-      $0.font = .boldSystemFont(ofSize: 16)
+      $0.font = .system(size: 16, weight: .bold)
     }
     return button
   }()
@@ -16,7 +16,7 @@ private class Container: UIViewController {
     let button = UKButton()
     button.model = .init {
       $0.title = "Custom alert"
-      $0.font = .boldSystemFont(ofSize: 16)
+      $0.font = .system(size: 16, weight: .bold)
     }
     return button
   }()
@@ -85,7 +85,7 @@ Debido a la necesidad de presentar un certificado del registro comercial de EE. 
       model: .init {
         $0.title = "Continue"
         $0.cornerRadius = .large
-        $0.font = .boldSystemFont(ofSize: 16)
+        $0.font = .system(size: 16, weight: .bold)
         $0.size = .medium
         $0.style = .filled
       },
@@ -97,7 +97,7 @@ Debido a la necesidad de presentar un certificado del registro comercial de EE. 
       model: .init {
         $0.title = "No, exit"
         $0.color = .danger
-        $0.font = .boldSystemFont(ofSize: 16)
+        $0.font = .system(size: 16, weight: .bold)
         $0.style = .filled
       }
     )

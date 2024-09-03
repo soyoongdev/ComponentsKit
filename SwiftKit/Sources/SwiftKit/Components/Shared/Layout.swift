@@ -50,6 +50,20 @@ public struct Layout: Updatable {
     }
   }
 
+  // MARK: Font
+
+  public struct ComponentFont {
+    public var small: Typography
+    public var medium: Typography
+    public var large: Typography
+
+    public init(small: Typography, medium: Typography, large: Typography) {
+      self.small = small
+      self.medium = medium
+      self.large = large
+    }
+  }
+
   // MARK: Properties
 
   public var disabledOpacity: CGFloat = 0.5
@@ -72,6 +86,11 @@ public struct Layout: Updatable {
     small: 0.99,
     medium: 0.98,
     large: 0.95
+  )
+  public var componentFont: ComponentFont = .init(
+    small: .system(size: 12, weight: .regular),
+    medium: .system(size: 16, weight: .regular),
+    large: .system(size: 20, weight: .regular)
   )
 
   public init() {}
