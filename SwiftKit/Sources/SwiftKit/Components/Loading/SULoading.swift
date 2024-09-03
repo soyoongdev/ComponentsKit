@@ -7,6 +7,8 @@ public struct SULoading: View {
   @State private var rotationAnimationTimer: AnyCancellable?
   @State private var rotationAngle: CGFloat = 0.0
 
+  @Environment(\.colorScheme) private var colorScheme
+
   public init(model: LoadingVM = .init()) {
     self.model = model
   }
@@ -23,7 +25,7 @@ public struct SULoading: View {
     }
       .trim(from: 0, to: 0.75)
       .stroke(
-        SwiftUI.Color(self.model.color.main.uiColor),
+        self.model.color.main.color(for: self.colorScheme),
         style: StrokeStyle(
           lineWidth: self.model.loadingLineWidth,
           lineCap: .round,

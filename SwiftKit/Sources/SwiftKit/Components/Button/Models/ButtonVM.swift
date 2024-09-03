@@ -16,32 +16,31 @@ public struct ButtonVM: ComponentVM {
 // MARK: Shared Helpers
 
 extension ButtonVM {
-  // TODO: [1] The model should not depend on uikit
-  private var mainColor: UIColor {
+  private var mainColor: ThemeColor {
     return self.isEnabled
-    ? self.color.main.uiColor
-    : self.color.main.uiColor.withAlphaComponent(
+    ? self.color.main
+    : self.color.main.withOpacity(
       SwiftKitConfig.shared.layout.disabledOpacity
     )
   }
-  private var contrastColor: UIColor {
+  private var contrastColor: ThemeColor {
     return self.isEnabled
-    ? self.color.contrast.uiColor
-    : self.color.contrast.uiColor.withAlphaComponent(
+    ? self.color.contrast
+    : self.color.contrast.withOpacity(
       SwiftKitConfig.shared.layout.disabledOpacity
     )
   }
 
-  var backgroundColor: UIColor {
+  var backgroundColor: ThemeColor? {
     switch self.style {
     case .filled:
       return self.mainColor
     case .plain, .bordered:
-      return .clear
+      return nil
     }
   }
 
-  var foregroundColor: UIColor {
+  var foregroundColor: ThemeColor {
     switch self.style {
     case .filled:
       return self.contrastColor
@@ -61,10 +60,10 @@ extension ButtonVM {
     }
   }
 
-  var borderColor: UIColor {
+  var borderColor: ThemeColor? {
     switch self.style {
     case .filled, .plain:
-      return .clear
+      return nil
     case .bordered:
       return self.mainColor
     }

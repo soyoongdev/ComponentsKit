@@ -94,9 +94,9 @@ open class UKButton: UIView, UKComponent {
     self.titleLabel.font = self.model.font
 
     self.layer.borderWidth = self.model.borderWidth
-    self.layer.borderColor = self.model.borderColor.cgColor
-    self.backgroundColor = self.model.backgroundColor
-    self.titleLabel.textColor = self.model.foregroundColor
+    self.layer.borderColor = self.model.borderColor?.uiColor.cgColor
+    self.backgroundColor = self.model.backgroundColor?.uiColor
+    self.titleLabel.textColor = self.model.foregroundColor.uiColor
 
     if self.model.shouldUpdateInsets(oldModel) {
       self.titleLabelConstraints.updateInsets(self.model.insets)

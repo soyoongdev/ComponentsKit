@@ -8,6 +8,8 @@ public struct SUButton: View {
   @State private var viewFrame: CGRect = .zero
   @State private var isPressed: Bool = false
 
+  @Environment(\.colorScheme) private var colorScheme
+
   public init(
     model: ButtonVM,
     action: @escaping () -> Void = {}
@@ -27,10 +29,10 @@ public struct SUButton: View {
         maxWidth: self.model.width,
         maxHeight: self.model.height
       )
-      .foregroundStyle(SwiftUI.Color(self.model.foregroundColor))
+      .foregroundStyle(self.model.foregroundColor.color(for: self.colorScheme))
       .background(
         GeometryReader { proxy in
-          SwiftUI.Color(self.model.backgroundColor)
+          (self.model.backgroundColor?.color(for: self.colorScheme) ?? Color.clear)
             .preference(key: ViewFrameKey.self, value: proxy.frame(in: .local))
         }
       )
@@ -64,7 +66,7 @@ public struct SUButton: View {
           )
         )
         .stroke(
-          SwiftUI.Color(self.model.borderColor),
+          self.model.borderColor?.color(for: self.colorScheme) ?? .clear,
           lineWidth: self.model.borderWidth
         )
       }
