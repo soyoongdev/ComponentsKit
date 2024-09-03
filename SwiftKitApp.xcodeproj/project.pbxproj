@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		741550D72C8744F800126181 /* UIViewRepresenting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 741550D62C8744F800126181 /* UIViewRepresenting.swift */; };
 		7427076D2C78B6F400F8FC67 /* LoadingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7427076C2C78B6F400F8FC67 /* LoadingsView.swift */; };
 		742F918A2C77876D00139197 /* SwiftKit in Frameworks */ = {isa = PBXBuildFile; productRef = 742F91892C77876D00139197 /* SwiftKit */; };
 		7497BE262C7613A700001198 /* AlertsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7497BE252C7613A700001198 /* AlertsView.swift */; };
@@ -18,6 +19,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		741550D62C8744F800126181 /* UIViewRepresenting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewRepresenting.swift; sourceTree = "<group>"; };
 		7427076C2C78B6F400F8FC67 /* LoadingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingsView.swift; sourceTree = "<group>"; };
 		742F91872C77867B00139197 /* SwiftKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = SwiftKit; sourceTree = "<group>"; };
 		7497BE252C7613A700001198 /* AlertsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertsView.swift; sourceTree = "<group>"; };
@@ -41,6 +43,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		741550D52C8744ED00126181 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				741550D62C8744F800126181 /* UIViewRepresenting.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
 		742F91882C77876D00139197 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -69,6 +79,7 @@
 		74DA58762C73867B00EAC80C /* SwiftKitApp */ = {
 			isa = PBXGroup;
 			children = (
+				741550D52C8744ED00126181 /* Helpers */,
 				74DA58772C73867B00EAC80C /* Root.swift */,
 				74DA58792C73867B00EAC80C /* AppView.swift */,
 				74A10BFB2C738E8C00243662 /* ButtonsView.swift */,
@@ -161,6 +172,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				741550D72C8744F800126181 /* UIViewRepresenting.swift in Sources */,
 				7497BE262C7613A700001198 /* AlertsView.swift in Sources */,
 				7427076D2C78B6F400F8FC67 /* LoadingsView.swift in Sources */,
 				74A10BFC2C738E8C00243662 /* ButtonsView.swift in Sources */,

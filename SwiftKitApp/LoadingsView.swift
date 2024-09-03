@@ -48,50 +48,42 @@ private class Container: UIView {
   }
 }
 
-private struct ContainerWrapper: UIViewRepresentable {
-  func makeUIView(context: Context) -> Container {
-    return Container(frame: .zero)
-  }
-
-  func updateUIView(_ uiView: Container, context: Context) {
-
-  }
-}
-
 struct LoadingsView: View {
   @State var model = LoadingVM {
     $0.isAnimating = true
   }
 
   var body: some View {
-//    ContainerWrapper()
-    VStack {
-      SULoading(model: model)
-      SUButton(
-        model: ButtonVM {
-          $0.title = "Toggle animation"
-        }
-      ) {
-        self.model.isAnimating.toggle()
-      }
-      .padding(.top, 20)
-      HStack {
-        SUButton(
-          model: ButtonVM {
-            $0.title = "Slow down"
-          }
-        ) {
-          self.model.speed -= 0.2
-        }
-        SUButton(
-          model: ButtonVM {
-            $0.title = "Speed Up"
-          }
-        ) {
-          self.model.speed += 0.2
-        }
-      }
+    UIViewRepresenting {
+      Container()
     }
+//    VStack {
+//      SULoading(model: model)
+//      SUButton(
+//        model: ButtonVM {
+//          $0.title = "Toggle animation"
+//        }
+//      ) {
+//        self.model.isAnimating.toggle()
+//      }
+//      .padding(.top, 20)
+//      HStack {
+//        SUButton(
+//          model: ButtonVM {
+//            $0.title = "Slow down"
+//          }
+//        ) {
+//          self.model.speed -= 0.2
+//        }
+//        SUButton(
+//          model: ButtonVM {
+//            $0.title = "Speed Up"
+//          }
+//        ) {
+//          self.model.speed += 0.2
+//        }
+//      }
+//    }
   }
 }
 

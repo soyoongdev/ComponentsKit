@@ -36,22 +36,6 @@ private class Container: UIView {
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
-
-  override func layoutSubviews() {
-    super.layoutSubviews()
-    self.backgroundColor = .red
-    self.button.center = self.center
-  }
-}
-
-private struct ContainerWrapper: UIViewRepresentable {
-  func makeUIView(context: Context) -> Container {
-    return Container(frame: .zero)
-  }
-
-  func updateUIView(_ uiView: Container, context: Context) {
-
-  }
 }
 
 struct ButtonsView: View {
@@ -62,9 +46,9 @@ struct ButtonsView: View {
   }
 
   var body: some View {
-    ContainerWrapper()
-      .frame(width: .infinity, height: 100)
-    Spacer()
+    UIViewRepresenting {
+      Container()
+    }
   }
 
 //  var body: some View {

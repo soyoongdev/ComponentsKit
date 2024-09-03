@@ -16,7 +16,7 @@ public enum Typography: Equatable {
   case custom(name: String, size: CGFloat)
   case system(size: CGFloat, weight: Weight)
 
-  var uiFont: UIFont {
+  public var uiFont: UIFont {
     switch self {
     case .custom(let name, let size):
       guard let font = UIFont(name: name, size: size) else {
@@ -28,7 +28,7 @@ public enum Typography: Equatable {
     }
   }
 
-  var font: Font {
+  public var font: Font {
     switch self {
     case .custom(let name, let size):
       return Font.custom(name, size: size)
