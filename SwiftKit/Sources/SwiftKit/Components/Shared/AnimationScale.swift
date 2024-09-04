@@ -1,6 +1,6 @@
 import Foundation
 
-public struct AnimationScale {
+public struct AnimationScale: Equatable {
   var value: CGFloat
 
   init(_ value: CGFloat) {

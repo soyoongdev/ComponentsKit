@@ -1,6 +1,6 @@
 import Foundation
 
-public enum ComponentRadius {
+public enum ComponentRadius: Equatable {
   case none
   case small
   case medium

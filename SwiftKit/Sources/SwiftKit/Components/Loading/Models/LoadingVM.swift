@@ -1,6 +1,6 @@
 import Foundation
 
-public struct LoadingVM: ComponentVM, Equatable {
+public struct LoadingVM: ComponentVM {
   public var color: ComponentColor = .primary
   public var isAnimating: Bool = true
   public var lineWidth: CGFloat?

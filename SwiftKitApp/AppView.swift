@@ -13,6 +13,9 @@ struct AppView: View {
         NavigationLink("Loadings") {
           LoadingsView()
         }
+        NavigationLink("Input Fields") {
+          InputFieldsView()
+        }
       }
       .navigationTitle("SwiftKit")
     }

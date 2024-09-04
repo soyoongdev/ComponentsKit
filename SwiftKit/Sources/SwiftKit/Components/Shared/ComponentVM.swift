@@ -1,1 +1,1 @@
-public protocol ComponentVM: Updatable {}
+public protocol ComponentVM: Equatable, Updatable {}

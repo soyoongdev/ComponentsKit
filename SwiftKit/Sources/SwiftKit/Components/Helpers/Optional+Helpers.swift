@@ -1,0 +1,24 @@
+import Foundation
+
+extension Optional {
+  /// Whether the value is nil.
+  public var isNil: Bool {
+    return self == nil
+  }
+
+  /// Whether the value is not nil.
+  public var isNotNil: Bool {
+    return self != nil
+  }
+}
+
+extension Optional where Wrapped: Collection {
+  /// Whether the value is not nil and empty.
+  public var isNotNilAndEmpty: Bool {
+    if let self {
+      return self.isNotEmpty
+    } else {
+      return false
+    }
+  }
+}

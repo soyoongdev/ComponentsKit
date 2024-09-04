@@ -21,13 +21,12 @@ public struct ThemeColor: Equatable {
       let scanner = Scanner(string: hexColor)
       var hexNumber: UInt64 = 0
 
-      if hexColor.count == 8 && scanner.scanHexInt64(&hexNumber) {
-        let r = CGFloat((hexNumber & 0xff000000) >> 24) / 255
-        let g = CGFloat((hexNumber & 0x00ff0000) >> 16) / 255
-        let b = CGFloat((hexNumber & 0x0000ff00) >> 8) / 255
-        let a = CGFloat(hexNumber & 0x000000ff) / 255
+      if hexColor.count == 6 && scanner.scanHexInt64(&hexNumber) {
+        let r = CGFloat((hexNumber & 0x00ff0000) >> 16) / 255
+        let g = CGFloat((hexNumber & 0x0000ff00) >> 8) / 255
+        let b = CGFloat(hexNumber & 0x000000ff) / 255
 
-        return .rgba(r: r, g: g, b: b, a: a)
+        return .rgba(r: r, g: g, b: b, a: 1.0)
       } else {
         fatalError("Unable to initialize color from the provided hex value: \(value)")
       }
@@ -47,7 +46,12 @@ public struct ThemeColor: Equatable {
     fileprivate var uiColor: UIColor {
       switch self {
       case .rgba(let red, let green, let blue, let alpha):
-        return UIColor(red: red, green: green, blue: blue, alpha: alpha)
+        return UIColor(
+          red: red / 255,
+          green: green / 255,
+          blue: blue / 255,
+          alpha: alpha
+        )
       case .uiColor(let uiColor):
         return uiColor
       case .color(let color):

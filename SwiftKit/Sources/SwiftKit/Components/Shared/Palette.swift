@@ -86,19 +86,19 @@ extension Palette {
       return .primary
     }
     public static var secondary: ComponentColor {
-      return .primary
+      return .secondary
     }
     public static var accent: ComponentColor {
-      return .primary
+      return .accent
     }
     public static var success: ComponentColor {
-      return .primary
+      return .success
     }
     public static var warning: ComponentColor {
-      return .primary
+      return .warning
     }
     public static var danger: ComponentColor {
-      return .primary
+      return .danger
     }
   }
 }
@@ -121,5 +121,26 @@ extension ComponentColor {
   }
   public static var danger: Self {
     return SwiftKitConfig.shared.colors.danger
+  }
+}
+
+extension ThemeColor {
+  public static var primary: Self {
+    return SwiftKitConfig.shared.colors.primary.main
+  }
+  public static var secondary: Self {
+    return SwiftKitConfig.shared.colors.secondary.main
+  }
+  public static var accent: Self {
+    return SwiftKitConfig.shared.colors.accent.main
+  }
+  public static var success: Self {
+    return SwiftKitConfig.shared.colors.success.main
+  }
+  public static var warning: Self {
+    return SwiftKitConfig.shared.colors.warning.main
+  }
+  public static var danger: Self {
+    return SwiftKitConfig.shared.colors.danger.main
   }
 }

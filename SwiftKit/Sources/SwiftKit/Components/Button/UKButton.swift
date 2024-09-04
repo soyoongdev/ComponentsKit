@@ -148,7 +148,13 @@ open class UKButton: UIView, UKComponent {
   ) {
     super.touchesCancelled(touches, with: event)
 
-    self.isHighlighted = false
+    defer { self.isHighlighted = false }
+
+    if self.model.isEnabled,
+       let location = touches.first?.location(in: self),
+       self.bounds.contains(location) {
+      self.action()
+    }
   }
 
   // MARK: Helpers

@@ -16,6 +16,8 @@ public enum Typography: Equatable {
   case custom(name: String, size: CGFloat)
   case system(size: CGFloat, weight: Weight)
 
+  // MARK: Fonts
+
   public var uiFont: UIFont {
     switch self {
     case .custom(let name, let size):
@@ -34,6 +36,26 @@ public enum Typography: Equatable {
       return Font.custom(name, size: size)
     case .system(let size, let weight):
       return Font.system(size: size, weight: weight.swiftUIFontWeight)
+    }
+  }
+
+  // MARK: Helpers
+
+  public func withSize(_ size: CGFloat) -> Self {
+    switch self {
+    case .custom(let name, _):
+      return .custom(name: name, size: size)
+    case .system(_, let weight):
+      return .system(size: size, weight: weight)
+    }
+  }
+
+  public func withRelativeSize(_ shift: CGFloat) -> Self {
+    switch self {
+    case .custom(let name, let size):
+      return .custom(name: name, size: size + shift)
+    case .system(let size, let weight):
+      return .system(size: size + shift, weight: weight)
     }
   }
 }
