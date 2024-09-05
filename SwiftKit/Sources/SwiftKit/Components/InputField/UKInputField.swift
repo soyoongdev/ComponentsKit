@@ -1,13 +1,6 @@
 import UIKit
 
 open class UKInputField: UIView, UKComponent {
-  // MARK: Models
-
-  fileprivate enum TitlePosition {
-    case top
-    case center
-  }
-
   // MARK: Properties
 
   public var onValueChange: (String) -> Void
@@ -47,7 +40,7 @@ open class UKInputField: UIView, UKComponent {
     }
   }
 
-  private var titlePosition: TitlePosition {
+  private var titlePosition: InputFieldTitlePosition {
     didSet {
       if self.titlePosition != oldValue {
         self.updateTitlePosition()
@@ -113,7 +106,11 @@ open class UKInputField: UIView, UKComponent {
   // MARK: Style
 
   func style() {
-    Self.Style.titleLabel(self.titleLabel, position: .center, model: self.model)
+    Self.Style.titleLabel(
+      self.titleLabel,
+      position: self.titlePosition,
+      model: self.model
+    )
   }
 
   // MARK: Layout
@@ -158,6 +155,11 @@ open class UKInputField: UIView, UKComponent {
       hasText: self.text.isNotEmpty,
       hasPlaceholder: self.model.placeholder.isNotNilAndEmpty
     )
+    Self.Style.titleLabel(
+      self.titleLabel,
+      position: self.titlePosition,
+      model: self.model
+    )
   }
 
   // MARK: Helpers
@@ -170,7 +172,7 @@ open class UKInputField: UIView, UKComponent {
     isSelected: Bool,
     hasText: Bool,
     hasPlaceholder: Bool
-  ) -> TitlePosition {
+  ) -> InputFieldTitlePosition {
     if !hasPlaceholder, !hasText, !isSelected {
       return .center
     } else {
@@ -231,17 +233,11 @@ extension UKInputField {
   fileprivate enum Style {
     static func titleLabel(
       _ label: UILabel,
-      position: TitlePosition,
+      position: InputFieldTitlePosition,
       model: InputFieldVM
     ) {
-      switch position {
-      case .top:
-        label.textColor = model.foregroundColor.uiColor
-        label.font = model.font.withRelativeSize(-2).uiFont
-      case .center:
-        label.textColor = model.foregroundColor.uiColor.withAlphaComponent(0.9)
-        label.font = model.font.withRelativeSize(2).uiFont
-      }
+      label.textColor = model.titleColor(for: position).uiColor
+      label.font = model.titleFont(for: position).uiFont
     }
   }
 }

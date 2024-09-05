@@ -7,7 +7,6 @@ public struct InputFieldVM: ComponentVM {
   public var cornerRadius: ComponentRadius = .medium
   public var font: Typography = Typography.Component.medium
   public var isEnabled: Bool = true
-//  public var style: ButtonStyle = .filled
 
   public init() {}
 }
@@ -15,9 +14,6 @@ public struct InputFieldVM: ComponentVM {
 // MARK: - Shared Helpers
 
 extension InputFieldVM {
-  var titleFont: Typography {
-    return self.font.withRelativeSize(-2)
-  }
   var backgroundColor: ThemeColor {
     if let color {
       return color.main.withOpacity(0.25)
@@ -29,13 +25,31 @@ extension InputFieldVM {
     }
   }
   var foregroundColor: ThemeColor {
-    if let color {
-      return color.main
-    } else {
-      return .init(
-        light: .rgba(r: 0, g: 0, b: 0, a: 1.0),
-        dark: .rgba(r: 255, g: 255, b: 255, a: 1.0)
-      )
+    let foregroundColor = self.color?.main ?? .init(
+      light: .rgba(r: 0, g: 0, b: 0, a: 1.0),
+      dark: .rgba(r: 255, g: 255, b: 255, a: 1.0)
+    )
+    return foregroundColor.withOpacity(
+      self.isEnabled ? 1.0 : 0.5
+    )
+  }
+  var placeholderColor: ThemeColor {
+    return self.foregroundColor.withOpacity(self.isEnabled ? 0.7 : 0.3)
+  }
+  func titleColor(for position: InputFieldTitlePosition) -> ThemeColor {
+    switch position {
+    case .top:
+      return self.foregroundColor
+    case .center:
+      return self.foregroundColor.withOpacity(self.isEnabled ? 0.9 : 0.45)
+    }
+  }
+  func titleFont(for position: InputFieldTitlePosition) -> Typography {
+    switch position {
+    case .top:
+      return self.font.withRelativeSize(-2)
+    case .center:
+      return self.font.withRelativeSize(2)
     }
   }
 }
@@ -49,7 +63,7 @@ extension InputFieldVM {
     }
     return NSAttributedString(string: placeholder, attributes: [
       .font: self.font.uiFont,
-      .foregroundColor: self.foregroundColor.withOpacity(0.7).uiColor
+      .foregroundColor: self.placeholderColor.uiColor
     ])
   }
 }

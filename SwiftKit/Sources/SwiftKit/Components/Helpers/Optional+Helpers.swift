@@ -21,4 +21,13 @@ extension Optional where Wrapped: Collection {
       return false
     }
   }
+
+  /// Whether the value is nil or empty.
+  public var isNilOrEmpty: Bool {
+    if let self {
+      return self.isEmpty
+    } else {
+      return true
+    }
+  }
 }

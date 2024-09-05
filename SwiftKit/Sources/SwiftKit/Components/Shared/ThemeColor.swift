@@ -34,8 +34,8 @@ public struct ThemeColor: Equatable {
 
     fileprivate func withOpacity(_ alpha: CGFloat) -> Self {
       switch self {
-      case .rgba(let r, let g, let b, let a):
-        return .rgba(r: r, g: g, b: b, a: a * alpha)
+      case .rgba(let r, let g, let b, _):
+        return .rgba(r: r, g: g, b: b, a: alpha)
       case .uiColor(let uiColor):
         return .uiColor(uiColor.withAlphaComponent(alpha))
       case .color(let color):
@@ -62,7 +62,7 @@ public struct ThemeColor: Equatable {
     fileprivate var color: Color {
       switch self {
       case .rgba(let r, let g, let b, let a):
-        return Color(red: r, green: g, blue: b, opacity: a)
+        return Color(red: r / 255, green: g / 255, blue: b / 255, opacity: a)
       case .uiColor(let uiColor):
         return Color(uiColor: uiColor)
       case .color(let color):

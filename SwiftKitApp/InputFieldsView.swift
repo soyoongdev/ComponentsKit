@@ -49,10 +49,50 @@ private class Container: UIView {
 }
 
 struct InputFieldsView: View {
+  @State private var inputFieldVM = InputFieldVM {
+    $0.title = "Email"
+//    $0.placeholder = "Input your email"
+//    $0.color = .danger
+  }
+  @State private var text = "Hello"
+  @FocusState private var isSelected: Bool
+
   var body: some View {
-    UIViewRepresenting {
-      Container()
+    VStack(spacing: 20) {
+      SUInputField(
+        text: self.$text,
+        isSelected: self.$isSelected,
+        model: self.inputFieldVM,
+        onValueChange: {
+          print("Text: \($0)")
+        }
+      )
+      HStack {
+        SUButton(model: .init {
+          $0.title = "Hide keyboard"
+          $0.size = .medium.fullWidth
+        }) {
+          self.isSelected = false
+        }
+        SUButton(model: .init {
+          $0.title = "Clear text"
+          $0.size = .medium.fullWidth
+        }) {
+          self.text = ""
+        }
+        SUButton(model: .init {
+          $0.title = "Enable / Disable"
+          $0.size = .medium.fullWidth
+        }) {
+          self.inputFieldVM.isEnabled.toggle()
+        }
+      }
     }
+    .padding(.horizontal)
+
+//    UIViewRepresenting {
+//      Container()
+//    }
   }
 }
 

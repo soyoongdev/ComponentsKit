@@ -1,5 +1,4 @@
 import SwiftUI
-import UIKit
 
 public struct SUButton: View {
   private var model: ButtonVM
