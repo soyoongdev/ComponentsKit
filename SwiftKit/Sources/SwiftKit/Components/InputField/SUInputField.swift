@@ -40,7 +40,7 @@ public struct SUInputField: View {
   public var body: some View {
     ZStack {
       HStack {
-        Text(self.model.title)
+        Text(self.model.attributedTitle(for: self.titlePosition))
           .font(self.model.titleFont(for: self.titlePosition).font)
           .foregroundStyle(self.model.titleColor(for: self.titlePosition).color(for: self.colorScheme))
           .padding(.bottom, self.titlePosition == .top ? 34 : 0)

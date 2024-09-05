@@ -1,3 +1,4 @@
+import SwiftUI
 import UIKit
 
 public struct InputFieldVM: ComponentVM {
@@ -5,6 +6,7 @@ public struct InputFieldVM: ComponentVM {
   public var cornerRadius: ComponentRadius = .medium
   public var font: Typography = Typography.Component.medium
   public var isEnabled: Bool = true
+  public var isRequired: Bool = false
   public var isSecureInput: Bool = false
   public var keyboardType: UIKeyboardType = .default
   public var placeholder: String?
@@ -69,7 +71,7 @@ extension InputFieldVM {
 // MARK: - UIKit Helpers
 
 extension InputFieldVM {
-  var attributedPlaceholder: NSAttributedString? {
+  var nsAttributedPlaceholder: NSAttributedString? {
     guard let placeholder else {
       return nil
     }
@@ -78,7 +80,69 @@ extension InputFieldVM {
       .foregroundColor: self.placeholderColor.uiColor
     ])
   }
+  func nsAttributedTitle(for position: InputFieldTitlePosition) -> NSAttributedString {
+    let attributedString = NSMutableAttributedString()
+    attributedString.append(NSAttributedString(
+      string: self.title,
+      attributes: [
+        .font: self.titleFont(for: position).uiFont,
+        .foregroundColor: self.titleColor(for: position).uiColor
+      ]
+    ))
+    if self.isRequired {
+      attributedString.append(NSAttributedString(
+        string: "*",
+        attributes: [
+          .font: self.titleFont(for: position).withRelativeSize(2).uiFont,
+          .foregroundColor: ThemeColor.danger.uiColor
+        ]
+      ))
+    }
+    return attributedString
+  }
   func shouldUpdateLayout(_ oldModel: Self) -> Bool {
     return self.horizontalPadding != oldModel.horizontalPadding
+  }
+}
+
+// MARK: - UIKit Helpers
+
+extension InputFieldVM {
+  func attributedTitle(
+    for position: InputFieldTitlePosition
+  ) -> AttributedString {
+    var attributedString = AttributedString()
+
+    var attributedTitle = AttributedString(self.title)
+    attributedTitle.font = self.titleFont(for: position).font
+    attributedTitle.foregroundColor = self.titleColor(for: position).uiColor
+    attributedString.append(attributedTitle)
+
+    if self.isRequired {
+      var requiredSign = AttributedString("*")
+      requiredSign.font = self.titleFont(for: position).withRelativeSize(2).font
+      requiredSign.foregroundColor = ThemeColor.danger.uiColor
+      attributedString.append(requiredSign)
+    }
+
+    return attributedString
+
+//    attributedString.append(NSAttributedString(
+//      string: self.title,
+//      attributes: [
+//        .font: self.titleFont(for: position).uiFont,
+//        .foregroundColor: self.titleColor(for: position).uiColor,
+//      ]
+//    ))
+//    if self.isRequired {
+//      attributedString.append(NSAttributedString(
+//        string: "*",
+//        attributes: [
+//          .font: self.titleFont(for: position).withRelativeSize(2).uiFont,
+//          .foregroundColor: ThemeColor.danger.uiColor,
+//        ]
+//      ))
+//    }
+//    return attributedString
   }
 }

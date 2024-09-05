@@ -10,6 +10,7 @@ private class Container: UIView {
 //      $0.placeholder = "Input your email"
       $0.keyboardType = .emailAddress
       $0.submitType = .next
+      $0.isRequired = true
     }
   )
   let clearTextButton = UKButton(

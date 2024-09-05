@@ -142,12 +142,10 @@ open class UKInputField: UIView, UKComponent {
   public func update(_ oldModel: InputFieldVM) {
     self.layer.cornerRadius = self.model.cornerRadius.value(for: self.bounds.height)
 
-    self.titleLabel.text = self.model.title
-
     self.inputField.font = self.model.font.uiFont
     self.inputField.textColor = self.model.foregroundColor.uiColor
     self.inputField.tintColor = self.model.tintColor.uiColor
-    self.inputField.attributedPlaceholder = self.model.attributedPlaceholder
+    self.inputField.attributedPlaceholder = self.model.nsAttributedPlaceholder
     self.inputField.keyboardType = self.model.keyboardType
     self.inputField.returnKeyType = self.model.submitType.returnKeyType
     self.inputField.isSecureTextEntry = self.model.isSecureInput
@@ -252,8 +250,7 @@ extension UKInputField {
       position: InputFieldTitlePosition,
       model: InputFieldVM
     ) {
-      label.textColor = model.titleColor(for: position).uiColor
-      label.font = model.titleFont(for: position).uiFont
+      label.attributedText = model.nsAttributedTitle(for: position)
     }
   }
 }
