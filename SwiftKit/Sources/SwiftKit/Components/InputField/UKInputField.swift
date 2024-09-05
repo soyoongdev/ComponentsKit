@@ -147,6 +147,10 @@ open class UKInputField: UIView, UKComponent {
     self.inputField.textColor = self.model.foregroundColor.uiColor
     self.inputField.tintColor = self.model.tintColor.uiColor
     self.inputField.attributedPlaceholder = self.model.attributedPlaceholder
+    self.inputField.keyboardType = self.model.keyboardType
+    self.inputField.returnKeyType = self.model.submitType.returnKeyType
+    self.inputField.isSecureTextEntry = self.model.isSecureInput
+    self.inputField.isEnabled = self.model.isEnabled
 
     self.backgroundColor = self.model.backgroundColor.uiColor
 

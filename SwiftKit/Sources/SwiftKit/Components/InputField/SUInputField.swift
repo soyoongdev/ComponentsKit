@@ -48,14 +48,25 @@ public struct SUInputField: View {
           .animation(.linear(duration: 0.1), value: self.titlePosition)
         Spacer()
       }
-      TextField(text: self.$text, label: {
-        Text(self.model.placeholder ?? "")
-          .foregroundStyle(self.model.placeholderColor.color(for: self.colorScheme))
-      })
+      Group {
+        if self.model.isSecureInput {
+          SecureField(text: self.$text, label: {
+            Text(self.model.placeholder ?? "")
+              .foregroundStyle(self.model.placeholderColor.color(for: self.colorScheme))
+          })
+        } else {
+          TextField(text: self.$text, label: {
+            Text(self.model.placeholder ?? "")
+              .foregroundStyle(self.model.placeholderColor.color(for: self.colorScheme))
+          })
+        }
+      }
         .font(self.model.font.font)
         .foregroundStyle(self.model.foregroundColor.color(for: self.colorScheme))
         .focused(self.$isSelected)
         .disabled(!self.model.isEnabled)
+        .keyboardType(self.model.keyboardType)
+        .submitLabel(self.model.submitType.submitLabel)
         .frame(height: 30)
         .padding(.horizontal, 12)
         .padding(.bottom, 12)
@@ -74,7 +85,7 @@ public struct SUInputField: View {
       self.onValueChange(newValue)
     }
     .onChange(of: self.isSelected) { _ in
-      // NOTE: Workaround for @FocusState
+      // NOTE: Workaround to force `isSelected` value update properly
     }
   }
 }

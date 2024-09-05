@@ -7,7 +7,9 @@ private class Container: UIView {
     initialText: "",
     model: .init {
       $0.title = "Email"
-      $0.placeholder = "Input your email"
+//      $0.placeholder = "Input your email"
+      $0.keyboardType = .emailAddress
+      $0.submitType = .next
     }
   )
   let clearTextButton = UKButton(
@@ -53,6 +55,8 @@ struct InputFieldsView: View {
     $0.title = "Email"
 //    $0.placeholder = "Input your email"
 //    $0.color = .danger
+    $0.keyboardType = .emailAddress
+    $0.submitType = .next
   }
   @State private var text = "Hello"
   @FocusState private var isSelected: Bool
@@ -81,10 +85,10 @@ struct InputFieldsView: View {
           self.text = ""
         }
         SUButton(model: .init {
-          $0.title = "Enable / Disable"
+          $0.title = "Is secure"
           $0.size = .medium.fullWidth
         }) {
-          self.inputFieldVM.isEnabled.toggle()
+          self.inputFieldVM.isSecureInput.toggle()
         }
       }
     }

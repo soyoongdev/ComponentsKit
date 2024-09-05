@@ -1,12 +1,16 @@
-import Foundation
+import UIKit
+
 public struct InputFieldVM: ComponentVM {
-  public var title: String = ""
-  public var placeholder: String?
-  public var tintColor: ThemeColor = .accent
   public var color: ComponentColor?
   public var cornerRadius: ComponentRadius = .medium
   public var font: Typography = Typography.Component.medium
   public var isEnabled: Bool = true
+  public var isSecureInput: Bool = false
+  public var keyboardType: UIKeyboardType = .default
+  public var placeholder: String?
+  public var submitType: SubmitType = .return
+  public var tintColor: ThemeColor = .accent
+  public var title: String = ""
 
   public init() {}
 }
@@ -41,7 +45,7 @@ extension InputFieldVM {
     case .top:
       return self.foregroundColor
     case .center:
-      return self.foregroundColor.withOpacity(self.isEnabled ? 0.9 : 0.45)
+      return self.foregroundColor.withOpacity(self.isEnabled ? 0.8 : 0.45)
     }
   }
   func titleFont(for position: InputFieldTitlePosition) -> Typography {
