@@ -43,7 +43,6 @@ public struct SUInputField: View {
         Text(self.model.title)
           .font(self.model.titleFont(for: self.titlePosition).font)
           .foregroundStyle(self.model.titleColor(for: self.titlePosition).color(for: self.colorScheme))
-          .padding(.horizontal, 12)
           .padding(.bottom, self.titlePosition == .top ? 34 : 0)
           .animation(.linear(duration: 0.1), value: self.titlePosition)
         Spacer()
@@ -68,10 +67,10 @@ public struct SUInputField: View {
         .keyboardType(self.model.keyboardType)
         .submitLabel(self.model.submitType.submitLabel)
         .frame(height: 30)
-        .padding(.horizontal, 12)
         .padding(.bottom, 12)
         .padding(.top, 36)
     }
+    .padding(.horizontal, self.model.horizontalPadding)
     .background(self.model.backgroundColor.color(for: self.colorScheme))
     .onTapGesture {
       self.isSelected = true

@@ -18,6 +18,14 @@ public struct InputFieldVM: ComponentVM {
 // MARK: - Shared Helpers
 
 extension InputFieldVM {
+  var horizontalPadding: CGFloat {
+    switch self.cornerRadius {
+    case .none, .small, .medium, .large, .custom:
+      return 12
+    case .full:
+      return 16
+    }
+  }
   var backgroundColor: ThemeColor {
     if let color {
       return color.main.withOpacity(0.25)
@@ -69,5 +77,8 @@ extension InputFieldVM {
       .font: self.font.uiFont,
       .foregroundColor: self.placeholderColor.uiColor
     ])
+  }
+  func shouldUpdateLayout(_ oldModel: Self) -> Bool {
+    return self.horizontalPadding != oldModel.horizontalPadding
   }
 }

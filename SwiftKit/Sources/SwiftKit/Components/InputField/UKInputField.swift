@@ -49,6 +49,7 @@ open class UKInputField: UIView, UKComponent {
   }
 
   private var titleLabelConstraints: AnchoredConstraints = .init()
+  private var inputFieldConstraints: AnchoredConstraints = .init()
 
   // MARK: Subviews
 
@@ -116,9 +117,9 @@ open class UKInputField: UIView, UKComponent {
   // MARK: Layout
 
   func layout() {
-    self.titleLabelConstraints = self.titleLabel.horizontally(12)
+    self.titleLabelConstraints = self.titleLabel.horizontally(self.model.horizontalPadding)
 
-    self.inputField.horizontally(12)
+    self.inputFieldConstraints = self.inputField.horizontally(self.model.horizontalPadding)
     self.inputField.bottom(Self.Layout.inputFieldBottomInset)
     self.inputField.top(Self.Layout.inputFieldTopInset)
     self.inputField.height(Self.Layout.inputFieldHeight)
@@ -164,6 +165,17 @@ open class UKInputField: UIView, UKComponent {
       position: self.titlePosition,
       model: self.model
     )
+
+    self.titleLabelConstraints.leading?.constant = self.model.horizontalPadding
+    self.titleLabelConstraints.trailing?.constant = -self.model.horizontalPadding
+    self.inputFieldConstraints.leading?.constant = self.model.horizontalPadding
+    self.inputFieldConstraints.trailing?.constant = -self.model.horizontalPadding
+
+    if self.model.shouldUpdateLayout(oldModel) {
+      UIView.performWithoutAnimation {
+        self.layoutIfNeeded()
+      }
+    }
   }
 
   // MARK: Helpers
