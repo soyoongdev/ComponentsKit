@@ -14,15 +14,42 @@ public struct CheckboxVM: ComponentVM {
 
 extension CheckboxVM {
   var backgroundColor: ThemeColor {
-    return self.color.main.withOpacity(self.isEnabled ? 1.0 : 0.5)
+    return self.color.main.withOpacity(
+      self.isEnabled
+      ? 1.0
+      : SwiftKitConfig.shared.layout.disabledOpacity
+    )
   }
   var foregroundColor: ThemeColor {
-    return self.color.contrast.withOpacity(self.isEnabled ? 1.0 : 0.5)
+    return self.color.contrast.withOpacity(
+      self.isEnabled
+      ? 1.0
+      : SwiftKitConfig.shared.layout.disabledOpacity
+    )
+  }
+  var titleColor: ThemeColor {
+    return Palette.Text.primary.withOpacity(
+      self.isEnabled
+      ? 1.0
+      : SwiftKitConfig.shared.layout.disabledOpacity
+    )
   }
   var borderColor: ThemeColor {
-    return .init(universal: .uiColor(.lightGray)).withOpacity(self.isEnabled ? 1.0 : 0.5)
+    return .init(universal: .uiColor(.lightGray)).withOpacity(
+      self.isEnabled
+      ? 1.0
+      : SwiftKitConfig.shared.layout.disabledOpacity
+    )
   }
   var borderWidth: CGFloat {
     return 2.0
+  }
+}
+
+// MARK: UIKit Helpers
+
+extension CheckboxVM {
+  func shouldUpdateBorderColor(_ oldModel: Self) -> Bool {
+    return self.isEnabled != oldModel.isEnabled
   }
 }
