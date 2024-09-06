@@ -16,6 +16,9 @@ struct AppView: View {
         NavigationLink("Input Fields") {
           InputFieldsView()
         }
+        NavigationLink("Checkboxes") {
+          CheckboxesView()
+        }
       }
       .navigationTitle("SwiftKit")
     }
