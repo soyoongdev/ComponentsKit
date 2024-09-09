@@ -91,6 +91,12 @@ extension InputFieldVM {
     ))
     if self.isRequired {
       attributedString.append(NSAttributedString(
+        string: " ",
+        attributes: [
+          .font: UIFont.systemFont(ofSize: 5)
+        ]
+      ))
+      attributedString.append(NSAttributedString(
         string: "*",
         attributes: [
           .font: self.titleFont(for: position).withRelativeSize(2).uiFont,
@@ -119,6 +125,10 @@ extension InputFieldVM {
     attributedString.append(attributedTitle)
 
     if self.isRequired {
+      var space = AttributedString(" ")
+      space.font = .systemFont(ofSize: 5)
+      attributedString.append(space)
+
       var requiredSign = AttributedString("*")
       requiredSign.font = self.titleFont(for: position).withRelativeSize(2).font
       requiredSign.foregroundColor = ThemeColor.danger.uiColor
@@ -126,23 +136,5 @@ extension InputFieldVM {
     }
 
     return attributedString
-
-//    attributedString.append(NSAttributedString(
-//      string: self.title,
-//      attributes: [
-//        .font: self.titleFont(for: position).uiFont,
-//        .foregroundColor: self.titleColor(for: position).uiColor,
-//      ]
-//    ))
-//    if self.isRequired {
-//      attributedString.append(NSAttributedString(
-//        string: "*",
-//        attributes: [
-//          .font: self.titleFont(for: position).withRelativeSize(2).uiFont,
-//          .foregroundColor: ThemeColor.danger.uiColor,
-//        ]
-//      ))
-//    }
-//    return attributedString
   }
 }
