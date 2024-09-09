@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		7405FEC12C8F056100FB33D8 /* SegmentedControlsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7405FEC02C8F056100FB33D8 /* SegmentedControlsView.swift */; };
+		7405FEC32C8F2DD900FB33D8 /* SwiftUIDemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7405FEC22C8F2DD900FB33D8 /* SwiftUIDemo.swift */; };
 		741550D72C8744F800126181 /* UIViewRepresenting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 741550D62C8744F800126181 /* UIViewRepresenting.swift */; };
 		741550D92C874EA300126181 /* InputFieldsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 741550D82C874EA300126181 /* InputFieldsView.swift */; };
 		7427076D2C78B6F400F8FC67 /* LoadingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7427076C2C78B6F400F8FC67 /* LoadingsView.swift */; };
@@ -23,6 +24,7 @@
 
 /* Begin PBXFileReference section */
 		7405FEC02C8F056100FB33D8 /* SegmentedControlsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentedControlsView.swift; sourceTree = "<group>"; };
+		7405FEC22C8F2DD900FB33D8 /* SwiftUIDemo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUIDemo.swift; sourceTree = "<group>"; };
 		741550D62C8744F800126181 /* UIViewRepresenting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewRepresenting.swift; sourceTree = "<group>"; };
 		741550D82C874EA300126181 /* InputFieldsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputFieldsView.swift; sourceTree = "<group>"; };
 		7427076C2C78B6F400F8FC67 /* LoadingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingsView.swift; sourceTree = "<group>"; };
@@ -94,6 +96,7 @@
 				7427076C2C78B6F400F8FC67 /* LoadingsView.swift */,
 				741550D82C874EA300126181 /* InputFieldsView.swift */,
 				7405FEC02C8F056100FB33D8 /* SegmentedControlsView.swift */,
+				7405FEC22C8F2DD900FB33D8 /* SwiftUIDemo.swift */,
 				74DA587B2C73867C00EAC80C /* Assets.xcassets */,
 				74DA587D2C73867C00EAC80C /* Preview Content */,
 			);
@@ -187,6 +190,7 @@
 				7427076D2C78B6F400F8FC67 /* LoadingsView.swift in Sources */,
 				74A10BFC2C738E8C00243662 /* ButtonsView.swift in Sources */,
 				74DA587A2C73867B00EAC80C /* AppView.swift in Sources */,
+				7405FEC32C8F2DD900FB33D8 /* SwiftUIDemo.swift in Sources */,
 				74DA58782C73867B00EAC80C /* Root.swift in Sources */,
 				741550D92C874EA300126181 /* InputFieldsView.swift in Sources */,
 				743206332C89EAB100DD614A /* CheckboxesView.swift in Sources */,
