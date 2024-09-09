@@ -1,4 +1,5 @@
 import Foundation
+import SwiftUI
 
 public enum ComponentRadius: Equatable {
   case none
@@ -7,8 +8,10 @@ public enum ComponentRadius: Equatable {
   case large
   case full
   case custom(CGFloat)
+}
 
-  func value(for height: CGFloat) -> CGFloat {
+extension ComponentRadius {
+  func value(for height: CGFloat = 10_000) -> CGFloat {
     switch self {
     case .none:
       return 0

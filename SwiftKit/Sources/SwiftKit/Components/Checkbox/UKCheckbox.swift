@@ -66,8 +66,6 @@ open class UKCheckbox: UIView, UKComponent {
   }
 
   private func setupCheckmarkLayer() {
-    self.checkmarkLayer.strokeColor = self.model.foregroundColor.uiColor.cgColor
-    self.checkmarkLayer.lineWidth = 2.0
     self.checkmarkLayer.fillColor = UIColor.clear.cgColor
     self.checkmarkLayer.lineCap = .round
     self.checkmarkLayer.lineJoin = .round
@@ -100,31 +98,20 @@ open class UKCheckbox: UIView, UKComponent {
 
     self.checkboxContainer.size(24)
     self.checkboxBackground.pinToEdges()
-//    self.titleLabelConstraints = self.titleLabel.pinToEdges(.all, insets: self.model.insets)
-//    self.titleLabel.centerVertically()
-//    self.titleLabel.centerHorizontally()
-//
-//    self.titleLabelConstraints.leading?.priority = .defaultHigh
-//    self.titleLabelConstraints.top?.priority = .defaultHigh
-//    self.titleLabelConstraints.trailing?.priority = .defaultHigh
-//    self.titleLabelConstraints.bottom?.priority = .defaultHigh
-  }
-
-  open override func layoutSubviews() {
-    super.layoutSubviews()
-
-    self.checkboxContainer.layer.cornerRadius = self.model.cornerRadius.value(for: self.checkboxContainer.bounds.height)
-    self.checkboxBackground.layer.cornerRadius = self.model.cornerRadius.value(for: self.checkboxContainer.bounds.height)
   }
 
   // MARK: Update
 
   public func update(_ oldModel: CheckboxVM) {
-    self.checkboxContainer.layer.cornerRadius = self.model.cornerRadius.value(for: self.checkboxContainer.bounds.height)
-    self.checkboxBackground.layer.cornerRadius = self.model.cornerRadius.value(for: self.checkboxContainer.bounds.height)
+    self.checkboxContainer.layer.cornerRadius = self.model.checkboxCornerRadius
+    self.checkboxBackground.layer.cornerRadius = self.model.checkboxCornerRadius
 
     self.titleLabel.text = self.model.title
     self.titleLabel.textColor = self.model.titleColor.uiColor
+    self.titleLabel.font = self.model.titleFont.uiFont
+
+    self.checkmarkLayer.strokeColor = self.model.foregroundColor.uiColor.cgColor
+    self.checkmarkLayer.lineWidth = self.model.checkmarkLineWidth
 
     self.checkboxContainer.layer.borderWidth = self.model.borderWidth
 
@@ -133,20 +120,15 @@ open class UKCheckbox: UIView, UKComponent {
     if self.model.shouldUpdateBorderColor(oldModel) && !self.isSelected {
       self.checkboxContainer.layer.borderColor = self.model.borderColor.uiColor.cgColor
     }
-//    self.titleLabel.font = self.model.preferredFont.uiFont
-//
-//    self.layer.borderWidth = self.model.borderWidth
-//    self.layer.borderColor = self.model.borderColor?.uiColor.cgColor
-//    self.backgroundColor = self.model.backgroundColor?.uiColor
-//    self.titleLabel.textColor = self.model.foregroundColor.uiColor
-//
-//    if self.model.shouldUpdateInsets(oldModel) {
-//      self.titleLabelConstraints.updateInsets(self.model.insets)
-//    }
-//    if self.model.shouldUpdateSize(oldModel) {
-//      self.invalidateIntrinsicContentSize()
-//      self.setNeedsLayout()
-//    }
+    if self.model.shouldAddLabel(oldModel) {
+      self.stackView.addArrangedSubview(self.titleLabel)
+      self.setNeedsLayout()
+      self.invalidateIntrinsicContentSize()
+    } else if self.model.shouldRemoveLabel(oldModel) {
+      self.stackView.removeArrangedSubview(self.titleLabel)
+      self.setNeedsLayout()
+      self.invalidateIntrinsicContentSize()
+    }
   }
 
   func updateSelection() {
@@ -196,6 +178,7 @@ open class UKCheckbox: UIView, UKComponent {
         self.checkboxBackground.alpha = 1.0
         self.checkboxBackground.transform = .identity
       }, completion: { _ in
+        guard self.isSelected else { return }
         CATransaction.begin()
         CATransaction.setAnimationDuration(CheckboxAnimationDurations.checkmarkStroke)
         self.checkmarkLayer.strokeEnd = 1.0

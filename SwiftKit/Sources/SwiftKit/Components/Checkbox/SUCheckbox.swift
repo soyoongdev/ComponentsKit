@@ -1,6 +1,8 @@
 import SwiftUI
 
 public struct SUCheckbox: View {
+  // MARK: Properties
+
   private var model: CheckboxVM
   private var onValueChange: (Bool) -> Void
 
@@ -8,6 +10,8 @@ public struct SUCheckbox: View {
   @State private var checkmarkStroke: CGFloat
   @State private var borderOpacity: CGFloat
   @Environment(\.colorScheme) private var colorScheme
+
+  // MARK: Initialization
 
   public init(
     isSelected: Binding<Bool>,
@@ -21,12 +25,14 @@ public struct SUCheckbox: View {
     self.borderOpacity = isSelected.wrappedValue ? 0.0 : 1.0
   }
 
+  // MARK: Body
+
   public var body: some View {
     HStack {
       ZStack {
         self.model.backgroundColor.color(for: self.colorScheme)
           .clipShape(
-            RoundedRectangle(cornerRadius: self.model.cornerRadius.value(for: 24))
+            RoundedRectangle(cornerRadius: self.model.checkboxCornerRadius)
           )
           .scaleEffect(self.isSelected ? 1.0 : 0.1)
           .opacity(self.isSelected ? 1.0 : 0.0)
@@ -36,31 +42,45 @@ public struct SUCheckbox: View {
           )
 
         Path { path in
-          path.move(to: .init(x: 6, y: 11))
-          path.addLine(to: .init(x: 11, y: 17))
-          path.addLine(to: .init(x: 18, y: 7))
+          path.move(to: .init(
+            x: self.model.checkboxSide / 4,
+            y: 11 / 24 * self.model.checkboxSide
+          ))
+          path.addLine(to: .init(
+            x: 11 / 24 * self.model.checkboxSide,
+            y: 17 / 24 * self.model.checkboxSide
+          ))
+          path.addLine(to: .init(
+            x: 3 / 4 * self.model.checkboxSide,
+            y: 7 / 24 * self.model.checkboxSide
+          ))
         }
         .trim(from: 0, to: self.checkmarkStroke)
         .stroke(style: StrokeStyle(
-          lineWidth: 2.0,
+          lineWidth: self.model.checkmarkLineWidth,
           lineCap: .round,
           lineJoin: .round
         ))
         .foregroundStyle(self.model.foregroundColor.color(for: self.colorScheme))
       }
       .overlay {
-        RoundedRectangle(cornerRadius: self.model.cornerRadius.value(for: 24))
+        RoundedRectangle(cornerRadius: self.model.checkboxCornerRadius)
           .stroke(
             self.model.borderColor.color(for: self.colorScheme),
             lineWidth: self.model.borderWidth
           )
           .opacity(self.borderOpacity)
       }
-      .frame(width: 24, height: 24, alignment: .center)
+      .frame(
+        width: self.model.checkboxSide,
+        height: self.model.checkboxSide,
+        alignment: .center
+      )
 
       if let title = self.model.title {
         Text(title)
           .foregroundStyle(self.model.titleColor.color(for: self.colorScheme))
+          .font(self.model.titleFont.font)
       }
     }
     .onTapGesture {
