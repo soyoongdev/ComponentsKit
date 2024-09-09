@@ -19,6 +19,9 @@ struct AppView: View {
         NavigationLink("Checkboxes") {
           CheckboxesView()
         }
+        NavigationLink("Segmented Controls") {
+          SegmentedControlsView()
+        }
       }
       .navigationTitle("SwiftKit")
     }
