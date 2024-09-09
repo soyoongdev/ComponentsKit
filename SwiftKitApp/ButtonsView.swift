@@ -21,9 +21,9 @@ private class Container: UIView {
 
     self.button.action = { [weak self] in
       self?.button.model.size = [
-        ButtonSize.small,
-        ButtonSize.medium,
-        ButtonSize.large
+        ComponentSize.small,
+        ComponentSize.medium,
+        ComponentSize.large
       ].randomElement()!
       self?.button.model.title = [
         "hello",
@@ -45,49 +45,48 @@ struct ButtonsView: View {
     $0.cornerRadius = .full
   }
 
-  var body: some View {
-    UIViewRepresenting {
-      Container()
-    }
-  }
-
 //  var body: some View {
-//    SUButton(model: .init {
-//      $0.title = "Toggle"
-//      $0.animationScale = .medium
-//      $0.style = .bordered(.medium)
-//      $0.color = .accent
-//      $0.size = .medium.fullWidth
-////      $0.size = .medium.fullWidth
-////      $0.contentInsets = .init(top: 10, leading: 0, bottom: 0, trailing: 0)
-//    }) {
-//      self.model.isEnabled.toggle()
+//    UIViewRepresenting {
+//      Container()
 //    }
-//    .padding()
-//    SUButton(
-//      model: model,
-////      model: .init(
-////        title: "Tap me please",
-////        animationScale: .large,
-////        cornerRadius: .full
-////      ),
-////      label: {
-////        HStack {
-////          Image(systemName: "phone")
-////          Text("hello")
-////            .padding(.vertical, 10)
-////        }
-////      },
-//      action: {
-//          self.model.title = [
-//            "title 1",
-//            "title 2",
-//            "title 3"
-//          ].randomElement()!
-//          self.model.color = [ComponentColor.accent, ComponentColor.primary, ComponentColor.secondary].randomElement()!
-//        }
-//    )
 //  }
+
+  var body: some View {
+    SUButton(model: .init {
+      $0.title = "Toggle"
+      $0.animationScale = .medium
+      $0.style = .bordered(.medium)
+      $0.color = .accent
+      $0.size = .medium
+//      $0.isFullWidth = true
+    }) {
+      self.model.isEnabled.toggle()
+    }
+    .padding()
+    SUButton(
+      model: model,
+//      model: .init(
+//        title: "Tap me please",
+//        animationScale: .large,
+//        cornerRadius: .full
+//      ),
+//      label: {
+//        HStack {
+//          Image(systemName: "phone")
+//          Text("hello")
+//            .padding(.vertical, 10)
+//        }
+//      },
+      action: {
+          self.model.title = [
+            "title 1",
+            "title 2",
+            "title 3"
+          ].randomElement()!
+          self.model.color = [ComponentColor.accent, ComponentColor.primary, ComponentColor.secondary].randomElement()!
+        }
+    )
+  }
 }
 
 #Preview {

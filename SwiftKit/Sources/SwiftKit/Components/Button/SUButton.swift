@@ -21,10 +21,8 @@ public struct SUButton: View {
     Text(self.model.title)
       .font(self.model.preferredFont.font)
       .lineLimit(1)
-      .padding(.leading, self.model.leadingInset)
-      .padding(.trailing, self.model.trailingInset)
-      .padding(.top, self.model.topInset)
-      .padding(.bottom, self.model.bottomInset)
+      .padding(.leading, self.model.horizontalPadding)
+      .padding(.trailing, self.model.horizontalPadding)
       .frame(
         maxWidth: self.model.width,
         maxHeight: self.model.height
@@ -54,16 +52,12 @@ public struct SUButton: View {
       .disabled(!self.model.isEnabled)
       .clipShape(
         RoundedRectangle(
-          cornerRadius: self.model.cornerRadius.value(
-            for: self.model.height ?? .infinity
-          )
+          cornerRadius: self.model.cornerRadius.value()
         )
       )
       .overlay {
         RoundedRectangle(
-          cornerRadius: self.model.cornerRadius.value(
-            for: self.model.height ?? .infinity
-          )
+          cornerRadius: self.model.cornerRadius.value()
         )
         .stroke(
           self.model.borderColor?.color(for: self.colorScheme) ?? .clear,

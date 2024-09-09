@@ -75,19 +75,22 @@ struct InputFieldsView: View {
       HStack {
         SUButton(model: .init {
           $0.title = "Hide keyboard"
-          $0.size = .medium.fullWidth
+          $0.size = .medium
+          $0.isFullWidth = true
         }) {
           self.isSelected = false
         }
         SUButton(model: .init {
           $0.title = "Clear text"
-          $0.size = .medium.fullWidth
+          $0.size = .medium
+          $0.isFullWidth = true
         }) {
           self.text = ""
         }
         SUButton(model: .init {
           $0.title = "Is secure"
-          $0.size = .medium.fullWidth
+          $0.size = .medium
+          $0.isFullWidth = true
         }) {
           self.inputFieldVM.isSecureInput.toggle()
         }

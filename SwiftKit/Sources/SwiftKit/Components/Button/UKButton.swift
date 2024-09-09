@@ -69,14 +69,12 @@ open class UKButton: UIView, UKComponent {
   // MARK: Layout
 
   func layout() {
-    self.titleLabelConstraints = self.titleLabel.pinToEdges(.all, insets: self.model.insets)
+    self.titleLabelConstraints = self.titleLabel.horizontally(self.model.horizontalPadding)
     self.titleLabel.centerVertically()
     self.titleLabel.centerHorizontally()
 
     self.titleLabelConstraints.leading?.priority = .defaultHigh
-    self.titleLabelConstraints.top?.priority = .defaultHigh
     self.titleLabelConstraints.trailing?.priority = .defaultHigh
-    self.titleLabelConstraints.bottom?.priority = .defaultHigh
   }
 
   open override func layoutSubviews() {
@@ -98,10 +96,9 @@ open class UKButton: UIView, UKComponent {
     self.backgroundColor = self.model.backgroundColor?.uiColor
     self.titleLabel.textColor = self.model.foregroundColor.uiColor
 
-    if self.model.shouldUpdateInsets(oldModel) {
-      self.titleLabelConstraints.updateInsets(self.model.insets)
-    }
     if self.model.shouldUpdateSize(oldModel) {
+      self.titleLabelConstraints.leading?.constant = self.model.horizontalPadding
+      self.titleLabelConstraints.trailing?.constant = -self.model.horizontalPadding
       self.invalidateIntrinsicContentSize()
       self.setNeedsLayout()
     }
