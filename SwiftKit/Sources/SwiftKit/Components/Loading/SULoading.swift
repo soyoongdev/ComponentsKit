@@ -41,7 +41,9 @@ public struct SULoading: View {
       )
       .rotationEffect(.radians(2 * .pi * 0.15))
       .onAppear {
-        self.startRotationAnimation()
+        if self.model.isAnimating {
+          self.startRotationAnimation()
+        }
       }
       .onChange(of: self.model.isAnimating) { isAnimating in
         if isAnimating {
@@ -56,15 +58,21 @@ public struct SULoading: View {
       }
   }
 
+  private func rotate() {
+    withAnimation {
+      self.rotationAngle += 40 * max(0, self.model.speed)
+    }
+  }
+
   private func startRotationAnimation() {
+    self.rotate()
+
     self.rotationAnimationTimer = Timer
       .publish(every: 0.1, on: .main, in: .common)
       .autoconnect()
       .receive(on: DispatchQueue.main)
       .sink { _ in
-        withAnimation {
-          self.rotationAngle += 40 * max(0, self.model.speed)
-        }
+        self.rotate()
       }
   }
 
