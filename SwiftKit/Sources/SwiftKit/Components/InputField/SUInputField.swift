@@ -1,20 +1,21 @@
 import SwiftUI
 
-public struct SUInputField: View {
+public struct SUInputField<FocusValue: Hashable>: View {
   // MARK: Properties
 
   private var model: InputFieldVM
   private var onValueChange: (String) -> Void
 
   @Binding public var text: String
-  @FocusState.Binding public var isSelected: Bool
+  @FocusState.Binding public var globalFocus: FocusValue
+  private var localFocus: FocusValue
 
   @Environment(\.colorScheme) private var colorScheme
 
   private var titlePosition: InputFieldTitlePosition {
     if self.model.placeholder.isNilOrEmpty,
        self.text.isEmpty,
-       !self.isSelected {
+       self.globalFocus != self.localFocus {
       return .center
     } else {
       return .top
@@ -25,12 +26,14 @@ public struct SUInputField: View {
 
   public init(
     text: Binding<String>,
-    isSelected: FocusState<Bool>.Binding,
+    globalFocus: FocusState<FocusValue>.Binding,
+    localFocus: FocusValue,
     model: InputFieldVM = .init(),
     onValueChange: @escaping (String) -> Void = { _ in }
   ) {
     self._text = text
-    self._isSelected = isSelected
+    self._globalFocus = globalFocus
+    self.localFocus = localFocus
     self.model = model
     self.onValueChange = onValueChange
   }
@@ -62,7 +65,7 @@ public struct SUInputField: View {
       }
         .font(self.model.font.font)
         .foregroundStyle(self.model.foregroundColor.color(for: self.colorScheme))
-        .focused(self.$isSelected)
+        .focused(self.$globalFocus, equals: self.localFocus)
         .disabled(!self.model.isEnabled)
         .keyboardType(self.model.keyboardType)
         .submitLabel(self.model.submitType.submitLabel)
@@ -73,7 +76,7 @@ public struct SUInputField: View {
     .padding(.horizontal, self.model.horizontalPadding)
     .background(self.model.backgroundColor.color(for: self.colorScheme))
     .onTapGesture {
-      self.isSelected = true
+      self.globalFocus = self.localFocus
     }
     .clipShape(
       RoundedRectangle(
@@ -83,8 +86,27 @@ public struct SUInputField: View {
     .onChange(of: self.text) { newValue in
       self.onValueChange(newValue)
     }
-    .onChange(of: self.isSelected) { _ in
-      // NOTE: Workaround to force `isSelected` value update properly
+    .onChange(of: self.globalFocus) { _ in
+      // NOTE: Workaround to force `globalFocus` value update properly
+      // Without this workaround the title position changes to `center`
+      // when the text is cleared
     }
+  }
+}
+
+// MARK: - Boolean Focus Value
+
+extension SUInputField where FocusValue == Bool {
+  public init(
+    text: Binding<String>,
+    isSelected: FocusState<Bool>.Binding,
+    model: InputFieldVM = .init(),
+    onValueChange: @escaping (String) -> Void = { _ in }
+  ) {
+    self._text = text
+    self._globalFocus = isSelected
+    self.localFocus = true
+    self.model = model
+    self.onValueChange = onValueChange
   }
 }

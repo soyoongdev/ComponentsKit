@@ -6,18 +6,20 @@ struct SwiftUILogin: View {
     case signIn
     case signUp
   }
+  enum Input {
+    case name
+    case email
+    case password
+  }
+
   @State private var selectedPage = Pages.signIn
 
   @State private var name = ""
   @State private var email = ""
   @State private var password = ""
 
-  @FocusState private var isNameFocused: Bool
-  @FocusState private var isEmailFocused: Bool
-  @FocusState private var isPasswordFocused: Bool
-
+  @FocusState private var focusedInput: Input?
   @State private var isConsented: Bool = false
-
   @State private var isLoading = false
 
   private var isButtonEnabled: Bool {
@@ -64,7 +66,8 @@ struct SwiftUILogin: View {
           if self.selectedPage == .signUp {
             SUInputField(
               text: self.$name,
-              isSelected: self.$isNameFocused,
+              globalFocus: self.$focusedInput,
+              localFocus: .name,
               model: .init {
                 $0.title = "Name"
                 $0.isRequired = true
@@ -74,7 +77,8 @@ struct SwiftUILogin: View {
           }
           SUInputField(
             text: self.$email,
-            isSelected: self.$isEmailFocused,
+            globalFocus: self.$focusedInput,
+            localFocus: .email,
             model: .init {
               $0.title = "Email"
               $0.isRequired = true
@@ -83,7 +87,8 @@ struct SwiftUILogin: View {
           )
           SUInputField(
             text: self.$password,
-            isSelected: self.$isPasswordFocused,
+            globalFocus: self.$focusedInput,
+            localFocus: .password,
             model: .init {
               $0.title = "Password"
               $0.isRequired = true
@@ -128,10 +133,13 @@ struct SwiftUILogin: View {
         .padding()
       }
     }
+    .onChange(of: self.selectedPage) { _, newValue in
+      if newValue == .signIn && self.focusedInput == .name {
+        self.focusedInput = .email
+      }
+    }
     .onTapGesture {
-      self.isNameFocused = false
-      self.isEmailFocused = false
-      self.isPasswordFocused = false
+      self.focusedInput = nil
     }
   }
 }
