@@ -1,13 +1,13 @@
 import SwiftUI
 import UIKit
 
-public struct SegmentedControlVM: ComponentVM {
+public struct SegmentedControlVM<ID: Hashable>: ComponentVM {
   public var color: ComponentColor?
   public var cornerRadius: ComponentRadius?
   public var font: Typography?
   public var isEnabled: Bool = true
   public var isFullWidth: Bool = false
-  public var items: [SegmentedControlItemVM] = []
+  public var items: [SegmentedControlItemVM<ID>] = []
   public var size: ComponentSize = .medium
 
   public init() {}
@@ -37,9 +37,12 @@ extension SegmentedControlVM {
       : SwiftKitConfig.shared.layout.disabledOpacity
     )
   }
-  func foregroundColor(index: Int, selectedIndex: Int) -> ThemeColor {
-    let isItemEnabled = self.items[safe: index]?.isEnabled == true
-    let isSelected = index == selectedIndex && isItemEnabled
+  func item(for id: ID) -> SegmentedControlItemVM<ID>? {
+    return self.items.first(where: { $0.id == id })
+  }
+  func foregroundColor(id: ID, selectedId: ID) -> ThemeColor {
+    let isItemEnabled = self.item(for: id)?.isEnabled == true
+    let isSelected = id == selectedId && isItemEnabled
     let defaultColor = ThemeColor(
       light: .rgba(r: 0, g: 0, b: 0, a: 1.0),
       dark: .rgba(r: 255, g: 255, b: 255, a: 1.0)
@@ -71,13 +74,6 @@ extension SegmentedControlVM {
     case .large: .large
     }
   }
-  var verticalInnerPaddings: CGFloat {
-    return switch self.size {
-    case .small: 8
-    case .medium: 12
-    case .large: 16
-    }
-  }
   var horizontalInnerPaddings: CGFloat? {
     guard !self.isFullWidth else {
       return 0
@@ -94,8 +90,15 @@ extension SegmentedControlVM {
   var width: CGFloat? {
     return self.isFullWidth ? 10_000 : nil
   }
-  func preferredFont(for index: Int) -> Typography {
-    if let itemFont = self.items[safe: index]?.font {
+  var height: CGFloat {
+    return switch self.size {
+    case .small: 36
+    case .medium: 50
+    case .large: 70
+    }
+  }
+  func preferredFont(for id: ID) -> Typography {
+    if let itemFont = self.item(for: id)?.font {
       return itemFont
     } else if let font {
       return font

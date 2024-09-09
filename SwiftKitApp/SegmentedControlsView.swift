@@ -52,17 +52,23 @@ private class Container: UIView {
 }
 
 struct SegmentedControlsView: View {
-  @State private var selectedIndex = 1
-  @State private var model = SegmentedControlVM {
+  enum Items {
+    case iPhone
+    case iPad
+    case mac
+  }
+
+  @State private var selectedId = Items.iPad
+  @State private var model = SegmentedControlVM<Items> {
     $0.items = [
-      .init {
+      .init(id: .iPhone) {
         $0.title = "iPhone"
 //        $0.isEnabled = false
       },
-      .init {
+      .init(id: .iPad) {
         $0.title = "iPad"
       },
-      .init {
+      .init(id: .mac) {
         $0.title = "Mackbook Pro"
       }
     ]
@@ -74,7 +80,7 @@ struct SegmentedControlsView: View {
 
   var body: some View {
     SUSegmentedControl(
-      selectedIndex: self.$selectedIndex,
+      selectedId: self.$selectedId,
       model: self.model
     )
     .padding()

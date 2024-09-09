@@ -1,65 +1,63 @@
 import SwiftUI
 
-public struct SUSegmentedControl: View {
-  private var model: SegmentedControlVM
+public struct SUSegmentedControl<ID: Hashable>: View {
+  private var model: SegmentedControlVM<ID>
 
   @Namespace private var animationNamespace
-  @Binding private var selectedIndex: Int
+  @Binding private var selectedId: ID
 
   @Environment(\.colorScheme) private var colorScheme
 
   public init(
-    selectedIndex: Binding<Int>,
-    model: SegmentedControlVM
+    selectedId: Binding<ID>,
+    model: SegmentedControlVM<ID>
   ) {
-    self._selectedIndex = selectedIndex
+    self._selectedId = selectedId
     self.model = model
   }
 
   public var body: some View {
     HStack(spacing: 0) {
-      ForEach(
-        Array(zip(self.model.items.indices, self.model.items)),
-        id: \.0,
-        content: { index, itemVM in
-          Text(itemVM.title)
-            .lineLimit(1)
-            .font(self.model.preferredFont(for: index).font)
-            .foregroundStyle(self.model
-              .foregroundColor(
-                index: index,
-                selectedIndex: self.selectedIndex
-              )
-              .color(for: self.colorScheme)
+      ForEach(self.model.items) { itemVM in
+        Text(itemVM.title)
+          .lineLimit(1)
+          .font(self.model.preferredFont(for: itemVM.id).font)
+          .foregroundStyle(self.model
+            .foregroundColor(
+              id: itemVM.id,
+              selectedId: self.selectedId
             )
-            .frame(maxWidth: self.model.width)
-            .padding(.vertical, self.model.verticalInnerPaddings)
-            .padding(.horizontal, self.model.horizontalInnerPaddings)
-            .contentShape(Rectangle())
-            .onTapGesture {
-              withAnimation(.spring()) {
-                self.selectedIndex = index
+              .color(for: self.colorScheme)
+          )
+          .frame(maxWidth: self.model.width, maxHeight: self.model.height)
+          .padding(.horizontal, self.model.horizontalInnerPaddings)
+          .contentShape(Rectangle())
+          .onTapGesture {
+            withAnimation(.spring()) {
+              self.selectedId = itemVM.id
+            }
+          }
+          .disabled(!itemVM.isEnabled)
+          .background(
+            ZStack {
+              if itemVM.isEnabled, self.selectedId == itemVM.id {
+                RoundedRectangle(
+                  cornerRadius: self.model.preferredCornerRadius.value()
+                )
+                .fill(self.model.selectedSegmentColor.color(
+                  for: self.colorScheme
+                ))
+                .matchedGeometryEffect(
+                  id: "segment",
+                  in: self.animationNamespace
+                )
               }
             }
-            .disabled(!itemVM.isEnabled)
-            .background(
-              ZStack {
-                if itemVM.isEnabled, self.selectedIndex == index {
-                  RoundedRectangle(
-                    cornerRadius: self.model.preferredCornerRadius.value()
-                  )
-                  .fill(self.model.selectedSegmentColor.color(for: self.colorScheme))
-                  .matchedGeometryEffect(
-                    id: "segment",
-                    in: self.animationNamespace
-                  )
-                }
-              }
-            )
-        }
-      )
+          )
+      }
     }
     .padding(.all, self.model.outerPaddings)
+    .frame(height: self.model.height)
     .background(self.model.backgroundColor.color(for: self.colorScheme))
     .clipShape(
       RoundedRectangle(cornerRadius: self.model.preferredCornerRadius.value())
