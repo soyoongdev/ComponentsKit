@@ -23,10 +23,8 @@ public struct SUButton: View {
       .lineLimit(1)
       .padding(.leading, self.model.horizontalPadding)
       .padding(.trailing, self.model.horizontalPadding)
-      .frame(
-        maxWidth: self.model.width,
-        maxHeight: self.model.height
-      )
+      .frame(maxWidth: self.model.width)
+      .frame(height: self.model.height)
       .foregroundStyle(self.model.foregroundColor.color(for: self.colorScheme))
       .background(
         GeometryReader { proxy in
