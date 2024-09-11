@@ -15,6 +15,7 @@ open class UKCheckbox: UIView, UKComponent {
     didSet {
       guard self.isSelected != oldValue else { return }
       self.updateSelection()
+      self.onValueChange(self.isSelected)
     }
   }
 
