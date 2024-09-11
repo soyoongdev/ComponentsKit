@@ -15,6 +15,16 @@ open class UKLoading: UIView, UKComponent {
     return self.sizeThatFits(UIView.layoutFittingExpandedSize)
   }
 
+  open override var isHidden: Bool {
+    didSet {
+      guard self.isHidden != oldValue else { return }
+      if !self.isHidden && self.model.isAnimating {
+        self.addSpinnerAnimation()
+        self.resumeAnimation()
+      }
+    }
+  }
+
   // MARK: Layers
 
   private lazy var shapeLayer = CAShapeLayer()
