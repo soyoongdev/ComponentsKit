@@ -33,7 +33,7 @@ public struct SUSegmentedControl<ID: Hashable>: View {
           .padding(.horizontal, self.model.horizontalInnerPaddings)
           .contentShape(Rectangle())
           .onTapGesture {
-            withAnimation(.spring()) {
+            withAnimation(.easeInOut(duration: 0.3)) {
               self.selectedId = itemVM.id
             }
           }

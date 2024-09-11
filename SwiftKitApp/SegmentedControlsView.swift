@@ -3,51 +3,62 @@ import SwiftUI
 import UIKit
 
 private class Container: UIView {
-  let inputField = UKInputField(
-    initialText: "",
+  enum Items {
+    case iPhone
+    case iPad
+    case mac
+    case watch
+  }
+
+  let segmentedControl = UKSegmentedControl<Items>(
+    selectedId: .iPhone,
     model: .init {
-      $0.title = "Email"
-//      $0.placeholder = "Input your email"
-      $0.keyboardType = .emailAddress
-      $0.submitType = .next
-      $0.isRequired = true
+      $0.items = [
+        .init(id: .iPhone) {
+          $0.title = "iPhone"
+        },
+        .init(id: .iPad) {
+          $0.title = "iPad"
+        },
+        .init(id: .mac) {
+          $0.title = "Mackbook"
+        }
+      ]
+//      $0.isFullWidth = true
+      $0.color = .accent
+      $0.size = .medium
     }
   )
-  let clearTextButton = UKButton(
-    model: .init {
-      $0.title = "Clear text"
-    }
-  )
+  let button = UKButton(model: .init {
+    $0.title = "toggle width"
+  })
 
   override init(frame: CGRect) {
     super.init(frame: frame)
 
-    self.addSubview(self.inputField)
-    self.addSubview(self.clearTextButton)
-
-    self.inputField.centerVertically(-50)
-    self.inputField.horizontally(20)
-
-    self.clearTextButton.below(of: self.inputField, padding: 20)
-    self.clearTextButton.horizontally(20)
-
-    self.clearTextButton.action = {
-      self.inputField.text = ""
+    self.button.action = {
+      self.segmentedControl.model.update {
+        $0.isFullWidth.toggle()
+      }
     }
 
-    self.inputField.onValueChange = { text in
-      print("Text: \(text)")
-    }
+    self.addSubview(self.segmentedControl)
+    self.addSubview(self.button)
 
-    self.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.handleTap)))
+    self.segmentedControl.centerVertically(-50)
+    self.segmentedControl.centerHorizontally()
+
+    self.button.below(of: self.segmentedControl, padding: 20)
+    self.button.centerHorizontally()
+//    self.segmentedControl.horizontally(20)
+
+    self.segmentedControl.onSelectionChange = { id in
+      print("Value: \(id)")
+    }
   }
 
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
-  }
-
-  @objc private func handleTap() {
-    self.inputField.isSelected = false
   }
 }
 
@@ -58,7 +69,7 @@ struct SegmentedControlsView: View {
     case mac
   }
 
-  @State private var selectedId = Items.iPad
+  @State private var selectedId = Items.mac
   @State private var model = SegmentedControlVM<Items> {
     $0.items = [
       .init(id: .iPhone) {
@@ -72,22 +83,22 @@ struct SegmentedControlsView: View {
         $0.title = "Mackbook Pro"
       }
     ]
-    $0.color = .success
+    $0.color = .accent
     $0.size = .medium
 //    $0.isFullWidth = true
 //    $0.isEnabled = false
   }
 
   var body: some View {
-    SUSegmentedControl(
-      selectedId: self.$selectedId,
-      model: self.model
-    )
-    .padding()
+//    SUSegmentedControl(
+//      selectedId: self.$selectedId,
+//      model: self.model
+//    )
+//    .padding()
 
-//    UIViewRepresenting {
-//      Container()
-//    }
+    UIViewRepresenting {
+      Container()
+    }
   }
 }
 

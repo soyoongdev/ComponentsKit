@@ -7,7 +7,13 @@ public struct SegmentedControlVM<ID: Hashable>: ComponentVM {
   public var font: Typography?
   public var isEnabled: Bool = true
   public var isFullWidth: Bool = false
-  public var items: [SegmentedControlItemVM<ID>] = []
+  public var items: [SegmentedControlItemVM<ID>] = [] {
+    didSet {
+      if let duplicatedId {
+        assertionFailure("Items should have unique ids! Duplicated id: \(duplicatedId)")
+      }
+    }
+  }
   public var size: ComponentSize = .medium
 
   public init() {}
@@ -112,5 +118,31 @@ extension SegmentedControlVM {
     case .large:
       return Typography.Component.large
     }
+  }
+}
+
+// MARK: - UIKit Helpers
+
+extension SegmentedControlVM {
+  func shouldUpdateLayout(_ oldModel: Self) -> Bool {
+    return self.items != oldModel.items
+    || self.size != oldModel.size
+    || self.isFullWidth != oldModel.isFullWidth
+    || self.font != oldModel.font
+  }
+}
+
+// MARK: - Validation
+
+extension SegmentedControlVM {
+  private var duplicatedId: ID? {
+    var dict: [ID: Bool] = [:]
+    for item in self.items {
+      if dict[item.id].isNotNil {
+        return item.id
+      }
+      dict[item.id] = true
+    }
+    return nil
   }
 }
