@@ -29,6 +29,11 @@ struct AppView: View {
           NavigationLink("SwiftUI Login") {
             SwiftUILogin()
           }
+          NavigationLink("UIKit Login") {
+            UIViewControllerRepresenting {
+              UIKitLogin()
+            }
+          }
         }
       }
       .navigationTitle("SwiftKit")

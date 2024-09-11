@@ -1,7 +1,7 @@
 import UIKit
 import SwiftUI
 
-struct UIViewRepresenting<View>: UIViewRepresentable where View: UIView {
+struct UIViewRepresenting<View: UIView>: UIViewRepresentable {
   private let view: View
 
   init(_ view: () -> View) {

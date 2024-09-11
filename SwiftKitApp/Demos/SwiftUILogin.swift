@@ -97,16 +97,13 @@ struct SwiftUILogin: View {
             }
           )
 
-          HStack {
-            SUCheckbox(
-              isSelected: self.$isConsented,
-              model: .init {
-                $0.title = "By continuing, you accept our Terms of Service and Privacy Policy"
-                $0.isEnabled = !self.isLoading
-              }
-            )
-            Spacer()
-          }
+          SUCheckbox(
+            isSelected: self.$isConsented,
+            model: .init {
+              $0.title = "By continuing, you accept our Terms of Service and Privacy Policy"
+              $0.isEnabled = !self.isLoading
+            }
+          )
 
           Group {
             if self.isLoading {
