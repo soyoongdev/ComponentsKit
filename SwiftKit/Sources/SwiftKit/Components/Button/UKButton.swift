@@ -13,7 +13,7 @@ open class UKButton: UIView, UKComponent {
 
   public var isHighlighted: Bool = false {
     didSet {
-      self.transform = self.isHighlighted
+      self.transform = self.isHighlighted && self.model.isEnabled
       ? .init(
         scaleX: self.model.animationScale.value,
         y: self.model.animationScale.value
