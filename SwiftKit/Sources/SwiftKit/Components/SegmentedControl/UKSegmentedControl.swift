@@ -22,9 +22,9 @@ open class UKSegmentedControl<ID: Hashable>: UIView, UKComponent {
 
   // MARK: Subviews
 
-  public var container = UIView()
+  public let container = UIView()
   public var segments: [Segment] = []
-  public var selectedSegment = UIView()
+  public let selectedSegment = UIView()
 
   // MARK: UIView Properties
 
@@ -48,7 +48,8 @@ open class UKSegmentedControl<ID: Hashable>: UIView, UKComponent {
     self.setup()
     self.style()
     self.layout()
-    self.update(model)
+    // TODO: [1] Remove update from inits & do not update when no changes
+//    self.update(model)
   }
 
   public required init?(coder: NSCoder) {
@@ -67,12 +68,6 @@ open class UKSegmentedControl<ID: Hashable>: UIView, UKComponent {
   private func setupSegments() {
     self.model.items.forEach { itemVM in
       let segment = Segment(id: itemVM.id)
-      segment.addGestureRecognizer(
-        UITapGestureRecognizer(
-          target: self,
-          action: #selector(self.handleSegmentTap)
-        )
-      )
       self.segments.append(segment)
       self.container.addSubview(segment)
     }
@@ -168,6 +163,7 @@ open class UKSegmentedControl<ID: Hashable>: UIView, UKComponent {
   // MARK: Update
 
   public func update(_ oldModel: SegmentedControlVM<ID>) {
+    guard self.model != oldModel else { return }
     if self.model.shouldUpdateLayout(oldModel) {
       self.segments.forEach { segment in
         segment.removeFromSuperview()
@@ -206,6 +202,24 @@ open class UKSegmentedControl<ID: Hashable>: UIView, UKComponent {
     )
   }
 
+  open override func touchesEnded(
+    _ touches: Set<UITouch>,
+    with event: UIEvent?
+  ) {
+    super.touchesEnded(touches, with: event)
+
+    self.handleSegmentTap(touches, with: event)
+  }
+
+  open override func touchesCancelled(
+    _ touches: Set<UITouch>,
+    with event: UIEvent?
+  ) {
+    super.touchesCancelled(touches, with: event)
+
+    self.handleSegmentTap(touches, with: event)
+  }
+
   // MARK: Helpers
 
   private func segment(for id: ID) -> Segment? {
@@ -214,8 +228,14 @@ open class UKSegmentedControl<ID: Hashable>: UIView, UKComponent {
     }
   }
 
-  @objc private func handleSegmentTap(sender: UITapGestureRecognizer) {
-    guard let segment = sender.view as? Segment,
+  @objc private func handleSegmentTap(
+    _ touches: Set<UITouch>,
+    with event: UIEvent?
+  ) {
+    guard let touch = touches.first,
+          let segment = self.segments.first(where: { segment in
+            segment.bounds.contains(touch.location(in: segment))
+          }),
           self.selectedId != segment.id,
           let currentlySelectedSegment = self.segment(for: self.selectedId)
     else {
@@ -231,7 +251,6 @@ open class UKSegmentedControl<ID: Hashable>: UIView, UKComponent {
       options: [.curveEaseInOut],
       animations: {
         self.layoutIfNeeded()
-
       }
     )
     UIView.transition(
