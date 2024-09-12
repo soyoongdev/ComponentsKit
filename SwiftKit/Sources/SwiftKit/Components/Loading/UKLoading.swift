@@ -18,9 +18,15 @@ open class UKLoading: UIView, UKComponent {
   open override var isHidden: Bool {
     didSet {
       guard self.isHidden != oldValue else { return }
-      if !self.isHidden && self.model.isAnimating {
+
+      if self.isHidden {
+        self.pauseAnimation()
+      } else {
         self.addSpinnerAnimation()
         self.resumeAnimation()
+      }
+      if !self.model.isAnimating {
+        self.pauseAnimation()
       }
     }
   }

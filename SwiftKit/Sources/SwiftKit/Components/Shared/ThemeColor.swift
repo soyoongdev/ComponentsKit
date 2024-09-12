@@ -73,8 +73,8 @@ public struct ThemeColor: Equatable {
 
   // MARK: Properties
 
-  public let light: ColorRepresentable
-  public let dark: ColorRepresentable
+  let light: ColorRepresentable
+  let dark: ColorRepresentable
 
   // MARK: Initialization
 

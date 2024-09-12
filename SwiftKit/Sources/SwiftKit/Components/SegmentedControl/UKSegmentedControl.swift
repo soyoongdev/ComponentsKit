@@ -102,7 +102,7 @@ open class UKSegmentedControl<ID: Hashable>: UIView, UKComponent {
 
     self.layoutSegments()
     self.updateSelectedSegmentLayout()
-    
+
     self.cover.pinToEdges()
   }
 

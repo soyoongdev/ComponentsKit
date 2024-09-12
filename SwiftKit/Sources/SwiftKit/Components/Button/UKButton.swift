@@ -57,6 +57,12 @@ open class UKButton: UIView, UKComponent {
 
   func setup() {
     self.addSubview(self.titleLabel)
+
+    if #available(iOS 17.0, *) {
+      self.registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (view: Self, _: UITraitCollection) in
+        view.handleTraitChanges()
+      }
+    }
   }
 
   // MARK: Style
@@ -153,10 +159,17 @@ open class UKButton: UIView, UKComponent {
     }
   }
 
+  open override func traitCollectionDidChange(
+    _ previousTraitCollection: UITraitCollection?
+  ) {
+    super.traitCollectionDidChange(previousTraitCollection)
+    self.handleTraitChanges()
+  }
+
   // MARK: Helpers
 
   @objc open func handleTraitChanges() {
-
+    self.layer.borderColor = self.model.borderColor?.uiColor.cgColor
   }
 }
 

@@ -63,6 +63,12 @@ open class UKCheckbox: UIView, UKComponent {
     self.checkboxContainer.layer.addSublayer(self.checkmarkLayer)
 
     self.setupCheckmarkLayer()
+
+    if #available(iOS 17.0, *) {
+      self.registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (view: Self, _: UITraitCollection) in
+        view.handleTraitChanges()
+      }
+    }
   }
 
   private func setupCheckmarkLayer() {
@@ -137,11 +143,7 @@ open class UKCheckbox: UIView, UKComponent {
   ) {
     super.touchesEnded(touches, with: event)
 
-    if self.model.isEnabled,
-       let location = touches.first?.location(in: self),
-       self.bounds.contains(location) {
-      self.isSelected.toggle()
-    }
+    self.handleCheckboxTap(touches, with: event)
   }
 
   open override func touchesCancelled(
@@ -150,14 +152,28 @@ open class UKCheckbox: UIView, UKComponent {
   ) {
     super.touchesCancelled(touches, with: event)
 
+    self.handleCheckboxTap(touches, with: event)
+  }
+
+  open override func traitCollectionDidChange(
+    _ previousTraitCollection: UITraitCollection?
+  ) {
+    super.traitCollectionDidChange(previousTraitCollection)
+    self.handleTraitChanges()
+  }
+
+  // MARK: Helpers
+
+  private func handleCheckboxTap(
+    _ touches: Set<UITouch>,
+    with event: UIEvent?
+  ) {
     if self.model.isEnabled,
        let location = touches.first?.location(in: self),
        self.bounds.contains(location) {
       self.isSelected.toggle()
     }
   }
-
-  // MARK: Helpers
 
   private func animateSelection() {
     UIView.animate(
@@ -209,7 +225,9 @@ open class UKCheckbox: UIView, UKComponent {
   }
 
   @objc open func handleTraitChanges() {
-
+    self.checkboxContainer.layer.borderColor = self.isSelected
+    ? UIColor.clear.cgColor
+    : self.model.borderColor.uiColor.cgColor
   }
 }
 
