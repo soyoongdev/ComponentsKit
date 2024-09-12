@@ -104,7 +104,10 @@ open class UKButton: UIView, UKComponent {
 
   open override func sizeThatFits(_ size: CGSize) -> CGSize {
     let contentSize = self.titleLabel.sizeThatFits(size)
-    let preferredSize = self.model.preferredSize(for: contentSize)
+    let preferredSize = self.model.preferredSize(
+      for: contentSize,
+      parentWidth: self.superview?.bounds.width
+    )
     return .init(
       width: min(preferredSize.width, size.width),
       height: min(preferredSize.height, size.height)

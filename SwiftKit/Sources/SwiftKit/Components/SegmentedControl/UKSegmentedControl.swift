@@ -187,7 +187,11 @@ open class UKSegmentedControl<ID: Hashable>: UIView, UKComponent {
     var width: CGFloat
 
     if self.model.isFullWidth {
-      width = self.superview?.bounds.width ?? 10_000
+      if let parentWidth = self.superview?.bounds.width, parentWidth > 0 {
+        width = parentWidth
+      } else {
+        width = 10_000
+      }
     } else {
       width = self.segments.reduce(into: 0) { result, label in
         result += label.sizeThatFits(UIView.layoutFittingExpandedSize).width + 2 * (self.model.horizontalInnerPaddings ?? 0)

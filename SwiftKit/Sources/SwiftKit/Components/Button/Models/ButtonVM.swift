@@ -89,8 +89,20 @@ extension ButtonVM {
 // MARK: UIKit Helpers
 
 extension ButtonVM {
-  func preferredSize(for contentSize: CGSize) -> CGSize {
-    let width = self.width ?? contentSize.width + 2 * self.horizontalPadding
+  func preferredSize(
+    for contentSize: CGSize,
+    parentWidth: CGFloat?
+  ) -> CGSize {
+    let width: CGFloat
+    if self.isFullWidth {
+      if let parentWidth, parentWidth > 0 {
+        width = parentWidth
+      } else {
+        width = 10_000
+      }
+    } else {
+      width = contentSize.width + 2 * self.horizontalPadding
+    }
 
     return .init(width: width, height: self.height)
   }
