@@ -25,6 +25,10 @@ open class UKSegmentedControl<ID: Hashable>: UIView, UKComponent {
   public let container = UIView()
   public var segments: [Segment] = []
   public let selectedSegment = UIView()
+  // NOTE: During transition animations, segments are not interactive.
+  // The `cover` is placed above all segments to continue receiving
+  // interaction events from the user during the transition animations.
+  private let cover = UIView()
 
   // MARK: UIView Properties
 
@@ -59,8 +63,8 @@ open class UKSegmentedControl<ID: Hashable>: UIView, UKComponent {
   func setup() {
     self.addSubview(self.container)
     self.container.addSubview(self.selectedSegment)
-
     self.setupSegments()
+    self.addSubview(self.cover)
   }
 
   private func setupSegments() {
@@ -98,6 +102,8 @@ open class UKSegmentedControl<ID: Hashable>: UIView, UKComponent {
 
     self.layoutSegments()
     self.updateSelectedSegmentLayout()
+    
+    self.cover.pinToEdges()
   }
 
   private func layoutSegments() {
@@ -173,6 +179,7 @@ open class UKSegmentedControl<ID: Hashable>: UIView, UKComponent {
       self.styleSegments()
       self.layoutSegments()
       self.updateSelectedSegmentLayout()
+      self.container.bringSubviewToFront(self.cover)
 
       self.setNeedsLayout()
       self.invalidateIntrinsicContentSize()
