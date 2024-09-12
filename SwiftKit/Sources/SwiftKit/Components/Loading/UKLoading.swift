@@ -36,7 +36,6 @@ open class UKLoading: UIView, UKComponent {
     super.init(frame: .zero)
 
     self.setup()
-    self.update(self.model)
   }
 
   public required init?(coder: NSCoder) {
@@ -78,9 +77,9 @@ open class UKLoading: UIView, UKComponent {
   }
 
   private func setupLayer() {
+    self.shapeLayer.lineWidth = self.model.loadingLineWidth
     self.shapeLayer.strokeColor = self.model.color.main.uiColor.cgColor
     self.shapeLayer.fillColor = UIColor.clear.cgColor
-    self.shapeLayer.lineWidth = 6.0
     self.shapeLayer.lineCap = .round
     self.shapeLayer.strokeEnd = 0.75
   }
@@ -102,8 +101,9 @@ open class UKLoading: UIView, UKComponent {
   // MARK: Update
 
   public func update(_ oldModel: LoadingVM) {
+    guard self.model != oldModel else { return }
+
     self.shapeLayer.lineWidth = self.model.loadingLineWidth
-    self.shapeLayer.strokeColor = self.model.color.main.uiColor.cgColor
 
     if self.model.shouldStartAnimating(oldModel) {
       self.resumeAnimation()
@@ -191,6 +191,6 @@ open class UKLoading: UIView, UKComponent {
   }
 
   private func handleTraitChanges() {
-    self.update(self.model)
+    self.shapeLayer.strokeColor = self.model.color.main.uiColor.cgColor
   }
 }

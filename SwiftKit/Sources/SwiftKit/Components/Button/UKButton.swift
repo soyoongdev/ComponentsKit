@@ -47,7 +47,6 @@ open class UKButton: UIView, UKComponent {
     self.setup()
     self.style()
     self.layout()
-    self.update(model)
   }
 
   public required init?(coder: NSCoder) {
@@ -63,7 +62,8 @@ open class UKButton: UIView, UKComponent {
   // MARK: Style
 
   func style() {
-    Self.Style.titleLabel(self.titleLabel)
+    Self.Style.mainView(self, model: self.model)
+    Self.Style.titleLabel(self.titleLabel, model: self.model)
   }
 
   // MARK: Layout
@@ -86,15 +86,11 @@ open class UKButton: UIView, UKComponent {
   // MARK: Update
 
   public func update(_ oldModel: ButtonVM) {
+    guard self.model != oldModel else { return }
+
     self.layer.cornerRadius = self.model.cornerRadius.value(for: self.bounds.height)
 
-    self.titleLabel.text = self.model.title
-    self.titleLabel.font = self.model.preferredFont.uiFont
-
-    self.layer.borderWidth = self.model.borderWidth
-    self.layer.borderColor = self.model.borderColor?.uiColor.cgColor
-    self.backgroundColor = self.model.backgroundColor?.uiColor
-    self.titleLabel.textColor = self.model.foregroundColor.uiColor
+    self.style()
 
     if self.model.shouldUpdateSize(oldModel) {
       self.titleLabelConstraints.leading?.constant = self.model.horizontalPadding
@@ -165,8 +161,16 @@ open class UKButton: UIView, UKComponent {
 
 extension UKButton {
   fileprivate enum Style {
-    static func titleLabel(_ label: UILabel) {
+    static func mainView(_ view: UIView, model: Model) {
+      view.layer.borderWidth = model.borderWidth
+      view.layer.borderColor = model.borderColor?.uiColor.cgColor
+      view.backgroundColor = model.backgroundColor?.uiColor
+    }
+    static func titleLabel(_ label: UILabel, model: Model) {
       label.textAlignment = .center
+      label.text = model.title
+      label.font = model.preferredFont.uiFont
+      label.textColor = model.foregroundColor.uiColor
     }
   }
 }

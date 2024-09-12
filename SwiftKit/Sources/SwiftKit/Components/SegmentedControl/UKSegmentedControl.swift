@@ -48,8 +48,6 @@ open class UKSegmentedControl<ID: Hashable>: UIView, UKComponent {
     self.setup()
     self.style()
     self.layout()
-    // TODO: [1] Remove update from inits & do not update when no changes
-//    self.update(model)
   }
 
   public required init?(coder: NSCoder) {
@@ -164,6 +162,7 @@ open class UKSegmentedControl<ID: Hashable>: UIView, UKComponent {
 
   public func update(_ oldModel: SegmentedControlVM<ID>) {
     guard self.model != oldModel else { return }
+
     if self.model.shouldUpdateLayout(oldModel) {
       self.segments.forEach { segment in
         segment.removeFromSuperview()

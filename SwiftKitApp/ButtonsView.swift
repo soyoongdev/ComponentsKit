@@ -45,13 +45,11 @@ struct ButtonsView: View {
     $0.cornerRadius = .full
   }
 
-//  var body: some View {
-//    UIViewRepresenting {
-//      Container()
-//    }
-//  }
-
   var body: some View {
+    UIViewRepresenting {
+      Container()
+    }
+
     SUButton(model: .init {
       $0.title = "Toggle"
       $0.animationScale = .medium

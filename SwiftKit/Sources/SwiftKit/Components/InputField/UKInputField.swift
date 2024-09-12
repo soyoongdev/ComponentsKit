@@ -83,7 +83,6 @@ open class UKInputField: UIView, UKComponent {
     self.setup()
     self.style()
     self.layout()
-    self.update(model)
   }
 
   public required init?(coder: NSCoder) {
@@ -151,6 +150,8 @@ open class UKInputField: UIView, UKComponent {
   // MARK: Update
 
   public func update(_ oldModel: InputFieldVM) {
+    guard self.model != oldModel else { return }
+
     self.titlePosition = Self.getTitlePosition(
       isSelected: self.inputField.isFirstResponder,
       hasText: self.text.isNotEmpty,

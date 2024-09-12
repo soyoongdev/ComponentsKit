@@ -100,9 +100,6 @@ extension CheckboxVM {
 // MARK: UIKit Helpers
 
 extension CheckboxVM {
-  func shouldUpdateBorderColor(_ oldModel: Self) -> Bool {
-    return self.isEnabled != oldModel.isEnabled
-  }
   func shouldAddLabel(_ oldModel: Self) -> Bool {
     return self.title.isNotNilAndEmpty != oldModel.title.isNil
   }

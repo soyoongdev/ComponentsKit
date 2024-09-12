@@ -44,7 +44,6 @@ open class UKCheckbox: UIView, UKComponent {
     self.setup()
     self.style()
     self.layout()
-    self.update(model)
   }
 
   public required init?(coder: NSCoder) {
@@ -83,8 +82,11 @@ open class UKCheckbox: UIView, UKComponent {
   // MARK: Style
 
   func style() {
-    Self.Style.titleLabel(self.titleLabel)
     Self.Style.stackView(self.stackView)
+    Self.Style.titleLabel(self.titleLabel, model: self.model)
+    Self.Style.checkboxContainer(self.checkboxContainer, model: self.model)
+    Self.Style.checkboxBackground(self.checkboxBackground, model: self.model)
+    Self.Style.checkmarkLayer(self.checkmarkLayer, model: self.model)
 
     self.checkboxBackground.alpha = self.isSelected ? 1.0 : 0.0
     self.checkboxContainer.layer.borderColor = self.isSelected
@@ -104,23 +106,10 @@ open class UKCheckbox: UIView, UKComponent {
   // MARK: Update
 
   public func update(_ oldModel: CheckboxVM) {
-    self.checkboxContainer.layer.cornerRadius = self.model.checkboxCornerRadius
-    self.checkboxBackground.layer.cornerRadius = self.model.checkboxCornerRadius
+    guard self.model != oldModel else { return }
 
-    self.titleLabel.text = self.model.title
-    self.titleLabel.textColor = self.model.titleColor.uiColor
-    self.titleLabel.font = self.model.titleFont.uiFont
+    self.style()
 
-    self.checkmarkLayer.strokeColor = self.model.foregroundColor.uiColor.cgColor
-    self.checkmarkLayer.lineWidth = self.model.checkmarkLineWidth
-
-    self.checkboxContainer.layer.borderWidth = self.model.borderWidth
-
-    self.checkboxBackground.backgroundColor = self.model.backgroundColor.uiColor
-
-    if self.model.shouldUpdateBorderColor(oldModel) && !self.isSelected {
-      self.checkboxContainer.layer.borderColor = self.model.borderColor.uiColor.cgColor
-    }
     if self.model.shouldAddLabel(oldModel) {
       self.stackView.addArrangedSubview(self.titleLabel)
       self.setNeedsLayout()
@@ -228,15 +217,30 @@ open class UKCheckbox: UIView, UKComponent {
 
 extension UKCheckbox {
   fileprivate enum Style {
-    static func titleLabel(_ label: UILabel) {
-      label.textColor = Palette.Text.primary.uiColor
-      label.numberOfLines = 0
-    }
-
     static func stackView(_ stackView: UIStackView) {
       stackView.axis = .horizontal
       stackView.spacing = 8
       stackView.alignment = .center
+    }
+    static func titleLabel(_ label: UILabel, model: Model) {
+      label.textColor = Palette.Text.primary.uiColor
+      label.numberOfLines = 0
+      label.text = model.title
+      label.textColor = model.titleColor.uiColor
+      label.font = model.titleFont.uiFont
+    }
+    static func checkboxContainer(_ view: UIView, model: Model) {
+      view.layer.cornerRadius = model.checkboxCornerRadius
+      view.layer.borderWidth = model.borderWidth
+      view.layer.borderColor = model.borderColor.uiColor.cgColor
+    }
+    static func checkboxBackground(_ view: UIView, model: Model) {
+      view.layer.cornerRadius = model.checkboxCornerRadius
+      view.backgroundColor = model.backgroundColor.uiColor
+    }
+    static func checkmarkLayer(_ layer: CAShapeLayer, model: Model) {
+      layer.strokeColor = model.foregroundColor.uiColor.cgColor
+      layer.lineWidth = model.checkmarkLineWidth
     }
   }
 }
