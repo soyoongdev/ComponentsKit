@@ -2,14 +2,17 @@ import SwiftUI
 import UIKit
 
 public struct InputFieldVM: ComponentVM {
+  public var autocapitalization: InputFieldTextAutocapitalization = .sentences
   public var color: ComponentColor?
   public var cornerRadius: ComponentRadius = .medium
-  public var font: Typography = Typography.Component.medium
+  public var font: Typography?
+  public var isAutocorrectionEnabled: Bool = true
   public var isEnabled: Bool = true
   public var isRequired: Bool = false
   public var isSecureInput: Bool = false
   public var keyboardType: UIKeyboardType = .default
   public var placeholder: String?
+  public var size: ComponentSize = .medium
   public var submitType: SubmitType = .return
   public var tintColor: ThemeColor = .accent
   public var title: String = ""
@@ -20,6 +23,20 @@ public struct InputFieldVM: ComponentVM {
 // MARK: - Shared Helpers
 
 extension InputFieldVM {
+  var preferredFont: Typography {
+    if let font {
+      return font
+    }
+
+    switch self.size {
+    case .small:
+      return Typography.Component.medium
+    case .medium:
+      return Typography.Component.medium
+    case .large:
+      return Typography.Component.large
+    }
+  }
   var horizontalPadding: CGFloat {
     switch self.cornerRadius {
     case .none, .small, .medium, .large, .custom:
@@ -61,10 +78,44 @@ extension InputFieldVM {
   func titleFont(for position: InputFieldTitlePosition) -> Typography {
     switch position {
     case .top:
-      return self.font.withRelativeSize(-2)
+      return self.preferredFont.withRelativeSize(-1)
     case .center:
-      return self.font.withRelativeSize(2)
+      let relativePadding: CGFloat = switch self.size {
+      case .small: 1.5
+      case .medium: 2
+      case .large: 3
+      }
+      return self.preferredFont.withRelativeSize(relativePadding)
     }
+  }
+}
+
+// MARK: - Layout Helpers
+
+extension InputFieldVM {
+  var inputFieldTopPadding: CGFloat {
+    switch self.size {
+    case .small: 30
+    case .medium: 34
+    case .large: 38
+    }
+  }
+  var inputFieldHeight: CGFloat {
+    switch self.size {
+    case .small: 26
+    case .medium: 28
+    case .large: 30
+    }
+  }
+  var verticalPadding: CGFloat {
+    switch self.size {
+    case .small: 12
+    case .medium: 14
+    case .large: 16
+    }
+  }
+  var height: CGFloat {
+    return self.inputFieldHeight + self.inputFieldTopPadding + self.verticalPadding
   }
 }
 
@@ -76,7 +127,7 @@ extension InputFieldVM {
       return nil
     }
     return NSAttributedString(string: placeholder, attributes: [
-      .font: self.font.uiFont,
+      .font: self.preferredFont.uiFont,
       .foregroundColor: self.placeholderColor.uiColor
     ])
   }
@@ -99,7 +150,7 @@ extension InputFieldVM {
       attributedString.append(NSAttributedString(
         string: "*",
         attributes: [
-          .font: self.titleFont(for: position).withRelativeSize(2).uiFont,
+          .font: self.titleFont(for: position).uiFont,
           .foregroundColor: ThemeColor.danger.uiColor
         ]
       ))
@@ -107,13 +158,17 @@ extension InputFieldVM {
     return attributedString
   }
   func shouldUpdateLayout(_ oldModel: Self) -> Bool {
-    return self.horizontalPadding != oldModel.horizontalPadding
+    return self.size != oldModel.size
+    || self.horizontalPadding != oldModel.horizontalPadding
   }
 }
 
 // MARK: - UIKit Helpers
 
 extension InputFieldVM {
+  var autocorrectionType: UITextAutocorrectionType {
+    return self.isAutocorrectionEnabled ? .yes : .no
+  }
   func attributedTitle(
     for position: InputFieldTitlePosition
   ) -> AttributedString {
@@ -130,7 +185,7 @@ extension InputFieldVM {
       attributedString.append(space)
 
       var requiredSign = AttributedString("*")
-      requiredSign.font = self.titleFont(for: position).withRelativeSize(2).font
+      requiredSign.font = self.titleFont(for: position).font
       requiredSign.foregroundColor = ThemeColor.danger.uiColor
       attributedString.append(requiredSign)
     }

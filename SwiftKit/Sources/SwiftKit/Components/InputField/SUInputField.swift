@@ -41,15 +41,20 @@ public struct SUInputField<FocusValue: Hashable>: View {
   // MARK: Body
 
   public var body: some View {
-    ZStack {
-      HStack {
-        Text(self.model.attributedTitle(for: self.titlePosition))
-          .font(self.model.titleFont(for: self.titlePosition).font)
-          .foregroundStyle(self.model.titleColor(for: self.titlePosition).color(for: self.colorScheme))
-          .padding(.bottom, self.titlePosition == .top ? 34 : 0)
-          .animation(.linear(duration: 0.1), value: self.titlePosition)
-        Spacer()
-      }
+    ZStack(alignment: Alignment(
+      horizontal: .leading,
+      vertical: self.titlePosition == .top ? .top : .center
+    )) {
+      Text(self.model.attributedTitle(for: self.titlePosition))
+        .font(self.model.titleFont(for: self.titlePosition).font)
+        .foregroundStyle(
+          self.model
+            .titleColor(for: self.titlePosition)
+            .color(for: self.colorScheme)
+        )
+        .padding(.top, self.titlePosition == .top ? self.model.verticalPadding : 0)
+        .animation(.linear(duration: 0.1), value: self.titlePosition)
+
       Group {
         if self.model.isSecureInput {
           SecureField(text: self.$text, label: {
@@ -63,15 +68,17 @@ public struct SUInputField<FocusValue: Hashable>: View {
           })
         }
       }
-        .font(self.model.font.font)
-        .foregroundStyle(self.model.foregroundColor.color(for: self.colorScheme))
-        .focused(self.$globalFocus, equals: self.localFocus)
-        .disabled(!self.model.isEnabled)
-        .keyboardType(self.model.keyboardType)
-        .submitLabel(self.model.submitType.submitLabel)
-        .frame(height: 30)
-        .padding(.bottom, 12)
-        .padding(.top, 36)
+      .font(self.model.preferredFont.font)
+      .foregroundStyle(self.model.foregroundColor.color(for: self.colorScheme))
+      .focused(self.$globalFocus, equals: self.localFocus)
+      .disabled(!self.model.isEnabled)
+      .keyboardType(self.model.keyboardType)
+      .submitLabel(self.model.submitType.submitLabel)
+      .autocorrectionDisabled(!self.model.isAutocorrectionEnabled)
+      .textInputAutocapitalization(self.model.autocapitalization.textInputAutocapitalization)
+      .frame(height: self.model.inputFieldHeight)
+      .padding(.bottom, self.model.verticalPadding)
+      .padding(.top, self.model.inputFieldTopPadding)
     }
     .padding(.horizontal, self.model.horizontalPadding)
     .background(self.model.backgroundColor.color(for: self.colorScheme))
@@ -80,7 +87,7 @@ public struct SUInputField<FocusValue: Hashable>: View {
     }
     .clipShape(
       RoundedRectangle(
-        cornerRadius: self.model.cornerRadius.value(for: 78)
+        cornerRadius: self.model.cornerRadius.value()
       )
     )
     .onChange(of: self.text) { newValue in

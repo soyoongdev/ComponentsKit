@@ -56,6 +56,12 @@ open class UKInputField: UIView, UKComponent {
   public var titleLabel = UILabel()
   public var inputField = UITextField()
 
+  // MARK: UIView Properties
+
+  open override var intrinsicContentSize: CGSize {
+    return self.sizeThatFits(UIView.layoutFittingExpandedSize)
+  }
+
   // MARK: Initialization
 
   public init(
@@ -107,6 +113,8 @@ open class UKInputField: UIView, UKComponent {
   // MARK: Style
 
   func style() {
+    Self.Style.mainView(self, model: self.model)
+    Self.Style.inputField(self.inputField, model: self.model)
     Self.Style.titleLabel(
       self.titleLabel,
       position: self.titlePosition,
@@ -118,17 +126,20 @@ open class UKInputField: UIView, UKComponent {
 
   func layout() {
     self.titleLabelConstraints = self.titleLabel.horizontally(self.model.horizontalPadding)
+    self.titleLabelConstraints.top = self.titleLabel.top(self.model.verticalPadding)
+    self.titleLabelConstraints.vertical = self.titleLabel.centerVertically()
+
+    switch self.titlePosition {
+    case .top:
+      self.titleLabelConstraints.vertical?.isActive = false
+    case .center:
+      self.titleLabelConstraints.top?.isActive = false
+    }
 
     self.inputFieldConstraints = self.inputField.horizontally(self.model.horizontalPadding)
-    self.inputField.bottom(Self.Layout.inputFieldBottomInset)
-    self.inputField.top(Self.Layout.inputFieldTopInset)
-    self.inputField.height(Self.Layout.inputFieldHeight)
-
-    self.titleLabelConstraints.bottom = self.titleLabel.above(of: self.inputField, padding: 5)
-    self.titleLabelConstraints.bottom?.isActive = self.titlePosition == .top
-
-    self.titleLabelConstraints.vertical = self.titleLabel.centerVertically()
-    self.titleLabelConstraints.vertical?.isActive = self.titlePosition == .center
+    self.inputFieldConstraints.top = self.inputField.top(self.model.inputFieldTopPadding)
+    self.inputFieldConstraints.bottom = self.inputField.bottom(self.model.verticalPadding)
+    self.inputFieldConstraints.height = self.inputField.height(self.model.inputFieldHeight)
   }
 
   open override func layoutSubviews() {
@@ -140,47 +151,46 @@ open class UKInputField: UIView, UKComponent {
   // MARK: Update
 
   public func update(_ oldModel: InputFieldVM) {
-    self.layer.cornerRadius = self.model.cornerRadius.value(for: self.bounds.height)
-
-    self.inputField.font = self.model.font.uiFont
-    self.inputField.textColor = self.model.foregroundColor.uiColor
-    self.inputField.tintColor = self.model.tintColor.uiColor
-    self.inputField.attributedPlaceholder = self.model.nsAttributedPlaceholder
-    self.inputField.keyboardType = self.model.keyboardType
-    self.inputField.returnKeyType = self.model.submitType.returnKeyType
-    self.inputField.isSecureTextEntry = self.model.isSecureInput
-    self.inputField.isEnabled = self.model.isEnabled
-
-    self.backgroundColor = self.model.backgroundColor.uiColor
-
     self.titlePosition = Self.getTitlePosition(
       isSelected: self.inputField.isFirstResponder,
       hasText: self.text.isNotEmpty,
       hasPlaceholder: self.model.placeholder.isNotNilAndEmpty
     )
-    Self.Style.titleLabel(
-      self.titleLabel,
-      position: self.titlePosition,
-      model: self.model
-    )
 
-    self.titleLabelConstraints.leading?.constant = self.model.horizontalPadding
-    self.titleLabelConstraints.trailing?.constant = -self.model.horizontalPadding
-    self.inputFieldConstraints.leading?.constant = self.model.horizontalPadding
-    self.inputFieldConstraints.trailing?.constant = -self.model.horizontalPadding
+    self.layer.cornerRadius = self.model.cornerRadius.value(for: self.bounds.height)
+    self.style()
 
     if self.model.shouldUpdateLayout(oldModel) {
-      UIView.performWithoutAnimation {
-        self.layoutIfNeeded()
-      }
+      self.titleLabelConstraints.leading?.constant = self.model.horizontalPadding
+      self.titleLabelConstraints.trailing?.constant = -self.model.horizontalPadding
+      self.inputFieldConstraints.leading?.constant = self.model.horizontalPadding
+      self.inputFieldConstraints.trailing?.constant = -self.model.horizontalPadding
+      self.inputFieldConstraints.top?.constant = self.model.inputFieldTopPadding
+      self.inputFieldConstraints.bottom?.constant = -self.model.verticalPadding
+      self.inputFieldConstraints.height?.constant = self.model.inputFieldHeight
+
+      self.setNeedsLayout()
+      self.invalidateIntrinsicContentSize()
     }
   }
 
-  // MARK: Helpers
+  // MARK: UIView Method
 
-  @objc open func handleTraitChanges() {
-
+  open override func sizeThatFits(_ size: CGSize) -> CGSize {
+    let width: CGFloat
+    if let parentWidth = self.superview?.bounds.width,
+       parentWidth > 0 {
+      width = parentWidth
+    } else {
+      width = 10_000
+    }
+    return .init(
+      width: min(size.width, width),
+      height: size.height
+    )
   }
+
+  // MARK: Helpers
 
   private static func getTitlePosition(
     isSelected: Bool,
@@ -203,11 +213,11 @@ open class UKInputField: UIView, UKComponent {
 
     switch self.titlePosition {
     case .center:
-      self.titleLabelConstraints.bottom?.isActive = false
+      self.titleLabelConstraints.top?.isActive = false
       self.titleLabelConstraints.vertical?.isActive = true
     case .top:
       self.titleLabelConstraints.vertical?.isActive = false
-      self.titleLabelConstraints.bottom?.isActive = true
+      self.titleLabelConstraints.top?.isActive = true
     }
     UIView.animate(withDuration: 0.2) {
       self.layoutIfNeeded()
@@ -245,6 +255,12 @@ extension UKInputField: UITextFieldDelegate {
 
 extension UKInputField {
   fileprivate enum Style {
+    static func mainView(
+      _ view: UIView,
+      model: InputFieldVM
+    ) {
+      view.backgroundColor = model.backgroundColor.uiColor
+    }
     static func titleLabel(
       _ label: UILabel,
       position: InputFieldTitlePosition,
@@ -252,16 +268,20 @@ extension UKInputField {
     ) {
       label.attributedText = model.nsAttributedTitle(for: position)
     }
-  }
-}
-
-extension UKInputField {
-  fileprivate enum Layout {
-    static let inputFieldTopInset: CGFloat = 36
-    static let inputFieldHeight: CGFloat = 30
-    static let inputFieldBottomInset: CGFloat = 12
-    static var height: CGFloat {
-      return self.inputFieldHeight + self.inputFieldTopInset + self.inputFieldBottomInset
+    static func inputField(
+      _ inputField: UITextField,
+      model: InputFieldVM
+    ) {
+      inputField.font = model.preferredFont.uiFont
+      inputField.textColor = model.foregroundColor.uiColor
+      inputField.tintColor = model.tintColor.uiColor
+      inputField.attributedPlaceholder = model.nsAttributedPlaceholder
+      inputField.keyboardType = model.keyboardType
+      inputField.returnKeyType = model.submitType.returnKeyType
+      inputField.isSecureTextEntry = model.isSecureInput
+      inputField.isEnabled = model.isEnabled
+      inputField.autocorrectionType = model.autocorrectionType
+      inputField.autocapitalizationType = model.autocapitalization.textAutocapitalizationType
     }
   }
 }

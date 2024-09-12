@@ -166,15 +166,6 @@ final class UIKitLogin: UIViewController {
 
     self.loader.below(of: self.stackView, padding: 50)
     self.loader.centerHorizontally()
-
-    self.nameInput.widthAnchor.constraint(
-      equalTo: self.stackView.widthAnchor
-    ).isActive = true
-  }
-
-  override func viewDidLayoutSubviews() {
-    super.viewDidLayoutSubviews()
-    print(self.stackView.frame)
   }
 
   private func update() {

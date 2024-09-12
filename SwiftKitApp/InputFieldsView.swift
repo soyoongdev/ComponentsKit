@@ -7,10 +7,11 @@ private class Container: UIView {
     initialText: "",
     model: .init {
       $0.title = "Email"
-//      $0.placeholder = "Input your email"
+      $0.placeholder = "Input your email"
       $0.keyboardType = .emailAddress
       $0.submitType = .next
       $0.isRequired = true
+      $0.size = .medium
     }
   )
   let clearTextButton = UKButton(
@@ -59,7 +60,7 @@ struct InputFieldsView: View {
     $0.keyboardType = .emailAddress
     $0.submitType = .next
   }
-  @State private var text = "Hello"
+  @State private var text = ""
   @FocusState private var isSelected: Bool
 
   var body: some View {
@@ -77,6 +78,7 @@ struct InputFieldsView: View {
           $0.title = "Hide keyboard"
           $0.size = .medium
           $0.isFullWidth = true
+          $0.size = .small
         }) {
           self.isSelected = false
         }
@@ -84,6 +86,7 @@ struct InputFieldsView: View {
           $0.title = "Clear text"
           $0.size = .medium
           $0.isFullWidth = true
+          $0.size = .small
         }) {
           self.text = ""
         }
@@ -91,6 +94,7 @@ struct InputFieldsView: View {
           $0.title = "Is secure"
           $0.size = .medium
           $0.isFullWidth = true
+          $0.size = .small
         }) {
           self.inputFieldVM.isSecureInput.toggle()
         }
@@ -98,9 +102,9 @@ struct InputFieldsView: View {
     }
     .padding(.horizontal)
 
-//    UIViewRepresenting {
-//      Container()
-//    }
+    UIViewRepresenting {
+      Container()
+    }
   }
 }
 
