@@ -8,9 +8,6 @@ struct AppView: View {
           NavigationLink("Buttons") {
             ButtonsView()
           }
-          NavigationLink("Alerts") {
-            AlertsView()
-          }
           NavigationLink("Loadings") {
             LoadingsView()
           }

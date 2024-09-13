@@ -16,7 +16,6 @@
 		743206332C89EAB100DD614A /* CheckboxesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 743206322C89EAB100DD614A /* CheckboxesView.swift */; };
 		748EED772C91A5F500FB4DB0 /* UIKitLogin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 748EED762C91A5F500FB4DB0 /* UIKitLogin.swift */; };
 		748EED7A2C91A66000FB4DB0 /* UIViewControllerRepresenting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 748EED792C91A66000FB4DB0 /* UIViewControllerRepresenting.swift */; };
-		7497BE262C7613A700001198 /* AlertsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7497BE252C7613A700001198 /* AlertsView.swift */; };
 		74A10BFC2C738E8C00243662 /* ButtonsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74A10BFB2C738E8C00243662 /* ButtonsView.swift */; };
 		74DA58782C73867B00EAC80C /* Root.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74DA58772C73867B00EAC80C /* Root.swift */; };
 		74DA587A2C73867B00EAC80C /* AppView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74DA58792C73867B00EAC80C /* AppView.swift */; };
@@ -34,7 +33,6 @@
 		743206322C89EAB100DD614A /* CheckboxesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckboxesView.swift; sourceTree = "<group>"; };
 		748EED762C91A5F500FB4DB0 /* UIKitLogin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitLogin.swift; sourceTree = "<group>"; };
 		748EED792C91A66000FB4DB0 /* UIViewControllerRepresenting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewControllerRepresenting.swift; sourceTree = "<group>"; };
-		7497BE252C7613A700001198 /* AlertsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertsView.swift; sourceTree = "<group>"; };
 		74A10BFB2C738E8C00243662 /* ButtonsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonsView.swift; sourceTree = "<group>"; };
 		74DA58742C73867B00EAC80C /* SwiftKitApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftKitApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		74DA58772C73867B00EAC80C /* Root.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Root.swift; sourceTree = "<group>"; };
@@ -107,7 +105,6 @@
 				74DA58792C73867B00EAC80C /* AppView.swift */,
 				74A10BFB2C738E8C00243662 /* ButtonsView.swift */,
 				743206322C89EAB100DD614A /* CheckboxesView.swift */,
-				7497BE252C7613A700001198 /* AlertsView.swift */,
 				7427076C2C78B6F400F8FC67 /* LoadingsView.swift */,
 				741550D82C874EA300126181 /* InputFieldsView.swift */,
 				7405FEC02C8F056100FB33D8 /* SegmentedControlsView.swift */,
@@ -201,7 +198,6 @@
 				748EED772C91A5F500FB4DB0 /* UIKitLogin.swift in Sources */,
 				7405FEC12C8F056100FB33D8 /* SegmentedControlsView.swift in Sources */,
 				741550D72C8744F800126181 /* UIViewRepresenting.swift in Sources */,
-				7497BE262C7613A700001198 /* AlertsView.swift in Sources */,
 				748EED7A2C91A66000FB4DB0 /* UIViewControllerRepresenting.swift in Sources */,
 				7427076D2C78B6F400F8FC67 /* LoadingsView.swift in Sources */,
 				74A10BFC2C738E8C00243662 /* ButtonsView.swift in Sources */,
