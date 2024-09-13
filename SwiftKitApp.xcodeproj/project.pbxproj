@@ -16,6 +16,7 @@
 		743206332C89EAB100DD614A /* CheckboxPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 743206322C89EAB100DD614A /* CheckboxPreview.swift */; };
 		744712FB2C9437F000B3B0AE /* UKComponentPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 744712FA2C9437F000B3B0AE /* UKComponentPreview.swift */; };
 		744712FD2C944EB100B3B0AE /* PreviewWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 744712FC2C944EB100B3B0AE /* PreviewWrapper.swift */; };
+		744713012C946DE000B3B0AE /* PreviewPickers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 744713002C946DE000B3B0AE /* PreviewPickers.swift */; };
 		748EED772C91A5F500FB4DB0 /* UIKitLogin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 748EED762C91A5F500FB4DB0 /* UIKitLogin.swift */; };
 		748EED7A2C91A66000FB4DB0 /* UIViewControllerRepresenting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 748EED792C91A66000FB4DB0 /* UIViewControllerRepresenting.swift */; };
 		74A10BFC2C738E8C00243662 /* ButtonPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74A10BFB2C738E8C00243662 /* ButtonPreview.swift */; };
@@ -35,6 +36,7 @@
 		743206322C89EAB100DD614A /* CheckboxPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckboxPreview.swift; sourceTree = "<group>"; };
 		744712FA2C9437F000B3B0AE /* UKComponentPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UKComponentPreview.swift; sourceTree = "<group>"; };
 		744712FC2C944EB100B3B0AE /* PreviewWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewWrapper.swift; sourceTree = "<group>"; };
+		744713002C946DE000B3B0AE /* PreviewPickers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewPickers.swift; sourceTree = "<group>"; };
 		748EED762C91A5F500FB4DB0 /* UIKitLogin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitLogin.swift; sourceTree = "<group>"; };
 		748EED792C91A66000FB4DB0 /* UIViewControllerRepresenting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewControllerRepresenting.swift; sourceTree = "<group>"; };
 		74A10BFB2C738E8C00243662 /* ButtonPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonPreview.swift; sourceTree = "<group>"; };
@@ -64,6 +66,7 @@
 				748EED792C91A66000FB4DB0 /* UIViewControllerRepresenting.swift */,
 				744712FA2C9437F000B3B0AE /* UKComponentPreview.swift */,
 				744712FC2C944EB100B3B0AE /* PreviewWrapper.swift */,
+				744713002C946DE000B3B0AE /* PreviewPickers.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -221,6 +224,7 @@
 				7405FEC12C8F056100FB33D8 /* SegmentedControlsView.swift in Sources */,
 				741550D72C8744F800126181 /* UIViewRepresenting.swift in Sources */,
 				748EED7A2C91A66000FB4DB0 /* UIViewControllerRepresenting.swift in Sources */,
+				744713012C946DE000B3B0AE /* PreviewPickers.swift in Sources */,
 				744712FD2C944EB100B3B0AE /* PreviewWrapper.swift in Sources */,
 				7427076D2C78B6F400F8FC67 /* LoadingsView.swift in Sources */,
 				744712FB2C9437F000B3B0AE /* UKComponentPreview.swift in Sources */,
