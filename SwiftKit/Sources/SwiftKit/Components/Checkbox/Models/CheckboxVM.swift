@@ -78,7 +78,7 @@ extension CheckboxVM {
     case .full:
       return self.checkboxSide / 2.0
     case .custom(let value):
-      return value
+      return min(value, self.checkboxSide / 2)
     }
   }
   var titleFont: Typography {
@@ -105,5 +105,8 @@ extension CheckboxVM {
   }
   func shouldRemoveLabel(_ oldModel: Self) -> Bool {
     return self.title.isNil != oldModel.title.isNotNilAndEmpty
+  }
+  func shouldUpdateSize(_ oldModel: Self) -> Bool {
+    return self.size != oldModel.size
   }
 }

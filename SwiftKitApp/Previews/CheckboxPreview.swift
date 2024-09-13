@@ -2,28 +2,34 @@ import SwiftKit
 import SwiftUI
 import UIKit
 
-struct ButtonPreview: View {
-  @State private var model = ButtonVM {
-    $0.title = "Button"
+struct CheckboxPreview: View {
+  @State private var model = CheckboxVM {
+    $0.title = "Checkbox"
   }
+
+  @State private var isSelected: Bool = false
 
   var body: some View {
     VStack {
       PreviewWrapper(title: "UIKit") {
         UKComponentPreview(model: self.model) {
-          UKButton(model: self.model)
+          UKCheckbox(
+            initialValue: false,
+            model: self.model
+          )
         }
       }
       PreviewWrapper(title: "SwiftUI") {
-        SUButton(model: self.model)
+        SUCheckbox(
+          isSelected: self.$isSelected,
+          model: self.model
+        )
       }
       Form {
-        Picker("Animation Scale", selection: self.$model.animationScale) {
-          Text("None").tag(AnimationScale.none)
-          Text("Small").tag(AnimationScale.small)
-          Text("Medium").tag(AnimationScale.medium)
-          Text("Large").tag(AnimationScale.large)
-          Text("Custom: 0.9").tag(AnimationScale.custom(0.9))
+        Picker("Title", selection: self.$model.title) {
+          Text("None").tag(Optional<String>.none)
+          Text("Short").tag("Checkbox")
+          Text("Long").tag("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.")
         }
         Picker("Color", selection: self.$model.color) {
           Text("Primary").tag(ComponentColor.primary)
@@ -43,7 +49,7 @@ struct ButtonPreview: View {
           Text("Medium").tag(ComponentRadius.medium)
           Text("Large").tag(ComponentRadius.large)
           Text("Full").tag(ComponentRadius.full)
-          Text("Custom: 20px").tag(ComponentRadius.custom(20))
+          Text("Custom: 2px").tag(ComponentRadius.custom(2))
         }
         Picker("Font", selection: self.$model.font) {
           Text("Default").tag(Optional<Typography>.none)
@@ -53,19 +59,10 @@ struct ButtonPreview: View {
           Text("Custom: system bold of size 18").tag(Typography.system(size: 18, weight: .bold))
         }
         Toggle("Enabled", isOn: self.$model.isEnabled)
-        Toggle("Full Width", isOn: self.$model.isFullWidth)
         Picker("Size", selection: self.$model.size) {
           Text("Small").tag(ComponentSize.small)
           Text("Medium").tag(ComponentSize.medium)
           Text("Large").tag(ComponentSize.large)
-        }
-        Picker("Style", selection: self.$model.style) {
-          Text("Filled").tag(ButtonStyle.filled)
-          Text("Plain").tag(ButtonStyle.plain)
-          Text("Bordered with small border").tag(ButtonStyle.bordered(.small))
-          Text("Bordered with medium border").tag(ButtonStyle.bordered(.medium))
-          Text("Bordered with large border").tag(ButtonStyle.bordered(.large))
-          Text("Bordered with custom border: 6px").tag(ButtonStyle.bordered(.custom(6)))
         }
       }
     }
@@ -73,5 +70,5 @@ struct ButtonPreview: View {
 }
 
 #Preview {
-  ButtonPreview()
+  CheckboxPreview()
 }

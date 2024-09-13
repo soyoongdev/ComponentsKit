@@ -7,7 +7,7 @@ struct PreviewWrapper<Content: View>: View {
   var body: some View {
     ZStack(alignment: Alignment(horizontal: .leading, vertical: .top)) {
       self.content()
-        .padding(.horizontal)
+        .padding(.all)
         .frame(height: 120)
         .frame(maxWidth: .infinity)
         .overlay {

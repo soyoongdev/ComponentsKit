@@ -9,14 +9,15 @@ struct AppView: View {
             ButtonPreview()
               .navigationTitle("Button")
           }
+          NavigationLink("Checkbox") {
+            CheckboxPreview()
+              .navigationTitle("Checkbox")
+          }
           NavigationLink("Loadings") {
             LoadingsView()
           }
           NavigationLink("Input Fields") {
             InputFieldsView()
-          }
-          NavigationLink("Checkboxes") {
-            CheckboxesView()
           }
           NavigationLink("Segmented Controls") {
             SegmentedControlsView()

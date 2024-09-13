@@ -20,6 +20,7 @@ open class UKCheckbox: UIView, UKComponent {
   }
 
   private var titleLabelConstraints: AnchoredConstraints = .init()
+  private var checkboxContainerConstraints: AnchoredConstraints = .init()
 
   // MARK: Subviews
 
@@ -78,9 +79,18 @@ open class UKCheckbox: UIView, UKComponent {
     self.checkmarkLayer.strokeEnd = self.isSelected ? 1.0 : 0.0
 
     let checkmarkPath = UIBezierPath()
-    checkmarkPath.move(to: .init(x: 6, y: 11))
-    checkmarkPath.addLine(to: .init(x: 11, y: 17))
-    checkmarkPath.addLine(to: .init(x: 18, y: 7))
+    checkmarkPath.move(to: .init(
+      x: self.model.checkboxSide / 4,
+      y: 11 / 24 * self.model.checkboxSide
+    ))
+    checkmarkPath.addLine(to: .init(
+      x: 11 / 24 * self.model.checkboxSide,
+      y: 17 / 24 * self.model.checkboxSide
+    ))
+    checkmarkPath.addLine(to: .init(
+      x: 3 / 4 * self.model.checkboxSide,
+      y: 7 / 24 * self.model.checkboxSide
+    ))
 
     self.checkmarkLayer.path = checkmarkPath.cgPath
   }
@@ -105,7 +115,7 @@ open class UKCheckbox: UIView, UKComponent {
   func layout() {
     self.stackView.pinToEdges()
 
-    self.checkboxContainer.size(24)
+    self.checkboxContainerConstraints = self.checkboxContainer.size(self.model.checkboxSide)
     self.checkboxBackground.pinToEdges()
   }
 
@@ -118,10 +128,13 @@ open class UKCheckbox: UIView, UKComponent {
 
     if self.model.shouldAddLabel(oldModel) {
       self.stackView.addArrangedSubview(self.titleLabel)
-      self.setNeedsLayout()
-      self.invalidateIntrinsicContentSize()
     } else if self.model.shouldRemoveLabel(oldModel) {
       self.stackView.removeArrangedSubview(self.titleLabel)
+    }
+    if self.model.shouldUpdateSize(oldModel) {
+      self.checkboxContainerConstraints.height?.constant = self.model.checkboxSide
+      self.checkboxContainerConstraints.width?.constant = self.model.checkboxSide
+      self.setupCheckmarkLayer()
       self.setNeedsLayout()
       self.invalidateIntrinsicContentSize()
     }
