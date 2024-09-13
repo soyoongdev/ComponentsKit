@@ -1,6 +1,6 @@
 import Foundation
 
-public struct ComponentColor: Equatable {
+public struct ComponentColor: Hashable {
   // MARK: Properties
 
   let main: ThemeColor

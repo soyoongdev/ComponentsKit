@@ -1,6 +1,6 @@
 import Foundation
 
-public enum ButtonStyle: Equatable {
+public enum ButtonStyle: Hashable {
   case filled
   case plain
   case bordered(BorderWidth)

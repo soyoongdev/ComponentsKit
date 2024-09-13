@@ -110,6 +110,7 @@ extension ButtonVM {
   func shouldUpdateSize(_ oldModel: Self?) -> Bool {
     return self.size != oldModel?.size
     || self.font != oldModel?.font
+    || self.isFullWidth != oldModel?.isFullWidth
   }
 }
 

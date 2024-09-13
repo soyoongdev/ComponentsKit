@@ -5,8 +5,9 @@ struct AppView: View {
     NavigationStack {
       List {
         Section("Components") {
-          NavigationLink("Buttons") {
-            ButtonsView()
+          NavigationLink("Button") {
+            ButtonPreview()
+              .navigationTitle("Button")
           }
           NavigationLink("Loadings") {
             LoadingsView()

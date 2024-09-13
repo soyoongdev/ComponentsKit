@@ -1,10 +1,10 @@
 import SwiftUI
 import UIKit
 
-public struct ThemeColor: Equatable {
+public struct ThemeColor: Hashable {
   // MARK: ColorRepresentable
 
-  public enum ColorRepresentable: Equatable {
+  public enum ColorRepresentable: Hashable {
     case rgba(r: CGFloat, g: CGFloat, b: CGFloat, a: CGFloat)
     case uiColor(UIColor)
     case color(Color)

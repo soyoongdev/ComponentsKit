@@ -62,7 +62,10 @@ public struct SUButton: View {
           lineWidth: self.model.borderWidth
         )
       }
-      .scaleEffect(self.isPressed ? 0.98 : 1, anchor: .center)
+      .scaleEffect(
+        self.isPressed ? self.model.animationScale.value : 1,
+        anchor: .center
+      )
   }
 }
 

@@ -1,6 +1,6 @@
-import Foundation
+import UIKit
 
-public protocol UKComponent {
+public protocol UKComponent: UIView {
   associatedtype Model
 
   var model: Model { get set }

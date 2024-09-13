@@ -1,7 +1,7 @@
 import Foundation
 import SwiftUI
 
-public enum ComponentRadius: Equatable {
+public enum ComponentRadius: Hashable {
   case none
   case small
   case medium
@@ -12,19 +12,15 @@ public enum ComponentRadius: Equatable {
 
 extension ComponentRadius {
   func value(for height: CGFloat = 10_000) -> CGFloat {
-    switch self {
-    case .none:
-      return 0
-    case .small:
-      return SwiftKitConfig.shared.layout.componentRadius.small
-    case .medium:
-      return SwiftKitConfig.shared.layout.componentRadius.medium
-    case .large:
-      return SwiftKitConfig.shared.layout.componentRadius.large
-    case .full:
-      return height / 2
-    case .custom(let value):
-      return value
+    let maxValue = height / 2
+    let value = switch self {
+    case .none: CGFloat(0)
+    case .small: SwiftKitConfig.shared.layout.componentRadius.small
+    case .medium: SwiftKitConfig.shared.layout.componentRadius.medium
+    case .large: SwiftKitConfig.shared.layout.componentRadius.large
+    case .full: height / 2
+    case .custom(let value): value
     }
+    return min(value, maxValue)
   }
 }

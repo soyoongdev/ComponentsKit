@@ -1,8 +1,8 @@
 import SwiftUI
 import UIKit
 
-public enum Typography: Equatable {
-  public enum Weight: Equatable {
+public enum Typography: Hashable {
+  public enum Weight: Hashable {
     case ultraLight
     case thin
     case light

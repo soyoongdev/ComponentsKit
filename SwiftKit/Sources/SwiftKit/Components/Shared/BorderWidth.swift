@@ -1,6 +1,6 @@
 import Foundation
 
-public struct BorderWidth: Equatable {
+public struct BorderWidth: Hashable {
   var value: CGFloat
 
   init(_ value: CGFloat) {
