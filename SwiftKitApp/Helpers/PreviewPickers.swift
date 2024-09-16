@@ -62,6 +62,25 @@ struct CornerRadiusPicker<Custom: View>: View {
   }
 }
 
+// MARK: - CornerRadiusPicker
+
+struct OptionalCornerRadiusPicker<Custom: View>: View {
+  @Binding var selection: ComponentRadius?
+  @ViewBuilder var custom: () -> Custom
+
+  var body: some View {
+    Picker("Corner Radius", selection: self.$selection) {
+      Text("Default").tag(Optional<ComponentRadius>.none)
+      Text("None").tag(ComponentRadius.none)
+      Text("Small").tag(ComponentRadius.small)
+      Text("Medium").tag(ComponentRadius.medium)
+      Text("Large").tag(ComponentRadius.large)
+      Text("Full").tag(ComponentRadius.full)
+      self.custom()
+    }
+  }
+}
+
 // MARK: - FontPicker
 
 struct FontPicker: View {

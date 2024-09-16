@@ -18,7 +18,7 @@ struct AppView: View {
             LoadingPreview()
           }
           NavigationLinkWithTitle("Segmented Control") {
-            SegmentedControlsView()
+            SegmentedControlPreview()
           }
         }
 
