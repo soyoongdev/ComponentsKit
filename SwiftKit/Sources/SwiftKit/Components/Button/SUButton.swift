@@ -50,12 +50,12 @@ public struct SUButton: View {
       .disabled(!self.model.isEnabled)
       .clipShape(
         RoundedRectangle(
-          cornerRadius: self.model.cornerRadius.value()
+          cornerRadius: self.model.preferredCornerRadius.value()
         )
       )
       .overlay {
         RoundedRectangle(
-          cornerRadius: self.model.cornerRadius.value()
+          cornerRadius: self.model.preferredCornerRadius.value()
         )
         .stroke(
           self.model.borderColor?.color(for: self.colorScheme) ?? .clear,

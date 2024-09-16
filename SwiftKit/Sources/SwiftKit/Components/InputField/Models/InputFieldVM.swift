@@ -4,7 +4,7 @@ import UIKit
 public struct InputFieldVM: ComponentVM {
   public var autocapitalization: InputFieldTextAutocapitalization = .sentences
   public var color: ComponentColor?
-  public var cornerRadius: ComponentRadius = .medium
+  public var cornerRadius: ComponentRadius?
   public var font: Typography?
   public var isAutocorrectionEnabled: Bool = true
   public var isEnabled: Bool = true
@@ -37,8 +37,20 @@ extension InputFieldVM {
       return Typography.Component.large
     }
   }
+  var preferredCornerRadius: ComponentRadius {
+    if let cornerRadius {
+      return cornerRadius
+    }
+
+    switch self.size {
+    case .small, .medium:
+      return ComponentRadius.medium
+    case .large:
+      return ComponentRadius.large
+    }
+  }
   var horizontalPadding: CGFloat {
-    switch self.cornerRadius {
+    switch self.preferredCornerRadius {
     case .none, .small, .medium, .large, .custom:
       return 12
     case .full:

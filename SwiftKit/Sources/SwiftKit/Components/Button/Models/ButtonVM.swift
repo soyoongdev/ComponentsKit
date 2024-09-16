@@ -4,7 +4,7 @@ public struct ButtonVM: ComponentVM {
   public var title: String = ""
   public var animationScale: AnimationScale = .medium
   public var color: ComponentColor = .primary
-  public var cornerRadius: ComponentRadius = .medium
+  public var cornerRadius: ComponentRadius?
   public var font: Typography?
   public var isEnabled: Bool = true
   public var isFullWidth: Bool = false
@@ -31,7 +31,6 @@ extension ButtonVM {
       SwiftKitConfig.shared.layout.disabledOpacity
     )
   }
-
   var backgroundColor: ThemeColor? {
     switch self.style {
     case .filled:
@@ -40,7 +39,6 @@ extension ButtonVM {
       return nil
     }
   }
-
   var foregroundColor: ThemeColor {
     switch self.style {
     case .filled:
@@ -51,7 +49,6 @@ extension ButtonVM {
       return self.mainColor
     }
   }
-
   var borderWidth: CGFloat {
     switch self.style {
     case .filled, .plain:
@@ -60,7 +57,6 @@ extension ButtonVM {
       return borderWidth.value
     }
   }
-
   var borderColor: ThemeColor? {
     switch self.style {
     case .filled, .plain:
@@ -69,7 +65,6 @@ extension ButtonVM {
       return self.mainColor
     }
   }
-
   var preferredFont: Typography {
     if let font {
       return font
@@ -82,6 +77,20 @@ extension ButtonVM {
       return Typography.Component.medium
     case .large:
       return Typography.Component.large
+    }
+  }
+  var preferredCornerRadius: ComponentRadius {
+    if let cornerRadius {
+      return cornerRadius
+    }
+
+    switch self.size {
+    case .small:
+      return ComponentRadius.small
+    case .medium:
+      return ComponentRadius.medium
+    case .large:
+      return ComponentRadius.large
     }
   }
 }
@@ -106,7 +115,6 @@ extension ButtonVM {
 
     return .init(width: width, height: self.height)
   }
-
   func shouldUpdateSize(_ oldModel: Self?) -> Bool {
     return self.size != oldModel?.size
     || self.font != oldModel?.font

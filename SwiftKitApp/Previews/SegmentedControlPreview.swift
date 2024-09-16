@@ -43,7 +43,7 @@ struct SegmentedControlPreview: View {
       }
       Form {
         ComponentOptionalColorPicker(selection: self.$model.color)
-        OptionalCornerRadiusPicker(selection: self.$model.cornerRadius) {
+        CornerRadiusPicker(selection: self.$model.cornerRadius) {
           Text("Custom: 4px").tag(ComponentRadius.custom(4))
         }
         Toggle("Enabled", isOn: self.$model.isEnabled)

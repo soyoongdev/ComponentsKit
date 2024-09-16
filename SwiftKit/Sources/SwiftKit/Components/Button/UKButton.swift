@@ -86,15 +86,13 @@ open class UKButton: UIView, UKComponent {
   open override func layoutSubviews() {
     super.layoutSubviews()
 
-    self.layer.cornerRadius = self.model.cornerRadius.value(for: self.bounds.height)
+    self.layer.cornerRadius = self.model.preferredCornerRadius.value(for: self.bounds.height)
   }
 
   // MARK: Update
 
   public func update(_ oldModel: ButtonVM) {
     guard self.model != oldModel else { return }
-
-    self.layer.cornerRadius = self.model.cornerRadius.value(for: self.bounds.height)
 
     self.style()
 
@@ -181,6 +179,9 @@ extension UKButton {
       view.layer.borderWidth = model.borderWidth
       view.layer.borderColor = model.borderColor?.uiColor.cgColor
       view.backgroundColor = model.backgroundColor?.uiColor
+      view.layer.cornerRadius = model.preferredCornerRadius.value(
+        for: view.bounds.height
+      )
     }
     static func titleLabel(_ label: UILabel, model: Model) {
       label.textAlignment = .center

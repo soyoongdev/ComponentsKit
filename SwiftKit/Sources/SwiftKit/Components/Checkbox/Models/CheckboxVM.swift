@@ -3,7 +3,7 @@ import SwiftUI
 public struct CheckboxVM: ComponentVM {
   public var title: String?
   public var color: ComponentColor = .accent
-  public var cornerRadius: ComponentRadius = .medium
+  public var cornerRadius: ComponentRadius?
   public var font: Typography?
   public var isEnabled: Bool = true
   public var size: ComponentSize = .medium
@@ -65,8 +65,22 @@ extension CheckboxVM {
       return 32.0
     }
   }
+  private var preferredCornerRadius: ComponentRadius {
+    if let cornerRadius {
+      return cornerRadius
+    }
+
+    switch self.size {
+    case .small:
+      return .small
+    case .medium:
+      return .medium
+    case .large:
+      return .large
+    }
+  }
   var checkboxCornerRadius: CGFloat {
-    switch self.cornerRadius {
+    switch self.preferredCornerRadius {
     case .none:
       return 0.0
     case .small:

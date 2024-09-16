@@ -144,7 +144,7 @@ open class UKInputField: UIView, UKComponent {
   open override func layoutSubviews() {
     super.layoutSubviews()
 
-    self.layer.cornerRadius = self.model.cornerRadius.value(for: self.bounds.height)
+    self.layer.cornerRadius = self.model.preferredCornerRadius.value(for: self.bounds.height)
   }
 
   // MARK: Update
@@ -158,7 +158,6 @@ open class UKInputField: UIView, UKComponent {
       hasPlaceholder: self.model.placeholder.isNotNilAndEmpty
     )
 
-    self.layer.cornerRadius = self.model.cornerRadius.value(for: self.bounds.height)
     self.style()
 
     if self.model.shouldUpdateLayout(oldModel) {
@@ -261,6 +260,7 @@ extension UKInputField {
       model: InputFieldVM
     ) {
       view.backgroundColor = model.backgroundColor.uiColor
+      view.layer.cornerRadius = model.preferredCornerRadius.value(for: view.bounds.height)
     }
     static func titleLabel(
       _ label: UILabel,
