@@ -110,6 +110,7 @@ open class UKLoading: UIView, UKComponent {
     guard self.model != oldModel else { return }
 
     self.shapeLayer.lineWidth = self.model.loadingLineWidth
+    self.shapeLayer.strokeColor = self.model.color.main.uiColor.cgColor
 
     if self.model.shouldStartAnimating(oldModel) {
       self.resumeAnimation()
@@ -120,7 +121,7 @@ open class UKLoading: UIView, UKComponent {
       self.invalidateIntrinsicContentSize()
       self.setNeedsLayout()
     }
-    if self.model.shouldUpdateAnimation(oldModel) {
+    if self.model.shouldUpdateAnimationSpeed(oldModel) {
       self.shapeLayer.removeAllAnimations()
       self.addSpinnerAnimation()
     }
@@ -186,11 +187,10 @@ open class UKLoading: UIView, UKComponent {
   }
 
   private func addSpinnerAnimation() {
-    // Rotation animation
     let rotationAnimation = CABasicAnimation(keyPath: "transform.rotation.z")
     rotationAnimation.fromValue = 0
     rotationAnimation.toValue = CGFloat.pi * 2
-    rotationAnimation.duration = 0.8 * self.model.speed
+    rotationAnimation.duration = 1.0 / self.model.speed
     rotationAnimation.repeatCount = .infinity
     rotationAnimation.timingFunction = CAMediaTimingFunction(name: .linear)
     self.shapeLayer.add(rotationAnimation, forKey: "rotationAnimation")

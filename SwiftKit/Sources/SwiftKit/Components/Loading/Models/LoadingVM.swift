@@ -2,9 +2,10 @@ import Foundation
 
 public struct LoadingVM: ComponentVM {
   public var color: ComponentColor = .primary
+  // TODO: [1] Remove `isAnimating` property
   public var isAnimating: Bool = true
   public var lineWidth: CGFloat?
-  public var size: LoadingSize = .medium
+  public var size: ComponentSize = .medium
   public var speed: CGFloat = 1.0
   public var style: LoadingStyle = .spinner
 
@@ -27,9 +28,6 @@ extension LoadingVM {
         return .init(width: 36, height: 36)
       case .large:
         return .init(width: 48, height: 48)
-      case .custom(let size):
-        let minSide = min(size.height, size.width)
-        return .init(width: minSide, height: minSide)
       }
     }
   }
@@ -53,7 +51,7 @@ extension LoadingVM {
   func shouldUpdateSize(_ oldModel: Self) -> Bool {
     return self.size != oldModel.size
   }
-  func shouldUpdateAnimation(_ oldModel: Self) -> Bool {
+  func shouldUpdateAnimationSpeed(_ oldModel: Self) -> Bool {
     return self.speed != oldModel.speed
   }
 }

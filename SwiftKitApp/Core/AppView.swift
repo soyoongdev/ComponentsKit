@@ -5,21 +5,19 @@ struct AppView: View {
     NavigationStack {
       List {
         Section("Components") {
-          NavigationLink("Button") {
+          NavigationLinkWithTitle("Button") {
             ButtonPreview()
-              .navigationTitle("Button")
           }
-          NavigationLink("Checkbox") {
+          NavigationLinkWithTitle("Checkbox") {
             CheckboxPreview()
-              .navigationTitle("Checkbox")
           }
-          NavigationLink("Loadings") {
-            LoadingsView()
-          }
-          NavigationLink("Input Fields") {
+          NavigationLinkWithTitle("Input Field") {
             InputFieldsView()
           }
-          NavigationLink("Segmented Controls") {
+          NavigationLinkWithTitle("Loading") {
+            LoadingPreview()
+          }
+          NavigationLinkWithTitle("Segmented Control") {
             SegmentedControlsView()
           }
         }
@@ -40,6 +38,27 @@ struct AppView: View {
     }
   }
 }
+
+// MARK: - Helper
+
+private struct NavigationLinkWithTitle<Destination: View>: View {
+  let title: String
+  @ViewBuilder let destination: () -> Destination
+
+  init(_ title: String, destination: @escaping () -> Destination) {
+    self.title = title
+    self.destination = destination
+  }
+
+  var body: some View {
+    NavigationLink(self.title) {
+      self.destination()
+        .navigationTitle(self.title)
+    }
+  }
+}
+
+// MARK: - Preview
 
 #Preview {
   AppView()

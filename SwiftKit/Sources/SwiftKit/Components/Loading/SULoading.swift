@@ -42,37 +42,37 @@ public struct SULoading: View {
       .rotationEffect(.radians(2 * .pi * 0.15))
       .onAppear {
         if self.model.isAnimating {
-          self.startRotationAnimation()
+          self.startRotationAnimation(speed: self.model.speed)
         }
       }
       .onChange(of: self.model.isAnimating) { isAnimating in
         if isAnimating {
-          self.startRotationAnimation()
+          self.startRotationAnimation(speed: self.model.speed)
         } else {
           self.removeRotationAnimation()
         }
       }
-      .onChange(of: self.model.speed) { _ in
+      .onChange(of: self.model.speed) { newSpeed in
         self.removeRotationAnimation()
-        self.startRotationAnimation()
+        self.startRotationAnimation(speed: newSpeed)
       }
   }
 
-  private func rotate() {
+  private func rotate(speed: CGFloat) {
     withAnimation {
-      self.rotationAngle += 40 * max(0, self.model.speed)
+      self.rotationAngle += 40 * max(0, speed)
     }
   }
 
-  private func startRotationAnimation() {
-    self.rotate()
+  private func startRotationAnimation(speed: CGFloat) {
+    self.rotate(speed: speed)
 
     self.rotationAnimationTimer = Timer
       .publish(every: 0.1, on: .main, in: .common)
       .autoconnect()
       .receive(on: DispatchQueue.main)
       .sink { _ in
-        self.rotate()
+        self.rotate(speed: speed)
       }
   }
 

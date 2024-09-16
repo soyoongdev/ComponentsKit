@@ -10,8 +10,8 @@
 		7405FEC12C8F056100FB33D8 /* SegmentedControlsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7405FEC02C8F056100FB33D8 /* SegmentedControlsView.swift */; };
 		7405FEC32C8F2DD900FB33D8 /* SwiftUILogin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7405FEC22C8F2DD900FB33D8 /* SwiftUILogin.swift */; };
 		741550D72C8744F800126181 /* UIViewRepresenting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 741550D62C8744F800126181 /* UIViewRepresenting.swift */; };
-		741550D92C874EA300126181 /* InputFieldsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 741550D82C874EA300126181 /* InputFieldsView.swift */; };
-		7427076D2C78B6F400F8FC67 /* LoadingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7427076C2C78B6F400F8FC67 /* LoadingsView.swift */; };
+		741550D92C874EA300126181 /* InputFieldPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 741550D82C874EA300126181 /* InputFieldPreview.swift */; };
+		7427076D2C78B6F400F8FC67 /* LoadingPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7427076C2C78B6F400F8FC67 /* LoadingPreview.swift */; };
 		742F918A2C77876D00139197 /* SwiftKit in Frameworks */ = {isa = PBXBuildFile; productRef = 742F91892C77876D00139197 /* SwiftKit */; };
 		743206332C89EAB100DD614A /* CheckboxPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 743206322C89EAB100DD614A /* CheckboxPreview.swift */; };
 		744712FB2C9437F000B3B0AE /* UKComponentPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 744712FA2C9437F000B3B0AE /* UKComponentPreview.swift */; };
@@ -30,8 +30,8 @@
 		7405FEC02C8F056100FB33D8 /* SegmentedControlsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentedControlsView.swift; sourceTree = "<group>"; };
 		7405FEC22C8F2DD900FB33D8 /* SwiftUILogin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUILogin.swift; sourceTree = "<group>"; };
 		741550D62C8744F800126181 /* UIViewRepresenting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewRepresenting.swift; sourceTree = "<group>"; };
-		741550D82C874EA300126181 /* InputFieldsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputFieldsView.swift; sourceTree = "<group>"; };
-		7427076C2C78B6F400F8FC67 /* LoadingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingsView.swift; sourceTree = "<group>"; };
+		741550D82C874EA300126181 /* InputFieldPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputFieldPreview.swift; sourceTree = "<group>"; };
+		7427076C2C78B6F400F8FC67 /* LoadingPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingPreview.swift; sourceTree = "<group>"; };
 		742F91872C77867B00139197 /* SwiftKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = SwiftKit; sourceTree = "<group>"; };
 		743206322C89EAB100DD614A /* CheckboxPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckboxPreview.swift; sourceTree = "<group>"; };
 		744712FA2C9437F000B3B0AE /* UKComponentPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UKComponentPreview.swift; sourceTree = "<group>"; };
@@ -83,6 +83,8 @@
 			children = (
 				74A10BFB2C738E8C00243662 /* ButtonPreview.swift */,
 				743206322C89EAB100DD614A /* CheckboxPreview.swift */,
+				741550D82C874EA300126181 /* InputFieldPreview.swift */,
+				7427076C2C78B6F400F8FC67 /* LoadingPreview.swift */,
 			);
 			path = Previews;
 			sourceTree = "<group>";
@@ -130,8 +132,6 @@
 				744712FE2C9460E800B3B0AE /* Previews */,
 				748EED782C91A5FB00FB4DB0 /* Demos */,
 				741550D52C8744ED00126181 /* Helpers */,
-				7427076C2C78B6F400F8FC67 /* LoadingsView.swift */,
-				741550D82C874EA300126181 /* InputFieldsView.swift */,
 				7405FEC02C8F056100FB33D8 /* SegmentedControlsView.swift */,
 				74DA587B2C73867C00EAC80C /* Assets.xcassets */,
 				74DA587D2C73867C00EAC80C /* Preview Content */,
@@ -226,13 +226,13 @@
 				748EED7A2C91A66000FB4DB0 /* UIViewControllerRepresenting.swift in Sources */,
 				744713012C946DE000B3B0AE /* PreviewPickers.swift in Sources */,
 				744712FD2C944EB100B3B0AE /* PreviewWrapper.swift in Sources */,
-				7427076D2C78B6F400F8FC67 /* LoadingsView.swift in Sources */,
+				7427076D2C78B6F400F8FC67 /* LoadingPreview.swift in Sources */,
 				744712FB2C9437F000B3B0AE /* UKComponentPreview.swift in Sources */,
 				74A10BFC2C738E8C00243662 /* ButtonPreview.swift in Sources */,
 				74DA587A2C73867B00EAC80C /* AppView.swift in Sources */,
 				7405FEC32C8F2DD900FB33D8 /* SwiftUILogin.swift in Sources */,
 				74DA58782C73867B00EAC80C /* Root.swift in Sources */,
-				741550D92C874EA300126181 /* InputFieldsView.swift in Sources */,
+				741550D92C874EA300126181 /* InputFieldPreview.swift in Sources */,
 				743206332C89EAB100DD614A /* CheckboxPreview.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
