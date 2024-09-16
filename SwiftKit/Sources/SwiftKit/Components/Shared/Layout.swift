@@ -67,11 +67,6 @@ public struct Layout: Updatable {
   // MARK: Properties
 
   public var disabledOpacity: CGFloat = 0.5
-  public var popoverRadius: Radius = .init(
-    small: 15.0,
-    medium: 20.0,
-    large: 25.0
-  )
   public var componentRadius: Radius = .init(
     small: 8.0,
     medium: 12.0,

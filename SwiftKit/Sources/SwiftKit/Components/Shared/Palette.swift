@@ -1,23 +1,23 @@
 import Foundation
 
 public struct Palette: Updatable {
-  /// TheThemeColor for the main background of your interface.
+  /// The ThemeColor for the main background of your interface.
   public var background: ThemeColor = .init(
     universal: .uiColor(.systemBackground)
   )
-  /// TheThemeColor for content layered on top of the main background.
+  /// The ThemeColor for content layered on top of the main background.
   public var secondaryBackground: ThemeColor = .init(
     universal: .uiColor(.secondarySystemBackground)
   )
-  /// TheThemeColor for text labels that contain primary content.
+  /// The ThemeColor for text labels that contain primary content.
   public var label: ThemeColor = .init(
     universal: .uiColor(.label)
   )
-  /// TheThemeColor for text labels that contain secondary content.
+  /// The ThemeColor for text labels that contain secondary content.
   public var secondaryLabel: ThemeColor = .init(
     universal: .uiColor(.secondaryLabel)
   )
-  /// TheThemeColor for thin borders or divider lines that allows some underlying content to be visible.
+  /// The ThemeColor for thin borders or divider lines that allows some underlying content to be visible.
   public var divider: ThemeColor = .init(
     universal: .uiColor(.separator)
   )
