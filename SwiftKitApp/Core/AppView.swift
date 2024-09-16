@@ -12,7 +12,7 @@ struct AppView: View {
             CheckboxPreview()
           }
           NavigationLinkWithTitle("Input Field") {
-            InputFieldsView()
+            InputFieldPreview()
           }
           NavigationLinkWithTitle("Loading") {
             LoadingPreview()

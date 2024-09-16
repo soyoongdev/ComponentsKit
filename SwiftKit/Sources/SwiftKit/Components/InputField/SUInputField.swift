@@ -68,6 +68,7 @@ public struct SUInputField<FocusValue: Hashable>: View {
           })
         }
       }
+      .tint(self.model.tintColor.color(for: self.colorScheme))
       .font(self.model.preferredFont.font)
       .foregroundStyle(self.model.foregroundColor.color(for: self.colorScheme))
       .focused(self.$globalFocus, equals: self.localFocus)
