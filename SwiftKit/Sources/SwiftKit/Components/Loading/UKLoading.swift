@@ -20,13 +20,9 @@ open class UKLoading: UIView, UKComponent {
       guard self.isHidden != oldValue else { return }
 
       if self.isHidden {
-        self.pauseAnimation()
+        self.shapeLayer.removeAllAnimations()
       } else {
         self.addSpinnerAnimation()
-        self.resumeAnimation()
-      }
-      if !self.model.isAnimating {
-        self.pauseAnimation()
       }
     }
   }
@@ -91,17 +87,10 @@ open class UKLoading: UIView, UKComponent {
   }
 
   @objc func handleAppWillMoveToBackground() {
-    if self.model.isAnimating {
-      self.pauseAnimation()
-    }
+    self.shapeLayer.removeAllAnimations()
   }
   @objc func handleAppMovedFromBackground() {
     self.addSpinnerAnimation()
-    self.resumeAnimation()
-
-    if !self.model.isAnimating {
-      self.pauseAnimation()
-    }
   }
 
   // MARK: Update
@@ -112,18 +101,11 @@ open class UKLoading: UIView, UKComponent {
     self.shapeLayer.lineWidth = self.model.loadingLineWidth
     self.shapeLayer.strokeColor = self.model.color.main.uiColor.cgColor
 
-    if self.model.shouldStartAnimating(oldModel) {
-      self.resumeAnimation()
-    } else if self.model.shouldStopAnimating(oldModel) {
-      self.pauseAnimation()
-    }
-    if self.model.shouldUpdateSize(oldModel) {
+    if self.model.shouldUpdateShapePath(oldModel) {
+      self.updateShapePath()
+
       self.invalidateIntrinsicContentSize()
       self.setNeedsLayout()
-    }
-    if self.model.shouldUpdateAnimationSpeed(oldModel) {
-      self.shapeLayer.removeAllAnimations()
-      self.addSpinnerAnimation()
     }
   }
 
@@ -168,29 +150,11 @@ open class UKLoading: UIView, UKComponent {
 
   // MARK: Helpers
 
-  private func pauseAnimation() {
-    let pausedTime = self.shapeLayer.convertTime(CACurrentMediaTime(), from: nil)
-
-    self.shapeLayer.speed = 0.0
-    self.shapeLayer.timeOffset = pausedTime
-  }
-
-  private func resumeAnimation() {
-    let pausedTime: CFTimeInterval = self.shapeLayer.timeOffset
-
-    self.shapeLayer.speed = 1.0
-    self.shapeLayer.timeOffset = 0.0
-    self.shapeLayer.beginTime = 0.0
-
-    let timeSincePause = self.shapeLayer.convertTime(CACurrentMediaTime(), from: nil) - pausedTime
-    self.shapeLayer.beginTime = timeSincePause
-  }
-
   private func addSpinnerAnimation() {
     let rotationAnimation = CABasicAnimation(keyPath: "transform.rotation.z")
     rotationAnimation.fromValue = 0
     rotationAnimation.toValue = CGFloat.pi * 2
-    rotationAnimation.duration = 1.0 / self.model.speed
+    rotationAnimation.duration = 1.0
     rotationAnimation.repeatCount = .infinity
     rotationAnimation.timingFunction = CAMediaTimingFunction(name: .linear)
     self.shapeLayer.add(rotationAnimation, forKey: "rotationAnimation")

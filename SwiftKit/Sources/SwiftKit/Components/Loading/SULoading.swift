@@ -4,7 +4,6 @@ import Combine
 public struct SULoading: View {
   private var model: LoadingVM
 
-  @State private var rotationAnimationTimer: AnyCancellable?
   @State private var rotationAngle: CGFloat = 0.0
 
   @Environment(\.colorScheme) private var colorScheme
@@ -18,8 +17,8 @@ public struct SULoading: View {
       path.addArc(
         center: self.model.center,
         radius: self.model.radius,
-        startAngle: .degrees(0),
-        endAngle: .degrees(360),
+        startAngle: .radians(0),
+        endAngle: .radians(2 * .pi),
         clockwise: true
       )
     }
@@ -33,51 +32,19 @@ public struct SULoading: View {
           miterLimit: 0
         )
       )
-      .rotationEffect(.degrees(self.rotationAngle))
+      .rotationEffect(.radians(self.rotationAngle))
+      .animation(
+        .linear(duration: 1.0)
+        .repeatForever(autoreverses: false),
+        value: self.rotationAngle
+      )
       .frame(
         width: self.model.preferredSize.width,
         height: self.model.preferredSize.height,
         alignment: .center
       )
-      .rotationEffect(.radians(2 * .pi * 0.15))
       .onAppear {
-        if self.model.isAnimating {
-          self.startRotationAnimation(speed: self.model.speed)
-        }
+        self.rotationAngle = 2 * .pi
       }
-      .onChange(of: self.model.isAnimating) { isAnimating in
-        if isAnimating {
-          self.startRotationAnimation(speed: self.model.speed)
-        } else {
-          self.removeRotationAnimation()
-        }
-      }
-      .onChange(of: self.model.speed) { newSpeed in
-        self.removeRotationAnimation()
-        self.startRotationAnimation(speed: newSpeed)
-      }
-  }
-
-  private func rotate(speed: CGFloat) {
-    withAnimation {
-      self.rotationAngle += 40 * max(0, speed)
-    }
-  }
-
-  private func startRotationAnimation(speed: CGFloat) {
-    self.rotate(speed: speed)
-
-    self.rotationAnimationTimer = Timer
-      .publish(every: 0.1, on: .main, in: .common)
-      .autoconnect()
-      .receive(on: DispatchQueue.main)
-      .sink { _ in
-        self.rotate(speed: speed)
-      }
-  }
-
-  private func removeRotationAnimation() {
-    self.rotationAnimationTimer?.cancel()
-    self.rotationAnimationTimer = nil
   }
 }

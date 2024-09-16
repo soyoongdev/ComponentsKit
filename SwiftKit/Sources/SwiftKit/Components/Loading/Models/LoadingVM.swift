@@ -2,11 +2,8 @@ import Foundation
 
 public struct LoadingVM: ComponentVM {
   public var color: ComponentColor = .primary
-  // TODO: [1] Remove `isAnimating` property
-  public var isAnimating: Bool = true
   public var lineWidth: CGFloat?
   public var size: ComponentSize = .medium
-  public var speed: CGFloat = 1.0
   public var style: LoadingStyle = .spinner
 
   public init() {}
@@ -39,20 +36,8 @@ extension LoadingVM {
 // MARK: UIKit Helpers
 
 extension LoadingVM {
-  func shouldStartAnimating(_ oldModel: Self) -> Bool {
-    return self.isAnimating && !oldModel.isAnimating
-  }
-  func shouldStopAnimating(_ oldModel: Self) -> Bool {
-    return !self.isAnimating && oldModel.isAnimating
-  }
   func shouldUpdateShapePath(_ oldModel: Self) -> Bool {
     return self.size != oldModel.size || self.lineWidth != oldModel.lineWidth
-  }
-  func shouldUpdateSize(_ oldModel: Self) -> Bool {
-    return self.size != oldModel.size
-  }
-  func shouldUpdateAnimationSpeed(_ oldModel: Self) -> Bool {
-    return self.speed != oldModel.speed
   }
 }
 
