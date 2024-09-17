@@ -5,7 +5,7 @@ public struct ButtonVM: ComponentVM {
   public var animationScale: AnimationScale = .medium
   public var color: ComponentColor = .primary
   public var cornerRadius: ComponentRadius?
-  public var font: Typography?
+  public var font: UniversalFont?
   public var isEnabled: Bool = true
   public var isFullWidth: Bool = false
   public var size: ComponentSize = .medium
@@ -17,21 +17,21 @@ public struct ButtonVM: ComponentVM {
 // MARK: Shared Helpers
 
 extension ButtonVM {
-  private var mainColor: ThemeColor {
+  private var mainColor: UniversalColor {
     return self.isEnabled
     ? self.color.main
     : self.color.main.withOpacity(
       SwiftKitConfig.shared.layout.disabledOpacity
     )
   }
-  private var contrastColor: ThemeColor {
+  private var contrastColor: UniversalColor {
     return self.isEnabled
     ? self.color.contrast
     : self.color.contrast.withOpacity(
       SwiftKitConfig.shared.layout.disabledOpacity
     )
   }
-  var backgroundColor: ThemeColor? {
+  var backgroundColor: UniversalColor? {
     switch self.style {
     case .filled:
       return self.mainColor
@@ -39,7 +39,7 @@ extension ButtonVM {
       return nil
     }
   }
-  var foregroundColor: ThemeColor {
+  var foregroundColor: UniversalColor {
     switch self.style {
     case .filled:
       return self.contrastColor
@@ -57,7 +57,7 @@ extension ButtonVM {
       return borderWidth.value
     }
   }
-  var borderColor: ThemeColor? {
+  var borderColor: UniversalColor? {
     switch self.style {
     case .filled, .plain:
       return nil
@@ -65,18 +65,18 @@ extension ButtonVM {
       return self.mainColor
     }
   }
-  var preferredFont: Typography {
+  var preferredFont: UniversalFont {
     if let font {
       return font
     }
 
     switch self.size {
     case .small:
-      return Typography.Component.small
+      return UniversalFont.Component.small
     case .medium:
-      return Typography.Component.medium
+      return UniversalFont.Component.medium
     case .large:
-      return Typography.Component.large
+      return UniversalFont.Component.large
     }
   }
   var preferredCornerRadius: ComponentRadius {

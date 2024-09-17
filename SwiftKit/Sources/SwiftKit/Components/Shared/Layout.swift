@@ -52,12 +52,12 @@ public struct Layout: Updatable {
 
   // MARK: Font
 
-  public struct ComponentFont {
-    public var small: Typography
-    public var medium: Typography
-    public var large: Typography
+  public struct Font {
+    public var small: UniversalFont
+    public var medium: UniversalFont
+    public var large: UniversalFont
 
-    public init(small: Typography, medium: Typography, large: Typography) {
+    public init(small: UniversalFont, medium: UniversalFont, large: UniversalFont) {
       self.small = small
       self.medium = medium
       self.large = large
@@ -82,7 +82,7 @@ public struct Layout: Updatable {
     medium: 0.98,
     large: 0.95
   )
-  public var componentFont: ComponentFont = .init(
+  public var componentFont: Font = .init(
     small: .system(size: 12, weight: .regular),
     medium: .system(size: 16, weight: .regular),
     large: .system(size: 20, weight: .regular)

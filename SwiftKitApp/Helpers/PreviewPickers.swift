@@ -15,8 +15,8 @@ struct ComponentColorPicker: View {
       Text("Warning").tag(ComponentColor.warning)
       Text("Danger").tag(ComponentColor.danger)
       Text("Custom").tag(ComponentColor(
-        main: .init(universal: .uiColor(.systemPurple)),
-        contrast: .init(universal: .uiColor(.systemYellow)))
+        main: .universal(.uiColor(.systemPurple)),
+        contrast: .universal(.uiColor(.systemYellow)))
       )
     }
   }
@@ -37,8 +37,8 @@ struct ComponentOptionalColorPicker: View {
       Text("Warning").tag(ComponentColor.warning)
       Text("Danger").tag(ComponentColor.danger)
       Text("Custom").tag(ComponentColor(
-        main: .init(universal: .uiColor(.systemPurple)),
-        contrast: .init(universal: .uiColor(.systemYellow)))
+        main: .universal(.uiColor(.systemPurple)),
+        contrast: .universal(.uiColor(.systemYellow)))
       )
     }
   }
@@ -66,15 +66,15 @@ struct CornerRadiusPicker<Custom: View>: View {
 // MARK: - FontPicker
 
 struct FontPicker: View {
-  @Binding var selection: Typography?
+  @Binding var selection: UniversalFont?
 
   var body: some View {
     Picker("Font", selection: self.$selection) {
-      Text("Default").tag(Optional<Typography>.none)
-      Text("Small").tag(Typography.Component.small)
-      Text("Medium").tag(Typography.Component.medium)
-      Text("Large").tag(Typography.Component.large)
-      Text("Custom: system bold of size 18").tag(Typography.system(size: 18, weight: .bold))
+      Text("Default").tag(Optional<UniversalFont>.none)
+      Text("Small").tag(UniversalFont.Component.small)
+      Text("Medium").tag(UniversalFont.Component.medium)
+      Text("Large").tag(UniversalFont.Component.large)
+      Text("Custom: system bold of size 18").tag(UniversalFont.system(size: 18, weight: .bold))
     }
   }
 }
@@ -93,21 +93,21 @@ struct SizePicker: View {
   }
 }
 
-// MARK: - ThemeColorPicker
+// MARK: - UniversalColorPicker
 
-struct ThemeColorPicker: View {
+struct UniversalColorPicker: View {
   let title: String
-  @Binding var selection: ThemeColor
+  @Binding var selection: UniversalColor
 
   var body: some View {
     Picker(self.title, selection: self.$selection) {
-      Text("Primary").tag(ThemeColor.primary)
-      Text("Secondary").tag(ThemeColor.secondary)
-      Text("Accent").tag(ThemeColor.accent)
-      Text("Success").tag(ThemeColor.success)
-      Text("Warning").tag(ThemeColor.warning)
-      Text("Danger").tag(ThemeColor.danger)
-      Text("Custom").tag(ThemeColor(universal: .uiColor(.systemPurple)))
+      Text("Primary").tag(UniversalColor.primary)
+      Text("Secondary").tag(UniversalColor.secondary)
+      Text("Accent").tag(UniversalColor.accent)
+      Text("Success").tag(UniversalColor.success)
+      Text("Warning").tag(UniversalColor.warning)
+      Text("Danger").tag(UniversalColor.danger)
+      Text("Custom").tag(UniversalColor.universal(.uiColor(.systemPurple)))
     }
   }
 }

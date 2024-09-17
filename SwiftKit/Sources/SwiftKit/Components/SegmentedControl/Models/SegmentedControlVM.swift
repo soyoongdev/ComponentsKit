@@ -4,7 +4,7 @@ import UIKit
 public struct SegmentedControlVM<ID: Hashable>: ComponentVM {
   public var color: ComponentColor?
   public var cornerRadius: ComponentRadius?
-  public var font: Typography?
+  public var font: UniversalFont?
   public var isEnabled: Bool = true
   public var isFullWidth: Bool = false
   public var items: [SegmentedControlItemVM<ID>] = [] {
@@ -22,7 +22,7 @@ public struct SegmentedControlVM<ID: Hashable>: ComponentVM {
 // MARK: - Shared Helpers
 
 extension SegmentedControlVM {
-  var backgroundColor: ThemeColor {
+  var backgroundColor: UniversalColor {
     return .init(
       light: .rgba(r: 244, g: 244, b: 245, a: 1.0),
       dark: .rgba(r: 39, g: 39, b: 42, a: 1.0)
@@ -32,7 +32,7 @@ extension SegmentedControlVM {
       : SwiftKitConfig.shared.layout.disabledOpacity
     )
   }
-  var selectedSegmentColor: ThemeColor {
+  var selectedSegmentColor: UniversalColor {
     let selectedSegmentColor = self.color?.main ?? .init(
       light: .rgba(r: 255, g: 255, b: 255, a: 1.0),
       dark: .rgba(r: 62, g: 62, b: 69, a: 1.0)
@@ -46,10 +46,10 @@ extension SegmentedControlVM {
   func item(for id: ID) -> SegmentedControlItemVM<ID>? {
     return self.items.first(where: { $0.id == id })
   }
-  func foregroundColor(id: ID, selectedId: ID) -> ThemeColor {
+  func foregroundColor(id: ID, selectedId: ID) -> UniversalColor {
     let isItemEnabled = self.item(for: id)?.isEnabled == true
     let isSelected = id == selectedId && isItemEnabled
-    let defaultColor = ThemeColor(
+    let defaultColor = UniversalColor(
       light: .rgba(r: 0, g: 0, b: 0, a: 1.0),
       dark: .rgba(r: 255, g: 255, b: 255, a: 1.0)
     )
@@ -103,7 +103,7 @@ extension SegmentedControlVM {
     case .large: 70
     }
   }
-  func preferredFont(for id: ID) -> Typography {
+  func preferredFont(for id: ID) -> UniversalFont {
     if let itemFont = self.item(for: id)?.font {
       return itemFont
     } else if let font {
@@ -112,11 +112,11 @@ extension SegmentedControlVM {
 
     switch self.size {
     case .small:
-      return Typography.Component.small
+      return UniversalFont.Component.small
     case .medium:
-      return Typography.Component.medium
+      return UniversalFont.Component.medium
     case .large:
-      return Typography.Component.large
+      return UniversalFont.Component.large
     }
   }
 }

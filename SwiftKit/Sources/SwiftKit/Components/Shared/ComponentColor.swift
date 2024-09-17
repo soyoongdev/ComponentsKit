@@ -3,12 +3,12 @@ import Foundation
 public struct ComponentColor: Hashable {
   // MARK: Properties
 
-  let main: ThemeColor
-  let contrast: ThemeColor
+  let main: UniversalColor
+  let contrast: UniversalColor
 
   // MARK: Initialization
 
-  public init(main: ThemeColor, contrast: ThemeColor) {
+  public init(main: UniversalColor, contrast: UniversalColor) {
     self.main = main
     self.contrast = contrast
   }

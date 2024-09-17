@@ -4,7 +4,7 @@ public struct CheckboxVM: ComponentVM {
   public var title: String?
   public var color: ComponentColor = .accent
   public var cornerRadius: ComponentRadius?
-  public var font: Typography?
+  public var font: UniversalFont?
   public var isEnabled: Bool = true
   public var size: ComponentSize = .medium
 
@@ -14,29 +14,29 @@ public struct CheckboxVM: ComponentVM {
 // MARK: Shared Helpers
 
 extension CheckboxVM {
-  var backgroundColor: ThemeColor {
+  var backgroundColor: UniversalColor {
     return self.color.main.withOpacity(
       self.isEnabled
       ? 1.0
       : SwiftKitConfig.shared.layout.disabledOpacity
     )
   }
-  var foregroundColor: ThemeColor {
+  var foregroundColor: UniversalColor {
     return self.color.contrast.withOpacity(
       self.isEnabled
       ? 1.0
       : SwiftKitConfig.shared.layout.disabledOpacity
     )
   }
-  var titleColor: ThemeColor {
+  var titleColor: UniversalColor {
     return Palette.Text.primary.withOpacity(
       self.isEnabled
       ? 1.0
       : SwiftKitConfig.shared.layout.disabledOpacity
     )
   }
-  var borderColor: ThemeColor {
-    return .init(universal: .uiColor(.lightGray)).withOpacity(
+  var borderColor: UniversalColor {
+    return .universal(.uiColor(.lightGray)).withOpacity(
       self.isEnabled
       ? 1.0
       : SwiftKitConfig.shared.layout.disabledOpacity
@@ -95,18 +95,18 @@ extension CheckboxVM {
       return min(value, self.checkboxSide / 2)
     }
   }
-  var titleFont: Typography {
+  var titleFont: UniversalFont {
     if let font {
       return font
     }
 
     switch self.size {
     case .small:
-      return Typography.Component.small
+      return UniversalFont.Component.small
     case .medium:
-      return Typography.Component.medium
+      return UniversalFont.Component.medium
     case .large:
-      return Typography.Component.large
+      return UniversalFont.Component.large
     }
   }
 }

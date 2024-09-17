@@ -3,7 +3,7 @@ import Foundation
 public struct SegmentedControlItemVM<ID: Hashable>: Updatable {
   public var id: ID
   public var title: String = ""
-  public var font: Typography?
+  public var font: UniversalFont?
   public var isEnabled: Bool = true
 
   public init(id: ID) {

@@ -5,7 +5,7 @@ public struct InputFieldVM: ComponentVM {
   public var autocapitalization: InputFieldTextAutocapitalization = .sentences
   public var color: ComponentColor?
   public var cornerRadius: ComponentRadius?
-  public var font: Typography?
+  public var font: UniversalFont?
   public var isAutocorrectionEnabled: Bool = true
   public var isEnabled: Bool = true
   public var isRequired: Bool = false
@@ -14,7 +14,7 @@ public struct InputFieldVM: ComponentVM {
   public var placeholder: String?
   public var size: ComponentSize = .medium
   public var submitType: SubmitType = .return
-  public var tintColor: ThemeColor = .accent
+  public var tintColor: UniversalColor = .accent
   public var title: String = ""
 
   public init() {}
@@ -23,18 +23,18 @@ public struct InputFieldVM: ComponentVM {
 // MARK: - Shared Helpers
 
 extension InputFieldVM {
-  var preferredFont: Typography {
+  var preferredFont: UniversalFont {
     if let font {
       return font
     }
 
     switch self.size {
     case .small:
-      return Typography.Component.medium
+      return UniversalFont.Component.medium
     case .medium:
-      return Typography.Component.medium
+      return UniversalFont.Component.medium
     case .large:
-      return Typography.Component.large
+      return UniversalFont.Component.large
     }
   }
   var preferredCornerRadius: ComponentRadius {
@@ -57,7 +57,7 @@ extension InputFieldVM {
       return 16
     }
   }
-  var backgroundColor: ThemeColor {
+  var backgroundColor: UniversalColor {
     if let color {
       return color.main.withOpacity(0.25)
     } else {
@@ -67,7 +67,7 @@ extension InputFieldVM {
       )
     }
   }
-  var foregroundColor: ThemeColor {
+  var foregroundColor: UniversalColor {
     let foregroundColor = self.color?.main ?? .init(
       light: .rgba(r: 0, g: 0, b: 0, a: 1.0),
       dark: .rgba(r: 255, g: 255, b: 255, a: 1.0)
@@ -76,10 +76,10 @@ extension InputFieldVM {
       self.isEnabled ? 1.0 : 0.5
     )
   }
-  var placeholderColor: ThemeColor {
+  var placeholderColor: UniversalColor {
     return self.foregroundColor.withOpacity(self.isEnabled ? 0.7 : 0.3)
   }
-  func titleColor(for position: InputFieldTitlePosition) -> ThemeColor {
+  func titleColor(for position: InputFieldTitlePosition) -> UniversalColor {
     switch position {
     case .top:
       return self.foregroundColor
@@ -87,7 +87,7 @@ extension InputFieldVM {
       return self.foregroundColor.withOpacity(self.isEnabled ? 0.8 : 0.45)
     }
   }
-  func titleFont(for position: InputFieldTitlePosition) -> Typography {
+  func titleFont(for position: InputFieldTitlePosition) -> UniversalFont {
     switch position {
     case .top:
       return self.preferredFont.withRelativeSize(-1)
@@ -163,7 +163,7 @@ extension InputFieldVM {
         string: "*",
         attributes: [
           .font: self.titleFont(for: position).uiFont,
-          .foregroundColor: ThemeColor.danger.uiColor
+          .foregroundColor: UniversalColor.danger.uiColor
         ]
       ))
     }
@@ -198,7 +198,7 @@ extension InputFieldVM {
 
       var requiredSign = AttributedString("*")
       requiredSign.font = self.titleFont(for: position).font
-      requiredSign.foregroundColor = ThemeColor.danger.uiColor
+      requiredSign.foregroundColor = UniversalColor.danger.uiColor
       attributedString.append(requiredSign)
     }
 

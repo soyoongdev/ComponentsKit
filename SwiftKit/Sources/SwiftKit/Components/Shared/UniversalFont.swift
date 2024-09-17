@@ -1,7 +1,7 @@
 import SwiftUI
 import UIKit
 
-public enum Typography: Hashable {
+public enum UniversalFont: Hashable {
   public enum Weight: Hashable {
     case ultraLight
     case thin
@@ -62,7 +62,7 @@ public enum Typography: Hashable {
 
 // MARK: Helpers
 
-extension Typography.Weight {
+extension UniversalFont.Weight {
   var uiFontWeight: UIFont.Weight {
     switch self {
     case .ultraLight:
@@ -87,7 +87,7 @@ extension Typography.Weight {
   }
 }
 
-extension Typography.Weight {
+extension UniversalFont.Weight {
   var swiftUIFontWeight: Font.Weight {
     switch self {
     case .ultraLight:
@@ -112,17 +112,17 @@ extension Typography.Weight {
   }
 }
 
-// MARK: - Typography + Config
+// MARK: - UniversalFont + Config
 
-extension Typography {
+extension UniversalFont {
   public enum Component {
-    public static var small: Typography {
+    public static var small: UniversalFont {
       return SwiftKitConfig.shared.layout.componentFont.small
     }
-    public static var medium: Typography {
+    public static var medium: UniversalFont {
       return SwiftKitConfig.shared.layout.componentFont.medium
     }
-    public static var large: Typography {
+    public static var large: UniversalFont {
       return SwiftKitConfig.shared.layout.componentFont.large
     }
   }

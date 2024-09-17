@@ -78,7 +78,7 @@ struct InputFieldPreview: View {
           Text("next").tag(SubmitType.next)
           Text("continue").tag(SubmitType.continue)
         }
-        ThemeColorPicker(
+        UniversalColorPicker(
           title: "Tint Color",
           selection: self.$model.tintColor
         )

@@ -1,53 +1,39 @@
 import Foundation
 
 public struct Palette: Updatable {
-  /// The ThemeColor for the main background of your interface.
-  public var background: ThemeColor = .init(
-    universal: .uiColor(.systemBackground)
-  )
-  /// The ThemeColor for content layered on top of the main background.
-  public var secondaryBackground: ThemeColor = .init(
-    universal: .uiColor(.secondarySystemBackground)
-  )
-  /// The ThemeColor for text labels that contain primary content.
-  public var label: ThemeColor = .init(
-    universal: .uiColor(.label)
-  )
-  /// The ThemeColor for text labels that contain secondary content.
-  public var secondaryLabel: ThemeColor = .init(
-    universal: .uiColor(.secondaryLabel)
-  )
-  /// The ThemeColor for thin borders or divider lines that allows some underlying content to be visible.
-  public var divider: ThemeColor = .init(
-    universal: .uiColor(.separator)
-  )
-  // used for modal, popover, etc.
-  public var overlay: ThemeColor = .init(
-    universal: .uiColor(.systemGroupedBackground)
-  )
+  /// The UniversalColor for the main background of your interface.
+  public var background: UniversalColor = .universal(.uiColor(.systemBackground))
+  /// The UniversalColor for content layered on top of the main background.
+  public var secondaryBackground: UniversalColor = .universal(.uiColor(.secondarySystemBackground))
+  /// The UniversalColor for text labels that contain primary content.
+  public var label: UniversalColor = .universal(.uiColor(.label))
+  /// The UniversalColor for text labels that contain secondary content.
+  public var secondaryLabel: UniversalColor = .universal(.uiColor(.secondaryLabel))
+  /// The UniversalColor for thin borders or divider lines that allows some underlying content to be visible.
+  public var divider: UniversalColor = .universal(.uiColor(.separator))
   public var primary: ComponentColor = .init(
-    main: .init(universal: .uiColor(.label)),
-    contrast: .init(universal: .uiColor(.systemBackground))
+    main: .universal(.uiColor(.label)),
+    contrast: .universal(.uiColor(.systemBackground))
   )
   public var secondary: ComponentColor = .init(
-    main: .init(universal: .uiColor(.lightGray)),
-    contrast: .init(universal: .uiColor(.black))
+    main: .universal(.uiColor(.lightGray)),
+    contrast: .universal(.uiColor(.black))
   )
   public var accent: ComponentColor = .init(
-    main: .init(universal: .uiColor(.systemBlue)),
-    contrast: .init(universal: .uiColor(.white))
+    main: .universal(.uiColor(.systemBlue)),
+    contrast: .universal(.uiColor(.white))
   )
   public var success: ComponentColor = .init(
-    main: .init(universal: .uiColor(.systemGreen)),
-    contrast: .init(universal: .uiColor(.black))
+    main: .universal(.uiColor(.systemGreen)),
+    contrast: .universal(.uiColor(.black))
   )
   public var warning: ComponentColor = .init(
-    main: .init(universal: .uiColor(.systemOrange)),
-    contrast: .init(universal: .uiColor(.black))
+    main: .universal(.uiColor(.systemOrange)),
+    contrast: .universal(.uiColor(.black))
   )
   public var danger: ComponentColor = .init(
-    main: .init(universal: .uiColor(.systemRed)),
-    contrast: .init(universal: .uiColor(.white))
+    main: .universal(.uiColor(.systemRed)),
+    contrast: .universal(.uiColor(.white))
   )
 
   public init() {}
@@ -57,27 +43,24 @@ public struct Palette: Updatable {
 
 extension Palette {
   public enum Base {
-    public static var background: ThemeColor {
+    public static var background: UniversalColor {
       return SwiftKitConfig.shared.colors.background
     }
-    public static var secondaryBackground: ThemeColor {
+    public static var secondaryBackground: UniversalColor {
       return SwiftKitConfig.shared.colors.background
     }
-    public static var divider: ThemeColor {
+    public static var divider: UniversalColor {
       return SwiftKitConfig.shared.colors.divider
-    }
-    public static var overlay: ThemeColor {
-      return SwiftKitConfig.shared.colors.overlay
     }
   }
   public struct Text {
-    public static var primary: ThemeColor {
+    public static var primary: UniversalColor {
       return SwiftKitConfig.shared.colors.label
     }
-    public static var secondary: ThemeColor {
+    public static var secondary: UniversalColor {
       return SwiftKitConfig.shared.colors.secondaryLabel
     }
-    public static var accent: ThemeColor {
+    public static var accent: UniversalColor {
       return SwiftKitConfig.shared.colors.accent.main
     }
   }
@@ -124,7 +107,7 @@ extension ComponentColor {
   }
 }
 
-extension ThemeColor {
+extension UniversalColor {
   public static var primary: Self {
     return SwiftKitConfig.shared.colors.primary.main
   }

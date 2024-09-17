@@ -1,7 +1,7 @@
 import SwiftUI
 import UIKit
 
-public struct ThemeColor: Hashable {
+public struct UniversalColor: Hashable {
   // MARK: ColorRepresentable
 
   public enum ColorRepresentable: Hashable {
@@ -78,14 +78,15 @@ public struct ThemeColor: Hashable {
 
   // MARK: Initialization
 
-  public init(light: ColorRepresentable, dark: ColorRepresentable) {
-    self.light = light
-    self.dark = dark
+  public static func themed(
+    light: ColorRepresentable,
+    dark: ColorRepresentable
+  ) -> Self {
+    return Self(light: light, dark: dark)
   }
 
-  public init(universal: ColorRepresentable) {
-    self.light = universal
-    self.dark = universal
+  public static func universal(_ universal: ColorRepresentable) -> Self {
+    return Self(light: universal, dark: universal)
   }
 
   // MARK: Methods
