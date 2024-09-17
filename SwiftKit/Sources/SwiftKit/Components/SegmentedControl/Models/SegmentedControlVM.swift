@@ -1,21 +1,48 @@
 import SwiftUI
 import UIKit
 
+/// A model that defines the appearance properties for a segmented control component.
 public struct SegmentedControlVM<ID: Hashable>: ComponentVM {
+  /// The color of the segmented control.
   public var color: ComponentColor?
+
+  /// The corner radius of the segmented control.
   public var cornerRadius: ComponentRadius?
+
+  /// The font used for the segmented control items' titles.
   public var font: UniversalFont?
+
+  /// A Boolean value indicating whether the segmented control is enabled or disabled.
+  ///
+  /// Defaults to `true`.
   public var isEnabled: Bool = true
+
+  /// A Boolean value indicating whether the segmented control should take the full width of its superview.
+  ///
+  /// Defaults to `false`.
   public var isFullWidth: Bool = false
+
+  /// The array of items in the segmented control.
+  ///
+  /// It must contain at least one item and all items must have unique identifiers.
   public var items: [SegmentedControlItemVM<ID>] = [] {
     didSet {
+      guard self.items.isNotEmpty else {
+        assertionFailure("Array of items must contain at least one item.")
+        return
+      }
       if let duplicatedId {
-        assertionFailure("Items should have unique ids! Duplicated id: \(duplicatedId)")
+        assertionFailure("Items must have unique ids! Duplicated id: \(duplicatedId)")
       }
     }
   }
+
+  /// The predefined size of the segmented control.
+  ///
+  /// Defaults to `.medium`.
   public var size: ComponentSize = .medium
 
+  /// Initializes a new instance of `SegmentedControlVM` with default values.
   public init() {}
 }
 

@@ -1,11 +1,28 @@
 import Foundation
 
+/// A model that defines the appearance properties for a loading indicator component.
 public struct LoadingVM: ComponentVM {
+  /// The color of the loading indicator.
+  ///
+  /// Defaults to `.primary`.
   public var color: ComponentColor = .primary
+
+  /// The width of the lines used in the loading indicator.
+  ///
+  /// If not provided, the line width is automatically adjusted based on the size.
   public var lineWidth: CGFloat?
+
+  /// The predefined size of the loading indicator.
+  ///
+  /// Defaults to `.medium`.
   public var size: ComponentSize = .medium
+
+  /// The style of the loading indicator (e.g., spinner, bar).
+  ///
+  /// Defaults to `.spinner`.
   public var style: LoadingStyle = .spinner
 
+  /// Initializes a new instance of `LoadingVM` with default values.
   public init() {}
 }
 

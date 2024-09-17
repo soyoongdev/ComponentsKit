@@ -1,22 +1,73 @@
 import SwiftUI
 import UIKit
 
+/// A model that defines the appearance properties for an input field component.
 public struct InputFieldVM: ComponentVM {
+  /// The autocapitalization behavior for the input field.
+  ///
+  /// Defaults to `.sentences`, which capitalizes the first letter of each sentence.
   public var autocapitalization: InputFieldTextAutocapitalization = .sentences
+
+  /// The color of the input field.
   public var color: ComponentColor?
+
+  /// The corner radius of the input field.
+  ///
+  /// If not provided, the radius is automatically calculated based on the checkbox's size.
   public var cornerRadius: ComponentRadius?
+
+  /// The font used for the input field's text.
+  ///
+  /// If not provided, the font is automatically calculated based on the checkbox's size.
   public var font: UniversalFont?
+
+  /// A Boolean value indicating whether autocorrection is enabled for the input field.
+  ///
+  /// Defaults to `true`.
   public var isAutocorrectionEnabled: Bool = true
+
+  /// A Boolean value indicating whether the input field is enabled or disabled.
+  ///
+  /// Defaults to `true`.
   public var isEnabled: Bool = true
+
+  /// A Boolean value indicating whether the input field is required to be filled.
+  ///
+  /// Defaults to `false`.
   public var isRequired: Bool = false
+
+  /// A Boolean value indicating whether the input field should hide the input text for secure data entry (e.g., passwords).
+  ///
+  /// Defaults to `false`.
   public var isSecureInput: Bool = false
+
+  /// The type of keyboard to display when the input field is active.
+  ///
+  /// Defaults to `.default`.
   public var keyboardType: UIKeyboardType = .default
+
+  /// The placeholder text displayed when there is no input.
   public var placeholder: String?
+
+  /// The predefined size of the input field.
+  ///
+  /// Defaults to `.medium`.
   public var size: ComponentSize = .medium
+
+  /// The type of the submit button on the keyboard.
+  ///
+  /// Defaults to `.return`.
   public var submitType: SubmitType = .return
+
+  /// The tint color applied to the input field's cursor.
+  ///
+  /// Defaults to `.accent`.
   public var tintColor: UniversalColor = .accent
+
+  /// The title displayed on the input field.
   public var title: String = ""
 
+  /// Initializes a new instance of `InputFieldVM` with default values.
   public init() {}
 }
 

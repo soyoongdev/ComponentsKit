@@ -15,8 +15,8 @@ open class UKButton: UIView, UKComponent {
     didSet {
       self.transform = self.isHighlighted && self.model.isEnabled
       ? .init(
-        scaleX: self.model.animationScale.value,
-        y: self.model.animationScale.value
+        scaleX: self.model.preferredAnimationScale.value,
+        y: self.model.preferredAnimationScale.value
       )
       : .identity
     }

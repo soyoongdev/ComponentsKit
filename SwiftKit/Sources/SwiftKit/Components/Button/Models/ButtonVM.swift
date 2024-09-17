@@ -1,16 +1,51 @@
 import UIKit
 
+/// A model that defines the appearance properties for a button component.
 public struct ButtonVM: ComponentVM {
+  /// The text displayed on the button.
   public var title: String = ""
-  public var animationScale: AnimationScale = .medium
+
+  /// The scaling factor for the button's press animation, with a value between 0 and 1.
+  ///
+  /// If not provided, the scale is automatically calculated based on the button's size.
+  public var animationScale: AnimationScale?
+
+  /// The color of the button.
+  ///
+  /// Defaults to `.primary`.
   public var color: ComponentColor = .primary
+
+  /// The corner radius of the button.
+  ///
+  /// If not provided, the radius is automatically calculated based on the button's size.
   public var cornerRadius: ComponentRadius?
+
+  /// The font used for the button's title text.
+  ///
+  /// If not provided, the font is automatically calculated based on the button's size.
   public var font: UniversalFont?
+
+  /// A Boolean value indicating whether the button is enabled or disabled.
+  ///
+  /// Defaults to `true`.
   public var isEnabled: Bool = true
+
+  /// A Boolean value indicating whether the button should occupy the full width of its superview.
+  ///
+  /// Defaults to `false`.
   public var isFullWidth: Bool = false
+
+  /// The predefined size of the button.
+  ///
+  /// Defaults to `.medium`.
   public var size: ComponentSize = .medium
+
+  /// The visual style of the button.
+  ///
+  /// Defaults to `.filled`.
   public var style: ButtonStyle = .filled
 
+  /// Initializes a new instance of `ButtonVM` with default values.
   public init() {}
 }
 
@@ -63,6 +98,20 @@ extension ButtonVM {
       return nil
     case .bordered:
       return self.mainColor
+    }
+  }
+  var preferredAnimationScale: AnimationScale {
+    if let animationScale {
+      return animationScale
+    }
+
+    switch self.size {
+    case .small:
+      return AnimationScale.small
+    case .medium:
+      return AnimationScale.medium
+    case .large:
+      return AnimationScale.large
     }
   }
   var preferredFont: UniversalFont {

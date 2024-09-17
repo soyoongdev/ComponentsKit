@@ -63,7 +63,7 @@ public struct SUButton: View {
         )
       }
       .scaleEffect(
-        self.isPressed ? self.model.animationScale.value : 1,
+        self.isPressed ? self.model.preferredAnimationScale.value : 1,
         anchor: .center
       )
   }

@@ -1,13 +1,36 @@
 import SwiftUI
 
+/// A model that defines the appearance properties for a checkbox component.
 public struct CheckboxVM: ComponentVM {
+  /// The label text displayed next to the checkbox.
   public var title: String?
+
+  /// The color of the checkbox.
+  ///
+  /// Defaults to `.accent`.
   public var color: ComponentColor = .accent
+
+  /// The corner radius of the checkbox.
+  ///
+  /// If not provided, the radius is automatically calculated based on the checkbox's size.
   public var cornerRadius: ComponentRadius?
+
+  /// The font used for the checkbox label text.
+  /// 
+  /// If not provided, the font is automatically calculated based on the checkbox's size.
   public var font: UniversalFont?
+
+  /// A Boolean value indicating whether the checkbox is enabled or disabled.
+  ///
+  /// Defaults to `true`.
   public var isEnabled: Bool = true
+
+  /// The predefined size of the checkbox.
+  ///
+  /// Defaults to `.medium`.
   public var size: ComponentSize = .medium
 
+  /// Initializes a new instance of `CheckboxVM` with default values.
   public init() {}
 }
 
