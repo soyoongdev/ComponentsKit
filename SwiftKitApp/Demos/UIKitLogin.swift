@@ -160,9 +160,20 @@ final class UIKitLogin: UIViewController {
     self.scrollView.pinToSafeEdges()
 
     self.stackView.top(20)
-    self.stackView.leading(20, to: self.view)
-    self.stackView.trailing(20, to: self.view)
     self.stackView.bottom(20)
+
+    self.stackView.leadingAnchor.constraint(
+      greaterThanOrEqualTo: self.view.leadingAnchor,
+      constant: 20
+    ).isActive = true
+    self.stackView.trailingAnchor.constraint(
+      lessThanOrEqualTo: self.view.trailingAnchor,
+      constant: -20
+    ).isActive = true
+    self.stackView.widthAnchor.constraint(
+      lessThanOrEqualToConstant: 500
+    ).isActive = true
+    self.stackView.centerHorizontally()
 
     self.loader.below(of: self.stackView, padding: 50)
     self.loader.centerHorizontally()

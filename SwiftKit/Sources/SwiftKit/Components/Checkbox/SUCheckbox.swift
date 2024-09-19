@@ -28,7 +28,7 @@ public struct SUCheckbox: View {
   // MARK: Body
 
   public var body: some View {
-    HStack {
+    HStack(spacing: self.model.spacing) {
       ZStack {
         self.model.backgroundColor.color(for: self.colorScheme)
           .clipShape(

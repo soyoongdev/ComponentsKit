@@ -98,7 +98,7 @@ open class UKCheckbox: UIView, UKComponent {
   // MARK: Style
 
   func style() {
-    Self.Style.stackView(self.stackView)
+    Self.Style.stackView(self.stackView, model: self.model)
     Self.Style.titleLabel(self.titleLabel, model: self.model)
     Self.Style.checkboxContainer(self.checkboxContainer, model: self.model)
     Self.Style.checkboxBackground(self.checkboxBackground, model: self.model)
@@ -135,6 +135,8 @@ open class UKCheckbox: UIView, UKComponent {
       self.checkboxContainerConstraints.height?.constant = self.model.checkboxSide
       self.checkboxContainerConstraints.width?.constant = self.model.checkboxSide
       self.setupCheckmarkLayer()
+    }
+    if self.model.shouldUpadateLayout(oldModel) {
       self.setNeedsLayout()
       self.invalidateIntrinsicContentSize()
     }
@@ -248,9 +250,9 @@ open class UKCheckbox: UIView, UKComponent {
 
 extension UKCheckbox {
   fileprivate enum Style {
-    static func stackView(_ stackView: UIStackView) {
+    static func stackView(_ stackView: UIStackView, model: Model) {
       stackView.axis = .horizontal
-      stackView.spacing = 8
+      stackView.spacing = model.spacing
       stackView.alignment = .center
     }
     static func titleLabel(_ label: UILabel, model: Model) {

@@ -68,6 +68,9 @@ extension CheckboxVM {
   var borderWidth: CGFloat {
     return 2.0
   }
+  var spacing: CGFloat {
+    return self.title.isNil ? 0.0 : 8.0
+  }
   var checkmarkLineWidth: CGFloat {
     switch self.size {
     case .small:
@@ -138,12 +141,17 @@ extension CheckboxVM {
 
 extension CheckboxVM {
   func shouldAddLabel(_ oldModel: Self) -> Bool {
-    return self.title.isNotNilAndEmpty != oldModel.title.isNil
+    return self.title.isNotNilAndEmpty && oldModel.title.isNilOrEmpty
   }
   func shouldRemoveLabel(_ oldModel: Self) -> Bool {
-    return self.title.isNil != oldModel.title.isNotNilAndEmpty
+    return self.title.isNilOrEmpty && oldModel.title.isNotNilAndEmpty
   }
   func shouldUpdateSize(_ oldModel: Self) -> Bool {
     return self.size != oldModel.size
+  }
+  func shouldUpadateLayout(_ oldModel: Self) -> Bool {
+    return self.size != oldModel.size
+    || self.title.isNotNilAndEmpty && oldModel.title.isNilOrEmpty
+    || self.title.isNilOrEmpty && oldModel.title.isNotNilAndEmpty
   }
 }

@@ -130,6 +130,7 @@ struct SwiftUILogin: View {
         .padding()
       }
     }
+    .frame(maxWidth: 500)
     .onChange(of: self.selectedPage) { _, newValue in
       if newValue == .signIn && self.focusedInput == .name {
         self.focusedInput = .email
