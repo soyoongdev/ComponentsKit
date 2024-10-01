@@ -8,7 +8,7 @@ struct InputFieldPreview: View {
   }
 
   @State private var text: String = ""
-  @FocusState private var isSelected: Bool
+  @FocusState private var isFocused: Bool
 
   var body: some View {
     VStack {
@@ -20,7 +20,7 @@ struct InputFieldPreview: View {
       PreviewWrapper(title: "SwiftUI") {
         SUInputField(
           text: self.$text,
-          isSelected: self.$isSelected,
+          isFocused: self.$isFocused,
           model: self.model
         )
       }

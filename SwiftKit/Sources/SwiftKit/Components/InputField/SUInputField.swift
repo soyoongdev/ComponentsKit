@@ -107,12 +107,12 @@ public struct SUInputField<FocusValue: Hashable>: View {
 extension SUInputField where FocusValue == Bool {
   public init(
     text: Binding<String>,
-    isSelected: FocusState<Bool>.Binding,
+    isFocused: FocusState<Bool>.Binding,
     model: InputFieldVM = .init(),
     onValueChange: @escaping (String) -> Void = { _ in }
   ) {
     self._text = text
-    self._globalFocus = isSelected
+    self._globalFocus = isFocused
     self.localFocus = true
     self.model = model
     self.onValueChange = onValueChange
