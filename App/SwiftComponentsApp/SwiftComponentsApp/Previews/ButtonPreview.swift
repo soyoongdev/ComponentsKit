@@ -19,6 +19,7 @@ struct ButtonPreview: View {
       }
       Form {
         Picker("Animation Scale", selection: self.$model.animationScale) {
+          Text("Default").tag(Optional<AnimationScale>.none)
           Text("None").tag(AnimationScale.none)
           Text("Small").tag(AnimationScale.small)
           Text("Medium").tag(AnimationScale.medium)
