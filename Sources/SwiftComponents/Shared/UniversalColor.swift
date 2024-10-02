@@ -22,9 +22,9 @@ public struct UniversalColor: Hashable {
       var hexNumber: UInt64 = 0
 
       if hexColor.count == 6 && scanner.scanHexInt64(&hexNumber) {
-        let r = CGFloat((hexNumber & 0x00ff0000) >> 16) / 255
-        let g = CGFloat((hexNumber & 0x0000ff00) >> 8) / 255
-        let b = CGFloat(hexNumber & 0x000000ff) / 255
+        let r = CGFloat((hexNumber & 0x00ff0000) >> 16)
+        let g = CGFloat((hexNumber & 0x0000ff00) >> 8)
+        let b = CGFloat(hexNumber & 0x000000ff)
 
         return .rgba(r: r, g: g, b: b, a: 1.0)
       } else {
@@ -62,7 +62,12 @@ public struct UniversalColor: Hashable {
     fileprivate var color: Color {
       switch self {
       case .rgba(let r, let g, let b, let a):
-        return Color(red: r / 255, green: g / 255, blue: b / 255, opacity: a)
+        return Color(
+          red: r / 255,
+          green: g / 255,
+          blue: b / 255,
+          opacity: a
+        )
       case .uiColor(let uiColor):
         return Color(uiColor: uiColor)
       case .color(let color):
