@@ -1,8 +1,11 @@
 import SwiftUI
+import SwiftComponents
 
 struct PreviewWrapper<Content: View>: View {
   let title: String
   @ViewBuilder let content: () -> Content
+
+  @Environment(\.colorScheme) private var colorScheme
 
   var body: some View {
     ZStack(alignment: Alignment(horizontal: .leading, vertical: .top)) {
@@ -17,11 +20,15 @@ struct PreviewWrapper<Content: View>: View {
           .stroke(
             LinearGradient(
               gradient: Gradient(
-                colors: [.blue, .red, .green]),
+                colors: [
+                  Palette.Brand.blue.color(for: self.colorScheme),
+                  Palette.Brand.purple.color(for: self.colorScheme)
+                ]
+              ),
               startPoint: .topLeading,
               endPoint: .bottomTrailing
             ),
-            lineWidth: 1
+            lineWidth: 2
           )
         }
         .padding(.top, 20)

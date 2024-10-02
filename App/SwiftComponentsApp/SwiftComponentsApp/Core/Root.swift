@@ -1,10 +1,12 @@
 import SwiftUI
 
 @main
-struct Root: App {
+struct Root: SwiftUI.App {
+  @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
+
   var body: some Scene {
     WindowGroup {
-      AppView()
+      App()
     }
   }
 }
