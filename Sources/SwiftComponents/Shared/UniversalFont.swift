@@ -1,0 +1,129 @@
+import SwiftUI
+import UIKit
+
+public enum UniversalFont: Hashable {
+  public enum Weight: Hashable {
+    case ultraLight
+    case thin
+    case light
+    case regular
+    case medium
+    case semibold
+    case bold
+    case heavy
+    case black
+  }
+  case custom(name: String, size: CGFloat)
+  case system(size: CGFloat, weight: Weight)
+
+  // MARK: Fonts
+
+  public var uiFont: UIFont {
+    switch self {
+    case .custom(let name, let size):
+      guard let font = UIFont(name: name, size: size) else {
+        fatalError("Unable to initialize font '\(name)'")
+      }
+      return font
+    case let .system(size, weight):
+      return UIFont.systemFont(ofSize: size, weight: weight.uiFontWeight)
+    }
+  }
+
+  public var font: Font {
+    switch self {
+    case .custom(let name, let size):
+      return Font.custom(name, size: size)
+    case .system(let size, let weight):
+      return Font.system(size: size, weight: weight.swiftUIFontWeight)
+    }
+  }
+
+  // MARK: Helpers
+
+  public func withSize(_ size: CGFloat) -> Self {
+    switch self {
+    case .custom(let name, _):
+      return .custom(name: name, size: size)
+    case .system(_, let weight):
+      return .system(size: size, weight: weight)
+    }
+  }
+
+  public func withRelativeSize(_ shift: CGFloat) -> Self {
+    switch self {
+    case .custom(let name, let size):
+      return .custom(name: name, size: size + shift)
+    case .system(let size, let weight):
+      return .system(size: size + shift, weight: weight)
+    }
+  }
+}
+
+// MARK: Helpers
+
+extension UniversalFont.Weight {
+  var uiFontWeight: UIFont.Weight {
+    switch self {
+    case .ultraLight:
+      return .ultraLight
+    case .thin:
+      return .thin
+    case .light:
+      return .light
+    case .regular:
+      return .regular
+    case .medium:
+      return .medium
+    case .semibold:
+      return .semibold
+    case .bold:
+      return .bold
+    case .heavy:
+      return .heavy
+    case .black:
+      return .black
+    }
+  }
+}
+
+extension UniversalFont.Weight {
+  var swiftUIFontWeight: Font.Weight {
+    switch self {
+    case .ultraLight:
+      return .ultraLight
+    case .thin:
+      return .thin
+    case .light:
+      return .light
+    case .regular:
+      return .regular
+    case .medium:
+      return .medium
+    case .semibold:
+      return .semibold
+    case .bold:
+      return .bold
+    case .heavy:
+      return .heavy
+    case .black:
+      return .black
+    }
+  }
+}
+
+// MARK: - UniversalFont + Config
+
+extension UniversalFont {
+  public enum Component {
+    public static var small: UniversalFont {
+      return SwiftComponentsConfig.shared.layout.componentFont.small
+    }
+    public static var medium: UniversalFont {
+      return SwiftComponentsConfig.shared.layout.componentFont.medium
+    }
+    public static var large: UniversalFont {
+      return SwiftComponentsConfig.shared.layout.componentFont.large
+    }
+  }
+}
