@@ -1,18 +1,28 @@
 import SwiftUI
 
+/// A SwiftUI component that can be selected by a user.
 public struct SUCheckbox: View {
   // MARK: Properties
 
+  /// A model that defines the appearance properties.
   private var model: CheckboxVM
+  /// A closure that is triggered when the checkbox is selected or unselected.
   private var onValueChange: (Bool) -> Void
 
+  /// A Binding Boolean value indicating whether the checkbox is selected.
   @Binding public var isSelected: Bool
+
   @State private var checkmarkStroke: CGFloat
   @State private var borderOpacity: CGFloat
   @Environment(\.colorScheme) private var colorScheme
 
   // MARK: Initialization
 
+  /// Initializer.
+  /// - Parameters:
+  ///   - isSelected: A Binding Boolean value indicating whether the checkbox is selected.
+  ///   - model: A model that defines the appearance properties.
+  ///   - onValueChange: A closure that is triggered when the checkbox is selected or unselected.
   public init(
     isSelected: Binding<Bool>,
     model: CheckboxVM = .init(),

@@ -1,16 +1,20 @@
 import UIKit
 
+/// A UIKit component that can be selected by a user.
 open class UKCheckbox: UIView, UKComponent {
   // MARK: Properties
 
+  /// A closure that is triggered when the checkbox is selected or unselected.
   public var onValueChange: (Bool) -> Void
 
+  /// A model that defines the appearance properties.
   public var model: CheckboxVM {
     didSet {
       self.update(oldValue)
     }
   }
 
+  /// A Boolean value indicating whether the checkbox is selected.
   public var isSelected: Bool {
     didSet {
       guard self.isSelected != oldValue else { return }
@@ -24,14 +28,28 @@ open class UKCheckbox: UIView, UKComponent {
 
   // MARK: Subviews
 
+  /// A stack view that contains a checkbox and a title label.
   public var stackView = UIStackView()
+  /// A label that displays the title from the model.
   public var titleLabel = UILabel()
+  /// A view that contains another view with a checkmark.
+  ///
+  /// Animates the checkbox border.
   public var checkboxContainer = UIView()
+  /// A view that contains a checkmark.
+  ///
+  /// Animates the checkbox background.
   public var checkboxBackground = UIView()
+  /// A layer that draws a checkmark.
   public var checkmarkLayer = CAShapeLayer()
 
   // MARK: Initialization
 
+  /// Initializer.
+  /// - Parameters:
+  ///   - isSelected: A Binding Boolean value indicating whether the checkbox is selected.
+  ///   - model: A model that defines the appearance properties.
+  ///   - onValueChange: A closure that is triggered when the checkbox is selected or unselected.
   public init(
     initialValue: Bool = false,
     model: CheckboxVM = .init(),
@@ -53,7 +71,7 @@ open class UKCheckbox: UIView, UKComponent {
 
   // MARK: Setup
 
-  func setup() {
+  private func setup() {
     self.addSubview(self.stackView)
     self.checkboxContainer.addSubview(self.checkboxBackground)
     self.stackView.addArrangedSubview(self.checkboxContainer)
@@ -97,7 +115,7 @@ open class UKCheckbox: UIView, UKComponent {
 
   // MARK: Style
 
-  func style() {
+  private func style() {
     Self.Style.stackView(self.stackView, model: self.model)
     Self.Style.titleLabel(self.titleLabel, model: self.model)
     Self.Style.checkboxContainer(self.checkboxContainer, model: self.model)
@@ -112,7 +130,7 @@ open class UKCheckbox: UIView, UKComponent {
 
   // MARK: Layout
 
-  func layout() {
+  private func layout() {
     self.stackView.pinToEdges()
 
     self.checkboxContainerConstraints = self.checkboxContainer.size(self.model.checkboxSide)
@@ -142,7 +160,7 @@ open class UKCheckbox: UIView, UKComponent {
     }
   }
 
-  func updateSelection() {
+  private func updateSelection() {
     if self.isSelected {
       self.animateSelection()
     } else {
@@ -239,7 +257,7 @@ open class UKCheckbox: UIView, UKComponent {
     )
   }
 
-  @objc open func handleTraitChanges() {
+  @objc private func handleTraitChanges() {
     self.checkboxContainer.layer.borderColor = self.isSelected
     ? UIColor.clear.cgColor
     : self.model.borderColor.uiColor.cgColor
