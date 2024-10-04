@@ -125,7 +125,7 @@ struct SwiftUILogin: View {
               )
             }
           }
-          .padding(.top, 30)
+          .padding(.top, 10)
         }
         .padding()
       }
