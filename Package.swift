@@ -6,7 +6,6 @@ let package = Package(
   name: "SwiftComponents",
   platforms: [
     .iOS(.v15),
-    .macOS(.v12)
   ],
   products: [
     .library(
