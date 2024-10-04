@@ -5,7 +5,7 @@ import PackageDescription
 let package = Package(
   name: "SwiftComponents",
   platforms: [
-    .iOS(.v15),
+    .iOS(.v15)
   ],
   products: [
     .library(

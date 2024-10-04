@@ -1,19 +1,23 @@
 import UIKit
 
+/// A UIKit component that performs an action when it is tapped by a user.
 open class UKButton: UIView, UKComponent {
   // MARK: Properties
 
+  /// A closure that is triggered when the button is tapped.
   public var action: () -> Void
 
+  /// A model that defines the appearance properties.
   public var model: ButtonVM {
     didSet {
       self.update(oldValue)
     }
   }
 
-  public var isHighlighted: Bool = false {
+  /// A Boolean value indicating whether the button is pressed.
+  public private(set) var isPressed: Bool = false {
     didSet {
-      self.transform = self.isHighlighted && self.model.isEnabled
+      self.transform = self.isPressed && self.model.isEnabled
       ? .init(
         scaleX: self.model.preferredAnimationScale.value,
         y: self.model.preferredAnimationScale.value
@@ -26,6 +30,7 @@ open class UKButton: UIView, UKComponent {
 
   // MARK: Subviews
 
+  /// A label that displays the title from the model.
   public var titleLabel = UILabel()
 
   // MARK: UIView Properties
@@ -36,6 +41,10 @@ open class UKButton: UIView, UKComponent {
 
   // MARK: Initialization
 
+  /// Initializer.
+  /// - Parameters:
+  ///   - model: A model that defines the appearance properties.
+  ///   - action: A closure that is triggered when the button is tapped.
   public init(
     model: ButtonVM = .init(),
     action: @escaping () -> Void = {}
@@ -55,7 +64,7 @@ open class UKButton: UIView, UKComponent {
 
   // MARK: Setup
 
-  func setup() {
+  private func setup() {
     self.addSubview(self.titleLabel)
 
     if #available(iOS 17.0, *) {
@@ -67,14 +76,14 @@ open class UKButton: UIView, UKComponent {
 
   // MARK: Style
 
-  func style() {
+  private func style() {
     Self.Style.mainView(self, model: self.model)
     Self.Style.titleLabel(self.titleLabel, model: self.model)
   }
 
   // MARK: Layout
 
-  func layout() {
+  private func layout() {
     self.titleLabelConstraints = self.titleLabel.horizontally(self.model.horizontalPadding)
     self.titleLabel.centerVertically()
     self.titleLabel.centerHorizontally()
@@ -124,7 +133,7 @@ open class UKButton: UIView, UKComponent {
   ) {
     super.touchesBegan(touches, with: event)
 
-    self.isHighlighted = true
+    self.isPressed = true
   }
 
   open override func touchesEnded(
@@ -133,7 +142,7 @@ open class UKButton: UIView, UKComponent {
   ) {
     super.touchesEnded(touches, with: event)
 
-    defer { self.isHighlighted = false }
+    defer { self.isPressed = false }
 
     if self.model.isEnabled,
        let location = touches.first?.location(in: self),
@@ -148,7 +157,7 @@ open class UKButton: UIView, UKComponent {
   ) {
     super.touchesCancelled(touches, with: event)
 
-    defer { self.isHighlighted = false }
+    defer { self.isPressed = false }
 
     if self.model.isEnabled,
        let location = touches.first?.location(in: self),
@@ -166,7 +175,7 @@ open class UKButton: UIView, UKComponent {
 
   // MARK: Helpers
 
-  @objc open func handleTraitChanges() {
+  @objc private func handleTraitChanges() {
     self.layer.borderColor = self.model.borderColor?.uiColor.cgColor
   }
 }

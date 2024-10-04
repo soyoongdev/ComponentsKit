@@ -142,6 +142,20 @@ extension ButtonVM {
       return ComponentRadius.large
     }
   }
+  var height: CGFloat {
+    return switch self.size {
+    case .small: 36
+    case .medium: 50
+    case .large: 70
+    }
+  }
+  var horizontalPadding: CGFloat {
+    return switch self.size {
+    case .small: 8
+    case .medium: 12
+    case .large: 16
+    }
+  }
 }
 
 // MARK: UIKit Helpers
@@ -174,21 +188,7 @@ extension ButtonVM {
 // MARK: SwiftUI Helpers
 
 extension ButtonVM {
-  var height: CGFloat {
-    return switch self.size {
-    case .small: 36
-    case .medium: 50
-    case .large: 70
-    }
-  }
   var width: CGFloat? {
     return self.isFullWidth ? 10_000 : nil
-  }
-  var horizontalPadding: CGFloat {
-    return switch self.size {
-    case .small: 8
-    case .medium: 12
-    case .large: 16
-    }
   }
 }

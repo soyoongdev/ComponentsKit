@@ -1,14 +1,26 @@
 import SwiftUI
 
+/// A SwiftUI component that performs an action when it is tapped by a user.
 public struct SUButton: View {
-  private var model: ButtonVM
-  private var action: () -> Void
+  // MARK: Properties
+
+  /// A model that defines the appearance properties.
+  public var model: ButtonVM
+  /// A closure that is triggered when the button is tapped.
+  public var action: () -> Void
+
+  /// A Boolean value indicating whether the button is pressed.
+  @State public var isPressed: Bool = false
 
   @State private var viewFrame: CGRect = .zero
-  @State private var isPressed: Bool = false
-
   @Environment(\.colorScheme) private var colorScheme
 
+  // MARK: Initialization
+
+  /// Initializer.
+  /// - Parameters:
+  ///   - model: A model that defines the appearance properties.
+  ///   - action: A closure that is triggered when the button is tapped.
   public init(
     model: ButtonVM,
     action: @escaping () -> Void = {}
@@ -17,7 +29,10 @@ public struct SUButton: View {
     self.action = action
   }
 
+  // MARK: Body
+
   public var body: some View {
+    Button("", action: {})
     Text(self.model.title)
       .font(self.model.preferredFont.font)
       .lineLimit(1)
