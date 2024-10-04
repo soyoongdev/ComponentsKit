@@ -27,18 +27,6 @@ open class UKInputField: UIView, UKComponent {
       )
     }
   }
-  public var isSelected: Bool {
-    get {
-      return self.inputField.isFirstResponder
-    }
-    set {
-      if newValue {
-        self.inputField.becomeFirstResponder()
-      } else {
-        self.inputField.resignFirstResponder()
-      }
-    }
-  }
 
   private var titlePosition: InputFieldTitlePosition {
     didSet {
@@ -60,6 +48,10 @@ open class UKInputField: UIView, UKComponent {
 
   open override var intrinsicContentSize: CGSize {
     return self.sizeThatFits(UIView.layoutFittingExpandedSize)
+  }
+
+  open override var isFirstResponder: Bool {
+    return self.inputField.isFirstResponder
   }
 
   // MARK: Initialization
@@ -102,7 +94,7 @@ open class UKInputField: UIView, UKComponent {
   }
 
   @objc private func handleTap() {
-    self.isSelected = true
+    self.becomeFirstResponder()
   }
 
   @objc private func handleTextChange() {
@@ -175,6 +167,16 @@ open class UKInputField: UIView, UKComponent {
   }
 
   // MARK: UIView Method
+
+  @discardableResult
+  open override func becomeFirstResponder() -> Bool {
+    return self.inputField.becomeFirstResponder()
+  }
+
+  @discardableResult
+  open override func resignFirstResponder() -> Bool {
+    return self.inputField.resignFirstResponder()
+  }
 
   open override func sizeThatFits(_ size: CGSize) -> CGSize {
     let width: CGFloat
