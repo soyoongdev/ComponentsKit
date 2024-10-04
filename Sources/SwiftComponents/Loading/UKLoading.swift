@@ -1,8 +1,10 @@
 import UIKit
 
+/// A UIKit components that shows that a task is in progress.
 open class UKLoading: UIView, UKComponent {
   // MARK: Properties
 
+  /// A model that defines the appearance properties.
   public var model: LoadingVM {
     didSet {
       self.update(oldValue)
@@ -29,10 +31,14 @@ open class UKLoading: UIView, UKComponent {
 
   // MARK: Layers
 
-  private lazy var shapeLayer = CAShapeLayer()
+  /// A layer that draws a loader.
+  public let shapeLayer = CAShapeLayer()
 
   // MARK: Initializers
 
+  /// Initializer.
+  /// - Parameters:
+  ///   - model: A model that defines the appearance properties.
   public init(model: LoadingVM = .init()) {
     self.model = model
     super.init(frame: .zero)
@@ -52,7 +58,7 @@ open class UKLoading: UIView, UKComponent {
 
   // MARK: Setup
 
-  func setup() {
+  private func setup() {
     self.setupLayer()
     self.layer.addSublayer(self.shapeLayer)
 
@@ -86,10 +92,10 @@ open class UKLoading: UIView, UKComponent {
     self.shapeLayer.strokeEnd = 0.75
   }
 
-  @objc func handleAppWillMoveToBackground() {
+  @objc private func handleAppWillMoveToBackground() {
     self.shapeLayer.removeAllAnimations()
   }
-  @objc func handleAppMovedFromBackground() {
+  @objc private func handleAppMovedFromBackground() {
     self.addSpinnerAnimation()
   }
 

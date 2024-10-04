@@ -5,9 +5,9 @@ public struct SUCheckbox: View {
   // MARK: Properties
 
   /// A model that defines the appearance properties.
-  private var model: CheckboxVM
+  public var model: CheckboxVM
   /// A closure that is triggered when the checkbox is selected or unselected.
-  private var onValueChange: (Bool) -> Void
+  public var onValueChange: (Bool) -> Void
 
   /// A Binding Boolean value indicating whether the checkbox is selected.
   @Binding public var isSelected: Bool

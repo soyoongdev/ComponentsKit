@@ -1,16 +1,26 @@
 import SwiftUI
 import Combine
 
+/// A SwiftUI components that shows that a task is in progress.
 public struct SULoading: View {
-  private var model: LoadingVM
+  // MARK: Properties
+
+  /// A model that defines the appearance properties.
+  public var model: LoadingVM
 
   @State private var rotationAngle: CGFloat = 0.0
-
   @Environment(\.colorScheme) private var colorScheme
 
+  // MARK: Initialization
+
+  /// Initializer.
+  /// - Parameters:
+  ///   - model: A model that defines the appearance properties.
   public init(model: LoadingVM = .init()) {
     self.model = model
   }
+
+  // MARK: Body
 
   public var body: some View {
     Path { path in
