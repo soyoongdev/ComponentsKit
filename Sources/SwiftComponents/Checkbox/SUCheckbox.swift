@@ -6,8 +6,6 @@ public struct SUCheckbox: View {
 
   /// A model that defines the appearance properties.
   public var model: CheckboxVM
-  /// A closure that is triggered when the checkbox is selected or unselected.
-  public var onValueChange: (Bool) -> Void
 
   /// A Binding Boolean value indicating whether the checkbox is selected.
   @Binding public var isSelected: Bool
@@ -22,15 +20,12 @@ public struct SUCheckbox: View {
   /// - Parameters:
   ///   - isSelected: A Binding Boolean value indicating whether the checkbox is selected.
   ///   - model: A model that defines the appearance properties.
-  ///   - onValueChange: A closure that is triggered when the checkbox is selected or unselected.
   public init(
     isSelected: Binding<Bool>,
-    model: CheckboxVM = .init(),
-    onValueChange: @escaping (Bool) -> Void = { _ in }
+    model: CheckboxVM = .init()
   ) {
     self._isSelected = isSelected
     self.model = model
-    self.onValueChange = onValueChange
     self.checkmarkStroke = isSelected.wrappedValue ? 1.0 : 0.0
     self.borderOpacity = isSelected.wrappedValue ? 0.0 : 1.0
   }
@@ -98,8 +93,6 @@ public struct SUCheckbox: View {
     }
     .disabled(!self.model.isEnabled)
     .onChange(of: self.isSelected) { isSelected in
-      self.onValueChange(isSelected)
-
       if isSelected {
         withAnimation(
           .linear(duration: CheckboxAnimationDurations.checkmarkStroke)
