@@ -1,14 +1,29 @@
 import SwiftUI
 
+/// A SwiftUI component that displays a field to input a text.
 public struct SUInputField<FocusValue: Hashable>: View {
   // MARK: Properties
 
-  private var model: InputFieldVM
-  private var onValueChange: (String) -> Void
+  /// A model that defines the appearance properties.
+  public var model: InputFieldVM
 
+  /// A Binding value to control the inputted text.
   @Binding public var text: String
+  /// The shared state controlling focus across multiple fields.
+  ///
+  /// When this input field's localFocus value matches the globalFocus, the input field becomes focused.
+  /// This allows for managing the focus state for many fields in a centralized manner.
   @FocusState.Binding public var globalFocus: FocusValue
-  private var localFocus: FocusValue
+  /// The unique value for this field to match against the global focus state to determine whether the field
+  /// is focused.
+  ///
+  /// Determines the local focus value for this particular input field. It is compared with globalFocus to
+  /// decide if this input field should be focused. If globalFocus matches the value of localFocus, the
+  /// input field gains focus, allowing the user to interact with it.
+  ///
+  /// - Warning: The localFocus value must be unique to each input field, to ensure that different
+  /// fields within the same view can be independently focused based on the shared globalFocus.
+  public var localFocus: FocusValue
 
   @Environment(\.colorScheme) private var colorScheme
 
@@ -24,18 +39,22 @@ public struct SUInputField<FocusValue: Hashable>: View {
 
   // MARK: Initialization
 
+  /// Initializer.
+  /// - Parameters:
+  ///   - text: A Binding value to control the inputted text.
+  ///   - globalFocus: The shared state controlling focus across multiple fields.
+  ///   - localFocus: The unique value for this field to match against the global focus state to determine focus.
+  ///   - model: A model that defines the appearance properties.
   public init(
     text: Binding<String>,
     globalFocus: FocusState<FocusValue>.Binding,
     localFocus: FocusValue,
-    model: InputFieldVM = .init(),
-    onValueChange: @escaping (String) -> Void = { _ in }
+    model: InputFieldVM = .init()
   ) {
     self._text = text
     self._globalFocus = globalFocus
     self.localFocus = localFocus
     self.model = model
-    self.onValueChange = onValueChange
   }
 
   // MARK: Body
@@ -91,9 +110,6 @@ public struct SUInputField<FocusValue: Hashable>: View {
         cornerRadius: self.model.preferredCornerRadius.value()
       )
     )
-    .onChange(of: self.text) { newValue in
-      self.onValueChange(newValue)
-    }
     .onChange(of: self.globalFocus) { _ in
       // NOTE: Workaround to force `globalFocus` value update properly
       // Without this workaround the title position changes to `center`
@@ -105,16 +121,19 @@ public struct SUInputField<FocusValue: Hashable>: View {
 // MARK: - Boolean Focus Value
 
 extension SUInputField where FocusValue == Bool {
+  /// Initializer.
+  /// - Parameters:
+  ///   - text: A Binding value to control the inputted text.
+  ///   - isFocused: A binding that controls whether this input field is focused or not.
+  ///   - model: A model that defines the appearance properties.
   public init(
     text: Binding<String>,
     isFocused: FocusState<Bool>.Binding,
-    model: InputFieldVM = .init(),
-    onValueChange: @escaping (String) -> Void = { _ in }
+    model: InputFieldVM = .init()
   ) {
     self._text = text
     self._globalFocus = isFocused
     self.localFocus = true
     self.model = model
-    self.onValueChange = onValueChange
   }
 }

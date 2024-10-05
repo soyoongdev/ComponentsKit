@@ -1,10 +1,15 @@
 import UIKit
 import SwiftUI
 
+/// The autocapitalization behavior applied during text input.
 public enum InputFieldTextAutocapitalization {
+  /// Do not capitalize anything.
   case never
+  /// Capitalize every letter.
   case characters
+  /// Capitalize the first letter of every word.
   case words
+  /// Capitalize the first letter in every sentence.
   case sentences
 }
 

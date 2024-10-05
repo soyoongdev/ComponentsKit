@@ -1,16 +1,20 @@
 import UIKit
 
+/// A UIKit component that displays a field to input a text.
 open class UKInputField: UIView, UKComponent {
   // MARK: Properties
 
+  /// A closure that is triggered when the text changes.
   public var onValueChange: (String) -> Void
 
+  /// A model that defines the appearance properties.
   public var model: InputFieldVM {
     didSet {
       self.update(oldValue)
     }
   }
 
+  /// A text inputted in the field.
   public var text: String {
     get {
       return self.inputField.text ?? ""
@@ -41,7 +45,9 @@ open class UKInputField: UIView, UKComponent {
 
   // MARK: Subviews
 
+  /// A label that displays the title from the model.
   public var titleLabel = UILabel()
+  /// An underlying input field from the standard library.
   public var inputField = UITextField()
 
   // MARK: UIView Properties
@@ -56,6 +62,11 @@ open class UKInputField: UIView, UKComponent {
 
   // MARK: Initialization
 
+  /// Initializer.
+  /// - Parameters:
+  ///   - initialText: A text that is initially inputted in the field.
+  ///   - model: A model that defines the appearance properties.
+  ///   - onValueChange: A closure that is triggered when the text changes.
   public init(
     initialText: String = "",
     model: InputFieldVM = .init(),
@@ -83,7 +94,7 @@ open class UKInputField: UIView, UKComponent {
 
   // MARK: Setup
 
-  func setup() {
+  private func setup() {
     self.addSubview(self.titleLabel)
     self.addSubview(self.inputField)
 
@@ -103,7 +114,7 @@ open class UKInputField: UIView, UKComponent {
 
   // MARK: Style
 
-  func style() {
+  private func style() {
     Self.Style.mainView(self, model: self.model)
     Self.Style.inputField(self.inputField, model: self.model)
     Self.Style.titleLabel(
@@ -115,7 +126,7 @@ open class UKInputField: UIView, UKComponent {
 
   // MARK: Layout
 
-  func layout() {
+  private func layout() {
     self.titleLabelConstraints = self.titleLabel.horizontally(self.model.horizontalPadding)
     self.titleLabelConstraints.top = self.titleLabel.top(self.model.verticalPadding)
     self.titleLabelConstraints.vertical = self.titleLabel.centerVertically()
