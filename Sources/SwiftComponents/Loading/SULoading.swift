@@ -1,7 +1,7 @@
 import SwiftUI
 import Combine
 
-/// A SwiftUI components that shows that a task is in progress.
+/// A SwiftUI component that shows that a task is in progress.
 public struct SULoading: View {
   // MARK: Properties
 

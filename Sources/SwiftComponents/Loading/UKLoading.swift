@@ -1,6 +1,6 @@
 import UIKit
 
-/// A UIKit components that shows that a task is in progress.
+/// A UIKit component that shows that a task is in progress.
 open class UKLoading: UIView, UKComponent {
   // MARK: Properties
 
