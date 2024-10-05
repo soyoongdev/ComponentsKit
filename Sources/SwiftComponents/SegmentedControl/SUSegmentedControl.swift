@@ -1,13 +1,24 @@
 import SwiftUI
 
+/// A SwiftUI component with multiple segments that allows users to select them.
 public struct SUSegmentedControl<ID: Hashable>: View {
-  private var model: SegmentedControlVM<ID>
+  // MARK: Properties
+
+  /// A model that defines the appearance properties.
+  public var model: SegmentedControlVM<ID>
+
+  /// A Binding value to control the selected segment.
+  @Binding public var selectedId: ID
 
   @Namespace private var animationNamespace
-  @Binding private var selectedId: ID
-
   @Environment(\.colorScheme) private var colorScheme
 
+  // MARK: Initialization
+
+  /// Initializer.
+  /// - Parameters:
+  ///   - selectedId: A Binding value to control the selected segment.
+  ///   - model: A model that defines the appearance properties.
   public init(
     selectedId: Binding<ID>,
     model: SegmentedControlVM<ID>
@@ -15,6 +26,8 @@ public struct SUSegmentedControl<ID: Hashable>: View {
     self._selectedId = selectedId
     self.model = model
   }
+
+  // MARK: Body
 
   public var body: some View {
     HStack(spacing: 0) {

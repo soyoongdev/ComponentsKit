@@ -1,16 +1,20 @@
 import UIKit
 
+/// A SwiftUI component with multiple segments that allows users to select them.
 open class UKSegmentedControl<ID: Hashable>: UIView, UKComponent {
   // MARK: Properties
 
+  /// A closure that is triggered when a selected segment changes.
   public var onSelectionChange: (ID) -> Void
 
+  /// A model that defines the appearance properties.
   public var model: SegmentedControlVM<ID> {
     didSet {
       self.update(oldValue)
     }
   }
 
+  /// An identifier of the selected segment.
   public var selectedId: ID {
     didSet {
       guard self.selectedId != oldValue else { return }
@@ -22,8 +26,11 @@ open class UKSegmentedControl<ID: Hashable>: UIView, UKComponent {
 
   // MARK: Subviews
 
+  /// A view that contains all segments.
   public let container = UIView()
+  /// An array of views that represent segments.
   public var segments: [Segment] = []
+  /// A view that highlights a selected segment.
   public let selectedSegment = UIView()
   // NOTE: During transition animations, segments are not interactive.
   // The `cover` is placed above all segments to continue receiving
@@ -38,6 +45,11 @@ open class UKSegmentedControl<ID: Hashable>: UIView, UKComponent {
 
   // MARK: Initialization
 
+  /// Initializer.
+  /// - Parameters:
+  ///   - selectedId: An identifier of the selected segment.
+  ///   - model: A model that defines the appearance properties.
+  ///   - onSelectionChange: A closure that is triggered when a selected segment changes.
   public init(
     selectedId: ID,
     model: SegmentedControlVM<ID> = .init(),
@@ -330,7 +342,8 @@ extension UKSegmentedControl {
 // MARK: - Segment
 
 extension UKSegmentedControl {
-  public class Segment: UILabel {
+  /// A Label with an associated ID that represents a segment.
+  public final class Segment: UILabel {
     public fileprivate(set) var id: ID
 
     init(id: ID) {
