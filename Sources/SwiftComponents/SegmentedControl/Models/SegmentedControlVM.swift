@@ -7,7 +7,9 @@ public struct SegmentedControlVM<ID: Hashable>: ComponentVM {
   public var color: ComponentColor?
 
   /// The corner radius of the segmented control.
-  public var cornerRadius: ComponentRadius?
+  ///
+  /// Defaults to `.medium`.
+  public var cornerRadius: ComponentRadius = .medium
 
   /// The font used for the segmented control items' titles.
   public var font: UniversalFont?
@@ -95,17 +97,6 @@ extension SegmentedControlVM {
       ? 1.0
       : SwiftComponentsConfig.shared.layout.disabledOpacity
     )
-  }
-  var preferredCornerRadius: ComponentRadius {
-    if let cornerRadius {
-      return cornerRadius
-    }
-
-    return switch self.size {
-    case .small: .small
-    case .medium: .medium
-    case .large: .large
-    }
   }
   var horizontalInnerPaddings: CGFloat? {
     guard !self.isFullWidth else {

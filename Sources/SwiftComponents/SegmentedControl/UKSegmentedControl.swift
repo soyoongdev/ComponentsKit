@@ -168,10 +168,10 @@ open class UKSegmentedControl<ID: Hashable>: UIView, UKComponent {
   open override func layoutSubviews() {
     super.layoutSubviews()
 
-    self.selectedSegment.layer.cornerRadius = self.model.preferredCornerRadius.value(
+    self.selectedSegment.layer.cornerRadius = self.model.cornerRadius.value(
       for: self.container.bounds.height
     )
-    self.layer.cornerRadius = self.model.preferredCornerRadius.value(
+    self.layer.cornerRadius = self.model.cornerRadius.value(
       for: self.bounds.height
     )
   }
@@ -306,7 +306,7 @@ extension UKSegmentedControl {
   fileprivate enum Style {
     static func mainView(_ view: UIView, model: Model) {
       view.backgroundColor = model.backgroundColor.uiColor
-      view.layer.cornerRadius = model.preferredCornerRadius.value(
+      view.layer.cornerRadius = model.cornerRadius.value(
         for: view.bounds.height
       )
       view.isUserInteractionEnabled = model.isEnabled
@@ -314,7 +314,7 @@ extension UKSegmentedControl {
 
     static func selectedSegment(_ view: UIView, model: Model) {
       view.backgroundColor = model.selectedSegmentColor.uiColor
-      view.layer.cornerRadius = model.preferredCornerRadius.value(
+      view.layer.cornerRadius = model.cornerRadius.value(
         for: view.bounds.height
       )
     }

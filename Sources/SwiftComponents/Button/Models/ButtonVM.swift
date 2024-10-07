@@ -7,8 +7,8 @@ public struct ButtonVM: ComponentVM {
 
   /// The scaling factor for the button's press animation, with a value between 0 and 1.
   ///
-  /// If not provided, the scale is automatically calculated based on the button's size.
-  public var animationScale: AnimationScale?
+  /// Defaults to `.medium`.
+  public var animationScale: AnimationScale = .medium
 
   /// The color of the button.
   ///
@@ -17,8 +17,8 @@ public struct ButtonVM: ComponentVM {
 
   /// The corner radius of the button.
   ///
-  /// If not provided, the radius is automatically calculated based on the button's size.
-  public var cornerRadius: ComponentRadius?
+  /// Defaults to `.medium`.
+  public var cornerRadius: ComponentRadius = .medium
 
   /// The font used for the button's title text.
   ///
@@ -100,20 +100,6 @@ extension ButtonVM {
       return self.mainColor
     }
   }
-  var preferredAnimationScale: AnimationScale {
-    if let animationScale {
-      return animationScale
-    }
-
-    switch self.size {
-    case .small:
-      return AnimationScale.small
-    case .medium:
-      return AnimationScale.medium
-    case .large:
-      return AnimationScale.large
-    }
-  }
   var preferredFont: UniversalFont {
     if let font {
       return font
@@ -126,20 +112,6 @@ extension ButtonVM {
       return UniversalFont.Component.medium
     case .large:
       return UniversalFont.Component.large
-    }
-  }
-  var preferredCornerRadius: ComponentRadius {
-    if let cornerRadius {
-      return cornerRadius
-    }
-
-    switch self.size {
-    case .small:
-      return ComponentRadius.small
-    case .medium:
-      return ComponentRadius.medium
-    case .large:
-      return ComponentRadius.large
     }
   }
   var height: CGFloat {

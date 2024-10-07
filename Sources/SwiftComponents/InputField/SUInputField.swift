@@ -107,7 +107,7 @@ public struct SUInputField<FocusValue: Hashable>: View {
     }
     .clipShape(
       RoundedRectangle(
-        cornerRadius: self.model.preferredCornerRadius.value()
+        cornerRadius: self.model.cornerRadius.value()
       )
     )
     .onChange(of: self.globalFocus) { _ in

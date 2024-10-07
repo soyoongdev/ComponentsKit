@@ -19,8 +19,8 @@ open class UKButton: UIView, UKComponent {
     didSet {
       self.transform = self.isPressed && self.model.isEnabled
       ? .init(
-        scaleX: self.model.preferredAnimationScale.value,
-        y: self.model.preferredAnimationScale.value
+        scaleX: self.model.animationScale.value,
+        y: self.model.animationScale.value
       )
       : .identity
     }
@@ -95,7 +95,7 @@ open class UKButton: UIView, UKComponent {
   open override func layoutSubviews() {
     super.layoutSubviews()
 
-    self.layer.cornerRadius = self.model.preferredCornerRadius.value(for: self.bounds.height)
+    self.layer.cornerRadius = self.model.cornerRadius.value(for: self.bounds.height)
   }
 
   // MARK: Update
@@ -188,7 +188,7 @@ extension UKButton {
       view.layer.borderWidth = model.borderWidth
       view.layer.borderColor = model.borderColor?.uiColor.cgColor
       view.backgroundColor = model.backgroundColor?.uiColor
-      view.layer.cornerRadius = model.preferredCornerRadius.value(
+      view.layer.cornerRadius = model.cornerRadius.value(
         for: view.bounds.height
       )
     }

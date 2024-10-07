@@ -65,12 +65,12 @@ public struct SUButton: View {
       .disabled(!self.model.isEnabled)
       .clipShape(
         RoundedRectangle(
-          cornerRadius: self.model.preferredCornerRadius.value()
+          cornerRadius: self.model.cornerRadius.value()
         )
       )
       .overlay {
         RoundedRectangle(
-          cornerRadius: self.model.preferredCornerRadius.value()
+          cornerRadius: self.model.cornerRadius.value()
         )
         .stroke(
           self.model.borderColor?.color(for: self.colorScheme) ?? .clear,
@@ -78,7 +78,7 @@ public struct SUButton: View {
         )
       }
       .scaleEffect(
-        self.isPressed ? self.model.preferredAnimationScale.value : 1,
+        self.isPressed ? self.model.animationScale.value : 1,
         anchor: .center
       )
   }

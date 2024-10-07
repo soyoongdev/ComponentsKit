@@ -55,7 +55,7 @@ public struct SUSegmentedControl<ID: Hashable>: View {
             ZStack {
               if itemVM.isEnabled, self.selectedId == itemVM.id {
                 RoundedRectangle(
-                  cornerRadius: self.model.preferredCornerRadius.value()
+                  cornerRadius: self.model.cornerRadius.value()
                 )
                 .fill(self.model.selectedSegmentColor.color(
                   for: self.colorScheme
@@ -73,7 +73,7 @@ public struct SUSegmentedControl<ID: Hashable>: View {
     .frame(height: self.model.height)
     .background(self.model.backgroundColor.color(for: self.colorScheme))
     .clipShape(
-      RoundedRectangle(cornerRadius: self.model.preferredCornerRadius.value())
+      RoundedRectangle(cornerRadius: self.model.cornerRadius.value())
     )
     .disabled(!self.model.isEnabled)
   }

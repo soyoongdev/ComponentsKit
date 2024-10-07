@@ -12,8 +12,8 @@ public struct CheckboxVM: ComponentVM {
 
   /// The corner radius of the checkbox.
   ///
-  /// If not provided, the radius is automatically calculated based on the checkbox's size.
-  public var cornerRadius: ComponentRadius?
+  /// Defaults to `.medium`.
+  public var cornerRadius: ComponentRadius = .medium
 
   /// The font used for the checkbox label text.
   /// 
@@ -91,22 +91,8 @@ extension CheckboxVM {
       return 32.0
     }
   }
-  private var preferredCornerRadius: ComponentRadius {
-    if let cornerRadius {
-      return cornerRadius
-    }
-
-    switch self.size {
-    case .small:
-      return .small
-    case .medium:
-      return .medium
-    case .large:
-      return .large
-    }
-  }
   var checkboxCornerRadius: CGFloat {
-    switch self.preferredCornerRadius {
+    switch self.cornerRadius {
     case .none:
       return 0.0
     case .small:

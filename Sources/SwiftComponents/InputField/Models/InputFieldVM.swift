@@ -13,8 +13,8 @@ public struct InputFieldVM: ComponentVM {
 
   /// The corner radius of the input field.
   ///
-  /// If not provided, the radius is automatically calculated based on the checkbox's size.
-  public var cornerRadius: ComponentRadius?
+  /// /// Defaults to `.medium`.
+  public var cornerRadius: ComponentRadius = .medium
 
   /// The font used for the input field's text.
   ///
@@ -88,20 +88,8 @@ extension InputFieldVM {
       return UniversalFont.Component.large
     }
   }
-  var preferredCornerRadius: ComponentRadius {
-    if let cornerRadius {
-      return cornerRadius
-    }
-
-    switch self.size {
-    case .small, .medium:
-      return ComponentRadius.medium
-    case .large:
-      return ComponentRadius.large
-    }
-  }
   var horizontalPadding: CGFloat {
-    switch self.preferredCornerRadius {
+    switch self.cornerRadius {
     case .none, .small, .medium, .large, .custom:
       return 12
     case .full:
