@@ -1,6 +1,6 @@
 import Foundation
 
-public struct SwiftComponentsConfig: Updatable {
+public struct SwiftComponentsConfig: Initializable, Updatable {
   public var colors: Palette = .init()
   public var layout: Layout = .init()
 

@@ -1,6 +1,6 @@
 import Foundation
 
-public struct Layout: Updatable {
+public struct Layout: Initializable, Updatable {
   // MARK: Radius
 
   public struct Radius {

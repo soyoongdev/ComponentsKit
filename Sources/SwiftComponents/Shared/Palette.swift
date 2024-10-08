@@ -1,6 +1,6 @@
 import Foundation
 
-public struct Palette: Updatable {
+public struct Palette: Initializable, Updatable {
   /// The UniversalColor for the main background of your interface.
   public var background: UniversalColor = .universal(.uiColor(.systemBackground))
   /// The UniversalColor for content layered on top of the main background.
@@ -53,7 +53,7 @@ extension Palette {
       return SwiftComponentsConfig.shared.colors.divider
     }
   }
-  public struct Text {
+  public enum Text {
     public static var primary: UniversalColor {
       return SwiftComponentsConfig.shared.colors.label
     }
@@ -64,7 +64,7 @@ extension Palette {
       return SwiftComponentsConfig.shared.colors.accent.main
     }
   }
-  public struct Components {
+  public enum Components {
     public static var primary: ComponentColor {
       return .primary
     }
