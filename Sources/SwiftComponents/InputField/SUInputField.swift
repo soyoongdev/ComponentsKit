@@ -51,8 +51,8 @@ public struct SUInputField<FocusValue: Hashable>: View {
 
   public var body: some View {
     HStack(spacing: self.model.spacing) {
-      if self.model.title.isNotNilAndEmpty {
-        Text(self.model.attributedTitle(for: .center))
+      if let title = self.model.attributedTitle {
+        Text(title)
           .font(self.model.preferredFont.font)
           .foregroundStyle(
             self.model.foregroundColor.color(for: self.colorScheme)

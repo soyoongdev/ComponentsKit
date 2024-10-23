@@ -88,6 +88,13 @@ extension InputFieldVM {
       return UniversalFont.Component.large
     }
   }
+  var height: CGFloat {
+    return switch self.size {
+    case .small: 40
+    case .medium: 60
+    case .large: 80
+    }
+  }
   var horizontalPadding: CGFloat {
     switch self.cornerRadius {
     case .none, .small, .medium, .large, .custom:
@@ -97,7 +104,7 @@ extension InputFieldVM {
     }
   }
   var spacing: CGFloat {
-    return 12
+    return self.title.isNotNilAndEmpty ? 12 : 0
   }
   var backgroundColor: UniversalColor {
     if let color {
@@ -121,60 +128,6 @@ extension InputFieldVM {
   var placeholderColor: UniversalColor {
     return self.foregroundColor.withOpacity(self.isEnabled ? 0.7 : 0.3)
   }
-  func titleColor(for position: InputFieldTitlePosition) -> UniversalColor {
-    switch position {
-    case .top:
-      return self.foregroundColor
-    case .center:
-      return self.foregroundColor.withOpacity(self.isEnabled ? 0.8 : 0.45)
-    }
-  }
-  func titleFont(for position: InputFieldTitlePosition) -> UniversalFont {
-    switch position {
-    case .top:
-      return self.preferredFont.withRelativeSize(-1)
-    case .center:
-      let relativePadding: CGFloat = switch self.size {
-      case .small: 1.5
-      case .medium: 2
-      case .large: 3
-      }
-      return self.preferredFont.withRelativeSize(relativePadding)
-    }
-  }
-}
-
-// MARK: - Layout Helpers
-
-extension InputFieldVM {
-  var inputFieldTopPadding: CGFloat {
-    switch self.size {
-    case .small: 30
-    case .medium: 34
-    case .large: 38
-    }
-  }
-  var inputFieldHeight: CGFloat {
-    switch self.size {
-    case .small: 26
-    case .medium: 28
-    case .large: 30
-    }
-  }
-  var verticalPadding: CGFloat {
-    switch self.size {
-    case .small: 12
-    case .medium: 14
-    case .large: 16
-    }
-  }
-  var height: CGFloat {
-    return switch self.size {
-    case .small: 40
-    case .medium: 60
-    case .large: 80
-    }
-  }
 }
 
 // MARK: - UIKit Helpers
@@ -189,17 +142,17 @@ extension InputFieldVM {
       .foregroundColor: self.placeholderColor.uiColor
     ])
   }
-  func nsAttributedTitle(for position: InputFieldTitlePosition) -> NSAttributedString {
+  var nsAttributedTitle: NSAttributedString? {
     guard let title else {
-      return NSAttributedString()
+      return nil
     }
 
     let attributedString = NSMutableAttributedString()
     attributedString.append(NSAttributedString(
       string: title,
       attributes: [
-        .font: self.titleFont(for: position).uiFont,
-        .foregroundColor: self.titleColor(for: position).uiColor
+        .font: self.preferredFont.uiFont,
+        .foregroundColor: self.foregroundColor.uiColor
       ]
     ))
     if self.isRequired {
@@ -212,7 +165,7 @@ extension InputFieldVM {
       attributedString.append(NSAttributedString(
         string: "*",
         attributes: [
-          .font: self.titleFont(for: position).uiFont,
+          .font: self.preferredFont.uiFont,
           .foregroundColor: UniversalColor.danger.uiColor
         ]
       ))
@@ -222,40 +175,22 @@ extension InputFieldVM {
   func shouldUpdateLayout(_ oldModel: Self) -> Bool {
     return self.size != oldModel.size
     || self.horizontalPadding != oldModel.horizontalPadding
+    || self.spacing != oldModel.spacing
+    || self.cornerRadius != oldModel.cornerRadius
   }
 }
 
-// MARK: - UIKit Helpers
+// MARK: - SwiftUI Helpers
 
 extension InputFieldVM {
   var autocorrectionType: UITextAutocorrectionType {
     return self.isAutocorrectionEnabled ? .yes : .no
   }
-  func attributedTitle(
-    for position: InputFieldTitlePosition
-  ) -> AttributedString {
-    guard let title else {
-      return AttributedString()
+  var attributedTitle: AttributedString? {
+    guard let nsAttributedTitle else {
+      return nil
     }
 
-    var attributedString = AttributedString()
-
-    var attributedTitle = AttributedString(title)
-    attributedTitle.font = self.titleFont(for: position).font
-    attributedTitle.foregroundColor = self.titleColor(for: position).uiColor
-    attributedString.append(attributedTitle)
-
-    if self.isRequired {
-      var space = AttributedString(" ")
-      space.font = .systemFont(ofSize: 5)
-      attributedString.append(space)
-
-      var requiredSign = AttributedString("*")
-      requiredSign.font = self.titleFont(for: position).font
-      requiredSign.foregroundColor = UniversalColor.danger.uiColor
-      attributedString.append(requiredSign)
-    }
-
-    return attributedString
+    return AttributedString(nsAttributedTitle)
   }
 }
