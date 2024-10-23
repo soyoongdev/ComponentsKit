@@ -13,7 +13,7 @@ public struct InputFieldVM: ComponentVM {
 
   /// The corner radius of the input field.
   ///
-  /// /// Defaults to `.medium`.
+  /// Defaults to `.medium`.
   public var cornerRadius: ComponentRadius = .medium
 
   /// The font used for the input field's text.
@@ -65,7 +65,7 @@ public struct InputFieldVM: ComponentVM {
   public var tintColor: UniversalColor = .accent
 
   /// The title displayed on the input field.
-  public var title: String = ""
+  public var title: String?
 
   /// Initializes a new instance of `InputFieldVM` with default values.
   public init() {}
@@ -95,6 +95,9 @@ extension InputFieldVM {
     case .full:
       return 16
     }
+  }
+  var spacing: CGFloat {
+    return 12
   }
   var backgroundColor: UniversalColor {
     if let color {
@@ -166,7 +169,11 @@ extension InputFieldVM {
     }
   }
   var height: CGFloat {
-    return self.inputFieldHeight + self.inputFieldTopPadding + self.verticalPadding
+    return switch self.size {
+    case .small: 40
+    case .medium: 60
+    case .large: 80
+    }
   }
 }
 
@@ -183,9 +190,13 @@ extension InputFieldVM {
     ])
   }
   func nsAttributedTitle(for position: InputFieldTitlePosition) -> NSAttributedString {
+    guard let title else {
+      return NSAttributedString()
+    }
+
     let attributedString = NSMutableAttributedString()
     attributedString.append(NSAttributedString(
-      string: self.title,
+      string: title,
       attributes: [
         .font: self.titleFont(for: position).uiFont,
         .foregroundColor: self.titleColor(for: position).uiColor
@@ -223,9 +234,13 @@ extension InputFieldVM {
   func attributedTitle(
     for position: InputFieldTitlePosition
   ) -> AttributedString {
+    guard let title else {
+      return AttributedString()
+    }
+
     var attributedString = AttributedString()
 
-    var attributedTitle = AttributedString(self.title)
+    var attributedTitle = AttributedString(title)
     attributedTitle.font = self.titleFont(for: position).font
     attributedTitle.foregroundColor = self.titleColor(for: position).uiColor
     attributedString.append(attributedTitle)
