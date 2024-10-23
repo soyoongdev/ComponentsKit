@@ -32,7 +32,6 @@ public struct SUButton: View {
   // MARK: Body
 
   public var body: some View {
-    Button("", action: {})
     Text(self.model.title)
       .font(self.model.preferredFont.font)
       .lineLimit(1)
