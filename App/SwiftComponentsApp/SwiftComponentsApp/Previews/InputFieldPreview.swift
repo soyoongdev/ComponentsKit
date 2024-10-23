@@ -1,3 +1,4 @@
+import Observation
 import SwiftComponents
 import SwiftUI
 import UIKit
@@ -10,11 +11,14 @@ struct InputFieldPreview: View {
   @State private var text: String = ""
   @FocusState private var isFocused: Bool
 
+  private let inputField = UKInputField()
+  private let inputFieldDelegate = InputFieldDelegate()
+
   var body: some View {
     VStack {
       PreviewWrapper(title: "UIKit") {
         UKComponentPreview(model: self.model) {
-          UKInputField(model: self.model)
+          self.inputField
         }
       }
       PreviewWrapper(title: "SwiftUI") {
@@ -59,11 +63,7 @@ struct InputFieldPreview: View {
             return self.model.placeholder.isNotNilAndEmpty
           },
           set: { newValue in
-            if newValue {
-              self.model.placeholder = "Placeholder"
-            } else {
-              self.model.placeholder = nil
-            }
+            self.model.placeholder = newValue ? "Placeholder" : nil
           }
         ))
         Toggle("Required", isOn: self.$model.isRequired)
@@ -82,8 +82,41 @@ struct InputFieldPreview: View {
           title: "Tint Color",
           selection: self.$model.tintColor
         )
+        Toggle("Title", isOn: .init(
+          get: {
+            return self.model.title.isNotNilAndEmpty
+          },
+          set: { newValue in
+            self.model.title = newValue ? "Title" : nil
+          }
+        ))
       }
     }
+    .onAppear {
+      self.inputField.textField.delegate = self.inputFieldDelegate
+    }
+    .toolbar {
+      ToolbarItem(placement: .primaryAction) {
+        if self.inputFieldDelegate.isEditing || self.isFocused {
+          Button("Hide Keyboard") {
+            self.isFocused = false
+            self.inputField.resignFirstResponder()
+          }
+        }
+      }
+    }
+  }
+}
+
+@Observable
+private final class InputFieldDelegate: NSObject, UITextFieldDelegate {
+  var isEditing: Bool = false
+
+  func textFieldDidBeginEditing(_ textField: UITextField) {
+    self.isEditing = true
+  }
+  func textFieldDidEndEditing(_ textField: UITextField) {
+    self.isEditing = false
   }
 }
 
