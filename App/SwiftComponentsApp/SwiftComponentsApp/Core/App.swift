@@ -1,9 +1,24 @@
 import SwiftUI
+import SwiftComponents
 
 struct App: View {
   var body: some View {
     NavigationStack {
       List {
+        Section {
+          Text("Discover more information about **SwiftComponents** on the website.")
+          SUButton(
+            model: .init {
+              $0.title = "Open Website"
+              $0.isFullWidth = true
+            },
+            action: {
+              guard let url = URL(string: "https://swiftcomponents.io") else { return }
+              UIApplication.shared.open(url)
+            }
+          )
+        }
+
         Section("Components") {
           NavigationLinkWithTitle("Button") {
             ButtonPreview()
