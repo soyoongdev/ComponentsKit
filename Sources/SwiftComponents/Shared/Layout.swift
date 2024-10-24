@@ -68,9 +68,9 @@ public struct Layout: Initializable, Updatable {
 
   public var disabledOpacity: CGFloat = 0.5
   public var componentRadius: Radius = .init(
-    small: 8.0,
-    medium: 12.0,
-    large: 16.0
+    small: 10.0,
+    medium: 14.0,
+    large: 18.0
   )
   public var borderWidth: BorderWidth = .init(
     small: 1.0,
@@ -83,9 +83,9 @@ public struct Layout: Initializable, Updatable {
     large: 0.95
   )
   public var componentFont: Font = .init(
-    small: .system(size: 12, weight: .regular),
-    medium: .system(size: 16, weight: .regular),
-    large: .system(size: 20, weight: .regular)
+    small: .system(size: 14, weight: .regular),
+    medium: .system(size: 18, weight: .regular),
+    large: .system(size: 22, weight: .regular)
   )
 
   public init() {}
