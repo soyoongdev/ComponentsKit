@@ -114,8 +114,8 @@ open class UKInputField: UIView, UKComponent {
       padding: self.model.spacing
     )
 
-    self.textField.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
-    self.titleLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+    self.textField.setContentHuggingPriority(.defaultLow, for: .horizontal)
+    self.titleLabel.setContentHuggingPriority(.defaultHigh, for: .horizontal)
   }
 
   open override func layoutSubviews() {
