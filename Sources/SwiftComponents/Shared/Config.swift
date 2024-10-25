@@ -1,14 +1,14 @@
 import Foundation
 
-public struct SwiftComponentsConfig: Initializable, Updatable {
+public struct ComponentsKitConfig: Initializable, Updatable {
   public var colors: Palette = .init()
   public var layout: Layout = .init()
 
   public init() {}
 }
 
-// MARK: - SwiftComponentsConfig + Shared
+// MARK: - ComponentsKitConfig + Shared
 
-extension SwiftComponentsConfig {
+extension ComponentsKitConfig {
   public static var shared: Self = .init()
 }

@@ -1,6 +1,6 @@
-import UIKit
+import ComponentsKit
 import SwiftUI
-import SwiftComponents
+import UIKit
 
 struct UKComponentPreview<View, Model>: UIViewRepresentable where View: UKComponent, Model == View.Model {
   class Container: UIView {

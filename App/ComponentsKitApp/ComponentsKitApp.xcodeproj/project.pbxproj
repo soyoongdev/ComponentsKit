@@ -7,45 +7,45 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		74F320A02CAD697000BF65A1 /* SwiftComponents in Frameworks */ = {isa = PBXBuildFile; productRef = 74F3209F2CAD697000BF65A1 /* SwiftComponents */; };
+		74418E962CCBA05200FD73A4 /* ComponentsKit in Frameworks */ = {isa = PBXBuildFile; productRef = 74418E952CCBA05200FD73A4 /* ComponentsKit */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		74F320552CAD68A500BF65A1 /* SwiftComponentsApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftComponentsApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		74418E612CCB9FDD00FD73A4 /* ComponentsKitApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ComponentsKitApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		74F320572CAD68A500BF65A1 /* SwiftComponentsApp */ = {
+		74418E632CCB9FDD00FD73A4 /* ComponentsKitApp */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = SwiftComponentsApp;
+			path = ComponentsKitApp;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		74F320522CAD68A500BF65A1 /* Frameworks */ = {
+		74418E5E2CCB9FDD00FD73A4 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				74F320A02CAD697000BF65A1 /* SwiftComponents in Frameworks */,
+				74418E962CCBA05200FD73A4 /* ComponentsKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		74F3204C2CAD68A500BF65A1 = {
+		74418E582CCB9FDD00FD73A4 = {
 			isa = PBXGroup;
 			children = (
-				74F320572CAD68A500BF65A1 /* SwiftComponentsApp */,
-				74F320562CAD68A500BF65A1 /* Products */,
+				74418E632CCB9FDD00FD73A4 /* ComponentsKitApp */,
+				74418E622CCB9FDD00FD73A4 /* Products */,
 			);
 			sourceTree = "<group>";
 		};
-		74F320562CAD68A500BF65A1 /* Products */ = {
+		74418E622CCB9FDD00FD73A4 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				74F320552CAD68A500BF65A1 /* SwiftComponentsApp.app */,
+				74418E612CCB9FDD00FD73A4 /* ComponentsKitApp.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -53,68 +53,68 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		74F320542CAD68A500BF65A1 /* SwiftComponentsApp */ = {
+		74418E602CCB9FDD00FD73A4 /* ComponentsKitApp */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 74F320642CAD68A600BF65A1 /* Build configuration list for PBXNativeTarget "SwiftComponentsApp" */;
+			buildConfigurationList = 74418E6F2CCB9FDF00FD73A4 /* Build configuration list for PBXNativeTarget "ComponentsKitApp" */;
 			buildPhases = (
-				74F320512CAD68A500BF65A1 /* Sources */,
-				74F320522CAD68A500BF65A1 /* Frameworks */,
-				74F320532CAD68A500BF65A1 /* Resources */,
+				74418E5D2CCB9FDD00FD73A4 /* Sources */,
+				74418E5E2CCB9FDD00FD73A4 /* Frameworks */,
+				74418E5F2CCB9FDD00FD73A4 /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				74F320572CAD68A500BF65A1 /* SwiftComponentsApp */,
+				74418E632CCB9FDD00FD73A4 /* ComponentsKitApp */,
 			);
-			name = SwiftComponentsApp;
+			name = ComponentsKitApp;
 			packageProductDependencies = (
-				74F3209F2CAD697000BF65A1 /* SwiftComponents */,
+				74418E952CCBA05200FD73A4 /* ComponentsKit */,
 			);
-			productName = SwiftComponentsApp;
-			productReference = 74F320552CAD68A500BF65A1 /* SwiftComponentsApp.app */;
+			productName = ComponentsKitApp;
+			productReference = 74418E612CCB9FDD00FD73A4 /* ComponentsKitApp.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		74F3204D2CAD68A500BF65A1 /* Project object */ = {
+		74418E592CCB9FDD00FD73A4 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1600;
 				LastUpgradeCheck = 1600;
 				TargetAttributes = {
-					74F320542CAD68A500BF65A1 = {
+					74418E602CCB9FDD00FD73A4 = {
 						CreatedOnToolsVersion = 16.0;
 					};
 				};
 			};
-			buildConfigurationList = 74F320502CAD68A500BF65A1 /* Build configuration list for PBXProject "SwiftComponentsApp" */;
+			buildConfigurationList = 74418E5C2CCB9FDD00FD73A4 /* Build configuration list for PBXProject "ComponentsKitApp" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 				Base,
 			);
-			mainGroup = 74F3204C2CAD68A500BF65A1;
+			mainGroup = 74418E582CCB9FDD00FD73A4;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				74F3209E2CAD697000BF65A1 /* XCLocalSwiftPackageReference "../../../SwiftComponents" */,
+				74418E942CCBA05200FD73A4 /* XCLocalSwiftPackageReference "../../../ComponentsKit" */,
 			);
 			preferredProjectObjectVersion = 77;
-			productRefGroup = 74F320562CAD68A500BF65A1 /* Products */;
+			productRefGroup = 74418E622CCB9FDD00FD73A4 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				74F320542CAD68A500BF65A1 /* SwiftComponentsApp */,
+				74418E602CCB9FDD00FD73A4 /* ComponentsKitApp */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		74F320532CAD68A500BF65A1 /* Resources */ = {
+		74418E5F2CCB9FDD00FD73A4 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -124,7 +124,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		74F320512CAD68A500BF65A1 /* Sources */ = {
+		74418E5D2CCB9FDD00FD73A4 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -134,7 +134,7 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		74F320622CAD68A600BF65A1 /* Debug */ = {
+		74418E6D2CCB9FDF00FD73A4 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -186,16 +186,18 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
-		74F320632CAD68A600BF65A1 /* Release */ = {
+		74418E6E2CCB9FDF00FD73A4 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -241,104 +243,91 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
 		};
-		74F320652CAD68A600BF65A1 /* Debug */ = {
+		74418E702CCB9FDF00FD73A4 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = SwiftComponentsApp/SwiftComponentsApp.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = Components;
-				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
-				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
-				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
-				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphonesimulator*]" = YES;
-				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphoneos*]" = YES;
-				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphonesimulator*]" = YES;
-				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleDefault;
-				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
-				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
-				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = io.swiftcomponents.SwiftComponentsApp;
+				PRODUCT_BUNDLE_IDENTIFIER = io.componentskit.ComponentsKitApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2,7";
-				XROS_DEPLOYMENT_TARGET = 2.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
-		74F320662CAD68A600BF65A1 /* Release */ = {
+		74418E712CCB9FDF00FD73A4 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = SwiftComponentsApp/SwiftComponentsApp.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = Components;
-				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
-				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
-				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
-				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphonesimulator*]" = YES;
-				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphoneos*]" = YES;
-				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphonesimulator*]" = YES;
-				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleDefault;
-				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
-				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
-				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = io.swiftcomponents.SwiftComponentsApp;
+				PRODUCT_BUNDLE_IDENTIFIER = io.componentskit.ComponentsKitApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2,7";
-				XROS_DEPLOYMENT_TARGET = 2.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		74F320502CAD68A500BF65A1 /* Build configuration list for PBXProject "SwiftComponentsApp" */ = {
+		74418E5C2CCB9FDD00FD73A4 /* Build configuration list for PBXProject "ComponentsKitApp" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				74F320622CAD68A600BF65A1 /* Debug */,
-				74F320632CAD68A600BF65A1 /* Release */,
+				74418E6D2CCB9FDF00FD73A4 /* Debug */,
+				74418E6E2CCB9FDF00FD73A4 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		74F320642CAD68A600BF65A1 /* Build configuration list for PBXNativeTarget "SwiftComponentsApp" */ = {
+		74418E6F2CCB9FDF00FD73A4 /* Build configuration list for PBXNativeTarget "ComponentsKitApp" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				74F320652CAD68A600BF65A1 /* Debug */,
-				74F320662CAD68A600BF65A1 /* Release */,
+				74418E702CCB9FDF00FD73A4 /* Debug */,
+				74418E712CCB9FDF00FD73A4 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -346,18 +335,18 @@
 /* End XCConfigurationList section */
 
 /* Begin XCLocalSwiftPackageReference section */
-		74F3209E2CAD697000BF65A1 /* XCLocalSwiftPackageReference "../../../SwiftComponents" */ = {
+		74418E942CCBA05200FD73A4 /* XCLocalSwiftPackageReference "../../../ComponentsKit" */ = {
 			isa = XCLocalSwiftPackageReference;
-			relativePath = ../../../SwiftComponents;
+			relativePath = ../../../ComponentsKit;
 		};
 /* End XCLocalSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		74F3209F2CAD697000BF65A1 /* SwiftComponents */ = {
+		74418E952CCBA05200FD73A4 /* ComponentsKit */ = {
 			isa = XCSwiftPackageProductDependency;
-			productName = SwiftComponents;
+			productName = ComponentsKit;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
-	rootObject = 74F3204D2CAD68A500BF65A1 /* Project object */;
+	rootObject = 74418E592CCB9FDD00FD73A4 /* Project object */;
 }

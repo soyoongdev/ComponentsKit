@@ -1,6 +1,6 @@
-import UIKit
-import SwiftComponents
+import ComponentsKit
 import SwiftUI
+import UIKit
 
 final class UIKitLogin: UIViewController {
   enum Pages {

@@ -117,13 +117,13 @@ extension UniversalFont.Weight {
 extension UniversalFont {
   public enum Component {
     public static var small: UniversalFont {
-      return SwiftComponentsConfig.shared.layout.componentFont.small
+      return ComponentsKitConfig.shared.layout.componentFont.small
     }
     public static var medium: UniversalFont {
-      return SwiftComponentsConfig.shared.layout.componentFont.medium
+      return ComponentsKitConfig.shared.layout.componentFont.medium
     }
     public static var large: UniversalFont {
-      return SwiftComponentsConfig.shared.layout.componentFont.large
+      return ComponentsKitConfig.shared.layout.componentFont.large
     }
   }
 }

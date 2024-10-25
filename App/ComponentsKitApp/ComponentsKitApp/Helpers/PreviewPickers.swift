@@ -1,4 +1,4 @@
-import SwiftComponents
+import ComponentsKit
 import SwiftUI
 
 // MARK: - ComponentColorPicker

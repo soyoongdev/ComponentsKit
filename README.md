@@ -1,4 +1,4 @@
-# SwiftComponents
+# ComponentsKit
 
 ## Installation
 
@@ -7,11 +7,11 @@ Before proceeding with the installation, ensure that you are signed in to your G
 1. From the **Xcode** menu, click on **Settings**, and access the **Account** section.
 2. If you are not authorized, click on **+**, choose **GitHub**, and input your credentials.
 
-Once you are signed in to your GitHub account, you can add SwiftComponents to an Xcode project as a package dependency:
+Once you are signed in to your GitHub account, you can add ComponentsKit to an Xcode project as a package dependency:
 
 1. From the **File** menu, select **Add Package Dependencies...**.
-2. Enter `https://github.com/swiftcomponentsio/SwiftComponents` into the package repository URL text field.
-3. Add **SwiftComponents** to your application.
+2. Enter `https://github.com/componentskit/ComponentsKit` into the package repository URL text field.
+3. Add **ComponentsKit** to your application.
 
 ## Basic Usage
 
@@ -28,7 +28,7 @@ let inputFieldVM = InputFieldVM {
 ```
 
 > [!Note] 
-> All `view models` in **SwiftComponents** do not have memberwise initializers. Instead, they conform to the `ComponentVM` protocol, which defines an initializer that modifies default values:
+> All `view models` in **ComponentsKit** do not have memberwise initializers. Instead, they conform to the `ComponentVM` protocol, which defines an initializer that modifies default values:
 > ```swift
 > /// Initializes a new instance by applying a transformation closure to the default values.
 > ///
@@ -84,7 +84,7 @@ inputField.resignFirstResponder()
 The library comes with predefined sizes and colors, but you can change these values to customize the appearance of your app. To do this, alter the config:
 
 ```swift
-SwiftComponentsConfig.shared.update {
+ComponentsKitConfig.shared.update {
   // Update colors
   $0.colors.primary = ...
   
@@ -99,7 +99,7 @@ SwiftComponentsConfig.shared.update {
 By altering the config, you can also create *custom themes* for your app. To do this, first create a new instance of a config:
 
 ```swift
-let halloweenTheme = SwiftComponentsConfig {
+let halloweenTheme = ComponentsKitConfig {
   $0.colors.background = .themed(
     light: .hex("#e38f36"),
     dark: .hex("#ba5421")
@@ -111,7 +111,7 @@ let halloweenTheme = SwiftComponentsConfig {
 When the user switches the theme, apply it by assigning it to the `shared` instance: 
 
 ```swift
-SwiftComponentsConfig.shared = halloweenTheme
+ComponentsKitConfig.shared = halloweenTheme
 ```
 
 **Extend Colors**
