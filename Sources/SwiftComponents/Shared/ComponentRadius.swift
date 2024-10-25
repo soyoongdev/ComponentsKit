@@ -15,9 +15,9 @@ extension ComponentRadius {
     let maxValue = height / 2
     let value = switch self {
     case .none: CGFloat(0)
-    case .small: SwiftComponentsConfig.shared.layout.componentRadius.small
-    case .medium: SwiftComponentsConfig.shared.layout.componentRadius.medium
-    case .large: SwiftComponentsConfig.shared.layout.componentRadius.large
+    case .small: ComponentsKitConfig.shared.layout.componentRadius.small
+    case .medium: ComponentsKitConfig.shared.layout.componentRadius.medium
+    case .large: ComponentsKitConfig.shared.layout.componentRadius.large
     case .full: height / 2
     case .custom(let value): value
     }

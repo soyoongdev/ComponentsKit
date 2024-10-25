@@ -10,13 +10,13 @@ public struct BorderWidth: Hashable {
 
 extension BorderWidth {
   public static var small: Self {
-    return Self(SwiftComponentsConfig.shared.layout.borderWidth.small)
+    return Self(ComponentsKitConfig.shared.layout.borderWidth.small)
   }
   public static var medium: Self {
-    return Self(SwiftComponentsConfig.shared.layout.borderWidth.medium)
+    return Self(ComponentsKitConfig.shared.layout.borderWidth.medium)
   }
   public static var large: Self {
-    return Self(SwiftComponentsConfig.shared.layout.borderWidth.large)
+    return Self(ComponentsKitConfig.shared.layout.borderWidth.large)
   }
   public static func custom(_ value: CGFloat) -> Self {
     return Self(value)

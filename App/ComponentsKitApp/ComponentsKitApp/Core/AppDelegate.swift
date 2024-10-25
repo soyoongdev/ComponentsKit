@@ -1,4 +1,4 @@
-import SwiftComponents
+import ComponentsKit
 import UIKit
 
 final class AppDelegate: NSObject, UIApplicationDelegate {
@@ -6,17 +6,17 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
   ) -> Bool {
-    setupSwiftComponents()
+    setupComponentsKit()
 
     return true
   }
 }
 
-// MARK: - SwiftComponents Configuration
+// MARK: - ComponentsKit Configuration
 
-private func setupSwiftComponents() {
+private func setupComponentsKit() {
   // Configure colors or layout
-//  SwiftComponentsConfig.shared.update {
+//  ComponentsKitConfig.shared.update {
 //    $0.colors.primary = ...
 //    $0.layout.componentFont.medium = ...
 //  }
