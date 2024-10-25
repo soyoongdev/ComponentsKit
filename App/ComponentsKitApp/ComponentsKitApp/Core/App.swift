@@ -1,19 +1,19 @@
+import ComponentsKit
 import SwiftUI
-import SwiftComponents
 
 struct App: View {
   var body: some View {
     NavigationStack {
       List {
         Section {
-          Text("Discover more information about **SwiftComponents** on the website.")
+          Text("Discover more information about **ComponentsKit** on the website.")
           SUButton(
             model: .init {
               $0.title = "Open Website"
               $0.isFullWidth = true
             },
             action: {
-              guard let url = URL(string: "https://swiftcomponents.io") else { return }
+              guard let url = URL(string: "https://componentskit.io") else { return }
               UIApplication.shared.open(url)
             }
           )
@@ -48,7 +48,7 @@ struct App: View {
           }
         }
       }
-      .navigationTitle("SwiftComponents")
+      .navigationTitle("ComponentsKit")
       .navigationBarTitleDisplayMode(.inline)
     }
   }

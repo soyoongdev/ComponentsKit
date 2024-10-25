@@ -41,28 +41,28 @@ extension CheckboxVM {
     return self.color.main.withOpacity(
       self.isEnabled
       ? 1.0
-      : SwiftComponentsConfig.shared.layout.disabledOpacity
+      : ComponentsKitConfig.shared.layout.disabledOpacity
     )
   }
   var foregroundColor: UniversalColor {
     return self.color.contrast.withOpacity(
       self.isEnabled
       ? 1.0
-      : SwiftComponentsConfig.shared.layout.disabledOpacity
+      : ComponentsKitConfig.shared.layout.disabledOpacity
     )
   }
   var titleColor: UniversalColor {
     return Palette.Text.primary.withOpacity(
       self.isEnabled
       ? 1.0
-      : SwiftComponentsConfig.shared.layout.disabledOpacity
+      : ComponentsKitConfig.shared.layout.disabledOpacity
     )
   }
   var borderColor: UniversalColor {
     return .universal(.uiColor(.lightGray)).withOpacity(
       self.isEnabled
       ? 1.0
-      : SwiftComponentsConfig.shared.layout.disabledOpacity
+      : ComponentsKitConfig.shared.layout.disabledOpacity
     )
   }
   var borderWidth: CGFloat {

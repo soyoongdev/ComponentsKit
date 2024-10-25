@@ -44,24 +44,24 @@ public struct Palette: Initializable, Updatable {
 extension Palette {
   public enum Base {
     public static var background: UniversalColor {
-      return SwiftComponentsConfig.shared.colors.background
+      return ComponentsKitConfig.shared.colors.background
     }
     public static var secondaryBackground: UniversalColor {
-      return SwiftComponentsConfig.shared.colors.background
+      return ComponentsKitConfig.shared.colors.background
     }
     public static var divider: UniversalColor {
-      return SwiftComponentsConfig.shared.colors.divider
+      return ComponentsKitConfig.shared.colors.divider
     }
   }
   public enum Text {
     public static var primary: UniversalColor {
-      return SwiftComponentsConfig.shared.colors.label
+      return ComponentsKitConfig.shared.colors.label
     }
     public static var secondary: UniversalColor {
-      return SwiftComponentsConfig.shared.colors.secondaryLabel
+      return ComponentsKitConfig.shared.colors.secondaryLabel
     }
     public static var accent: UniversalColor {
-      return SwiftComponentsConfig.shared.colors.accent.main
+      return ComponentsKitConfig.shared.colors.accent.main
     }
   }
   public enum Components {
@@ -88,42 +88,42 @@ extension Palette {
 
 extension ComponentColor {
   public static var primary: Self {
-    return SwiftComponentsConfig.shared.colors.primary
+    return ComponentsKitConfig.shared.colors.primary
   }
   public static var secondary: Self {
-    return SwiftComponentsConfig.shared.colors.secondary
+    return ComponentsKitConfig.shared.colors.secondary
   }
   public static var accent: Self {
-    return SwiftComponentsConfig.shared.colors.accent
+    return ComponentsKitConfig.shared.colors.accent
   }
   public static var success: Self {
-    return SwiftComponentsConfig.shared.colors.success
+    return ComponentsKitConfig.shared.colors.success
   }
   public static var warning: Self {
-    return SwiftComponentsConfig.shared.colors.warning
+    return ComponentsKitConfig.shared.colors.warning
   }
   public static var danger: Self {
-    return SwiftComponentsConfig.shared.colors.danger
+    return ComponentsKitConfig.shared.colors.danger
   }
 }
 
 extension UniversalColor {
   public static var primary: Self {
-    return SwiftComponentsConfig.shared.colors.primary.main
+    return ComponentsKitConfig.shared.colors.primary.main
   }
   public static var secondary: Self {
-    return SwiftComponentsConfig.shared.colors.secondary.main
+    return ComponentsKitConfig.shared.colors.secondary.main
   }
   public static var accent: Self {
-    return SwiftComponentsConfig.shared.colors.accent.main
+    return ComponentsKitConfig.shared.colors.accent.main
   }
   public static var success: Self {
-    return SwiftComponentsConfig.shared.colors.success.main
+    return ComponentsKitConfig.shared.colors.success.main
   }
   public static var warning: Self {
-    return SwiftComponentsConfig.shared.colors.warning.main
+    return ComponentsKitConfig.shared.colors.warning.main
   }
   public static var danger: Self {
-    return SwiftComponentsConfig.shared.colors.danger.main
+    return ComponentsKitConfig.shared.colors.danger.main
   }
 }

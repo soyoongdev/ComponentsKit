@@ -3,19 +3,19 @@
 import PackageDescription
 
 let package = Package(
-  name: "SwiftComponents",
+  name: "ComponentsKit",
   platforms: [
     .iOS(.v15)
   ],
   products: [
     .library(
-      name: "SwiftComponents",
-      targets: ["SwiftComponents"]
+      name: "ComponentsKit",
+      targets: ["ComponentsKit"]
     )
   ],
   targets: [
     .target(
-      name: "SwiftComponents"
+      name: "ComponentsKit"
     )
   ]
 )

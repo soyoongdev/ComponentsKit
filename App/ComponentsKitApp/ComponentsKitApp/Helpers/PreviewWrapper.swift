@@ -1,5 +1,5 @@
+import ComponentsKit
 import SwiftUI
-import SwiftComponents
 
 struct PreviewWrapper<Content: View>: View {
   let title: String

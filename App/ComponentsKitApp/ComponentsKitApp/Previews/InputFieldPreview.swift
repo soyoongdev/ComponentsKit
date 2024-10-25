@@ -1,5 +1,5 @@
+import ComponentsKit
 import Observation
-import SwiftComponents
 import SwiftUI
 import UIKit
 

@@ -58,7 +58,7 @@ extension SegmentedControlVM {
     ).withOpacity(
       self.isEnabled
       ? 1.0
-      : SwiftComponentsConfig.shared.layout.disabledOpacity
+      : ComponentsKitConfig.shared.layout.disabledOpacity
     )
   }
   var selectedSegmentColor: UniversalColor {
@@ -69,7 +69,7 @@ extension SegmentedControlVM {
     return selectedSegmentColor.withOpacity(
       self.isEnabled
       ? 1.0
-      : SwiftComponentsConfig.shared.layout.disabledOpacity
+      : ComponentsKitConfig.shared.layout.disabledOpacity
     )
   }
   func item(for id: ID) -> SegmentedControlItemVM<ID>? {
@@ -87,7 +87,7 @@ extension SegmentedControlVM {
       return defaultColor.withOpacity(
         self.isEnabled && isItemEnabled
         ? 0.7
-        : 0.7 * SwiftComponentsConfig.shared.layout.disabledOpacity
+        : 0.7 * ComponentsKitConfig.shared.layout.disabledOpacity
       )
     }
 
@@ -95,7 +95,7 @@ extension SegmentedControlVM {
     return foregroundColor.withOpacity(
       self.isEnabled
       ? 1.0
-      : SwiftComponentsConfig.shared.layout.disabledOpacity
+      : ComponentsKitConfig.shared.layout.disabledOpacity
     )
   }
   var horizontalInnerPaddings: CGFloat? {

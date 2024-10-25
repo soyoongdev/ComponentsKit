@@ -13,13 +13,13 @@ extension AnimationScale {
     return Self(1.0)
   }
   public static var small: Self {
-    return Self(SwiftComponentsConfig.shared.layout.animationScale.small)
+    return Self(ComponentsKitConfig.shared.layout.animationScale.small)
   }
   public static var medium: Self {
-    return Self(SwiftComponentsConfig.shared.layout.animationScale.medium)
+    return Self(ComponentsKitConfig.shared.layout.animationScale.medium)
   }
   public static var large: Self {
-    return Self(SwiftComponentsConfig.shared.layout.animationScale.large)
+    return Self(ComponentsKitConfig.shared.layout.animationScale.large)
   }
   public static func custom(_ value: CGFloat) -> Self {
     guard value >= 0 && value <= 1.0 else {

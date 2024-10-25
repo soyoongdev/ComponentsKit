@@ -56,14 +56,14 @@ extension ButtonVM {
     return self.isEnabled
     ? self.color.main
     : self.color.main.withOpacity(
-      SwiftComponentsConfig.shared.layout.disabledOpacity
+      ComponentsKitConfig.shared.layout.disabledOpacity
     )
   }
   private var contrastColor: UniversalColor {
     return self.isEnabled
     ? self.color.contrast
     : self.color.contrast.withOpacity(
-      SwiftComponentsConfig.shared.layout.disabledOpacity
+      ComponentsKitConfig.shared.layout.disabledOpacity
     )
   }
   var backgroundColor: UniversalColor? {
