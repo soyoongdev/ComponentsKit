@@ -1,4 +1,5 @@
 import UIKit
+import AutoLayout
 
 /// A UIKit component that performs an action when it is tapped by a user.
 open class UKButton: UIView, UKComponent {
@@ -26,7 +27,7 @@ open class UKButton: UIView, UKComponent {
     }
   }
 
-  private var titleLabelConstraints: AnchoredConstraints = .init()
+  private var titleLabelConstraints: LayoutConstraints = .init()
 
   // MARK: Subviews
 
@@ -85,8 +86,7 @@ open class UKButton: UIView, UKComponent {
 
   private func layout() {
     self.titleLabelConstraints = self.titleLabel.horizontally(self.model.horizontalPadding)
-    self.titleLabel.centerVertically()
-    self.titleLabel.centerHorizontally()
+    self.titleLabel.center()
 
     self.titleLabelConstraints.leading?.priority = .defaultHigh
     self.titleLabelConstraints.trailing?.priority = .defaultHigh
