@@ -1,0 +1,14 @@
+{
+  "pins" : [
+    {
+      "identity" : "autolayout",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/componentskit/AutoLayout",
+      "state" : {
+        "revision" : "78e39facca2cc459a135655cae0e9feb5a587892",
+        "version" : "1.0.0"
+      }
+    }
+  ],
+  "version" : 2
+}

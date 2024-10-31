@@ -23,11 +23,11 @@ struct SwiftUILogin: View {
   @State private var isLoading = false
 
   private var isButtonEnabled: Bool {
-    return self.email.isNotEmpty
-    && self.password.isNotEmpty
+    return !self.email.isEmpty
+    && !self.password.isEmpty
     && self.isConsented
     && (
-      self.selectedPage == .signUp && self.name.isNotEmpty
+      self.selectedPage == .signUp && !self.name.isEmpty
       || self.selectedPage == .signIn
     )
   }

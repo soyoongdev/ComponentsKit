@@ -76,11 +76,11 @@ final class UIKitLogin: UIViewController {
   }
 
   private var isButtonEnabled: Bool {
-    return self.emailInput.text.isNotEmpty
-    && self.passwordInput.text.isNotEmpty
+    return !self.emailInput.text.isEmpty
+    && !self.passwordInput.text.isEmpty
     && self.consentCheckbox.isSelected
     && (
-      self.pageControl.selectedId == .signUp && self.nameInput.text.isNotEmpty
+      self.pageControl.selectedId == .signUp && !self.nameInput.text.isEmpty
       || self.pageControl.selectedId == .signIn
     )
   }
@@ -159,7 +159,7 @@ final class UIKitLogin: UIViewController {
   }
 
   private func layout() {
-    self.scrollView.pinToSafeEdges()
+    self.scrollView.allEdges()
 
     self.stackView.top(20)
     self.stackView.bottom(20)
@@ -177,7 +177,7 @@ final class UIKitLogin: UIViewController {
     ).isActive = true
     self.stackView.centerHorizontally()
 
-    self.loader.below(of: self.stackView, padding: 50)
+    self.loader.below(self.stackView, padding: 50)
     self.loader.centerHorizontally()
   }
 

@@ -1,3 +1,4 @@
+import AutoLayout
 import UIKit
 
 /// A UIKit component that displays a field to input a text.
@@ -27,8 +28,8 @@ open class UKInputField: UIView, UKComponent {
     }
   }
 
-  private var titleLabelLeadingConstraints: NSLayoutConstraint?
-  private var inputFieldLeadingConstraint: NSLayoutConstraint?
+  private var titleLabelConstraints: LayoutConstraints?
+  private var inputFieldConstraints: LayoutConstraints?
 
   // MARK: Subviews
 
@@ -103,14 +104,14 @@ open class UKInputField: UIView, UKComponent {
   // MARK: Layout
 
   private func layout() {
-    self.titleLabelLeadingConstraints = self.titleLabel.leading(self.model.horizontalPadding)
+    self.titleLabelConstraints = self.titleLabel.leading(self.model.horizontalPadding)
     self.titleLabel.centerVertically()
 
     self.textField.trailing(self.model.horizontalPadding)
-    self.textField.vertically(0)
+    self.textField.vertically()
 
-    self.inputFieldLeadingConstraint = self.textField.after(
-      of: self.titleLabel,
+    self.inputFieldConstraints = self.textField.after(
+      self.titleLabel,
       padding: self.model.spacing
     )
 
@@ -131,8 +132,8 @@ open class UKInputField: UIView, UKComponent {
 
     self.style()
 
-    self.inputFieldLeadingConstraint?.constant = self.model.spacing
-    self.titleLabelLeadingConstraints?.constant = self.model.horizontalPadding
+    self.inputFieldConstraints?.leading?.constant = self.model.spacing
+    self.titleLabelConstraints?.leading?.constant = self.model.horizontalPadding
     if self.model.shouldUpdateLayout(oldModel) {
       self.setNeedsLayout()
       self.invalidateIntrinsicContentSize()
