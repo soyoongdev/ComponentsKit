@@ -1,3 +1,4 @@
+import AutoLayout
 import UIKit
 
 /// A SwiftUI component with multiple segments that allows users to select them.
@@ -22,7 +23,7 @@ open class UKSegmentedControl<ID: Hashable>: UIView, UKComponent {
     }
   }
 
-  private var selectedSegmentConstraint = AnchoredConstraints()
+  private var selectedSegmentConstraints = LayoutConstraints()
 
   // MARK: Subviews
 
@@ -108,14 +109,14 @@ open class UKSegmentedControl<ID: Hashable>: UIView, UKComponent {
   // MARK: Layout
 
   func layout() {
-    self.container.pinToEdges(.all, padding: self.model.outerPaddings)
+    self.container.allEdges(self.model.outerPaddings)
 
-    self.selectedSegment.vertically(0)
+    self.selectedSegment.vertically()
 
     self.layoutSegments()
     self.updateSelectedSegmentLayout()
 
-    self.cover.pinToEdges()
+    self.cover.allEdges()
   }
 
   private func layoutSegments() {
@@ -140,10 +141,10 @@ open class UKSegmentedControl<ID: Hashable>: UIView, UKComponent {
         equalTo: self.container.widthAnchor,
         multiplier: multipliers[index]
       ).isActive = true
-      segment.vertically(0)
+      segment.vertically()
 
       if let previousSegment = self.segments[safe: index - 1] {
-        segment.after(of: previousSegment, padding: 0)
+        segment.after(previousSegment)
       }
     }
 
@@ -152,8 +153,8 @@ open class UKSegmentedControl<ID: Hashable>: UIView, UKComponent {
   }
 
   private func updateSelectedSegmentLayout() {
-    self.selectedSegmentConstraint.leading?.isActive = false
-    self.selectedSegmentConstraint.trailing?.isActive = false
+    self.selectedSegmentConstraints.leading?.isActive = false
+    self.selectedSegmentConstraints.trailing?.isActive = false
 
     guard let selectedSegmentView = self.segment(for: self.selectedId),
           self.model.item(for: self.selectedId)?.isEnabled == true
@@ -161,8 +162,10 @@ open class UKSegmentedControl<ID: Hashable>: UIView, UKComponent {
       return
     }
 
-    self.selectedSegmentConstraint.leading = self.selectedSegment.leading(to: selectedSegmentView)
-    self.selectedSegmentConstraint.trailing = self.selectedSegment.trailing(to: selectedSegmentView)
+    self.selectedSegmentConstraints = LayoutConstraints.merged {
+      self.selectedSegment.leading(to: selectedSegmentView)
+      self.selectedSegment.trailing(to: selectedSegmentView)
+    }
   }
 
   open override func layoutSubviews() {

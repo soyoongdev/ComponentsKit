@@ -1,4 +1,5 @@
 import UIKit
+import AutoLayout
 
 /// A UIKit component that can be selected by a user.
 open class UKCheckbox: UIView, UKComponent {
@@ -23,8 +24,8 @@ open class UKCheckbox: UIView, UKComponent {
     }
   }
 
-  private var titleLabelConstraints: AnchoredConstraints = .init()
-  private var checkboxContainerConstraints: AnchoredConstraints = .init()
+  private var titleLabelConstraints: LayoutConstraints = .init()
+  private var checkboxContainerConstraints: LayoutConstraints = .init()
 
   // MARK: Subviews
 
@@ -131,10 +132,10 @@ open class UKCheckbox: UIView, UKComponent {
   // MARK: Layout
 
   private func layout() {
-    self.stackView.pinToEdges()
+    self.stackView.allEdges()
 
     self.checkboxContainerConstraints = self.checkboxContainer.size(self.model.checkboxSide)
-    self.checkboxBackground.pinToEdges()
+    self.checkboxBackground.allEdges()
   }
 
   // MARK: Update

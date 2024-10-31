@@ -13,9 +13,15 @@ let package = Package(
       targets: ["ComponentsKit"]
     )
   ],
+  dependencies: [
+    .package(url: "https://github.com/componentskit/AutoLayout", from: "1.0.0")
+  ],
   targets: [
     .target(
-      name: "ComponentsKit"
+      name: "ComponentsKit",
+      dependencies: [
+        .product(name: "AutoLayout", package: "AutoLayout")
+      ]
     )
   ]
 )

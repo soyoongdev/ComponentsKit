@@ -13,8 +13,7 @@ struct UKComponentPreview<View, Model>: UIViewRepresentable where View: UKCompon
 
       self.addSubview(self.component)
 
-      self.component.centerVertically()
-      self.component.centerHorizontally()
+      self.component.center()
 
       self.component.topAnchor.constraint(
         greaterThanOrEqualTo: self.topAnchor
