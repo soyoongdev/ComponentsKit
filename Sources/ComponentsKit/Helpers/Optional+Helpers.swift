@@ -2,19 +2,19 @@ import Foundation
 
 extension Optional {
   /// Whether the value is nil.
-  public var isNil: Bool {
+  var isNil: Bool {
     return self == nil
   }
 
   /// Whether the value is not nil.
-  public var isNotNil: Bool {
+  var isNotNil: Bool {
     return self != nil
   }
 }
 
 extension Optional where Wrapped: Collection {
   /// Whether the value is not nil and empty.
-  public var isNotNilAndEmpty: Bool {
+  var isNotNilAndEmpty: Bool {
     if let self {
       return self.isNotEmpty
     } else {
@@ -23,7 +23,7 @@ extension Optional where Wrapped: Collection {
   }
 
   /// Whether the value is nil or empty.
-  public var isNilOrEmpty: Bool {
+  var isNilOrEmpty: Bool {
     if let self {
       return self.isEmpty
     } else {
