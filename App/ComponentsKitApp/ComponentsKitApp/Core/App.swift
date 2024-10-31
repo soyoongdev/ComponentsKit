@@ -5,70 +5,19 @@ struct App: View {
   var body: some View {
     NavigationStack {
       List {
-        Section {
-          Text("Discover more information about **ComponentsKit** on the website.")
-          SUButton(
-            model: .init {
-              $0.title = "Open Website"
-              $0.isFullWidth = true
-            },
-            action: {
-              guard let url = URL(string: "https://componentskit.io") else { return }
-              UIApplication.shared.open(url)
-            }
-          )
-        }
-
-        Section("Components") {
-          NavigationLinkWithTitle("Button") {
-            ButtonPreview()
-          }
-          NavigationLinkWithTitle("Checkbox") {
-            CheckboxPreview()
-          }
-          NavigationLinkWithTitle("Input Field") {
-            InputFieldPreview()
-          }
-          NavigationLinkWithTitle("Loading") {
-            LoadingPreview()
-          }
-          NavigationLinkWithTitle("Segmented Control") {
-            SegmentedControlPreview()
-          }
-        }
-
-        Section("Demos") {
-          NavigationLink("SwiftUI Login") {
+        Section("Login") {
+          NavigationLink("SwiftUI") {
             SwiftUILogin()
           }
-          NavigationLink("UIKit Login") {
+          NavigationLink("UIKit") {
             UIViewControllerRepresenting {
               UIKitLogin()
             }
           }
         }
       }
-      .navigationTitle("ComponentsKit")
+      .navigationTitle("Examples")
       .navigationBarTitleDisplayMode(.inline)
-    }
-  }
-}
-
-// MARK: - Helper
-
-private struct NavigationLinkWithTitle<Destination: View>: View {
-  let title: String
-  @ViewBuilder let destination: () -> Destination
-
-  init(_ title: String, destination: @escaping () -> Destination) {
-    self.title = title
-    self.destination = destination
-  }
-
-  var body: some View {
-    NavigationLink(self.title) {
-      self.destination()
-        .navigationTitle(self.title)
     }
   }
 }
