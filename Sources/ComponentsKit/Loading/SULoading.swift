@@ -1,5 +1,5 @@
-import SwiftUI
 import Combine
+import SwiftUI
 
 /// A SwiftUI component that shows that a task is in progress.
 public struct SULoading: View {

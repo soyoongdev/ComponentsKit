@@ -1,5 +1,5 @@
-import UIKit
 import AutoLayout
+import UIKit
 
 /// A UIKit component that can be selected by a user.
 open class UKCheckbox: UIView, UKComponent {

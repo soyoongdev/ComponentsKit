@@ -1,5 +1,5 @@
-import UIKit
 import SwiftUI
+import UIKit
 
 /// The autocapitalization behavior applied during text input.
 public enum InputFieldTextAutocapitalization {
