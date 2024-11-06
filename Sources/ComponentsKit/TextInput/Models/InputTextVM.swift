@@ -69,6 +69,10 @@ public struct InputTextVM: ComponentVM {
 
   public var isExpandable: Bool = true
 
+  public var minRows: Int = 1
+
+  public var maxRows: Int = 6
+
   /// Initializes a new instance of `InputTextVM` with default values.
   public init() {}
 }

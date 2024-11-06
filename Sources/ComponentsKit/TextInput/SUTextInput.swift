@@ -7,7 +7,7 @@ public struct SUTextInput<FocusValue: Hashable>: View {
   public var model: InputTextVM
 
   /// A Binding value to control the inputted text.
-  @Binding public var text: String?
+  @Binding public var text: String
 
   /// The shared state controlling focus across multiple fields.
   ///
@@ -28,6 +28,8 @@ public struct SUTextInput<FocusValue: Hashable>: View {
 
   @Environment(\.colorScheme) private var colorScheme
 
+  @State private var scrollViewContentSize: CGSize = .zero
+
   // MARK: Initialization
 
   /// Initializer.
@@ -37,7 +39,7 @@ public struct SUTextInput<FocusValue: Hashable>: View {
   ///   - localFocus: The unique value for this field to match against the global focus state to determine focus.
   ///   - model: A model that defines the appearance properties.
   public init(
-    text: Binding<String?>,
+    text: Binding<String>,
     globalFocus: FocusState<FocusValue>.Binding,
     localFocus: FocusValue,
     model: InputTextVM = .init()
@@ -51,43 +53,63 @@ public struct SUTextInput<FocusValue: Hashable>: View {
   // MARK: Body
 
   public var body: some View {
-    VStack {
-      // TODO: Block the ScrollView
+    if self.model.isExpandable {
       ScrollView {
-        ZStack(alignment: .topLeading) {
-          // Background color with rounded corners
-          self.model.backgroundColor.color(for: self.colorScheme)
-            .clipShape(RoundedRectangle(cornerRadius: self.model.cornerRadius.value()))
+        content
+      }
+      .frame(maxHeight: scrollViewContentSize.height)
+      .padding(.horizontal, self.model.horizontalPadding)
+    } else {
+      content
+        .frame(maxHeight: scrollViewContentSize.height)
+        .padding(.horizontal, self.model.horizontalPadding)
+    }
+  }
 
-          // Placeholder text
-          Text(self.model.placeholder ?? "")
-            .foregroundStyle(self.model.placeholderColor.color(for: self.colorScheme))
-            .opacity(self.model.placeholder == nil ? 1 : 0)
+  private var content: some View {
+    ZStack(alignment: .topLeading) {
+      self.model.backgroundColor.color(for: self.colorScheme)
+        .clipShape(RoundedRectangle(cornerRadius: self.model.cornerRadius.value()))
 
-          // Text editor for user input
-          TextEditor(text: Binding($text, replacingNilWith: ""))
-          // TODO: Move minRows and maxRows parameters into the model
-            .frame(minHeight: 60, maxHeight: 150, alignment: .leading)
-            .foregroundStyle(
-              self.model.foregroundColor.color(for: self.colorScheme)
-            )
-            .padding(self.model.horizontalPadding)
-            .colorMultiply(self.model.backgroundColor.color(for: self.colorScheme))
-        }
-        // Configure appearance and behavior
-        .tint(self.model.tintColor.color(for: self.colorScheme))
-        .font(self.model.preferredFont.font)
-        .foregroundStyle(self.model.placeholderColor.color(for: self.colorScheme))
-        .focused(self.$globalFocus, equals: self.localFocus)
-        .disabled(!self.model.isEnabled)
-        .keyboardType(self.model.keyboardType)
-        .submitLabel(self.model.submitType.submitLabel)
-        .autocorrectionDisabled(!self.model.isAutocorrectionEnabled)
-        .textInputAutocapitalization(self.model.autocapitalization.textInputAutocapitalization)
+      TextEditor(text: $text)
+        .frame(
+          minHeight: calculatedHeight(for: self.model.minRows),
+          maxHeight: calculatedHeight(for: self.model.maxRows),
+          alignment: .leading
+        )
+        .foregroundStyle(self.model.foregroundColor.color(for: self.colorScheme))
+        .padding(self.model.horizontalPadding)
+        .colorMultiply(self.model.backgroundColor.color(for: self.colorScheme))
+      if text.isEmpty, let placeholder = self.model.placeholder {
+        Text(placeholder)
+          .foregroundStyle(self.model.placeholderColor.color(for: self.colorScheme))
+          .padding(self.model.horizontalPadding)
       }
     }
-    .padding(.horizontal, self.model.horizontalPadding)
+    .background(
+      GeometryReader { geo -> Color in
+        DispatchQueue.main.async {
+          scrollViewContentSize = geo.size
+        }
+        return Color.clear
+      }
+    )
+    .tint(self.model.tintColor.color(for: self.colorScheme))
+    .font(self.model.preferredFont.font)
+    .foregroundStyle(self.model.placeholderColor.color(for: self.colorScheme))
+    .focused(self.$globalFocus, equals: self.localFocus)
+    .disabled(!self.model.isEnabled)
+    .keyboardType(self.model.keyboardType)
+    .submitLabel(self.model.submitType.submitLabel)
+    .autocorrectionDisabled(!self.model.isAutocorrectionEnabled)
+    .textInputAutocapitalization(self.model.autocapitalization.textInputAutocapitalization)
   }
+}
+
+private func calculatedHeight(for rows: Int) -> CGFloat {
+  let initialHeight: CGFloat = 40
+  let lineHeight: CGFloat = 20
+  return initialHeight + CGFloat(rows - 1) * lineHeight
 }
 
 // MARK: - Boolean Focus Value
@@ -99,7 +121,7 @@ extension SUTextInput where FocusValue == Bool {
   ///   - isFocused: A binding that controls whether this input field is focused or not.
   ///   - model: A model that defines the appearance properties.
   public init(
-    text: Binding<String?>,
+    text: Binding<String>,
     isFocused: FocusState<Bool>.Binding,
     model: InputTextVM = .init()
   ) {
@@ -107,26 +129,6 @@ extension SUTextInput where FocusValue == Bool {
     self._globalFocus = isFocused
     self.localFocus = true
     self.model = model
-  }
-}
-
-/// Extension to Binding to handle optional values by replacing nil with a proxy value.
-public extension Binding where Value: Equatable {
-  /// Initializes a Binding by replacing nil values with a proxy value.
-  /// - Parameters:
-  ///   - source: The original optional Binding.
-  ///   - nilProxy: The value to use in place of nil.
-  init(_ source: Binding<Value?>, replacingNilWith nilProxy: Value) {
-    self.init(
-      get: { source.wrappedValue ?? nilProxy },
-      set: { newValue in
-        if newValue == nilProxy {
-          source.wrappedValue = nil
-        } else {
-          source.wrappedValue = newValue
-        }
-      }
-    )
   }
 }
 
@@ -140,7 +142,7 @@ struct SUTextInput_Previews: PreviewProvider {
 
 /// Wrapper view for previewing SUTextInput.
 struct SUTextInputPreviewWrapper: View {
-  @State private var text: String? = "Sample Text"
+  @State private var text: String = "Sample Text"
   @FocusState private var isFocused: Bool
 
   var body: some View {
