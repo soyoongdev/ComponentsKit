@@ -2,7 +2,7 @@ import SwiftUI
 import UIKit
 
 /// A model that defines the appearance properties for an input field component.
-public struct InputFieldVM: ComponentVM {
+public struct InputTextVM: ComponentVM {
   /// The autocapitalization behavior for the input field.
   ///
   /// Defaults to `.sentences`, which capitalizes the first letter of each sentence.
@@ -67,13 +67,15 @@ public struct InputFieldVM: ComponentVM {
   /// The title displayed on the input field.
   public var title: String?
 
-  /// Initializes a new instance of `InputFieldVM` with default values.
+  public var isExpandable: Bool = true
+
+  /// Initializes a new instance of `InputTextVM` with default values.
   public init() {}
 }
 
 // MARK: - Shared Helpers
 
-extension InputFieldVM {
+extension InputTextVM {
   var preferredFont: UniversalFont {
     if let font {
       return font
@@ -132,7 +134,7 @@ extension InputFieldVM {
 
 // MARK: - UIKit Helpers
 
-extension InputFieldVM {
+extension InputTextVM {
   var nsAttributedPlaceholder: NSAttributedString? {
     guard let placeholder else {
       return nil
@@ -182,7 +184,7 @@ extension InputFieldVM {
 
 // MARK: - SwiftUI Helpers
 
-extension InputFieldVM {
+extension InputTextVM {
   var autocorrectionType: UITextAutocorrectionType {
     return self.isAutocorrectionEnabled ? .yes : .no
   }
