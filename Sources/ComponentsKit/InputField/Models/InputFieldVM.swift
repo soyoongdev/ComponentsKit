@@ -6,7 +6,7 @@ public struct InputFieldVM: ComponentVM {
   /// The autocapitalization behavior for the input field.
   ///
   /// Defaults to `.sentences`, which capitalizes the first letter of each sentence.
-  public var autocapitalization: TextAutocapitalization = .sentences
+  public var autocapitalization: InputFieldTextAutocapitalization = .sentences
 
   /// The color of the input field.
   public var color: ComponentColor?

@@ -2,7 +2,7 @@ import SwiftUI
 import UIKit
 
 /// The autocapitalization behavior applied during text input.
-public enum TextAutocapitalization {
+public enum InputFieldTextAutocapitalization {
   /// Do not capitalize anything.
   case never
   /// Capitalize every letter.
@@ -13,7 +13,7 @@ public enum TextAutocapitalization {
   case sentences
 }
 
-extension TextAutocapitalization {
+extension InputFieldTextAutocapitalization {
   var textAutocapitalizationType: UITextAutocapitalizationType {
     switch self {
     case .never:
@@ -28,7 +28,7 @@ extension TextAutocapitalization {
   }
 }
 
-extension TextAutocapitalization {
+extension InputFieldTextAutocapitalization {
   var textInputAutocapitalization: TextInputAutocapitalization {
     switch self {
     case .never:

@@ -6,7 +6,7 @@ public struct InputTextVM: ComponentVM {
   /// The autocapitalization behavior for the input field.
   ///
   /// Defaults to `.sentences`, which capitalizes the first letter of each sentence.
-  public var autocapitalization: TextAutocapitalization = .sentences
+  public var autocapitalization: InputFieldTextAutocapitalization = .sentences
 
   /// The color of the input field.
   public var color: ComponentColor?
@@ -67,11 +67,13 @@ public struct InputTextVM: ComponentVM {
   /// The title displayed on the input field.
   public var title: String?
 
-  public var isExpandable: Bool = true
+  public var minRows: Int = 2
 
-  public var minRows: Int = 1
+  public var maxRows: Int?
 
-  public var maxRows: Int = 6
+  public var isSelectable: Bool = true
+
+  public var isEditable: Bool = true
 
   /// Initializes a new instance of `InputTextVM` with default values.
   public init() {}
@@ -198,5 +200,12 @@ extension InputTextVM {
     }
 
     return AttributedString(nsAttributedTitle)
+  }
+}
+
+extension InputTextVM {
+  func calculatedHeight(forRows rows: Int?) -> CGFloat {
+      let lineHeight = self.preferredFont.uiFont.lineHeight
+      return lineHeight * CGFloat(rows ?? Int.max)
   }
 }

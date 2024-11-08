@@ -48,68 +48,57 @@ public struct SUTextInput<FocusValue: Hashable>: View {
     self._globalFocus = globalFocus
     self.localFocus = localFocus
     self.model = model
+    UITextView.appearance().backgroundColor = .clear
   }
 
   // MARK: Body
 
   public var body: some View {
-    if self.model.isExpandable {
-      ScrollView {
-        content
-      }
-      .frame(maxHeight: scrollViewContentSize.height)
-      .padding(.horizontal, self.model.horizontalPadding)
-    } else {
-      content
-        .frame(maxHeight: scrollViewContentSize.height)
-        .padding(.horizontal, self.model.horizontalPadding)
-    }
-  }
-
-  private var content: some View {
-    ZStack(alignment: .topLeading) {
+    ZStack(alignment: .leading) {
       self.model.backgroundColor.color(for: self.colorScheme)
         .clipShape(RoundedRectangle(cornerRadius: self.model.cornerRadius.value()))
+      Group {
+        TextEditor(text: $text)
+          .transparentScrolling()
+          .frame(
+              minHeight: self.model.calculatedHeight(forRows: self.model.minRows + 1),
+              maxHeight: self.model.maxRows.map { self.model.calculatedHeight(forRows: $0 + 1) } ?? .greatestFiniteMagnitude,
+              alignment: .leading
+          )
+          .foregroundStyle(self.model.foregroundColor.color(for: self.colorScheme))
+          .disabled(!self.model.isEditable)
 
-      TextEditor(text: $text)
-        .frame(
-          minHeight: calculatedHeight(for: self.model.minRows),
-          maxHeight: calculatedHeight(for: self.model.maxRows),
-          alignment: .leading
-        )
-        .foregroundStyle(self.model.foregroundColor.color(for: self.colorScheme))
-        .padding(self.model.horizontalPadding)
-        .colorMultiply(self.model.backgroundColor.color(for: self.colorScheme))
-      if text.isEmpty, let placeholder = self.model.placeholder {
-        Text(placeholder)
-          .foregroundStyle(self.model.placeholderColor.color(for: self.colorScheme))
-          .padding(self.model.horizontalPadding)
-      }
-    }
-    .background(
-      GeometryReader { geo -> Color in
-        DispatchQueue.main.async {
-          scrollViewContentSize = geo.size
+        if text.isEmpty, let placeholder = self.model.placeholder {
+          Text(placeholder)
+            .foregroundStyle(self.model.placeholderColor.color(for: self.colorScheme))
+            .padding(.leading, 4)
         }
-        return Color.clear
       }
-    )
-    .tint(self.model.tintColor.color(for: self.colorScheme))
-    .font(self.model.preferredFont.font)
-    .foregroundStyle(self.model.placeholderColor.color(for: self.colorScheme))
-    .focused(self.$globalFocus, equals: self.localFocus)
-    .disabled(!self.model.isEnabled)
-    .keyboardType(self.model.keyboardType)
-    .submitLabel(self.model.submitType.submitLabel)
-    .autocorrectionDisabled(!self.model.isAutocorrectionEnabled)
-    .textInputAutocapitalization(self.model.autocapitalization.textInputAutocapitalization)
+      .padding(.horizontal, self.model.horizontalPadding)
+      .tint(self.model.tintColor.color(for: self.colorScheme))
+      .font(self.model.preferredFont.font)
+      .foregroundStyle(self.model.placeholderColor.color(for: self.colorScheme))
+      .focused(self.$globalFocus, equals: self.localFocus)
+      .disabled(!self.model.isEnabled)
+      .keyboardType(self.model.keyboardType)
+      .submitLabel(self.model.submitType.submitLabel)
+      .autocorrectionDisabled(!self.model.isAutocorrectionEnabled)
+      .textInputAutocapitalization(self.model.autocapitalization.textInputAutocapitalization)
+    }
+    .fixedSize(horizontal: false, vertical: true)
   }
 }
 
-private func calculatedHeight(for rows: Int) -> CGFloat {
-  let initialHeight: CGFloat = 40
-  let lineHeight: CGFloat = 20
-  return initialHeight + CGFloat(rows - 1) * lineHeight
+public extension View {
+  func transparentScrolling() -> some View {
+    if #available(iOS 16.0, *) {
+      return self.scrollContentBackground(.hidden)
+    } else {
+      return self.onAppear {
+        UITextView.appearance().backgroundColor = .clear
+      }
+    }
+  }
 }
 
 // MARK: - Boolean Focus Value
@@ -129,26 +118,5 @@ extension SUTextInput where FocusValue == Bool {
     self._globalFocus = isFocused
     self.localFocus = true
     self.model = model
-  }
-}
-
-/// Preview provider for SUTextInput.
-struct SUTextInput_Previews: PreviewProvider {
-  static var previews: some View {
-    SUTextInputPreviewWrapper()
-      .previewLayout(.sizeThatFits)
-  }
-}
-
-/// Wrapper view for previewing SUTextInput.
-struct SUTextInputPreviewWrapper: View {
-  @State private var text: String = "Sample Text"
-  @FocusState private var isFocused: Bool
-
-  var body: some View {
-    SUTextInput(
-      text: $text,
-      isFocused: $isFocused
-    )
   }
 }

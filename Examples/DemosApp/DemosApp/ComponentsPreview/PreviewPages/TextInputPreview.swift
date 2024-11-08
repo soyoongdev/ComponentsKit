@@ -3,8 +3,8 @@ import Observation
 import SwiftUI
 import UIKit
 
-struct InputFieldPreview: View {
-  @State private var model = InputFieldVM {
+struct TextInputPreviewPreview: View {
+  @State private var model = InputTextVM {
     $0.title = "Title"
   }
 
@@ -16,13 +16,8 @@ struct InputFieldPreview: View {
 
   var body: some View {
     VStack {
-      PreviewWrapper(title: "UIKit", height: 120) {
-        UKComponentPreview(model: self.model) {
-          self.inputField
-        }
-      }
-      PreviewWrapper(title: "SwiftUI", height: 120) {
-        SUInputField(
+      PreviewWrapper(title: "SwiftUI", height: .infinity ) {
+        SUTextInput(
           text: self.$text,
           isFocused: self.$isFocused,
           model: self.model
@@ -43,7 +38,6 @@ struct InputFieldPreview: View {
           Text("Custom: 20px").tag(ComponentRadius.custom(20))
         }
         Toggle("Enabled", isOn: self.$model.isEnabled)
-        FontPicker(selection: self.$model.font)
         Picker("Keyboard Type", selection: self.$model.keyboardType) {
           Text("Default").tag(UIKeyboardType.default)
           Text("asciiCapable").tag(UIKeyboardType.asciiCapable)
@@ -66,9 +60,6 @@ struct InputFieldPreview: View {
             self.model.placeholder = newValue ? "Placeholder" : nil
           }
         ))
-        Toggle("Required", isOn: self.$model.isRequired)
-        Toggle("Secure Input", isOn: self.$model.isSecureInput)
-        SizePicker(selection: self.$model.size)
         Picker("Submit Type", selection: self.$model.submitType) {
           Text("done").tag(SubmitType.done)
           Text("go").tag(SubmitType.go)
@@ -82,14 +73,17 @@ struct InputFieldPreview: View {
           title: "Tint Color",
           selection: self.$model.tintColor
         )
-        Toggle("Title", isOn: .init(
-          get: {
-            return self.model.title != nil
-          },
+        Toggle("Editable", isOn: self.$model.isEditable)
+        Picker("Max Rows", selection: Binding(
+          get: { self.model.maxRows ?? Int.max },
           set: { newValue in
-            self.model.title = newValue ? "Title" : nil
+            self.model.maxRows = (newValue == Int.max) ? nil : newValue
           }
-        ))
+        )) {
+          Text("2 rows").tag(2)
+          Text("5 rows").tag(5)
+          Text("No limit").tag(Int.max)
+        }
       }
     }
     .onAppear {
@@ -121,5 +115,5 @@ private final class InputFieldDelegate: NSObject, UITextFieldDelegate {
 }
 
 #Preview {
-  InputFieldPreview()
+  TextInputPreviewPreview()
 }
