@@ -9,12 +9,12 @@ struct ButtonPreview: View {
 
   var body: some View {
     VStack {
-      PreviewWrapper(title: "UIKit", height: 120) {
+      PreviewWrapper(title: "UIKit") {
         UKComponentPreview(model: self.model) {
           UKButton(model: self.model)
         }
       }
-      PreviewWrapper(title: "SwiftUI", height: 120) {
+      PreviewWrapper(title: "SwiftUI") {
         SUButton(model: self.model)
       }
       Form {

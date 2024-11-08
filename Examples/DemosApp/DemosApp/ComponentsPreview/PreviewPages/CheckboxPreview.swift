@@ -11,7 +11,7 @@ struct CheckboxPreview: View {
 
   var body: some View {
     VStack {
-      PreviewWrapper(title: "UIKit", height: 120) {
+      PreviewWrapper(title: "UIKit") {
         UKComponentPreview(model: self.model) {
           UKCheckbox(
             initialValue: false,
@@ -19,7 +19,7 @@ struct CheckboxPreview: View {
           )
         }
       }
-      PreviewWrapper(title: "SwiftUI", height: 120) {
+      PreviewWrapper(title: "SwiftUI") {
         SUCheckbox(
           isSelected: self.$isSelected,
           model: self.model

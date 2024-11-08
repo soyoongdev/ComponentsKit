@@ -16,12 +16,12 @@ struct InputFieldPreview: View {
 
   var body: some View {
     VStack {
-      PreviewWrapper(title: "UIKit", height: 120) {
+      PreviewWrapper(title: "UIKit") {
         UKComponentPreview(model: self.model) {
           self.inputField
         }
       }
-      PreviewWrapper(title: "SwiftUI", height: 120) {
+      PreviewWrapper(title: "SwiftUI") {
         SUInputField(
           text: self.$text,
           isFocused: self.$isFocused,

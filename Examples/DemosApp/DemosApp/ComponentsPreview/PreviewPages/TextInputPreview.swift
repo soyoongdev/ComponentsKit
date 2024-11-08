@@ -6,6 +6,7 @@ import UIKit
 struct TextInputPreviewPreview: View {
   @State private var model = InputTextVM {
     $0.title = "Title"
+    $0.maxRows = 2
   }
 
   @State private var text: String = ""
@@ -16,7 +17,7 @@ struct TextInputPreviewPreview: View {
 
   var body: some View {
     VStack {
-      PreviewWrapper(title: "SwiftUI", height: .infinity ) {
+      PreviewWrapper(title: "SwiftUI") {
         SUTextInput(
           text: self.$text,
           isFocused: self.$isFocused,
@@ -73,16 +74,16 @@ struct TextInputPreviewPreview: View {
           title: "Tint Color",
           selection: self.$model.tintColor
         )
-        Toggle("Editable", isOn: self.$model.isEditable)
-        Picker("Max Rows", selection: Binding(
-          get: { self.model.maxRows ?? Int.max },
-          set: { newValue in
-            self.model.maxRows = (newValue == Int.max) ? nil : newValue
-          }
-        )) {
-          Text("2 rows").tag(2)
-          Text("5 rows").tag(5)
-          Text("No limit").tag(Int.max)
+        Toggle("Editable", isOn: self.$model.isReadOnly)
+        
+        Picker("Min Rows", selection: self.$model.minRows) {
+          Text("1 Row").tag(1)
+          Text("2 Rows").tag(2)
+        }
+        
+        Picker("Max Rows", selection: self.$model.maxRows) {
+          Text("2 Rows").tag(2)
+          Text("3 Rows").tag(3)
         }
       }
     }

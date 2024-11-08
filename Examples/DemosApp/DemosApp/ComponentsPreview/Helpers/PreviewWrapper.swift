@@ -3,7 +3,6 @@ import SwiftUI
 
 struct PreviewWrapper<Content: View>: View {
   let title: String
-  let height: CGFloat
   @ViewBuilder let content: () -> Content
 
   @Environment(\.colorScheme) private var colorScheme
@@ -12,7 +11,7 @@ struct PreviewWrapper<Content: View>: View {
     ZStack(alignment: Alignment(horizontal: .leading, vertical: .top)) {
       self.content()
         .padding(.all)
-        .frame(height: height)
+        .frame(height: 150)
         .frame(maxWidth: .infinity)
         .overlay {
           RoundedRectangle(

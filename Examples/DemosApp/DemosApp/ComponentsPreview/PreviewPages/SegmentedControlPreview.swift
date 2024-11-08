@@ -27,7 +27,7 @@ struct SegmentedControlPreview: View {
 
   var body: some View {
     VStack {
-      PreviewWrapper(title: "UIKit", height: 120) {
+      PreviewWrapper(title: "UIKit") {
         UKComponentPreview(model: self.model) {
           UKSegmentedControl(
             selectedId: .iPad,
@@ -35,7 +35,7 @@ struct SegmentedControlPreview: View {
           )
         }
       }
-      PreviewWrapper(title: "SwiftUI", height: 120) {
+      PreviewWrapper(title: "SwiftUI") {
         SUSegmentedControl(
           selectedId: self.$selectedId,
           model: self.model

@@ -73,7 +73,7 @@ public struct InputTextVM: ComponentVM {
 
   public var isSelectable: Bool = true
 
-  public var isEditable: Bool = true
+  public var isReadOnly: Bool = true
 
   /// Initializes a new instance of `InputTextVM` with default values.
   public init() {}

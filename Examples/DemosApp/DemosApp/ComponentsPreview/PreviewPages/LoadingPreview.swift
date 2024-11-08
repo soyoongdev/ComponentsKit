@@ -7,12 +7,12 @@ struct LoadingPreview: View {
 
   var body: some View {
     VStack {
-      PreviewWrapper(title: "UIKit", height: 120) {
+      PreviewWrapper(title: "UIKit") {
         UKComponentPreview(model: self.model) {
           UKLoading(model: self.model)
         }
       }
-      PreviewWrapper(title: "SwiftUI", height: 120) {
+      PreviewWrapper(title: "SwiftUI") {
         SULoading(model: self.model)
       }
       Form {

@@ -54,7 +54,7 @@ public struct SUTextInput<FocusValue: Hashable>: View {
   // MARK: Body
 
   public var body: some View {
-    ZStack(alignment: .leading) {
+    ZStack(alignment: .topLeading) {
       self.model.backgroundColor.color(for: self.colorScheme)
         .clipShape(RoundedRectangle(cornerRadius: self.model.cornerRadius.value()))
       Group {
@@ -66,12 +66,14 @@ public struct SUTextInput<FocusValue: Hashable>: View {
               alignment: .leading
           )
           .foregroundStyle(self.model.foregroundColor.color(for: self.colorScheme))
-          .disabled(!self.model.isEditable)
+//          .disabled(!self.model.isReadOnly)
 
         if text.isEmpty, let placeholder = self.model.placeholder {
           Text(placeholder)
             .foregroundStyle(self.model.placeholderColor.color(for: self.colorScheme))
+//            .padding(.horizontal, self.model.horizontalPadding)
             .padding(.leading, 4)
+            .padding(.top, 8)
         }
       }
       .padding(.horizontal, self.model.horizontalPadding)
