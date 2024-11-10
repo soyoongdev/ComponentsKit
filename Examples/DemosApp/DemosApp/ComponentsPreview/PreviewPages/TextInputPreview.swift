@@ -13,11 +13,16 @@ struct TextInputPreviewPreview: View {
   @State private var text: String = ""
   @FocusState private var isFocused: Bool
 
-  private let inputField = UKInputField()
+  private let inputField = UKTextInput()
   private let inputFieldDelegate = InputFieldDelegate()
 
   var body: some View {
     VStack {
+      PreviewWrapper(title: "UIKit") {
+        UKComponentPreview(model: self.model) {
+          self.inputField
+        }
+      }
       PreviewWrapper(title: "SwiftUI") {
         SUTextInput(
           text: self.$text,
@@ -88,9 +93,9 @@ struct TextInputPreviewPreview: View {
         }
       }
     }
-    .onAppear {
-      self.inputField.textField.delegate = self.inputFieldDelegate
-    }
+//    .onAppear {
+//      self.inputField.textField.delegate = self.inputFieldDelegate
+//    }
     .toolbar {
       ToolbarItem(placement: .primaryAction) {
         if (self.inputFieldDelegate.isEditing || self.isFocused) && !ProcessInfo.processInfo.isiOSAppOnMac {

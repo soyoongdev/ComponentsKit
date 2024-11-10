@@ -9,7 +9,7 @@ open class UKTextInput: UIView, UKComponent, UITextViewDelegate {
   public var onValueChange: (String) -> Void
 
   /// A model that defines the appearance properties.
-  public var model: InputFieldVM {
+  public var model: InputTextVM {
     didSet {
       self.update(oldValue)
     }
@@ -61,7 +61,7 @@ open class UKTextInput: UIView, UKComponent, UITextViewDelegate {
   ///   - onValueChange: A closure that is triggered when the text changes.
   public init(
     initialText: String = "",
-    model: InputFieldVM = .init(),
+    model: InputTextVM = .init(),
     onValueChange: @escaping (String) -> Void = { _ in }
   ) {
     self.model = model
@@ -157,7 +157,7 @@ open class UKTextInput: UIView, UKComponent, UITextViewDelegate {
 
   // MARK: Update
 
-  public func update(_ oldModel: InputFieldVM) {
+  public func update(_ oldModel: InputTextVM) {
     guard self.model != oldModel else { return }
 
     self.style()
@@ -203,20 +203,20 @@ extension UKTextInput {
   fileprivate enum Style {
     static func mainView(
       _ view: UIView,
-      model: InputFieldVM
+      model: InputTextVM
     ) {
       view.backgroundColor = model.backgroundColor.uiColor
       view.layer.cornerRadius = model.cornerRadius.value(for: view.bounds.height)
     }
     static func titleLabel(
       _ label: UILabel,
-      model: InputFieldVM
+      model: InputTextVM
     ) {
       label.attributedText = model.nsAttributedTitle
     }
     static func textView(
       _ textView: UITextView,
-      model: InputFieldVM
+      model: InputTextVM
     ) {
       textView.font = model.preferredFont.uiFont
       textView.textColor = model.foregroundColor.uiColor
