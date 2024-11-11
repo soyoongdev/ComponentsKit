@@ -53,65 +53,67 @@ public struct SUTextInput<FocusValue: Hashable>: View {
   // MARK: Body
 
   public var body: some View {
-    ScrollView {
-      ZStack(alignment: .topLeading) {
-        TextEditor(text: self.$text)
-          .contentMargins(self.model.contentPadding)
-          .transparentScrollBackground()
-          .frame(
-            minHeight: self.model.minTextInputHeight,
-            maxHeight: self.model.maxTextInputHeight
-          )
-          .fixedSize(horizontal: false, vertical: true)
-          .lineSpacing(0)
-          .font(self.model.preferredFont.font)
-          .foregroundStyle(self.model.foregroundColor.color(for: self.colorScheme))
-          .tint(self.model.tintColor.color(for: self.colorScheme))
-          .focused(self.$globalFocus, equals: self.localFocus)
-          .disabled(!self.model.isEnabled)
-          .keyboardType(self.model.keyboardType)
-          .submitLabel(self.model.submitType.submitLabel)
-          .autocorrectionDisabled(!self.model.isAutocorrectionEnabled)
-          .textInputAutocapitalization(self.model.autocapitalization.textInputAutocapitalization)
-
-        if let placeholder = self.model.placeholder,
-           self.text.isEmpty {
-          Text(placeholder)
-            .font(self.model.preferredFont.font)
-            .foregroundStyle(
-              self.model.placeholderColor.color(for: self.colorScheme)
+    GeometryReader { scrollViewGeometry in
+      ScrollView {
+        ZStack(alignment: .topLeading) {
+          TextEditor(text: self.$text)
+            .contentMargins(self.model.contentPadding)
+            .transparentScrollBackground()
+            .frame(
+              minHeight: self.model.minTextInputHeight,
+              maxHeight: min(self.model.maxTextInputHeight, scrollViewGeometry.size.height)
             )
-            .padding(self.model.contentPadding)
+            .fixedSize(horizontal: false, vertical: true)
+            .lineSpacing(0)
+            .font(self.model.preferredFont.font)
+            .foregroundStyle(self.model.foregroundColor.color(for: self.colorScheme))
+            .tint(self.model.tintColor.color(for: self.colorScheme))
+            .focused(self.$globalFocus, equals: self.localFocus)
+            .disabled(!self.model.isEnabled)
+            .keyboardType(self.model.keyboardType)
+            .submitLabel(self.model.submitType.submitLabel)
+            .autocorrectionDisabled(!self.model.isAutocorrectionEnabled)
+            .textInputAutocapitalization(self.model.autocapitalization.textInputAutocapitalization)
+
+          if let placeholder = self.model.placeholder,
+             self.text.isEmpty {
+            Text(placeholder)
+              .font(self.model.preferredFont.font)
+              .foregroundStyle(
+                self.model.placeholderColor.color(for: self.colorScheme)
+              )
+              .padding(self.model.contentPadding)
+          }
         }
+        .background(
+          GeometryReader { textEditorGeometry in
+            Color.clear
+              .onAppear {
+                self.textEditorHeight = textEditorGeometry.size.height
+              }
+              .onChange(of: self.text) { _ in
+                self.textEditorHeight = textEditorGeometry.size.height
+              }
+              .onChange(of: self.model.maxRows) { _ in
+                self.textEditorHeight = textEditorGeometry.size.height
+              }
+              .onChange(of: self.model.minRows) { _ in
+                self.textEditorHeight = textEditorGeometry.size.height
+              }
+          }
+        )
       }
-      .background(
-        GeometryReader { geometry in
-          Color.clear
-            .onAppear {
-              self.textEditorHeight = geometry.size.height
-            }
-            .onChange(of: self.text) { _ in
-              self.textEditorHeight = geometry.size.height
-            }
-            .onChange(of: self.model.maxRows) { _ in
-              self.textEditorHeight = geometry.size.height
-            }
-            .onChange(of: self.model.minRows) { _ in
-              self.textEditorHeight = geometry.size.height
-            }
-        }
+      .frame(height: self.textEditorHeight)
+      .background(self.model.backgroundColor.color(for: self.colorScheme))
+      .onTapGesture {
+        self.globalFocus = self.localFocus
+      }
+      .clipShape(
+        RoundedRectangle(
+          cornerRadius: self.model.adaptedCornerRadius.value()
+        )
       )
     }
-    .frame(height: self.textEditorHeight)
-    .background(self.model.backgroundColor.color(for: self.colorScheme))
-    .onTapGesture {
-      self.globalFocus = self.localFocus
-    }
-    .clipShape(
-      RoundedRectangle(
-        cornerRadius: self.model.adaptedCornerRadius.value()
-      )
-    )
   }
 }
 

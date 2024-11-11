@@ -5,8 +5,9 @@ import UIKit
 
 struct TextInputPreviewPreview: View {
   @State private var model = InputTextVM {
-    $0.title = "Title"
-    $0.maxRows = 2
+    $0.placeholder = "Placeholder"
+    $0.minRows = 1
+    $0.maxRows = nil
   }
 
   @State private var text: String = ""
@@ -83,6 +84,7 @@ struct TextInputPreviewPreview: View {
         Picker("Max Rows", selection: self.$model.maxRows) {
           Text("2 Rows").tag(2)
           Text("3 Rows").tag(3)
+          Text("No Limit").tag(Optional<Int>.none)
         }
       }
     }
