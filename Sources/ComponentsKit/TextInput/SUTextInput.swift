@@ -4,7 +4,7 @@ public struct SUTextInput<FocusValue: Hashable>: View {
   // MARK: Properties
 
   /// A model that defines the appearance properties.
-  public var model: InputTextVM
+  public var model: TextInputVM
 
   /// A Binding value to control the inputted text.
   @Binding public var text: String
@@ -42,7 +42,7 @@ public struct SUTextInput<FocusValue: Hashable>: View {
     text: Binding<String>,
     globalFocus: FocusState<FocusValue>.Binding,
     localFocus: FocusValue,
-    model: InputTextVM = .init()
+    model: TextInputVM = .init()
   ) {
     self._text = text
     self._globalFocus = globalFocus
@@ -161,7 +161,7 @@ extension SUTextInput where FocusValue == Bool {
   public init(
     text: Binding<String>,
     isFocused: FocusState<Bool>.Binding,
-    model: InputTextVM = .init()
+    model: TextInputVM = .init()
   ) {
     self._text = text
     self._globalFocus = isFocused

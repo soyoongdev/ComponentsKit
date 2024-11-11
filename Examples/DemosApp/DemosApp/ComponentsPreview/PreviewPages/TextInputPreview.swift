@@ -4,7 +4,7 @@ import SwiftUI
 import UIKit
 
 struct TextInputPreviewPreview: View {
-  @State private var model = InputTextVM {
+  @State private var model = TextInputVM {
     $0.placeholder = "Placeholder"
     $0.minRows = 1
     $0.maxRows = nil

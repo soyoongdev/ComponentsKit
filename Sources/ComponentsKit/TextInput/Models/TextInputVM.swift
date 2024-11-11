@@ -2,7 +2,7 @@ import SwiftUI
 import UIKit
 
 /// A model that defines the appearance properties for an input field component.
-public struct InputTextVM: ComponentVM {
+public struct TextInputVM: ComponentVM {
   /// The autocapitalization behavior for the input field.
   ///
   /// Defaults to `.sentences`, which capitalizes the first letter of each sentence.
@@ -77,7 +77,7 @@ public struct InputTextVM: ComponentVM {
 
 // MARK: - Shared Helpers
 
-extension InputTextVM {
+extension TextInputVM {
   var adaptedCornerRadius: ComponentRadius {
     switch self.cornerRadius {
     case .none:
@@ -148,7 +148,7 @@ extension InputTextVM {
 
 // MARK: - UIKit Helpers
 
-extension InputTextVM {
+extension TextInputVM {
   var nsAttributedPlaceholder: NSAttributedString? {
     guard let placeholder else {
       return nil
@@ -197,7 +197,7 @@ extension InputTextVM {
 
 // MARK: - SwiftUI Helpers
 
-extension InputTextVM {
+extension TextInputVM {
   var autocorrectionType: UITextAutocorrectionType {
     return self.isAutocorrectionEnabled ? .yes : .no
   }
