@@ -15,14 +15,6 @@ open class UKTextInput: UIView, UKComponent, UITextViewDelegate {
       self.adjustTextViewHeight()
     }
   }
-//  public var text: String {
-//    get { return self.textView.text ?? "" }
-//    set {
-//      guard newValue != self.text else { return }
-////      self.textView.text = newValue
-//      self.onValueChange(newValue)
-//    }
-//  }
 
   private var inputFieldConstraints: LayoutConstraints?
   private var textViewHeightConstraint: NSLayoutConstraint?
@@ -44,10 +36,10 @@ open class UKTextInput: UIView, UKComponent, UITextViewDelegate {
   // MARK: Initialization
 
   /// Initializer.
-    /// - Parameters:
-    ///   - initialText: A text that is initially inputted in the field.
-    ///   - model: A model that defines the appearance properties.
-    ///   - onValueChange: A closure that is triggered when the text changes.
+  /// - Parameters:
+  ///   - initialText: A text that is initially inputted in the field.
+  ///   - model: A model that defines the appearance properties.
+  ///   - onValueChange: A closure that is triggered when the text changes.
   public init(
     initialText: String = "",
     model: InputTextVM = .init(),
@@ -57,7 +49,6 @@ open class UKTextInput: UIView, UKComponent, UITextViewDelegate {
     self.onValueChange = onValueChange
     super.init(frame: .zero)
 
-//    self.text = initialText
     self.setup()
     self.style()
     self.layout()
@@ -74,6 +65,7 @@ open class UKTextInput: UIView, UKComponent, UITextViewDelegate {
     self.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.handleTap)))
     self.textView.delegate = self
     self.textView.isScrollEnabled = false
+    self.applyPlaceholderIfNeeded()
   }
 
   @objc private func handleTap() {
@@ -82,8 +74,21 @@ open class UKTextInput: UIView, UKComponent, UITextViewDelegate {
 
   // MARK: UITextViewDelegate
 
+  public func textViewDidBeginEditing(_ textView: UITextView) {
+    if textView.text == model.placeholder {
+      textView.text = ""
+      textView.textColor = model.foregroundColor.uiColor
+    }
+  }
+
+  public func textViewDidEndEditing(_ textView: UITextView) {
+    if textView.text.isEmpty {
+      applyPlaceholderIfNeeded()
+    }
+  }
+
   public func textViewDidChange(_ textView: UITextView) {
-//    self.onValueChange(self.text)
+    self.onValueChange(textView.text)
     self.adjustTextViewHeight()
   }
 
@@ -102,6 +107,14 @@ open class UKTextInput: UIView, UKComponent, UITextViewDelegate {
   private func style() {
     Self.Style.mainView(self, model: self.model)
     Self.Style.textView(self.textView, model: self.model)
+    applyPlaceholderIfNeeded()
+  }
+
+  private func applyPlaceholderIfNeeded() {
+    if textView.text.isEmpty {
+      textView.text = model.placeholder ?? ""
+      textView.textColor = model.placeholderColor.uiColor
+    }
   }
 
   // MARK: Layout
