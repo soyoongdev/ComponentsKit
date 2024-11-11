@@ -94,10 +94,10 @@ public struct SUTextInput<FocusValue: Hashable>: View {
               .onChange(of: self.text) { _ in
                 self.textEditorHeight = textEditorGeometry.size.height
               }
-              .onChange(of: self.model.maxRows) { _ in
+              .onChange(of: self.model.maxTextInputHeight) { _ in
                 self.textEditorHeight = textEditorGeometry.size.height
               }
-              .onChange(of: self.model.minRows) { _ in
+              .onChange(of: self.model.minTextInputHeight) { _ in
                 self.textEditorHeight = textEditorGeometry.size.height
               }
           }
