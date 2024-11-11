@@ -113,6 +113,10 @@ public struct SUTextInput<FocusValue: Hashable>: View {
           cornerRadius: self.model.adaptedCornerRadius.value()
         )
       )
+      .position(
+        x: scrollViewGeometry.frame(in: .local).midX,
+        y: scrollViewGeometry.frame(in: .local).midY
+      )
     }
   }
 }
