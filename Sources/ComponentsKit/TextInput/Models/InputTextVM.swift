@@ -220,6 +220,6 @@ extension InputTextVM {
   private func height(forRows rows: Int) -> CGFloat {
     // TODO: [2] Show a warning if number of rows less than 1
     let numberOfRows = max(1, rows)
-    return self.preferredFont.uiFont.lineHeight * CGFloat(rows) + 2 * self.contentPadding
+    return self.preferredFont.uiFont.lineHeight * CGFloat(numberOfRows) + 2 * self.contentPadding
   }
 }
