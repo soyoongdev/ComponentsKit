@@ -28,7 +28,7 @@ public struct SUTextInput<FocusValue: Hashable>: View {
 
   @Environment(\.colorScheme) private var colorScheme
 
-  @State private var scrollViewContentSize: CGSize = .zero
+  @State var textEditorHeight: CGFloat = 0
 
   // MARK: Initialization
 
@@ -48,57 +48,92 @@ public struct SUTextInput<FocusValue: Hashable>: View {
     self._globalFocus = globalFocus
     self.localFocus = localFocus
     self.model = model
-    UITextView.appearance().backgroundColor = .clear
   }
 
   // MARK: Body
 
   public var body: some View {
-    ZStack(alignment: .topLeading) {
-      self.model.backgroundColor.color(for: self.colorScheme)
-        .clipShape(RoundedRectangle(cornerRadius: self.model.cornerRadius.value()))
-      Group {
-        TextEditor(text: $text)
-          .transparentScrolling()
+    ScrollView {
+      ZStack(alignment: .topLeading) {
+        TextEditor(text: self.$text)
+          .contentMargins(self.model.contentPadding)
+          .transparentScrollBackground()
           .frame(
-              minHeight: self.model.calculatedHeight(forRows: self.model.minRows + 1),
-              maxHeight: self.model.maxRows.map { self.model.calculatedHeight(forRows: $0 + 1) } ?? .greatestFiniteMagnitude,
-              alignment: .leading
+            minHeight: self.model.minTextInputHeight,
+            maxHeight: self.model.maxTextInputHeight
           )
+          .fixedSize(horizontal: false, vertical: true)
+          .lineSpacing(0)
+          .font(self.model.preferredFont.font)
           .foregroundStyle(self.model.foregroundColor.color(for: self.colorScheme))
-//          .disabled(!self.model.isReadOnly)
+          .tint(self.model.tintColor.color(for: self.colorScheme))
+          .focused(self.$globalFocus, equals: self.localFocus)
+          .disabled(!self.model.isEnabled)
+          .keyboardType(self.model.keyboardType)
+          .submitLabel(self.model.submitType.submitLabel)
+          .autocorrectionDisabled(!self.model.isAutocorrectionEnabled)
+          .textInputAutocapitalization(self.model.autocapitalization.textInputAutocapitalization)
 
-        if text.isEmpty, let placeholder = self.model.placeholder {
+        if let placeholder = self.model.placeholder,
+           self.text.isEmpty {
           Text(placeholder)
-            .foregroundStyle(self.model.placeholderColor.color(for: self.colorScheme))
-//            .padding(.horizontal, self.model.horizontalPadding)
-            .padding(.leading, 4)
-            .padding(.top, 8)
+            .font(self.model.preferredFont.font)
+            .foregroundStyle(
+              self.model.placeholderColor.color(for: self.colorScheme)
+            )
+            .padding(self.model.contentPadding)
         }
       }
-      .padding(.horizontal, self.model.horizontalPadding)
-      .tint(self.model.tintColor.color(for: self.colorScheme))
-      .font(self.model.preferredFont.font)
-      .foregroundStyle(self.model.placeholderColor.color(for: self.colorScheme))
-      .focused(self.$globalFocus, equals: self.localFocus)
-      .disabled(!self.model.isEnabled)
-      .keyboardType(self.model.keyboardType)
-      .submitLabel(self.model.submitType.submitLabel)
-      .autocorrectionDisabled(!self.model.isAutocorrectionEnabled)
-      .textInputAutocapitalization(self.model.autocapitalization.textInputAutocapitalization)
+      .background(
+        GeometryReader { geometry in
+          Color.clear
+            .onAppear {
+              self.textEditorHeight = geometry.size.height
+            }
+            .onChange(of: self.text) { _ in
+              self.textEditorHeight = geometry.size.height
+            }
+        }
+      )
     }
-    .fixedSize(horizontal: false, vertical: true)
+    .frame(height: self.textEditorHeight)
+    .background(self.model.backgroundColor.color(for: self.colorScheme))
+    .onTapGesture {
+      self.globalFocus = self.localFocus
+    }
+    .clipShape(
+      RoundedRectangle(
+        cornerRadius: self.model.adaptedCornerRadius.value()
+      )
+    )
   }
 }
 
-public extension View {
-  func transparentScrolling() -> some View {
+// MARK: - Helpers
+
+extension View {
+  fileprivate func transparentScrollBackground() -> some View {
     if #available(iOS 16.0, *) {
       return self.scrollContentBackground(.hidden)
     } else {
       return self.onAppear {
         UITextView.appearance().backgroundColor = .clear
       }
+    }
+  }
+
+  fileprivate func contentMargins(_ value: CGFloat) -> some View {
+    // By default, `TextEditor` has a horizontal content margin. We cannot know the exact value
+    // since the implementation details are hidden, but approximately it is equal to 5.
+    let defaultHorizontalContentMargin: CGFloat = 5
+    return self.onAppear {
+      UITextView.appearance().textContainerInset = .init(
+        top: value,
+        left: value - defaultHorizontalContentMargin,
+        bottom: value,
+        right: value - defaultHorizontalContentMargin
+      )
+      UITextView.appearance().textContainer.lineFragmentPadding = 0
     }
   }
 }

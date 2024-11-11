@@ -71,10 +71,6 @@ public struct InputTextVM: ComponentVM {
 
   public var maxRows: Int?
 
-  public var isSelectable: Bool = true
-
-  public var isReadOnly: Bool = true
-
   /// Initializes a new instance of `InputTextVM` with default values.
   public init() {}
 }
@@ -82,6 +78,23 @@ public struct InputTextVM: ComponentVM {
 // MARK: - Shared Helpers
 
 extension InputTextVM {
+  var adaptedCornerRadius: ComponentRadius {
+    switch self.cornerRadius {
+    case .none:
+      return .none
+    case .small:
+      return .small
+    case .medium:
+      return .medium
+    case .large:
+      return .large
+    case .full:
+      return .custom(self.height(forRows: 1) / 2)
+    case .custom(let value):
+      return .custom(value)
+    }
+  }
+
   var preferredFont: UniversalFont {
     if let font {
       return font
@@ -103,13 +116,8 @@ extension InputTextVM {
     case .large: 80
     }
   }
-  var horizontalPadding: CGFloat {
-    switch self.cornerRadius {
-    case .none, .small, .medium, .large, .custom:
-      return 12
-    case .full:
-      return 16
-    }
+  var contentPadding: CGFloat {
+    return 12
   }
   var spacing: CGFloat {
     return self.title.isNotNilAndEmpty ? 12 : 0
@@ -182,7 +190,6 @@ extension InputTextVM {
   }
   func shouldUpdateLayout(_ oldModel: Self) -> Bool {
     return self.size != oldModel.size
-    || self.horizontalPadding != oldModel.horizontalPadding
     || self.spacing != oldModel.spacing
     || self.cornerRadius != oldModel.cornerRadius
   }
@@ -194,18 +201,23 @@ extension InputTextVM {
   var autocorrectionType: UITextAutocorrectionType {
     return self.isAutocorrectionEnabled ? .yes : .no
   }
-  var attributedTitle: AttributedString? {
-    guard let nsAttributedTitle else {
-      return nil
+  var minTextInputHeight: CGFloat {
+    let numberOfRows: Int
+    if let maxRows {
+      numberOfRows = min(maxRows, self.minRows)
+    } else {
+      numberOfRows = self.minRows
     }
-
-    return AttributedString(nsAttributedTitle)
+    return self.height(forRows: numberOfRows)
   }
-}
-
-extension InputTextVM {
-  func calculatedHeight(forRows rows: Int?) -> CGFloat {
-      let lineHeight = self.preferredFont.uiFont.lineHeight
-      return lineHeight * CGFloat(rows ?? Int.max)
+  var maxTextInputHeight: CGFloat {
+    if let maxRows {
+      return self.height(forRows: maxRows)
+    } else {
+      return 10_000
+    }
+  }
+  private func height(forRows rows: Int) -> CGFloat {
+    return self.preferredFont.uiFont.lineHeight * CGFloat(rows) + 2 * self.contentPadding
   }
 }

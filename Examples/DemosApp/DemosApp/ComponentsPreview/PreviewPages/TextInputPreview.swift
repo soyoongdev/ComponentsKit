@@ -74,13 +74,12 @@ struct TextInputPreviewPreview: View {
           title: "Tint Color",
           selection: self.$model.tintColor
         )
-        Toggle("Editable", isOn: self.$model.isReadOnly)
-        
+
         Picker("Min Rows", selection: self.$model.minRows) {
           Text("1 Row").tag(1)
           Text("2 Rows").tag(2)
         }
-        
+
         Picker("Max Rows", selection: self.$model.maxRows) {
           Text("2 Rows").tag(2)
           Text("3 Rows").tag(3)
