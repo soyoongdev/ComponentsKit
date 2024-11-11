@@ -12,34 +12,23 @@ open class UKTextInput: UIView, UKComponent, UITextViewDelegate {
   public var model: InputTextVM {
     didSet {
       self.update(oldValue)
+      self.adjustTextViewHeight()
     }
   }
+//  public var text: String {
+//    get { return self.textView.text ?? "" }
+//    set {
+//      guard newValue != self.text else { return }
+////      self.textView.text = newValue
+//      self.onValueChange(newValue)
+//    }
+//  }
 
-  /// A text inputted in the field.
-  public var text: String {
-    get {
-      return self.textView.text ?? ""
-    }
-    set {
-      guard newValue != self.text else { return }
-
-      self.textView.text = newValue
-      self.onValueChange(newValue)
-    }
-  }
-
-  private var titleLabelConstraints: LayoutConstraints?
   private var inputFieldConstraints: LayoutConstraints?
   private var textViewHeightConstraint: NSLayoutConstraint?
 
-  private var minHeight: CGFloat = 0
-  private var maxHeight: CGFloat = 0
-
   // MARK: Subviews
 
-  /// A label that displays the title from the model.
-  public var titleLabel = UILabel()
-  /// An underlying text view from the standard library.
   public var textView = UITextView()
 
   // MARK: UIView Properties
@@ -55,10 +44,10 @@ open class UKTextInput: UIView, UKComponent, UITextViewDelegate {
   // MARK: Initialization
 
   /// Initializer.
-  /// - Parameters:
-  ///   - initialText: A text that is initially inputted in the field.
-  ///   - model: A model that defines the appearance properties.
-  ///   - onValueChange: A closure that is triggered when the text changes.
+    /// - Parameters:
+    ///   - initialText: A text that is initially inputted in the field.
+    ///   - model: A model that defines the appearance properties.
+    ///   - onValueChange: A closure that is triggered when the text changes.
   public init(
     initialText: String = "",
     model: InputTextVM = .init(),
@@ -68,8 +57,7 @@ open class UKTextInput: UIView, UKComponent, UITextViewDelegate {
     self.onValueChange = onValueChange
     super.init(frame: .zero)
 
-    self.text = initialText
-
+//    self.text = initialText
     self.setup()
     self.style()
     self.layout()
@@ -82,16 +70,9 @@ open class UKTextInput: UIView, UKComponent, UITextViewDelegate {
   // MARK: Setup
 
   private func setup() {
-    self.addSubview(self.titleLabel)
     self.addSubview(self.textView)
-
     self.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.handleTap)))
     self.textView.delegate = self
-
-    let lineHeight = self.textView.font?.lineHeight ?? UIFont.systemFontSize
-    minHeight = lineHeight * 5 + self.textView.textContainerInset.top + self.textView.textContainerInset.bottom
-    maxHeight = lineHeight * 7 + self.textView.textContainerInset.top + self.textView.textContainerInset.bottom
-
     self.textView.isScrollEnabled = false
   }
 
@@ -102,20 +83,17 @@ open class UKTextInput: UIView, UKComponent, UITextViewDelegate {
   // MARK: UITextViewDelegate
 
   public func textViewDidChange(_ textView: UITextView) {
-    self.onValueChange(self.text)
+//    self.onValueChange(self.text)
+    self.adjustTextViewHeight()
+  }
 
-    let size = CGSize(width: self.textView.frame.width, height: CGFloat.infinity)
-    let estimatedSize = self.textView.sizeThatFits(size)
+  private func adjustTextViewHeight() {
+    let estimatedSize = self.textView.sizeThatFits(CGSize(width: self.textView.frame.width, height: CGFloat.infinity))
+    let minHeight = model.calculatedHeight(forRows: model.minRows + 1)
+    let maxHeight = model.maxRows.map { model.calculatedHeight(forRows: $0 + 1) } ?? .greatestFiniteMagnitude
 
-    var newHeight = estimatedSize.height
-    if newHeight < minHeight {
-      newHeight = minHeight
-    } else if newHeight > maxHeight {
-      newHeight = maxHeight
-    }
-
+    let newHeight = min(max(estimatedSize.height, minHeight), maxHeight)
     self.textViewHeightConstraint?.constant = newHeight
-
     self.textView.isScrollEnabled = estimatedSize.height > maxHeight
   }
 
@@ -124,34 +102,24 @@ open class UKTextInput: UIView, UKComponent, UITextViewDelegate {
   private func style() {
     Self.Style.mainView(self, model: self.model)
     Self.Style.textView(self.textView, model: self.model)
-    Self.Style.titleLabel(self.titleLabel, model: self.model)
   }
 
   // MARK: Layout
 
   private func layout() {
-    self.titleLabelConstraints = self.titleLabel.leading(self.model.horizontalPadding)
-    self.titleLabel.centerVertically()
-
+    self.textView.leading(self.model.horizontalPadding)
     self.textView.trailing(self.model.horizontalPadding)
     self.textView.vertically()
 
-    self.inputFieldConstraints = self.textView.after(
-      self.titleLabel,
-      padding: self.model.spacing
-    )
-
-    let heightConstraint = self.textView.heightAnchor.constraint(equalToConstant: minHeight)
-    heightConstraint.isActive = true
-    self.textViewHeightConstraint = heightConstraint
+    let minHeight = model.calculatedHeight(forRows: model.minRows)
+    self.textViewHeightConstraint = self.textView.heightAnchor.constraint(equalToConstant: minHeight)
+    self.textViewHeightConstraint?.isActive = true
 
     self.textView.setContentHuggingPriority(.defaultLow, for: .horizontal)
-    self.titleLabel.setContentHuggingPriority(.defaultHigh, for: .horizontal)
   }
 
   open override func layoutSubviews() {
     super.layoutSubviews()
-
     self.layer.cornerRadius = self.model.cornerRadius.value(for: self.bounds.height)
   }
 
@@ -159,18 +127,12 @@ open class UKTextInput: UIView, UKComponent, UITextViewDelegate {
 
   public func update(_ oldModel: InputTextVM) {
     guard self.model != oldModel else { return }
-
     self.style()
-
-    self.inputFieldConstraints?.leading?.constant = self.model.spacing
-    self.titleLabelConstraints?.leading?.constant = self.model.horizontalPadding
     if self.model.shouldUpdateLayout(oldModel) {
       self.setNeedsLayout()
       self.invalidateIntrinsicContentSize()
     }
   }
-
-  // MARK: UIView Method
 
   @discardableResult
   open override func becomeFirstResponder() -> Bool {
@@ -183,17 +145,8 @@ open class UKTextInput: UIView, UKComponent, UITextViewDelegate {
   }
 
   open override func sizeThatFits(_ size: CGSize) -> CGSize {
-    let width: CGFloat
-    if let parentWidth = self.superview?.bounds.width,
-       parentWidth > 0 {
-      width = parentWidth
-    } else {
-      width = 10_000
-    }
-    return .init(
-      width: min(size.width, width),
-      height: min(size.height, self.model.height)
-    )
+    let width: CGFloat = self.superview?.bounds.width ?? 10_000
+    return CGSize(width: min(size.width, width), height: min(size.height, self.model.height))
   }
 }
 
@@ -208,12 +161,6 @@ extension UKTextInput {
       view.backgroundColor = model.backgroundColor.uiColor
       view.layer.cornerRadius = model.cornerRadius.value(for: view.bounds.height)
     }
-    static func titleLabel(
-      _ label: UILabel,
-      model: InputTextVM
-    ) {
-      label.attributedText = model.nsAttributedTitle
-    }
     static func textView(
       _ textView: UITextView,
       model: InputTextVM
@@ -221,11 +168,11 @@ extension UKTextInput {
       textView.font = model.preferredFont.uiFont
       textView.textColor = model.foregroundColor.uiColor
       textView.tintColor = model.tintColor.uiColor
-      textView.text = model.placeholder
       textView.autocorrectionType = model.autocorrectionType
       textView.autocapitalizationType = model.autocapitalization.textAutocapitalizationType
       textView.isEditable = model.isEnabled
       textView.isSelectable = model.isEnabled
+      textView.backgroundColor = .clear
     }
   }
 }
