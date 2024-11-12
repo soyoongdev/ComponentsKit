@@ -180,10 +180,14 @@ open class UKTextInput: UIView, UKComponent, UITextViewDelegate {
     return self.textView.resignFirstResponder()
   }
 
-  /// Calculates the optimal size for the text view based on the provided constraints.
   open override func sizeThatFits(_ size: CGSize) -> CGSize {
-    let width: CGFloat = self.superview?.bounds.width ?? 10_000
-    return CGSize(width: min(size.width, width), height: min(size.height, self.model.height))
+      let width: CGFloat = min(size.width, self.superview?.bounds.width ?? 10_000)
+
+      let estimatedHeight = self.textView.sizeThatFits(CGSize(width: width, height: CGFloat.infinity)).height
+
+      let height = min(max(estimatedHeight, model.minTextInputHeight), model.maxTextInputHeight)
+
+      return CGSize(width: width, height: height)
   }
 }
 
