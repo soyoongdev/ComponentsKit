@@ -31,16 +31,6 @@ public struct TextInputVM: ComponentVM {
   /// Defaults to `true`.
   public var isEnabled: Bool = true
 
-  /// A Boolean value indicating whether the input field is required to be filled.
-  ///
-  /// Defaults to `false`.
-  public var isRequired: Bool = false
-
-  /// A Boolean value indicating whether the input field should hide the input text for secure data entry (e.g., passwords).
-  ///
-  /// Defaults to `false`.
-  public var isSecureInput: Bool = false
-
   /// The type of keyboard to display when the input field is active.
   ///
   /// Defaults to `.default`.
@@ -64,14 +54,11 @@ public struct TextInputVM: ComponentVM {
   /// Defaults to `.accent`.
   public var tintColor: UniversalColor = .accent
 
-  /// The title displayed on the input field.
-  public var title: String?
-
   public var minRows: Int = 2
 
   public var maxRows: Int?
 
-  /// Initializes a new instance of `InputTextVM` with default values.
+  /// Initializes a new instance of `TextInputVM` with default values.
   public init() {}
 }
 
@@ -109,6 +96,7 @@ extension TextInputVM {
       return UniversalFont.Component.large
     }
   }
+
   var height: CGFloat {
     return switch self.size {
     case .small: 40
@@ -116,12 +104,11 @@ extension TextInputVM {
     case .large: 80
     }
   }
+
   var contentPadding: CGFloat {
     return 12
   }
-  var spacing: CGFloat {
-    return self.title.isNotNilAndEmpty ? 12 : 0
-  }
+
   var backgroundColor: UniversalColor {
     if let color {
       return color.main.withOpacity(0.25)
@@ -132,6 +119,7 @@ extension TextInputVM {
       )
     }
   }
+
   var foregroundColor: UniversalColor {
     let foregroundColor = self.color?.main ?? .init(
       light: .rgba(r: 0, g: 0, b: 0, a: 1.0),
@@ -141,57 +129,9 @@ extension TextInputVM {
       self.isEnabled ? 1.0 : 0.5
     )
   }
+
   var placeholderColor: UniversalColor {
     return self.foregroundColor.withOpacity(self.isEnabled ? 0.7 : 0.3)
-  }
-}
-
-// MARK: - UIKit Helpers
-
-extension TextInputVM {
-  var nsAttributedPlaceholder: NSAttributedString? {
-    guard let placeholder else {
-      return nil
-    }
-    return NSAttributedString(string: placeholder, attributes: [
-      .font: self.preferredFont.uiFont,
-      .foregroundColor: self.placeholderColor.uiColor
-    ])
-  }
-  var nsAttributedTitle: NSAttributedString? {
-    guard let title else {
-      return nil
-    }
-
-    let attributedString = NSMutableAttributedString()
-    attributedString.append(NSAttributedString(
-      string: title,
-      attributes: [
-        .font: self.preferredFont.uiFont,
-        .foregroundColor: self.foregroundColor.uiColor
-      ]
-    ))
-    if self.isRequired {
-      attributedString.append(NSAttributedString(
-        string: " ",
-        attributes: [
-          .font: UIFont.systemFont(ofSize: 5)
-        ]
-      ))
-      attributedString.append(NSAttributedString(
-        string: "*",
-        attributes: [
-          .font: self.preferredFont.uiFont,
-          .foregroundColor: UniversalColor.danger.uiColor
-        ]
-      ))
-    }
-    return attributedString
-  }
-  func shouldUpdateLayout(_ oldModel: Self) -> Bool {
-    return self.size != oldModel.size
-    || self.spacing != oldModel.spacing
-    || self.cornerRadius != oldModel.cornerRadius
   }
 }
 
@@ -201,6 +141,7 @@ extension TextInputVM {
   var autocorrectionType: UITextAutocorrectionType {
     return self.isAutocorrectionEnabled ? .yes : .no
   }
+
   var minTextInputHeight: CGFloat {
     let numberOfRows: Int
     if let maxRows {
@@ -210,6 +151,7 @@ extension TextInputVM {
     }
     return self.height(forRows: numberOfRows)
   }
+
   var maxTextInputHeight: CGFloat {
     if let maxRows {
       return self.height(forRows: maxRows)
@@ -217,6 +159,7 @@ extension TextInputVM {
       return 10_000
     }
   }
+
   private func height(forRows rows: Int) -> CGFloat {
     // TODO: [2] Show a warning if number of rows less than 1
     let numberOfRows = max(1, rows)
