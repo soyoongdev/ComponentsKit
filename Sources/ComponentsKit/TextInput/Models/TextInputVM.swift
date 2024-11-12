@@ -62,6 +62,9 @@ public struct TextInputVM: ComponentVM {
   /// If `nil`, the input field has no row limit.
   public var maxRows: Int?
 
+  /// The title displayed on the text imput.
+  public var title: String?
+
   /// Initializes a new instance of `TextInputVM` with default values.
   public init() {}
 }
@@ -113,6 +116,10 @@ extension TextInputVM {
     return 12
   }
 
+  var spacing: CGFloat {
+    return self.title.isNotNilAndEmpty ? 12 : 0
+  }
+
   var backgroundColor: UniversalColor {
     if let color {
       return color.main.withOpacity(0.25)
@@ -136,6 +143,12 @@ extension TextInputVM {
 
   var placeholderColor: UniversalColor {
     return self.foregroundColor.withOpacity(self.isEnabled ? 0.7 : 0.3)
+  }
+
+  func shouldUpdateLayout(_ oldModel: Self) -> Bool {
+    return self.size != oldModel.size
+    || self.spacing != oldModel.spacing
+    || self.cornerRadius != oldModel.cornerRadius
   }
 }
 
