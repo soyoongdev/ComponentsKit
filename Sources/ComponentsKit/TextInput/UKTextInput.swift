@@ -108,7 +108,12 @@ open class UKTextInput: UIView, UKComponent, UITextViewDelegate {
 
     let newHeight = min(max(estimatedSize.height, minHeight), maxHeight)
     self.textViewHeightConstraint?.constant = newHeight
-    self.textView.isScrollEnabled = estimatedSize.height > maxHeight
+
+    if maxHeight >= 10_000 {
+      self.textView.isScrollEnabled = estimatedSize.height > minHeight
+    } else {
+      self.textView.isScrollEnabled = estimatedSize.height > maxHeight
+    }
   }
 
   // MARK: - Style
@@ -146,10 +151,6 @@ open class UKTextInput: UIView, UKComponent, UITextViewDelegate {
   open override func layoutSubviews() {
     super.layoutSubviews()
     self.layer.cornerRadius = self.model.cornerRadius.value(for: self.bounds.height)
-
-    let midX = self.bounds.midX - self.textView.frame.width / 2
-    let midY = self.bounds.midY - self.textView.frame.height / 2
-    self.textView.frame.origin = CGPoint(x: midX, y: midY)
   }
 
   // MARK: - Model Update
