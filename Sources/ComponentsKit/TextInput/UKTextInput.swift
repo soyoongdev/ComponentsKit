@@ -1,9 +1,9 @@
 import AutoLayout
 import UIKit
 
-/// A UIKit component that displays a field to input a text.
+/// A UIKit component that provides a customizable, multi-line text input field with dynamic height adjustment and placeholder support.
 open class UKTextInput: UIView, UKComponent, UITextViewDelegate {
-  // MARK: Properties
+  // MARK: - Properties
 
   /// A closure that is triggered when the text changes.
   public var onValueChange: (String) -> Void
@@ -16,26 +16,27 @@ open class UKTextInput: UIView, UKComponent, UITextViewDelegate {
     }
   }
 
-  private var inputFieldConstraints: LayoutConstraints?
-  private var textViewHeightConstraint: NSLayoutConstraint?
-
-  // MARK: Subviews
-
+  /// The UITextView instance used for text input.
   public var textView = UITextView()
 
+  /// A label used to display placeholder text when the text view is empty.
   private var placeholderLabel = UILabel()
 
-  // MARK: UIView Properties
+  private var textViewHeightConstraint: NSLayoutConstraint?
 
+  // MARK: - UIView Properties
+
+  /// Overrides the intrinsic content size to fit the text view dynamically.
   open override var intrinsicContentSize: CGSize {
     return self.sizeThatFits(UIView.layoutFittingExpandedSize)
   }
 
+  /// Overrides the `isFirstResponder` property to check the text view's focus state.
   open override var isFirstResponder: Bool {
     return self.textView.isFirstResponder
   }
 
-  // MARK: Initialization
+  // MARK: - Initialization
 
   /// Initializer.
   /// - Parameters:
@@ -60,7 +61,7 @@ open class UKTextInput: UIView, UKComponent, UITextViewDelegate {
     fatalError("init(coder:) has not been implemented")
   }
 
-  // MARK: Setup
+  // MARK: - Setup
 
   private func setup() {
     self.addSubview(self.textView)
@@ -75,7 +76,7 @@ open class UKTextInput: UIView, UKComponent, UITextViewDelegate {
     self.becomeFirstResponder()
   }
 
-  // MARK: UITextViewDelegate
+  // MARK: - UITextViewDelegate
 
   public func textViewDidBeginEditing(_ textView: UITextView) {
     updatePlaceholderVisibility()
@@ -91,10 +92,15 @@ open class UKTextInput: UIView, UKComponent, UITextViewDelegate {
     updatePlaceholderVisibility()
   }
 
+  // MARK: - Placeholder
+
   private func updatePlaceholderVisibility() {
     placeholderLabel.isHidden = !textView.text.isEmpty
   }
 
+  // MARK: - Height Adjustment
+
+  /// Adjusts the height of the text view based on its content and model constraints.
   private func adjustTextViewHeight() {
     let estimatedSize = self.textView.sizeThatFits(CGSize(width: self.textView.frame.width, height: CGFloat.infinity))
     let minHeight = model.minTextInputHeight
@@ -105,7 +111,7 @@ open class UKTextInput: UIView, UKComponent, UITextViewDelegate {
     self.textView.isScrollEnabled = estimatedSize.height > maxHeight
   }
 
-  // MARK: Style
+  // MARK: - Style
 
   private func style() {
     Self.Style.mainView(self, model: self.model)
@@ -117,45 +123,39 @@ open class UKTextInput: UIView, UKComponent, UITextViewDelegate {
     placeholderLabel.isHidden = !textView.text.isEmpty
   }
 
-  private func applyPlaceholderIfNeeded() {
-    if textView.text.isEmpty {
-      textView.text = model.placeholder ?? ""
-      textView.textColor = model.placeholderColor.uiColor
-    }
-  }
-
-  // MARK: Layout
+  // MARK: - Layout
 
   private func layout() {
-      self.textView.leading()
-      self.textView.trailing()
-      self.textView.vertically()
+    self.textView.leading()
+    self.textView.trailing()
+    self.textView.vertically()
 
-      placeholderLabel.translatesAutoresizingMaskIntoConstraints = false
-      NSLayoutConstraint.activate([
-          placeholderLabel.leadingAnchor.constraint(equalTo: textView.leadingAnchor, constant: model.contentPadding),
-          placeholderLabel.topAnchor.constraint(equalTo: textView.topAnchor, constant: textView.textContainerInset.top + 4)
-      ])
+    placeholderLabel.translatesAutoresizingMaskIntoConstraints = false
+    NSLayoutConstraint.activate([
+      placeholderLabel.leadingAnchor.constraint(equalTo: textView.leadingAnchor, constant: model.contentPadding),
+      placeholderLabel.topAnchor.constraint(equalTo: textView.topAnchor, constant: textView.textContainerInset.top + 4)
+    ])
 
-      let minHeight = model.minTextInputHeight
-      self.textViewHeightConstraint = self.textView.heightAnchor.constraint(equalToConstant: minHeight)
-      self.textViewHeightConstraint?.isActive = true
+    let minHeight = model.minTextInputHeight
+    self.textViewHeightConstraint = self.textView.heightAnchor.constraint(equalToConstant: minHeight)
+    self.textViewHeightConstraint?.isActive = true
 
-      self.textView.setContentHuggingPriority(.defaultLow, for: .horizontal)
+    self.textView.setContentHuggingPriority(.defaultLow, for: .horizontal)
   }
 
   open override func layoutSubviews() {
-      super.layoutSubviews()
+    super.layoutSubviews()
+    self.layer.cornerRadius = self.model.cornerRadius.value(for: self.bounds.height)
 
-      self.layer.cornerRadius = self.model.cornerRadius.value(for: self.bounds.height)
-
-      let midX = self.bounds.midX - self.textView.frame.width / 2
-      let midY = self.bounds.midY - self.textView.frame.height / 2
-      self.textView.frame.origin = CGPoint(x: midX, y: midY)
+    let midX = self.bounds.midX - self.textView.frame.width / 2
+    let midY = self.bounds.midY - self.textView.frame.height / 2
+    self.textView.frame.origin = CGPoint(x: midX, y: midY)
   }
 
-  // MARK: Update
+  // MARK: - Model Update
 
+  /// Updates the view’s styling and layout when the model changes.
+  /// - Parameter oldModel: The previous model state for comparison.
   public func update(_ oldModel: TextInputVM) {
     guard self.model != oldModel else { return }
     self.style()
@@ -165,16 +165,21 @@ open class UKTextInput: UIView, UKComponent, UITextViewDelegate {
     }
   }
 
+  // MARK: - UIResponder
+
+  /// Makes the text view the first responder.
   @discardableResult
   open override func becomeFirstResponder() -> Bool {
     return self.textView.becomeFirstResponder()
   }
 
+  /// Resigns the first responder status from the text view.
   @discardableResult
   open override func resignFirstResponder() -> Bool {
     return self.textView.resignFirstResponder()
   }
 
+  /// Calculates the optimal size for the text view based on the provided constraints.
   open override func sizeThatFits(_ size: CGSize) -> CGSize {
     let width: CGFloat = self.superview?.bounds.width ?? 10_000
     return CGSize(width: min(size.width, width), height: min(size.height, self.model.height))
@@ -185,17 +190,14 @@ open class UKTextInput: UIView, UKComponent, UITextViewDelegate {
 
 extension UKTextInput {
   fileprivate enum Style {
-    static func mainView(
-      _ view: UIView,
-      model: TextInputVM
-    ) {
+    /// Applies the main view styling based on the model.
+    static func mainView(_ view: UIView, model: TextInputVM) {
       view.backgroundColor = model.backgroundColor.uiColor
       view.layer.cornerRadius = model.adaptedCornerRadius.value(for: view.bounds.height)
     }
-    static func textView(
-      _ textView: UITextView,
-      model: TextInputVM
-    ) {
+
+    /// Applies styling to the text view based on the model.
+    static func textView(_ textView: UITextView, model: TextInputVM) {
       textView.font = model.preferredFont.uiFont
       textView.textColor = model.foregroundColor.uiColor
       textView.tintColor = model.tintColor.uiColor
