@@ -1,18 +1,19 @@
 import SwiftUI
 
+/// A SwiftUI view that provides a customizable, multi-line text input field with dynamic height adjustment and centralized focus management.
 public struct SUTextInput<FocusValue: Hashable>: View {
-  // MARK: Properties
+  // MARK: - Properties
 
-  /// A model that defines the appearance properties.
+  /// A model that defines the appearance properties for the text input field.
   public var model: TextInputVM
 
   /// A Binding value to control the inputted text.
   @Binding public var text: String
 
-  /// The shared state controlling focus across multiple fields.
+  /// The shared focus state used to manage focus across multiple fields.
   ///
-  /// When this input field's localFocus value matches the globalFocus, the input field becomes focused.
-  /// This allows for managing the focus state for many fields in a centralized manner.
+  /// When the `localFocus` value matches `globalFocus`, this input field becomes focused.
+  /// This enables centralized focus management for multiple fields within a single view.
   @FocusState.Binding public var globalFocus: FocusValue
 
   /// The unique value for this field to match against the global focus state to determine whether the field
@@ -27,10 +28,9 @@ public struct SUTextInput<FocusValue: Hashable>: View {
   public var localFocus: FocusValue
 
   @Environment(\.colorScheme) private var colorScheme
-
   @State var textEditorHeight: CGFloat = 0
 
-  // MARK: Initialization
+  // MARK: - Initialization
 
   /// Initializer.
   /// - Parameters:
@@ -50,7 +50,7 @@ public struct SUTextInput<FocusValue: Hashable>: View {
     self.model = model
   }
 
-  // MARK: Body
+  // MARK: - Body
 
   public var body: some View {
     GeometryReader { scrollViewGeometry in
