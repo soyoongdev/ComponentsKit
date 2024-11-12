@@ -1,7 +1,7 @@
 import SwiftUI
 import UIKit
 
-/// A model that defines the appearance properties for an input field component.
+/// A model that defines the appearance properties for a text input component.
 public struct TextInputVM: ComponentVM {
   /// The autocapitalization behavior for the input field.
   ///
@@ -18,10 +18,10 @@ public struct TextInputVM: ComponentVM {
 
   /// The font used for the input field's text.
   ///
-  /// If not provided, the font is automatically calculated based on the checkbox's size.
+  /// If not provided, the font is determined based on the input field's `size`.
   public var font: UniversalFont?
 
-  /// A Boolean value indicating whether autocorrection is enabled for the input field.
+  /// A Boolean value indicating whether autocorrection is enabled.
   ///
   /// Defaults to `true`.
   public var isAutocorrectionEnabled: Bool = true
@@ -54,8 +54,12 @@ public struct TextInputVM: ComponentVM {
   /// Defaults to `.accent`.
   public var tintColor: UniversalColor = .accent
 
+  /// The minimum number of rows the input field can occupy.
   public var minRows: Int = 2
 
+  /// The maximum number of rows the input field can expand to.
+  ///
+  /// If `nil`, the input field has no row limit.
   public var maxRows: Int?
 
   /// Initializes a new instance of `TextInputVM` with default values.
@@ -142,6 +146,7 @@ extension TextInputVM {
     return self.isAutocorrectionEnabled ? .yes : .no
   }
 
+  /// Calculates the minimum height based on `minRows`.
   var minTextInputHeight: CGFloat {
     let numberOfRows: Int
     if let maxRows {
@@ -152,6 +157,9 @@ extension TextInputVM {
     return self.height(forRows: numberOfRows)
   }
 
+  /// Calculates the maximum height based on `maxRows`.
+  ///
+  /// Defaults to a high value if `maxRows` is `nil`.
   var maxTextInputHeight: CGFloat {
     if let maxRows {
       return self.height(forRows: maxRows)
@@ -160,6 +168,10 @@ extension TextInputVM {
     }
   }
 
+  /// Computes the height of the input field for a given number of rows.
+  ///
+  /// - Parameter rows: The number of rows.
+  /// - Returns: The calculated height based on rows and padding.
   private func height(forRows rows: Int) -> CGFloat {
     // TODO: [2] Show a warning if number of rows less than 1
     let numberOfRows = max(1, rows)
