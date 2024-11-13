@@ -63,9 +63,6 @@ public struct TextInputVM: ComponentVM {
   /// Defaults to `.accent`.
   public var tintColor: UniversalColor = .accent
 
-  /// The title displayed on the text imput.
-  public var title: String?
-
   // TODO: Should be removed
   /// The title displayed on the text imput.
   public var title: String?
