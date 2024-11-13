@@ -64,7 +64,7 @@ public struct SUTextInput<FocusValue: Hashable>: View {
             )
             .fixedSize(horizontal: false, vertical: true)
             .lineSpacing(0)
-            .font(self.model.preferredFont.font)
+            .font(self.model.font?.font ?? .body)
             .foregroundStyle(self.model.foregroundColor.color(for: self.colorScheme))
             .tint(self.model.tintColor.color(for: self.colorScheme))
             .focused(self.$globalFocus, equals: self.localFocus)
@@ -77,7 +77,7 @@ public struct SUTextInput<FocusValue: Hashable>: View {
           if let placeholder = self.model.placeholder,
              self.text.isEmpty {
             Text(placeholder)
-              .font(self.model.preferredFont.font)
+              .font(self.model.font?.font ?? .body)
               .foregroundStyle(
                 self.model.placeholderColor.color(for: self.colorScheme)
               )
