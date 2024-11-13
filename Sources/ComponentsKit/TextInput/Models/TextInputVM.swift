@@ -3,7 +3,7 @@ import UIKit
 
 /// A model that defines the appearance properties for a text input component.
 public struct TextInputVM: ComponentVM {
-  /// The autocapitalization behavior for the input field.
+  /// The autocapitalization behavior for the text input.
   ///
   /// Defaults to `.sentences`, which capitalizes the first letter of each sentence.
   public var autocapitalization: InputFieldTextAutocapitalization = .sentences
@@ -36,6 +36,14 @@ public struct TextInputVM: ComponentVM {
   /// Defaults to `.default`.
   public var keyboardType: UIKeyboardType = .default
 
+  /// The maximum number of rows the input field can expand to.
+  ///
+  /// If `nil`, the input field has no row limit.
+  public var maxRows: Int?
+
+  /// The minimum number of rows the input field can occupy.
+  public var minRows: Int = 2
+
   /// The placeholder text displayed when there is no input.
   public var placeholder: String?
 
@@ -54,13 +62,8 @@ public struct TextInputVM: ComponentVM {
   /// Defaults to `.accent`.
   public var tintColor: UniversalColor = .accent
 
-  /// The minimum number of rows the input field can occupy.
-  public var minRows: Int = 2
-
-  /// The maximum number of rows the input field can expand to.
-  ///
-  /// If `nil`, the input field has no row limit.
-  public var maxRows: Int?
+  /// The title displayed on the text imput.
+  public var title: String?
 
   /// Initializes a new instance of `TextInputVM` with default values.
   public init() {}
