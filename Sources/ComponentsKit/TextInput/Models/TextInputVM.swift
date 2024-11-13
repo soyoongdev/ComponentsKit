@@ -39,6 +39,7 @@ public struct TextInputVM: ComponentVM {
   /// The placeholder text displayed when there is no input.
   public var placeholder: String?
 
+  // TODO: Should be removed
   /// The predefined size of the input field.
   ///
   /// Defaults to `.medium`.
@@ -62,6 +63,7 @@ public struct TextInputVM: ComponentVM {
   /// If `nil`, the input field has no row limit.
   public var maxRows: Int?
 
+  // TODO: Should be removed
   /// The title displayed on the text imput.
   public var title: String?
 
@@ -108,6 +110,7 @@ extension TextInputVM {
     return 12
   }
 
+  // TODO: Should be removed
   var spacing: CGFloat {
     return self.title.isNotNilAndEmpty ? 12 : 0
   }
@@ -136,11 +139,18 @@ extension TextInputVM {
   var placeholderColor: UniversalColor {
     return self.foregroundColor.withOpacity(self.isEnabled ? 0.7 : 0.3)
   }
+}
 
+// MARK: - UIKit Helpers
+
+extension TextInputVM {
   func shouldUpdateLayout(_ oldModel: Self) -> Bool {
-    return self.size != oldModel.size
-    || self.spacing != oldModel.spacing
-    || self.cornerRadius != oldModel.cornerRadius
+    return self.font != oldModel.font
+    || self.minRows != oldModel.minRows
+    || self.maxRows != oldModel.maxRows
+  }
+  func shouldUpdateCornerRadius(_ oldModel: Self) -> Bool {
+    return self.adaptedCornerRadius != oldModel.adaptedCornerRadius
   }
 }
 

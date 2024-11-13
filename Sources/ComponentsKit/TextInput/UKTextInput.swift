@@ -2,7 +2,7 @@ import AutoLayout
 import UIKit
 
 /// A UIKit component that provides a customizable, multi-line text input field with dynamic height adjustment and placeholder support.
-open class UKTextInput: UIView, UKComponent, UITextViewDelegate {
+open class UKTextInput: UIView, UKComponent {
   // MARK: - Properties
 
   /// A closure that is triggered when the text changes.
@@ -12,26 +12,37 @@ open class UKTextInput: UIView, UKComponent, UITextViewDelegate {
   public var model: TextInputVM {
     didSet {
       self.update(oldValue)
-      self.adjustTextViewHeight()
     }
   }
 
-  /// The UITextView instance used for text input.
+  /// A text inputted in the field.
+  public var text: String {
+    get {
+      return self.textView.text ?? ""
+    }
+    set {
+      guard newValue != self.text else { return }
+
+      self.textView.text = newValue
+      self.handleTextChanges()
+    }
+  }
+
+  // MARK: - Subviews
+
+  /// An underlying text view instance from the standard library.
   public var textView = UITextView()
-
-  /// A label used to display placeholder text when the text view is empty.
-  private var placeholderLabel = UILabel()
-
-  private var textViewHeightConstraint: NSLayoutConstraint?
+  /// A label used to display placeholder text when the inputted text is empty.
+  public var placeholderLabel = UILabel()
+  /// A text view instance used for size calculations.
+  private var textViewTemplate = UITextView()
 
   // MARK: - UIView Properties
 
-  /// Overrides the intrinsic content size to fit the text view dynamically.
   open override var intrinsicContentSize: CGSize {
     return self.sizeThatFits(UIView.layoutFittingExpandedSize)
   }
 
-  /// Overrides the `isFirstResponder` property to check the text view's focus state.
   open override var isFirstResponder: Bool {
     return self.textView.isFirstResponder
   }
@@ -52,6 +63,8 @@ open class UKTextInput: UIView, UKComponent, UITextViewDelegate {
     self.onValueChange = onValueChange
     super.init(frame: .zero)
 
+    self.text = initialText
+
     self.setup()
     self.style()
     self.layout()
@@ -66,143 +79,124 @@ open class UKTextInput: UIView, UKComponent, UITextViewDelegate {
   private func setup() {
     self.addSubview(self.textView)
     self.addSubview(self.placeholderLabel)
-    self.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.handleTap)))
+
     self.textView.delegate = self
-    self.textView.isScrollEnabled = false
-    self.placeholderLabel.isUserInteractionEnabled = false
-  }
-
-  @objc private func handleTap() {
-    self.becomeFirstResponder()
-  }
-
-  // MARK: - UITextViewDelegate
-
-  public func textViewDidBeginEditing(_ textView: UITextView) {
-    updatePlaceholderVisibility()
-  }
-
-  public func textViewDidChange(_ textView: UITextView) {
-    self.onValueChange(textView.text)
-    self.adjustTextViewHeight()
-    updatePlaceholderVisibility()
-  }
-
-  public func textViewDidEndEditing(_ textView: UITextView) {
-    updatePlaceholderVisibility()
-  }
-
-  // MARK: - Placeholder
-
-  private func updatePlaceholderVisibility() {
-    placeholderLabel.isHidden = !textView.text.isEmpty
-  }
-
-  // MARK: - Height Adjustment
-
-  /// Adjusts the height of the text view based on its content and model constraints.
-  private func adjustTextViewHeight() {
-    let estimatedSize = self.textView.sizeThatFits(CGSize(width: self.textView.frame.width, height: CGFloat.infinity))
-    let minHeight = model.minTextInputHeight
-    let maxHeight = model.maxTextInputHeight
-
-    let newHeight = min(max(estimatedSize.height, minHeight), maxHeight)
-    self.textViewHeightConstraint?.constant = newHeight
-
-    if maxHeight >= 10_000 {
-      self.textView.isScrollEnabled = estimatedSize.height > minHeight
-    } else {
-      self.textView.isScrollEnabled = estimatedSize.height > maxHeight
-    }
   }
 
   // MARK: - Style
 
   private func style() {
     Self.Style.mainView(self, model: self.model)
+    Self.Style.placeholder(self.placeholderLabel, model: self.model)
     Self.Style.textView(self.textView, model: self.model)
-
-    placeholderLabel.font = model.preferredFont.uiFont
-    placeholderLabel.textColor = model.placeholderColor.uiColor
-    placeholderLabel.text = model.placeholder
-    placeholderLabel.isHidden = !textView.text.isEmpty
+    Self.Style.textViewTemplate(self.textViewTemplate, model: self.model)
   }
 
   // MARK: - Layout
 
   private func layout() {
-    self.textView.leading()
-    self.textView.trailing()
-    self.textView.vertically()
+    self.textView.allEdges()
 
-    placeholderLabel.translatesAutoresizingMaskIntoConstraints = false
-    NSLayoutConstraint.activate([
-      placeholderLabel.leadingAnchor.constraint(equalTo: textView.leadingAnchor, constant: model.contentPadding),
-      placeholderLabel.topAnchor.constraint(equalTo: textView.topAnchor, constant: textView.textContainerInset.top + 4)
-    ])
-
-    let minHeight = model.minTextInputHeight
-    self.textViewHeightConstraint = self.textView.heightAnchor.constraint(equalToConstant: minHeight)
-    self.textViewHeightConstraint?.isActive = true
-
-    self.textView.setContentHuggingPriority(.defaultLow, for: .horizontal)
+    self.placeholderLabel.horizontally(self.model.contentPadding)
+    self.placeholderLabel.top(self.model.contentPadding)
+    self.placeholderLabel.heightAnchor.constraint(
+      lessThanOrEqualTo: self.heightAnchor,
+      constant: -2 * self.model.contentPadding
+    ).isActive = true
   }
 
   open override func layoutSubviews() {
     super.layoutSubviews()
-    self.layer.cornerRadius = self.model.cornerRadius.value(for: self.bounds.height)
+
+    self.updateCornerRadius()
+
+    // During the first layout, text container insets in `UITextView` can change automatically, so we need to update them.
+    Self.Style.textView(self.textView, padding: self.model.contentPadding)
+    Self.Style.textView(self.textViewTemplate, padding: self.model.contentPadding)
   }
 
   // MARK: - Model Update
 
-  /// Updates the view’s styling and layout when the model changes.
-  /// - Parameter oldModel: The previous model state for comparison.
   public func update(_ oldModel: TextInputVM) {
     guard self.model != oldModel else { return }
+
     self.style()
+
+    if self.model.shouldUpdateCornerRadius(oldModel) {
+      self.updateCornerRadius()
+    }
     if self.model.shouldUpdateLayout(oldModel) {
-      self.setNeedsLayout()
       self.invalidateIntrinsicContentSize()
+      self.setNeedsLayout()
     }
   }
 
-  // MARK: - UIResponder
+  // MARK: - UIView Method
 
-  /// Makes the text view the first responder.
   @discardableResult
   open override func becomeFirstResponder() -> Bool {
     return self.textView.becomeFirstResponder()
   }
 
-  /// Resigns the first responder status from the text view.
   @discardableResult
   open override func resignFirstResponder() -> Bool {
     return self.textView.resignFirstResponder()
   }
 
   open override func sizeThatFits(_ size: CGSize) -> CGSize {
-      let width: CGFloat = min(size.width, self.superview?.bounds.width ?? 10_000)
+    var width = size.width
+    if self.bounds.width > 0,
+       self.bounds.width < width {
+      width = self.bounds.width
+    }
 
-      let estimatedHeight = self.textView.sizeThatFits(CGSize(width: width, height: CGFloat.infinity)).height
+    let targetSize = CGSize(width: width, height: CGFloat.greatestFiniteMagnitude)
+    let estimatedHeight = self.textViewTemplate.sizeThatFits(targetSize).height
 
-      let height = min(max(estimatedHeight, model.minTextInputHeight), model.maxTextInputHeight)
+    let height = min(
+      max(estimatedHeight, self.model.minTextInputHeight),
+      self.model.maxTextInputHeight
+    )
 
-      return CGSize(width: width, height: height)
+    return CGSize(width: width, height: height)
+  }
+
+  // MARK: - Helpers
+
+  private func handleTextChanges() {
+    self.onValueChange(self.text)
+
+    self.placeholderLabel.isHidden = self.text.isNotEmpty
+    self.textViewTemplate.text = self.text
+
+    self.invalidateIntrinsicContentSize()
+  }
+
+  private func updateCornerRadius() {
+    self.layer.cornerRadius = self.model.adaptedCornerRadius.value(for: self.bounds.height)
   }
 }
 
+// MARK: - UITextViewDelegate Conformance
+
+extension UKTextInput: UITextViewDelegate {
+  public func textViewDidChange(_ textView: UITextView) {
+    self.handleTextChanges()
+  }
+}
 // MARK: - Style Helpers
 
 extension UKTextInput {
   fileprivate enum Style {
-    /// Applies the main view styling based on the model.
     static func mainView(_ view: UIView, model: TextInputVM) {
       view.backgroundColor = model.backgroundColor.uiColor
       view.layer.cornerRadius = model.adaptedCornerRadius.value(for: view.bounds.height)
     }
 
-    /// Applies styling to the text view based on the model.
-    static func textView(_ textView: UITextView, model: TextInputVM) {
+    static func textView(
+      _ textView: UITextView,
+      model: TextInputVM
+    ) {
       textView.font = model.preferredFont.uiFont
       textView.textColor = model.foregroundColor.uiColor
       textView.tintColor = model.tintColor.uiColor
@@ -211,6 +205,31 @@ extension UKTextInput {
       textView.isEditable = model.isEnabled
       textView.isSelectable = model.isEnabled
       textView.backgroundColor = .clear
+      Self.textView(textView, padding: model.contentPadding)
+    }
+
+    static func textView(_ textView: UITextView, padding: CGFloat) {
+      textView.textContainerInset = .init(inset: padding)
+      textView.textContainer.lineFragmentPadding = 0
+    }
+
+    static func textViewTemplate(
+      _ textView: UITextView,
+      model: TextInputVM
+    ) {
+      textView.font = model.preferredFont.uiFont
+      textView.isScrollEnabled = false
+      Self.textView(textView, padding: model.contentPadding)
+    }
+
+    static func placeholder(
+      _ label: UILabel,
+      model: TextInputVM
+    ) {
+      label.font = model.preferredFont.uiFont
+      label.textColor = model.placeholderColor.uiColor
+      label.text = model.placeholder
+      label.numberOfLines = 0
     }
   }
 }
