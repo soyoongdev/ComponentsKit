@@ -1,6 +1,31 @@
 import ComponentsKit
 import SwiftUI
 
+// MARK: - AutocapitalizationPicker
+
+struct AutocapitalizationPicker: View {
+  @Binding var selection: InputFieldTextAutocapitalization
+
+  var body: some View {
+    Picker("Autocapitalization", selection: $selection) {
+      Text("Never").tag(InputFieldTextAutocapitalization.never)
+      Text("Characters").tag(InputFieldTextAutocapitalization.characters)
+      Text("Words").tag(InputFieldTextAutocapitalization.words)
+      Text("Sentences").tag(InputFieldTextAutocapitalization.sentences)
+    }
+  }
+}
+
+// MARK: - AutocorrectionToggle
+
+struct AutocorrectionToggle: View {
+  @Binding var isOn: Bool
+
+  var body: some View {
+    Toggle("Autocorrection Enabled", isOn: $isOn)
+  }
+}
+
 // MARK: - ComponentColorPicker
 
 struct ComponentColorPicker: View {
@@ -62,6 +87,16 @@ struct CornerRadiusPicker<Custom: View>: View {
   }
 }
 
+// MARK: - EnabledToggle
+
+struct EnabledToggle: View {
+  @Binding var isOn: Bool
+
+  var body: some View {
+    Toggle("Enabled", isOn: $isOn)
+  }
+}
+
 // MARK: - FontPicker
 
 struct FontPicker: View {
@@ -78,6 +113,42 @@ struct FontPicker: View {
   }
 }
 
+// MARK: - KeyboardTypePicker
+
+struct KeyboardTypePicker: View {
+  @Binding var selection: UIKeyboardType
+
+  var body: some View {
+    Picker("Keyboard Type", selection: $selection) {
+      Text("Default").tag(UIKeyboardType.default)
+      Text("asciiCapable").tag(UIKeyboardType.asciiCapable)
+      Text("numbersAndPunctuation").tag(UIKeyboardType.numbersAndPunctuation)
+      Text("URL").tag(UIKeyboardType.URL)
+      Text("numberPad").tag(UIKeyboardType.numberPad)
+      Text("phonePad").tag(UIKeyboardType.phonePad)
+      Text("namePhonePad").tag(UIKeyboardType.namePhonePad)
+      Text("emailAddress").tag(UIKeyboardType.emailAddress)
+      Text("decimalPad").tag(UIKeyboardType.decimalPad)
+      Text("twitter").tag(UIKeyboardType.twitter)
+      Text("webSearch").tag(UIKeyboardType.webSearch)
+      Text("asciiCapableNumberPad").tag(UIKeyboardType.asciiCapableNumberPad)
+    }
+  }
+}
+
+// MARK: - PlaceholderToggle
+
+struct PlaceholderToggle: View {
+  @Binding var placeholder: String?
+
+  var body: some View {
+    Toggle("Placeholder", isOn: .init(
+      get: { self.placeholder != nil },
+      set: { newValue in self.placeholder = newValue ? "Placeholder" : nil }
+    ))
+  }
+}
+
 // MARK: - SizePicker
 
 struct SizePicker: View {
@@ -88,6 +159,24 @@ struct SizePicker: View {
       Text("Small").tag(ComponentSize.small)
       Text("Medium").tag(ComponentSize.medium)
       Text("Large").tag(ComponentSize.large)
+    }
+  }
+}
+
+// MARK: - SubmitTypePicker
+
+struct SubmitTypePicker: View {
+  @Binding var selection: SubmitType
+
+  var body: some View {
+    Picker("Submit Type", selection: $selection) {
+      Text("done").tag(SubmitType.done)
+      Text("go").tag(SubmitType.go)
+      Text("join").tag(SubmitType.join)
+      Text("route").tag(SubmitType.route)
+      Text("return").tag(SubmitType.return)
+      Text("next").tag(SubmitType.next)
+      Text("continue").tag(SubmitType.continue)
     }
   }
 }
