@@ -39,12 +39,11 @@ struct TextInputPreviewPreview: View {
         }
         Toggle("Autocorrection Enabled", isOn: self.$model.isAutocorrectionEnabled)
         ComponentOptionalColorPicker(selection: self.$model.color)
-        FontPicker(selection: self.$model.font)
-
         CornerRadiusPicker(selection: self.$model.cornerRadius) {
           Text("Custom: 20px").tag(ComponentRadius.custom(20))
         }
         Toggle("Enabled", isOn: self.$model.isEnabled)
+        FontPicker(selection: self.$model.font)
         Picker("Keyboard Type", selection: self.$model.keyboardType) {
           Text("Default").tag(UIKeyboardType.default)
           Text("asciiCapable").tag(UIKeyboardType.asciiCapable)
@@ -58,6 +57,15 @@ struct TextInputPreviewPreview: View {
           Text("twitter").tag(UIKeyboardType.twitter)
           Text("webSearch").tag(UIKeyboardType.webSearch)
           Text("asciiCapableNumberPad").tag(UIKeyboardType.asciiCapableNumberPad)
+        }
+        Picker("Max Rows", selection: self.$model.maxRows) {
+          Text("2 Rows").tag(2)
+          Text("3 Rows").tag(3)
+          Text("No Limit").tag(Optional<Int>.none)
+        }
+        Picker("Min Rows", selection: self.$model.minRows) {
+          Text("1 Row").tag(1)
+          Text("2 Rows").tag(2)
         }
         Toggle("Placeholder", isOn: .init(
           get: {
@@ -80,22 +88,8 @@ struct TextInputPreviewPreview: View {
           title: "Tint Color",
           selection: self.$model.tintColor
         )
-
-        Picker("Min Rows", selection: self.$model.minRows) {
-          Text("1 Row").tag(1)
-          Text("2 Rows").tag(2)
-        }
-
-        Picker("Max Rows", selection: self.$model.maxRows) {
-          Text("2 Rows").tag(2)
-          Text("3 Rows").tag(3)
-          Text("No Limit").tag(Optional<Int>.none)
-        }
       }
     }
-//    .onAppear {
-//      self.inputField.textField.delegate = self.inputFieldDelegate
-//    }
     .toolbar {
       ToolbarItem(placement: .primaryAction) {
         if (self.inputFieldDelegate.isEditing || self.isFocused) && !ProcessInfo.processInfo.isiOSAppOnMac {

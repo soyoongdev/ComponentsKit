@@ -37,13 +37,11 @@ struct InputFieldPreview: View {
         }
         Toggle("Autocorrection Enabled", isOn: self.$model.isAutocorrectionEnabled)
         ComponentOptionalColorPicker(selection: self.$model.color)
-        FontPicker(selection: self.$model.font)
-
         CornerRadiusPicker(selection: self.$model.cornerRadius) {
           Text("Custom: 20px").tag(ComponentRadius.custom(20))
         }
-        Toggle("Enabled", isOn: self.$model.isEnabled)
         FontPicker(selection: self.$model.font)
+        Toggle("Enabled", isOn: self.$model.isEnabled)
         Picker("Keyboard Type", selection: self.$model.keyboardType) {
           Text("Default").tag(UIKeyboardType.default)
           Text("asciiCapable").tag(UIKeyboardType.asciiCapable)
