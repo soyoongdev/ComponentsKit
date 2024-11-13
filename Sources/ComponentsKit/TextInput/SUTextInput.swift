@@ -1,41 +1,40 @@
 import SwiftUI
 
-/// A SwiftUI view that provides a customizable, multi-line text input field with dynamic height adjustment and centralized focus management.
+/// A SwiftUI component that displays a multi-line text input form.
 public struct SUTextInput<FocusValue: Hashable>: View {
   // MARK: - Properties
 
-  /// A model that defines the appearance properties for the text input field.
+  /// A model that defines the appearance properties.
   public var model: TextInputVM
 
   /// A Binding value to control the inputted text.
   @Binding public var text: String
 
-  /// The shared focus state used to manage focus across multiple fields.
+  /// The shared focus state used to manage focus across multiple text inputs and input fields.
   ///
-  /// When the `localFocus` value matches `globalFocus`, this input field becomes focused.
-  /// This enables centralized focus management for multiple fields within a single view.
+  /// When the `localFocus` value matches `globalFocus`, this text input becomes focused.
+  /// This enables centralized focus management for multiple text inputs and input fields within a single view.
   @FocusState.Binding public var globalFocus: FocusValue
 
-  /// The unique value for this field to match against the global focus state to determine whether the field
-  /// is focused.
+  /// The unique value for this text input to match against the global focus state to determine whether the text input is focused.
   ///
-  /// Determines the local focus value for this particular input field. It is compared with globalFocus to
-  /// decide if this input field should be focused. If globalFocus matches the value of localFocus, the
-  /// input field gains focus, allowing the user to interact with it.
+  /// Determines the local focus value for this particular text input. It is compared with globalFocus to
+  /// decide if this text input should be focused. If globalFocus matches the value of localFocus, the
+  /// text input gains focus, allowing the user to interact with it.
   ///
-  /// - Warning: The localFocus value must be unique to each input field, to ensure that different
-  /// fields within the same view can be independently focused based on the shared globalFocus.
+  /// - Warning: The localFocus value must be unique to each text input and input field, to ensure that different
+  /// text inputs and input fields within the same view can be independently focused based on the shared globalFocus.
   public var localFocus: FocusValue
 
   @Environment(\.colorScheme) private var colorScheme
-  @State var textEditorHeight: CGFloat = 0
+  @State private var textEditorHeight: CGFloat = 0
 
   // MARK: - Initialization
 
   /// Initializer.
   /// - Parameters:
   ///   - text: A Binding value to control the inputted text.
-  ///   - globalFocus: The shared state controlling focus across multiple fields.
+  ///   - globalFocus: The shared state controlling focus across multiple text inputs and input fields.
   ///   - localFocus: The unique value for this field to match against the global focus state to determine focus.
   ///   - model: A model that defines the appearance properties.
   public init(
@@ -156,7 +155,7 @@ extension SUTextInput where FocusValue == Bool {
   /// Initializer.
   /// - Parameters:
   ///   - text: A Binding value to control the inputted text.
-  ///   - isFocused: A binding that controls whether this input field is focused or not.
+  ///   - isFocused: A binding that controls whether this text input is focused or not.
   ///   - model: A model that defines the appearance properties.
   public init(
     text: Binding<String>,
