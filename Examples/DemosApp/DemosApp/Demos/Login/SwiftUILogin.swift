@@ -17,10 +17,8 @@ struct SwiftUILogin: View {
   @State private var name = ""
   @State private var email = ""
   @State private var password = ""
-  @State private var text: String = ""
 
   @FocusState private var focusedInput: Input?
-  @FocusState private var isFocused: Bool
   @State private var isConsented: Bool = false
   @State private var isLoading = false
 
@@ -98,15 +96,7 @@ struct SwiftUILogin: View {
               $0.isEnabled = !self.isLoading
             }
           )
-          SUTextInput(
-            text: self.$text,
-            isFocused: self.$isFocused,
-            model: .init {
-              $0.placeholder = "Placeholder 2"
-              $0.minRows = 1
-              $0.maxRows = 4
-            }
-          )
+
           SUCheckbox(
             isSelected: self.$isConsented,
             model: .init {
