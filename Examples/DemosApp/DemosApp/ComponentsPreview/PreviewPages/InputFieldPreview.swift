@@ -30,15 +30,22 @@ struct InputFieldPreview: View {
       }
       Form {
         AutocapitalizationPicker(selection: self.$model.autocapitalization)
-        AutocorrectionToggle(isOn: self.$model.isAutocorrectionEnabled)
+        Toggle("Autocorrection Enabled", isOn: self.$model.isAutocorrectionEnabled)
         ComponentOptionalColorPicker(selection: self.$model.color)
         CornerRadiusPicker(selection: self.$model.cornerRadius) {
           Text("Custom: 20px").tag(ComponentRadius.custom(20))
         }
-        EnabledToggle(isOn: self.$model.isEnabled)
+        Toggle("Enabled", isOn: self.$model.isEnabled)
         FontPicker(selection: self.$model.font)
         KeyboardTypePicker(selection: self.$model.keyboardType)
-        PlaceholderToggle(placeholder: self.$model.placeholder)
+        Toggle("Placeholder", isOn: .init(
+          get: {
+            return self.model.placeholder != nil
+          },
+          set: { newValue in
+            self.model.placeholder = newValue ? "Placeholder" : nil
+          }
+        ))
         Toggle("Required", isOn: self.$model.isRequired)
         Toggle("Secure Input", isOn: self.$model.isSecureInput)
         SizePicker(selection: self.$model.size)

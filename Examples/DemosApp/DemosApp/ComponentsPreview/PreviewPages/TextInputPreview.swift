@@ -27,12 +27,12 @@ struct TextInputPreviewPreview: View {
       }
       Form {
         AutocapitalizationPicker(selection: self.$model.autocapitalization)
-        AutocorrectionToggle(isOn: self.$model.isAutocorrectionEnabled)
+        Toggle("Autocorrection Enabled", isOn: self.$model.isAutocorrectionEnabled)
         ComponentOptionalColorPicker(selection: self.$model.color)
         CornerRadiusPicker(selection: self.$model.cornerRadius) {
           Text("Custom: 20px").tag(ComponentRadius.custom(20))
         }
-        EnabledToggle(isOn: self.$model.isEnabled)
+        Toggle("Enabled", isOn: self.$model.isEnabled)
         FontPicker(selection: self.$model.font)
         KeyboardTypePicker(selection: self.$model.keyboardType)
         Picker("Max Rows", selection: self.$model.maxRows) {
@@ -44,7 +44,14 @@ struct TextInputPreviewPreview: View {
           Text("1 Row").tag(1)
           Text("2 Rows").tag(2)
         }
-        PlaceholderToggle(placeholder: self.$model.placeholder)
+        Toggle("Placeholder", isOn: .init(
+          get: {
+            return self.model.placeholder != nil
+          },
+          set: { newValue in
+            self.model.placeholder = newValue ? "Placeholder" : nil
+          }
+        ))
         SubmitTypePicker(selection: self.$model.submitType)
         UniversalColorPicker(
           title: "Tint Color",
