@@ -52,6 +52,7 @@ struct TextInputPreviewPreview: View {
             self.model.placeholder = newValue ? "Placeholder" : nil
           }
         ))
+        SizePicker(selection: self.$model.size)
         SubmitTypePicker(selection: self.$model.submitType)
         UniversalColorPicker(
           title: "Tint Color",
