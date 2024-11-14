@@ -4,14 +4,14 @@ import SwiftUI
 // MARK: - AutocapitalizationPicker
 
 struct AutocapitalizationPicker: View {
-  @Binding var selection: InputFieldTextAutocapitalization
+  @Binding var selection: TextAutocapitalization
 
   var body: some View {
     Picker("Autocapitalization", selection: $selection) {
-      Text("Never").tag(InputFieldTextAutocapitalization.never)
-      Text("Characters").tag(InputFieldTextAutocapitalization.characters)
-      Text("Words").tag(InputFieldTextAutocapitalization.words)
-      Text("Sentences").tag(InputFieldTextAutocapitalization.sentences)
+      Text("Never").tag(TextAutocapitalization.never)
+      Text("Characters").tag(TextAutocapitalization.characters)
+      Text("Words").tag(TextAutocapitalization.words)
+      Text("Sentences").tag(TextAutocapitalization.sentences)
     }
   }
 }
