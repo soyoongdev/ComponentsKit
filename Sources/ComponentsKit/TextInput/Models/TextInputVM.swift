@@ -47,12 +47,6 @@ public struct TextInputVM: ComponentVM {
   /// The placeholder text displayed when there is no input.
   public var placeholder: String?
 
-  // TODO: Should be removed
-  /// The predefined size of the input field.
-  ///
-  /// Defaults to `.medium`.
-  public var size: ComponentSize = .medium
-
   /// The type of the submit button on the keyboard.
   ///
   /// Defaults to `.return`.
@@ -62,10 +56,6 @@ public struct TextInputVM: ComponentVM {
   ///
   /// Defaults to `.accent`.
   public var tintColor: UniversalColor = .accent
-
-  // TODO: Should be removed
-  /// The title displayed on the text imput.
-  public var title: String?
 
   /// Initializes a new instance of `TextInputVM` with default values.
   public init() {}
@@ -88,21 +78,6 @@ extension TextInputVM {
       return .custom(self.height(forRows: 1) / 2)
     case .custom(let value):
       return .custom(value)
-    }
-  }
-
-  var preferredFont: UniversalFont {
-    if let font {
-      return font
-    }
-
-    switch self.size {
-    case .small:
-      return UniversalFont.Component.medium
-    case .medium:
-      return UniversalFont.Component.medium
-    case .large:
-      return UniversalFont.Component.large
     }
   }
 
@@ -190,6 +165,6 @@ extension TextInputVM {
   private func height(forRows rows: Int) -> CGFloat {
     // TODO: [2] Show a warning if number of rows less than 1
     let numberOfRows = max(1, rows)
-    return self.preferredFont.uiFont.lineHeight * CGFloat(numberOfRows) + 2 * self.contentPadding
+    return (font?.uiFont.lineHeight ?? 17) * CGFloat(numberOfRows) + 2 * self.contentPadding
   }
 }
