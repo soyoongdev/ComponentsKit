@@ -11,7 +11,7 @@ struct PreviewWrapper<Content: View>: View {
     ZStack(alignment: Alignment(horizontal: .leading, vertical: .top)) {
       self.content()
         .padding(.all)
-        .frame(height: 120)
+        .frame(height: 150)
         .frame(maxWidth: .infinity)
         .overlay {
           RoundedRectangle(
