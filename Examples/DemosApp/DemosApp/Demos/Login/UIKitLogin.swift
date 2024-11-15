@@ -118,10 +118,7 @@ final class UIKitLogin: UIViewController {
     self.pageControl.onSelectionChange = { [weak self] selectedPage in
       guard let self else { return }
 
-      if selectedPage == .signIn && self.nameInput.isFirstResponder {
-        self.emailInput.becomeFirstResponder()
-      }
-
+      self.dismissKeyboard()
       self.update()
     }
     self.nameInput.onValueChange = { [weak self] _ in
@@ -156,6 +153,7 @@ final class UIKitLogin: UIViewController {
     self.nameInput.resignFirstResponder()
     self.emailInput.resignFirstResponder()
     self.passwordInput.resignFirstResponder()
+    self.bioInput.resignFirstResponder()
   }
 
   private func style() {
