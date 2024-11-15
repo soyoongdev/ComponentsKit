@@ -135,6 +135,10 @@ open class UKLoading: UIView, UKComponent {
     // Adjust the layer's frame to fit within the view's bounds
     self.shapeLayer.frame = self.bounds
     self.updateShapePath()
+
+    if self.isVisible {
+      self.addSpinnerAnimation()
+    }
   }
 
   // MARK: UIView methods

@@ -11,8 +11,7 @@ struct InputFieldPreview: View {
   @State private var text: String = ""
   @FocusState private var isFocused: Bool
 
-  private let inputField = UKInputField()
-  private let inputFieldDelegate = InputFieldDelegate()
+  @ObservedObject private var inputField = PreviewInputField()
 
   var body: some View {
     VStack {
@@ -64,12 +63,9 @@ struct InputFieldPreview: View {
         ))
       }
     }
-    .onAppear {
-      self.inputField.textField.delegate = self.inputFieldDelegate
-    }
     .toolbar {
       ToolbarItem(placement: .primaryAction) {
-        if (self.inputFieldDelegate.isEditing || self.isFocused) && !ProcessInfo.processInfo.isiOSAppOnMac {
+        if (self.inputField.isEditing || self.isFocused) && !ProcessInfo.processInfo.isiOSAppOnMac {
           Button("Hide Keyboard") {
             self.isFocused = false
             self.inputField.resignFirstResponder()
@@ -80,9 +76,22 @@ struct InputFieldPreview: View {
   }
 }
 
-@Observable
-private final class InputFieldDelegate: NSObject, UITextFieldDelegate {
-  var isEditing: Bool = false
+private final class PreviewInputField: UKInputField, ObservableObject, UITextFieldDelegate {
+  @Published var isEditing: Bool = false
+
+  override init(
+    initialText: String = "",
+    model: InputFieldVM = .init(),
+    onValueChange: @escaping (String) -> Void = { _ in }
+  ) {
+    super.init(initialText: initialText, model: model, onValueChange: onValueChange)
+
+    self.textField.delegate = self
+  }
+
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
 
   func textFieldDidBeginEditing(_ textField: UITextField) {
     self.isEditing = true
