@@ -54,7 +54,9 @@ public struct SULoading: View {
         alignment: .center
       )
       .onAppear {
-        self.rotationAngle = 2 * .pi
+        DispatchQueue.main.async {
+          self.rotationAngle = 2 * .pi
+        }
       }
   }
 }
