@@ -1,7 +1,7 @@
 import AutoLayout
 import UIKit
 
-/// A UIKit component that provides a customizable, multi-line text input field with dynamic height adjustment and placeholder support.
+/// A UIKit component that displays a multi-line text input form.
 open class UKTextInput: UIView, UKComponent {
   // MARK: - Properties
 
@@ -34,8 +34,6 @@ open class UKTextInput: UIView, UKComponent {
   public var textView = UITextView()
   /// A label used to display placeholder text when the inputted text is empty.
   public var placeholderLabel = UILabel()
-  /// A text view instance used for size calculations.
-  private var textViewTemplate = UITextView()
 
   // MARK: - UIView Properties
 
@@ -51,7 +49,7 @@ open class UKTextInput: UIView, UKComponent {
 
   /// Initializer.
   /// - Parameters:
-  ///   - initialText: A text that is initially inputted in the field.
+  ///   - initialText: A text that is initially inputted in the text input.
   ///   - model: A model that defines the appearance properties.
   ///   - onValueChange: A closure that is triggered when the text changes.
   public init(
@@ -89,7 +87,6 @@ open class UKTextInput: UIView, UKComponent {
     Self.Style.mainView(self, model: self.model)
     Self.Style.placeholder(self.placeholderLabel, model: self.model)
     Self.Style.textView(self.textView, model: self.model)
-    Self.Style.textViewTemplate(self.textViewTemplate, model: self.model)
   }
 
   // MARK: - Layout
@@ -112,7 +109,6 @@ open class UKTextInput: UIView, UKComponent {
 
     // During the first layout, text container insets in `UITextView` can change automatically, so we need to update them.
     Self.Style.textView(self.textView, padding: self.model.contentPadding)
-    Self.Style.textView(self.textViewTemplate, padding: self.model.contentPadding)
   }
 
   // MARK: - Model Update
@@ -150,11 +146,14 @@ open class UKTextInput: UIView, UKComponent {
       width = self.bounds.width
     }
 
-    let targetSize = CGSize(width: width, height: CGFloat.greatestFiniteMagnitude)
-    let estimatedHeight = self.textViewTemplate.sizeThatFits(targetSize).height
+    let preferredHeight = TextInputHeightCalculator.preferredHeight(
+      for: self.text,
+      model: self.model,
+      width: width
+    )
 
     let height = min(
-      max(estimatedHeight, self.model.minTextInputHeight),
+      max(preferredHeight, self.model.minTextInputHeight),
       self.model.maxTextInputHeight
     )
 
@@ -167,7 +166,6 @@ open class UKTextInput: UIView, UKComponent {
     self.onValueChange(self.text)
 
     self.placeholderLabel.isHidden = self.text.isNotEmpty
-    self.textViewTemplate.text = self.text
 
     self.invalidateIntrinsicContentSize()
   }
@@ -184,6 +182,7 @@ extension UKTextInput: UITextViewDelegate {
     self.handleTextChanges()
   }
 }
+
 // MARK: - Style Helpers
 
 extension UKTextInput {
@@ -211,15 +210,6 @@ extension UKTextInput {
     static func textView(_ textView: UITextView, padding: CGFloat) {
       textView.textContainerInset = .init(inset: padding)
       textView.textContainer.lineFragmentPadding = 0
-    }
-
-    static func textViewTemplate(
-      _ textView: UITextView,
-      model: TextInputVM
-    ) {
-      textView.font = model.preferredFont.uiFont
-      textView.isScrollEnabled = false
-      Self.textView(textView, padding: model.contentPadding)
     }
 
     static func placeholder(

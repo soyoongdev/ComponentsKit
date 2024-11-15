@@ -6,19 +6,19 @@ public struct TextInputVM: ComponentVM {
   /// The autocapitalization behavior for the text input.
   ///
   /// Defaults to `.sentences`, which capitalizes the first letter of each sentence.
-  public var autocapitalization: InputFieldTextAutocapitalization = .sentences
+  public var autocapitalization: TextAutocapitalization = .sentences
 
-  /// The color of the input field.
+  /// The color of the text input.
   public var color: ComponentColor?
 
-  /// The corner radius of the input field.
+  /// The corner radius of the text input.
   ///
   /// Defaults to `.medium`.
   public var cornerRadius: ComponentRadius = .medium
 
-  /// The font used for the input field's text.
+  /// The font used for the text input's text.
   ///
-  /// If not provided, the font is determined based on the input field's `size`.
+  /// If not provided, the font is determined based on the text input's `size`.
   public var font: UniversalFont?
 
   /// A Boolean value indicating whether autocorrection is enabled.
@@ -26,29 +26,28 @@ public struct TextInputVM: ComponentVM {
   /// Defaults to `true`.
   public var isAutocorrectionEnabled: Bool = true
 
-  /// A Boolean value indicating whether the input field is enabled or disabled.
+  /// A Boolean value indicating whether the text input is enabled or disabled.
   ///
   /// Defaults to `true`.
   public var isEnabled: Bool = true
 
-  /// The type of keyboard to display when the input field is active.
+  /// The type of keyboard to display when the text input is active.
   ///
   /// Defaults to `.default`.
   public var keyboardType: UIKeyboardType = .default
 
-  /// The maximum number of rows the input field can expand to.
+  /// The maximum number of rows the text input can expand to.
   ///
-  /// If `nil`, the input field has no row limit.
+  /// If `nil`, the text input has no row limit.
   public var maxRows: Int?
 
-  /// The minimum number of rows the input field can occupy.
+  /// The minimum number of rows the text input can occupy.
   public var minRows: Int = 2
 
   /// The placeholder text displayed when there is no input.
   public var placeholder: String?
 
-  // TODO: Should be removed
-  /// The predefined size of the input field.
+  /// The predefined size of the text input.
   ///
   /// Defaults to `.medium`.
   public var size: ComponentSize = .medium
@@ -58,14 +57,10 @@ public struct TextInputVM: ComponentVM {
   /// Defaults to `.return`.
   public var submitType: SubmitType = .return
 
-  /// The tint color applied to the input field's cursor.
+  /// The tint color applied to the text input's cursor.
   ///
   /// Defaults to `.accent`.
   public var tintColor: UniversalColor = .accent
-
-  // TODO: Should be removed
-  /// The title displayed on the text imput.
-  public var title: String?
 
   /// Initializes a new instance of `TextInputVM` with default values.
   public init() {}
@@ -98,7 +93,7 @@ extension TextInputVM {
 
     switch self.size {
     case .small:
-      return UniversalFont.Component.medium
+      return UniversalFont.Component.small
     case .medium:
       return UniversalFont.Component.medium
     case .large:
@@ -108,11 +103,6 @@ extension TextInputVM {
 
   var contentPadding: CGFloat {
     return 12
-  }
-
-  // TODO: Should be removed
-  var spacing: CGFloat {
-    return self.title.isNotNilAndEmpty ? 12 : 0
   }
 
   var backgroundColor: UniversalColor {
@@ -139,29 +129,7 @@ extension TextInputVM {
   var placeholderColor: UniversalColor {
     return self.foregroundColor.withOpacity(self.isEnabled ? 0.7 : 0.3)
   }
-}
 
-// MARK: - UIKit Helpers
-
-extension TextInputVM {
-  func shouldUpdateLayout(_ oldModel: Self) -> Bool {
-    return self.font != oldModel.font
-    || self.minRows != oldModel.minRows
-    || self.maxRows != oldModel.maxRows
-  }
-  func shouldUpdateCornerRadius(_ oldModel: Self) -> Bool {
-    return self.adaptedCornerRadius != oldModel.adaptedCornerRadius
-  }
-}
-
-// MARK: - SwiftUI Helpers
-
-extension TextInputVM {
-  var autocorrectionType: UITextAutocorrectionType {
-    return self.isAutocorrectionEnabled ? .yes : .no
-  }
-
-  /// Calculates the minimum height based on `minRows`.
   var minTextInputHeight: CGFloat {
     let numberOfRows: Int
     if let maxRows {
@@ -172,9 +140,6 @@ extension TextInputVM {
     return self.height(forRows: numberOfRows)
   }
 
-  /// Calculates the maximum height based on `maxRows`.
-  ///
-  /// Defaults to a high value if `maxRows` is `nil`.
   var maxTextInputHeight: CGFloat {
     if let maxRows {
       return self.height(forRows: maxRows)
@@ -183,13 +148,28 @@ extension TextInputVM {
     }
   }
 
-  /// Computes the height of the input field for a given number of rows.
-  ///
-  /// - Parameter rows: The number of rows.
-  /// - Returns: The calculated height based on rows and padding.
   private func height(forRows rows: Int) -> CGFloat {
     // TODO: [2] Show a warning if number of rows less than 1
     let numberOfRows = max(1, rows)
     return self.preferredFont.uiFont.lineHeight * CGFloat(numberOfRows) + 2 * self.contentPadding
+  }
+
+  func shouldUpdateLayout(_ oldModel: Self) -> Bool {
+    return self.size != oldModel.size
+    || self.font != oldModel.font
+    || self.minRows != oldModel.minRows
+    || self.maxRows != oldModel.maxRows
+  }
+}
+
+// MARK: - UIKit Helpers
+
+extension TextInputVM {
+  var autocorrectionType: UITextAutocorrectionType {
+    return self.isAutocorrectionEnabled ? .yes : .no
+  }
+
+  func shouldUpdateCornerRadius(_ oldModel: Self) -> Bool {
+    return self.adaptedCornerRadius != oldModel.adaptedCornerRadius
   }
 }
