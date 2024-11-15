@@ -27,10 +27,10 @@ struct App: View {
         }
 
         Section("Login Demo") {
-          NavigationLink("SwiftUI") {
+          NavigationLinkWithTitle("SwiftUI") {
             SwiftUILogin()
           }
-          NavigationLink("UIKit") {
+          NavigationLinkWithTitle("UIKit") {
             UIViewControllerRepresenting {
               UIKitLogin()
             }
