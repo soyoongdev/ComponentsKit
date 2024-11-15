@@ -4,25 +4,15 @@ import SwiftUI
 // MARK: - AutocapitalizationPicker
 
 struct AutocapitalizationPicker: View {
-  @Binding var selection: InputFieldTextAutocapitalization
+  @Binding var selection: TextAutocapitalization
 
   var body: some View {
     Picker("Autocapitalization", selection: $selection) {
-      Text("Never").tag(InputFieldTextAutocapitalization.never)
-      Text("Characters").tag(InputFieldTextAutocapitalization.characters)
-      Text("Words").tag(InputFieldTextAutocapitalization.words)
-      Text("Sentences").tag(InputFieldTextAutocapitalization.sentences)
+      Text("Never").tag(TextAutocapitalization.never)
+      Text("Characters").tag(TextAutocapitalization.characters)
+      Text("Words").tag(TextAutocapitalization.words)
+      Text("Sentences").tag(TextAutocapitalization.sentences)
     }
-  }
-}
-
-// MARK: - AutocorrectionToggle
-
-struct AutocorrectionToggle: View {
-  @Binding var isOn: Bool
-
-  var body: some View {
-    Toggle("Autocorrection Enabled", isOn: $isOn)
   }
 }
 
@@ -87,16 +77,6 @@ struct CornerRadiusPicker<Custom: View>: View {
   }
 }
 
-// MARK: - EnabledToggle
-
-struct EnabledToggle: View {
-  @Binding var isOn: Bool
-
-  var body: some View {
-    Toggle("Enabled", isOn: $isOn)
-  }
-}
-
 // MARK: - FontPicker
 
 struct FontPicker: View {
@@ -133,19 +113,6 @@ struct KeyboardTypePicker: View {
       Text("webSearch").tag(UIKeyboardType.webSearch)
       Text("asciiCapableNumberPad").tag(UIKeyboardType.asciiCapableNumberPad)
     }
-  }
-}
-
-// MARK: - PlaceholderToggle
-
-struct PlaceholderToggle: View {
-  @Binding var placeholder: String?
-
-  var body: some View {
-    Toggle("Placeholder", isOn: .init(
-      get: { self.placeholder != nil },
-      set: { newValue in self.placeholder = newValue ? "Placeholder" : nil }
-    ))
   }
 }
 
