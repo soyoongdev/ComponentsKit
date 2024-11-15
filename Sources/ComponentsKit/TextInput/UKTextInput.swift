@@ -1,7 +1,7 @@
 import AutoLayout
 import UIKit
 
-/// A UIKit component that provides a customizable, multi-line text input field with dynamic height adjustment and placeholder support.
+/// A UIKit component that displays a multi-line text input form.
 open class UKTextInput: UIView, UKComponent {
   // MARK: - Properties
 
@@ -49,7 +49,7 @@ open class UKTextInput: UIView, UKComponent {
 
   /// Initializer.
   /// - Parameters:
-  ///   - initialText: A text that is initially inputted in the field.
+  ///   - initialText: A text that is initially inputted in the text input.
   ///   - model: A model that defines the appearance properties.
   ///   - onValueChange: A closure that is triggered when the text changes.
   public init(
@@ -182,6 +182,7 @@ extension UKTextInput: UITextViewDelegate {
     self.handleTextChanges()
   }
 }
+
 // MARK: - Style Helpers
 
 extension UKTextInput {
