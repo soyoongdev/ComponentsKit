@@ -130,13 +130,6 @@ extension TextInputVM {
     return self.foregroundColor.withOpacity(self.isEnabled ? 0.7 : 0.3)
   }
 
-  func shouldUpdateLayout(_ oldModel: Self) -> Bool {
-    return self.size != oldModel.size
-    || self.font != oldModel.font
-    || self.minRows != oldModel.minRows
-    || self.maxRows != oldModel.maxRows
-  }
-
   var minTextInputHeight: CGFloat {
     let numberOfRows: Int
     if let maxRows {
@@ -160,6 +153,13 @@ extension TextInputVM {
     let numberOfRows = max(1, rows)
     return self.preferredFont.uiFont.lineHeight * CGFloat(numberOfRows) + 2 * self.contentPadding
   }
+
+  func shouldUpdateLayout(_ oldModel: Self) -> Bool {
+    return self.size != oldModel.size
+    || self.font != oldModel.font
+    || self.minRows != oldModel.minRows
+    || self.maxRows != oldModel.maxRows
+  }
 }
 
 // MARK: - UIKit Helpers
@@ -168,6 +168,7 @@ extension TextInputVM {
   var autocorrectionType: UITextAutocorrectionType {
     return self.isAutocorrectionEnabled ? .yes : .no
   }
+
   func shouldUpdateCornerRadius(_ oldModel: Self) -> Bool {
     return self.adaptedCornerRadius != oldModel.adaptedCornerRadius
   }

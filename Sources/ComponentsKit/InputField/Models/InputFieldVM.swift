@@ -181,6 +181,9 @@ extension InputFieldVM {
     || self.spacing != oldModel.spacing
     || self.cornerRadius != oldModel.cornerRadius
   }
+  func shouldUpdateCornerRadius(_ oldModel: Self) -> Bool {
+    return self.cornerRadius != oldModel.cornerRadius
+  }
 }
 
 // MARK: - SwiftUI Helpers
