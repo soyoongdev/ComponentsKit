@@ -1,6 +1,21 @@
 import ComponentsKit
 import SwiftUI
 
+// MARK: - AutocapitalizationPicker
+
+struct AutocapitalizationPicker: View {
+  @Binding var selection: TextAutocapitalization
+
+  var body: some View {
+    Picker("Autocapitalization", selection: $selection) {
+      Text("Never").tag(TextAutocapitalization.never)
+      Text("Characters").tag(TextAutocapitalization.characters)
+      Text("Words").tag(TextAutocapitalization.words)
+      Text("Sentences").tag(TextAutocapitalization.sentences)
+    }
+  }
+}
+
 // MARK: - ComponentColorPicker
 
 struct ComponentColorPicker: View {
@@ -78,6 +93,29 @@ struct FontPicker: View {
   }
 }
 
+// MARK: - KeyboardTypePicker
+
+struct KeyboardTypePicker: View {
+  @Binding var selection: UIKeyboardType
+
+  var body: some View {
+    Picker("Keyboard Type", selection: $selection) {
+      Text("Default").tag(UIKeyboardType.default)
+      Text("asciiCapable").tag(UIKeyboardType.asciiCapable)
+      Text("numbersAndPunctuation").tag(UIKeyboardType.numbersAndPunctuation)
+      Text("URL").tag(UIKeyboardType.URL)
+      Text("numberPad").tag(UIKeyboardType.numberPad)
+      Text("phonePad").tag(UIKeyboardType.phonePad)
+      Text("namePhonePad").tag(UIKeyboardType.namePhonePad)
+      Text("emailAddress").tag(UIKeyboardType.emailAddress)
+      Text("decimalPad").tag(UIKeyboardType.decimalPad)
+      Text("twitter").tag(UIKeyboardType.twitter)
+      Text("webSearch").tag(UIKeyboardType.webSearch)
+      Text("asciiCapableNumberPad").tag(UIKeyboardType.asciiCapableNumberPad)
+    }
+  }
+}
+
 // MARK: - SizePicker
 
 struct SizePicker: View {
@@ -88,6 +126,24 @@ struct SizePicker: View {
       Text("Small").tag(ComponentSize.small)
       Text("Medium").tag(ComponentSize.medium)
       Text("Large").tag(ComponentSize.large)
+    }
+  }
+}
+
+// MARK: - SubmitTypePicker
+
+struct SubmitTypePicker: View {
+  @Binding var selection: SubmitType
+
+  var body: some View {
+    Picker("Submit Type", selection: $selection) {
+      Text("done").tag(SubmitType.done)
+      Text("go").tag(SubmitType.go)
+      Text("join").tag(SubmitType.join)
+      Text("route").tag(SubmitType.route)
+      Text("return").tag(SubmitType.return)
+      Text("next").tag(SubmitType.next)
+      Text("continue").tag(SubmitType.continue)
     }
   }
 }

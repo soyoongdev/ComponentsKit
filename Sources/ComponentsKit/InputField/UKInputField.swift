@@ -122,7 +122,7 @@ open class UKInputField: UIView, UKComponent {
   open override func layoutSubviews() {
     super.layoutSubviews()
 
-    self.layer.cornerRadius = self.model.cornerRadius.value(for: self.bounds.height)
+    self.updateCornerRadius()
   }
 
   // MARK: Update
@@ -134,6 +134,9 @@ open class UKInputField: UIView, UKComponent {
 
     self.inputFieldConstraints?.leading?.constant = self.model.spacing
     self.titleLabelConstraints?.leading?.constant = self.model.horizontalPadding
+    if self.model.shouldUpdateCornerRadius(oldModel) {
+      self.updateCornerRadius()
+    }
     if self.model.shouldUpdateLayout(oldModel) {
       self.setNeedsLayout()
       self.invalidateIntrinsicContentSize()
@@ -164,6 +167,12 @@ open class UKInputField: UIView, UKComponent {
       width: min(size.width, width),
       height: min(size.height, self.model.height)
     )
+  }
+
+  // MARK: Helpers
+
+  private func updateCornerRadius() {
+    self.layer.cornerRadius = self.model.cornerRadius.value(for: self.bounds.height)
   }
 }
 

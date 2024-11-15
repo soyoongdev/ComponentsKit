@@ -1,7 +1,7 @@
 import AutoLayout
 import UIKit
 
-/// A SwiftUI component with multiple segments that allows users to select them.
+/// A UIKit component with multiple segments that allows users to select them.
 open class UKSegmentedControl<ID: Hashable>: UIView, UKComponent {
   // MARK: Properties
 

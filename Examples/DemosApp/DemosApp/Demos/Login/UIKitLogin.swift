@@ -58,6 +58,13 @@ final class UIKitLogin: UIViewController {
       $0.isSecureInput = true
     }
   )
+  private let bioInput = UKTextInput(
+    model: .init {
+      $0.placeholder = "Tell about yourself"
+      $0.minRows = 3
+      $0.maxRows = 5
+    }
+  )
   private let consentCheckbox = UKCheckbox(
     model: .init {
       $0.title = "By continuing, you accept our Terms of Service and Privacy Policy"
@@ -104,16 +111,14 @@ final class UIKitLogin: UIViewController {
     self.stackView.addArrangedSubview(self.nameInput)
     self.stackView.addArrangedSubview(self.emailInput)
     self.stackView.addArrangedSubview(self.passwordInput)
+    self.stackView.addArrangedSubview(self.bioInput)
     self.stackView.addArrangedSubview(self.consentCheckbox)
     self.stackView.addArrangedSubview(self.continueButton)
 
     self.pageControl.onSelectionChange = { [weak self] selectedPage in
       guard let self else { return }
 
-      if selectedPage == .signIn && self.nameInput.isFirstResponder {
-        self.emailInput.becomeFirstResponder()
-      }
-
+      self.dismissKeyboard()
       self.update()
     }
     self.nameInput.onValueChange = { [weak self] _ in
@@ -148,6 +153,7 @@ final class UIKitLogin: UIViewController {
     self.nameInput.resignFirstResponder()
     self.emailInput.resignFirstResponder()
     self.passwordInput.resignFirstResponder()
+    self.bioInput.resignFirstResponder()
   }
 
   private func style() {
@@ -185,9 +191,11 @@ final class UIKitLogin: UIViewController {
     switch self.pageControl.selectedId {
     case .signIn:
       self.nameInput.isHidden = true
+      self.bioInput.isHidden = true
       self.titleLabel.text = "Welcome back"
     case .signUp:
       self.nameInput.isHidden = false
+      self.bioInput.isHidden = false
       self.titleLabel.text = "Create an account"
     }
 
@@ -204,6 +212,9 @@ final class UIKitLogin: UIViewController {
       $0.isEnabled = !self.isLoading
     }
     self.consentCheckbox.model.update {
+      $0.isEnabled = !self.isLoading
+    }
+    self.bioInput.model.update {
       $0.isEnabled = !self.isLoading
     }
     self.continueButton.model.update { [weak self] in

@@ -21,6 +21,9 @@ struct App: View {
           NavigationLinkWithTitle("Segmented Control") {
             SegmentedControlPreview()
           }
+          NavigationLinkWithTitle("Text Field") {
+            TextInputPreviewPreview()
+          }
         }
 
         Section("Login Demo") {
