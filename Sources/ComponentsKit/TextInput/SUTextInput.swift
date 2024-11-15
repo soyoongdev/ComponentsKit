@@ -16,14 +16,14 @@ public struct SUTextInput<FocusValue: Hashable>: View {
   /// This enables centralized focus management for multiple text inputs and input fields within a single view.
   @FocusState.Binding public var globalFocus: FocusValue
 
-  /// The unique value for this text input to match against the global focus state to determine whether the text input is focused.
+  /// The unique value for this field to match against the global focus state to determine whether this text input is focused.
   ///
-  /// Determines the local focus value for this particular text input. It is compared with globalFocus to
-  /// decide if this text input should be focused. If globalFocus matches the value of localFocus, the
+  /// Determines the local focus value for this particular text input. It is compared with `globalFocus` to
+  /// decide if this text input should be focused. If `globalFocus` matches the value of `localFocus`, the
   /// text input gains focus, allowing the user to interact with it.
   ///
-  /// - Warning: The localFocus value must be unique to each text input and input field, to ensure that different
-  /// text inputs and input fields within the same view can be independently focused based on the shared globalFocus.
+  /// - Warning: The `localFocus` value must be unique to each text input and input field, to ensure that different
+  /// text inputs and input fields within the same view can be independently focused based on the shared `globalFocus`.
   public var localFocus: FocusValue
 
   @Environment(\.colorScheme) private var colorScheme
