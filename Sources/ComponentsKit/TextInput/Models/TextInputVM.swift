@@ -129,6 +129,13 @@ extension TextInputVM {
   var placeholderColor: UniversalColor {
     return self.foregroundColor.withOpacity(self.isEnabled ? 0.7 : 0.3)
   }
+
+  func shouldUpdateLayout(_ oldModel: Self) -> Bool {
+    return self.size != oldModel.size
+    || self.font != oldModel.font
+    || self.minRows != oldModel.minRows
+    || self.maxRows != oldModel.maxRows
+  }
 }
 
 // MARK: - SwiftUI Helpers

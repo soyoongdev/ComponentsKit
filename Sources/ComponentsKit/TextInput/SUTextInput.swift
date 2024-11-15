@@ -52,71 +52,71 @@ public struct SUTextInput<FocusValue: Hashable>: View {
   // MARK: - Body
 
   public var body: some View {
-    GeometryReader { scrollViewGeometry in
-      ScrollView {
-        ZStack(alignment: .topLeading) {
-          TextEditor(text: self.$text)
-            .contentMargins(self.model.contentPadding)
-            .transparentScrollBackground()
-            .frame(
-              minHeight: self.model.minTextInputHeight,
-              maxHeight: min(self.model.maxTextInputHeight, scrollViewGeometry.size.height)
-            )
-            .fixedSize(horizontal: false, vertical: true)
-            .lineSpacing(0)
-            .font(self.model.preferredFont.font)
-            .foregroundStyle(self.model.foregroundColor.color(for: self.colorScheme))
-            .tint(self.model.tintColor.color(for: self.colorScheme))
-            .focused(self.$globalFocus, equals: self.localFocus)
-            .disabled(!self.model.isEnabled)
-            .keyboardType(self.model.keyboardType)
-            .submitLabel(self.model.submitType.submitLabel)
-            .autocorrectionDisabled(!self.model.isAutocorrectionEnabled)
-            .textInputAutocapitalization(self.model.autocapitalization.textInputAutocapitalization)
+    ZStack(alignment: .topLeading) {
+      TextEditor(text: self.$text)
+        .contentMargins(self.model.contentPadding)
+        .transparentScrollBackground()
+        .frame(
+          minHeight: self.model.minTextInputHeight,
+          maxHeight: max(
+            self.model.minTextInputHeight,
+            min(self.model.maxTextInputHeight, self.textEditorHeight)
+          )
+        )
+        .lineSpacing(0)
+        .font(self.model.preferredFont.font)
+        .foregroundStyle(self.model.foregroundColor.color(for: self.colorScheme))
+        .tint(self.model.tintColor.color(for: self.colorScheme))
+        .focused(self.$globalFocus, equals: self.localFocus)
+        .disabled(!self.model.isEnabled)
+        .keyboardType(self.model.keyboardType)
+        .submitLabel(self.model.submitType.submitLabel)
+        .autocorrectionDisabled(!self.model.isAutocorrectionEnabled)
+        .textInputAutocapitalization(self.model.autocapitalization.textInputAutocapitalization)
 
-          if let placeholder = self.model.placeholder,
-             self.text.isEmpty {
-            Text(placeholder)
-              .font(self.model.preferredFont.font)
-              .foregroundStyle(
-                self.model.placeholderColor.color(for: self.colorScheme)
-              )
-              .padding(self.model.contentPadding)
-          }
-        }
-        .background(
-          GeometryReader { textEditorGeometry in
-            Color.clear
-              .onAppear {
-                self.textEditorHeight = textEditorGeometry.size.height
-              }
-              .onChange(of: self.text) { _ in
-                self.textEditorHeight = textEditorGeometry.size.height
-              }
-              .onChange(of: self.model.maxTextInputHeight) { _ in
-                self.textEditorHeight = textEditorGeometry.size.height
-              }
-              .onChange(of: self.model.minTextInputHeight) { _ in
-                self.textEditorHeight = textEditorGeometry.size.height
-              }
-          }
-        )
+      if let placeholder = self.model.placeholder,
+         self.text.isEmpty {
+        Text(placeholder)
+          .font(self.model.preferredFont.font)
+          .foregroundStyle(
+            self.model.placeholderColor.color(for: self.colorScheme)
+          )
+          .padding(self.model.contentPadding)
       }
-      .frame(height: self.textEditorHeight)
-      .background(self.model.backgroundColor.color(for: self.colorScheme))
-      .onTapGesture {
-        self.globalFocus = self.localFocus
-      }
-      .clipShape(
-        RoundedRectangle(
-          cornerRadius: self.model.adaptedCornerRadius.value()
-        )
-      )
-      .position(
-        x: scrollViewGeometry.frame(in: .local).midX,
-        y: scrollViewGeometry.frame(in: .local).midY
-      )
     }
+    .background(
+      GeometryReader { geometry in
+        self.model.backgroundColor.color(for: self.colorScheme)
+          .onAppear {
+            self.textEditorHeight = TextInputHeightCalculator.height(
+              for: self.text,
+              model: self.model,
+              width: geometry.size.width
+            )
+          }
+          .onChange(of: self.text) { newText in
+            self.textEditorHeight = TextInputHeightCalculator.height(
+              for: newText,
+              model: self.model,
+              width: geometry.size.width
+            )
+          }
+          .onChange(of: self.model) { [oldValue = self.model] newModel in
+            if newModel.shouldUpdateLayout(oldValue) {
+              self.textEditorHeight = TextInputHeightCalculator.height(
+                for: self.text,
+                model: newModel,
+                width: geometry.size.width
+              )
+            }
+          }
+      }
+    )
+    .clipShape(
+      RoundedRectangle(
+        cornerRadius: self.model.adaptedCornerRadius.value()
+      )
+    )
   }
 }
 
