@@ -136,24 +136,7 @@ extension TextInputVM {
     || self.minRows != oldModel.minRows
     || self.maxRows != oldModel.maxRows
   }
-}
 
-// MARK: - UIKit Helpers
-
-extension TextInputVM {
-  func shouldUpdateCornerRadius(_ oldModel: Self) -> Bool {
-    return self.adaptedCornerRadius != oldModel.adaptedCornerRadius
-  }
-}
-
-// MARK: - SwiftUI Helpers
-
-extension TextInputVM {
-  var autocorrectionType: UITextAutocorrectionType {
-    return self.isAutocorrectionEnabled ? .yes : .no
-  }
-
-  /// Calculates the minimum height based on `minRows`.
   var minTextInputHeight: CGFloat {
     let numberOfRows: Int
     if let maxRows {
@@ -164,9 +147,6 @@ extension TextInputVM {
     return self.height(forRows: numberOfRows)
   }
 
-  /// Calculates the maximum height based on `maxRows`.
-  ///
-  /// Defaults to a high value if `maxRows` is `nil`.
   var maxTextInputHeight: CGFloat {
     if let maxRows {
       return self.height(forRows: maxRows)
@@ -175,13 +155,20 @@ extension TextInputVM {
     }
   }
 
-  /// Computes the height of the text input for a given number of rows.
-  ///
-  /// - Parameter rows: The number of rows.
-  /// - Returns: The calculated height based on rows and padding.
   private func height(forRows rows: Int) -> CGFloat {
     // TODO: [2] Show a warning if number of rows less than 1
     let numberOfRows = max(1, rows)
     return self.preferredFont.uiFont.lineHeight * CGFloat(numberOfRows) + 2 * self.contentPadding
+  }
+}
+
+// MARK: - UIKit Helpers
+
+extension TextInputVM {
+  var autocorrectionType: UITextAutocorrectionType {
+    return self.isAutocorrectionEnabled ? .yes : .no
+  }
+  func shouldUpdateCornerRadius(_ oldModel: Self) -> Bool {
+    return self.adaptedCornerRadius != oldModel.adaptedCornerRadius
   }
 }
