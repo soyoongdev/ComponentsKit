@@ -35,7 +35,7 @@ public struct SUTextInput<FocusValue: Hashable>: View {
   /// - Parameters:
   ///   - text: A Binding value to control the inputted text.
   ///   - globalFocus: The shared state controlling focus across multiple text inputs and input fields.
-  ///   - localFocus: The unique value for this field to match against the global focus state to determine focus.
+  ///   - localFocus: The unique value for this text input to match against the global focus state to determine focus.
   ///   - model: A model that defines the appearance properties.
   public init(
     text: Binding<String>,
