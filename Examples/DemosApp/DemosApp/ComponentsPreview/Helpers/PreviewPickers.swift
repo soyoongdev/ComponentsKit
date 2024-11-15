@@ -150,12 +150,14 @@ struct SubmitTypePicker: View {
 
 // MARK: - UniversalColorPicker
 
-struct UniversalColorPicker: View {
+struct UniversalColorPicker<Custom: View>: View {
   let title: String
   @Binding var selection: UniversalColor
+  @ViewBuilder var custom: () -> Custom
 
   var body: some View {
     Picker(self.title, selection: self.$selection) {
+      self.custom()
       Text("Primary").tag(UniversalColor.primary)
       Text("Secondary").tag(UniversalColor.secondary)
       Text("Accent").tag(UniversalColor.accent)

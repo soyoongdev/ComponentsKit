@@ -53,7 +53,7 @@ struct InputFieldPreview: View {
         UniversalColorPicker(
           title: "Tint Color",
           selection: self.$model.tintColor
-        )
+        ) {}
         Toggle("Title", isOn: .init(
           get: {
             return self.model.title != nil
