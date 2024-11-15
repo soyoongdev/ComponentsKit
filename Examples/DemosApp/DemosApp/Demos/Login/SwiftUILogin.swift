@@ -108,6 +108,7 @@ struct SwiftUILogin: View {
                 $0.placeholder = "Tell about yourself"
                 $0.minRows = 3
                 $0.maxRows = 5
+                $0.isEnabled = !self.isLoading
               }
             )
           }
