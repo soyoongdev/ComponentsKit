@@ -27,7 +27,7 @@ public struct SUTextInput<FocusValue: Hashable>: View {
   public var localFocus: FocusValue
 
   @Environment(\.colorScheme) private var colorScheme
-  @State private var textEditorHeight: CGFloat = 0
+  @State private var textEditorPreferredHeight: CGFloat = 0
 
   // MARK: - Initialization
 
@@ -60,7 +60,10 @@ public struct SUTextInput<FocusValue: Hashable>: View {
           minHeight: self.model.minTextInputHeight,
           maxHeight: max(
             self.model.minTextInputHeight,
-            min(self.model.maxTextInputHeight, self.textEditorHeight)
+            min(
+              self.model.maxTextInputHeight,
+              self.textEditorPreferredHeight
+            )
           )
         )
         .lineSpacing(0)
@@ -88,14 +91,14 @@ public struct SUTextInput<FocusValue: Hashable>: View {
       GeometryReader { geometry in
         self.model.backgroundColor.color(for: self.colorScheme)
           .onAppear {
-            self.textEditorHeight = TextInputHeightCalculator.height(
+            self.textEditorPreferredHeight = TextInputHeightCalculator.preferredHeight(
               for: self.text,
               model: self.model,
               width: geometry.size.width
             )
           }
           .onChange(of: self.text) { newText in
-            self.textEditorHeight = TextInputHeightCalculator.height(
+            self.textEditorPreferredHeight = TextInputHeightCalculator.preferredHeight(
               for: newText,
               model: self.model,
               width: geometry.size.width
@@ -103,7 +106,7 @@ public struct SUTextInput<FocusValue: Hashable>: View {
           }
           .onChange(of: self.model) { [oldValue = self.model] newModel in
             if newModel.shouldUpdateLayout(oldValue) {
-              self.textEditorHeight = TextInputHeightCalculator.height(
+              self.textEditorPreferredHeight = TextInputHeightCalculator.preferredHeight(
                 for: self.text,
                 model: newModel,
                 width: geometry.size.width
