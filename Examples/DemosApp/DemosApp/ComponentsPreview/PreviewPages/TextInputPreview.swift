@@ -13,7 +13,7 @@ struct TextInputPreviewPreview: View {
   @State private var text: String = ""
   @FocusState private var isFocused: Bool
 
-  private let textInput = PreviewTextInput()
+  @ObservedObject private var textInput = PreviewTextInput()
 
   var body: some View {
     VStack {
@@ -77,9 +77,8 @@ struct TextInputPreviewPreview: View {
   }
 }
 
-@Observable
-private final class PreviewTextInput: UKTextInput {
-  var isEditing: Bool = false
+private final class PreviewTextInput: UKTextInput, ObservableObject {
+  @Published var isEditing: Bool = false
 
   func textViewDidBeginEditing(_ textView: UITextView) {
     self.isEditing = true

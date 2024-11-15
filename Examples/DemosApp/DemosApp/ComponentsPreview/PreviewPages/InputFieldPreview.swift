@@ -12,7 +12,7 @@ struct InputFieldPreview: View {
   @FocusState private var isFocused: Bool
 
   private let inputField = UKInputField()
-  private let inputFieldDelegate = InputFieldDelegate()
+  @ObservedObject private var inputFieldDelegate = InputFieldDelegate()
 
   var body: some View {
     VStack {
@@ -80,9 +80,8 @@ struct InputFieldPreview: View {
   }
 }
 
-@Observable
-private final class InputFieldDelegate: NSObject, UITextFieldDelegate {
-  var isEditing: Bool = false
+private final class InputFieldDelegate: NSObject, ObservableObject, UITextFieldDelegate {
+  @Published var isEditing: Bool = false
 
   func textFieldDidBeginEditing(_ textField: UITextField) {
     self.isEditing = true
