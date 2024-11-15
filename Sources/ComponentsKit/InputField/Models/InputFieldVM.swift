@@ -133,6 +133,9 @@ extension InputFieldVM {
 // MARK: - UIKit Helpers
 
 extension InputFieldVM {
+  var autocorrectionType: UITextAutocorrectionType {
+    return self.isAutocorrectionEnabled ? .yes : .no
+  }
   var nsAttributedPlaceholder: NSAttributedString? {
     guard let placeholder else {
       return nil
@@ -178,14 +181,14 @@ extension InputFieldVM {
     || self.spacing != oldModel.spacing
     || self.cornerRadius != oldModel.cornerRadius
   }
+  func shouldUpdateCornerRadius(_ oldModel: Self) -> Bool {
+    return self.cornerRadius != oldModel.cornerRadius
+  }
 }
 
 // MARK: - SwiftUI Helpers
 
 extension InputFieldVM {
-  var autocorrectionType: UITextAutocorrectionType {
-    return self.isAutocorrectionEnabled ? .yes : .no
-  }
   var attributedTitle: AttributedString? {
     guard let nsAttributedTitle else {
       return nil

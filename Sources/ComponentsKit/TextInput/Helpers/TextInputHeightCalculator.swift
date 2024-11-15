@@ -5,7 +5,7 @@ struct TextInputHeightCalculator {
 
   private init() {}
 
-  static func height(
+  static func preferredHeight(
     for text: String,
     model: TextInputVM,
     width: CGFloat
@@ -22,12 +22,7 @@ struct TextInputHeightCalculator {
   private static func style(_ textView: UITextView, with model: TextInputVM) {
     self.textView.isScrollEnabled = false
     self.textView.font = model.preferredFont.uiFont
-    self.textView.textContainerInset = .init(
-      top: model.contentPadding,
-      left: model.contentPadding,
-      bottom: model.contentPadding,
-      right: model.contentPadding
-    )
+    self.textView.textContainerInset = .init(inset: model.contentPadding)
     self.textView.textContainer.lineFragmentPadding = 0
   }
 }

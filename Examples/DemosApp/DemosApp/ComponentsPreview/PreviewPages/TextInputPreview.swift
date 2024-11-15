@@ -13,11 +13,15 @@ struct TextInputPreviewPreview: View {
   @State private var text: String = ""
   @FocusState private var isFocused: Bool
 
-  private let inputField = UKInputField()
-  private let inputFieldDelegate = InputFieldDelegate()
+  private let textInput = PreviewTextInput()
 
   var body: some View {
     VStack {
+      PreviewWrapper(title: "UIKit") {
+        UKComponentPreview(model: self.model) {
+          self.textInput
+        }
+      }
       PreviewWrapper(title: "SwiftUI") {
         SUTextInput(
           text: self.$text,
@@ -62,10 +66,10 @@ struct TextInputPreviewPreview: View {
     }
     .toolbar {
       ToolbarItem(placement: .primaryAction) {
-        if (self.inputFieldDelegate.isEditing || self.isFocused) && !ProcessInfo.processInfo.isiOSAppOnMac {
+        if (self.textInput.isEditing || self.isFocused) && !ProcessInfo.processInfo.isiOSAppOnMac {
           Button("Hide Keyboard") {
             self.isFocused = false
-            self.inputField.resignFirstResponder()
+            self.textInput.resignFirstResponder()
           }
         }
       }
@@ -74,13 +78,13 @@ struct TextInputPreviewPreview: View {
 }
 
 @Observable
-private final class InputFieldDelegate: NSObject, UITextFieldDelegate {
+private final class PreviewTextInput: UKTextInput {
   var isEditing: Bool = false
 
-  func textFieldDidBeginEditing(_ textField: UITextField) {
+  func textViewDidBeginEditing(_ textView: UITextView) {
     self.isEditing = true
   }
-  func textFieldDidEndEditing(_ textField: UITextField) {
+  func textViewDidEndEditing(_ textView: UITextView) {
     self.isEditing = false
   }
 }
