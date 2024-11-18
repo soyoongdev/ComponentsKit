@@ -1,12 +1,21 @@
 import UIKit
 
+/// A UIKit component that displays a separating line.
 open class UKDivider: UIView, UKComponent {
+  // MARK: - Properties
+
+  /// A model that defines the appearance properties.
   public var model: DividerVM {
     didSet {
       self.update(oldValue)
     }
   }
 
+  // MARK: - Initializers
+
+  /// Initializer.
+  /// - Parameters:
+  ///   - model: A model that defines the appearance properties.
   public init(model: DividerVM = .init()) {
     self.model = model
     super.init(frame: .zero)
@@ -17,9 +26,13 @@ open class UKDivider: UIView, UKComponent {
     fatalError("init(coder:) has not been implemented")
   }
 
+  // MARK: - Setup
+
   private func setup() {
     self.backgroundColor = self.model.color.uiColor
   }
+
+  // MARK: - Update
 
   public func update(_ oldModel: DividerVM) {
     guard self.model != oldModel else { return }
@@ -33,9 +46,13 @@ open class UKDivider: UIView, UKComponent {
     self.setNeedsLayout()
   }
 
+  // MARK: - Layout
+
   open override func layoutSubviews() {
     super.layoutSubviews()
   }
+
+  // MARK: - UIView Properties
 
   open override var intrinsicContentSize: CGSize {
     return self.sizeThatFits(UIView.layoutFittingExpandedSize)

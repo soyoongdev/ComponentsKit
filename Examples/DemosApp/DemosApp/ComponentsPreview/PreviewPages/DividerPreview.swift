@@ -4,7 +4,7 @@ import UIKit
 
 struct DividerPreview: View {
   @State private var model = DividerVM()
-  
+
   var body: some View {
     VStack {
       PreviewWrapper(title: "UIKit") {
