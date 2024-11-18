@@ -12,6 +12,9 @@ struct App: View {
           NavigationLinkWithTitle("Checkbox") {
             CheckboxPreview()
           }
+          NavigationLinkWithTitle("Divider") {
+            DividerPreview()
+          }
           NavigationLinkWithTitle("Input Field") {
             InputFieldPreview()
           }
@@ -23,9 +26,6 @@ struct App: View {
           }
           NavigationLinkWithTitle("Text Field") {
             TextInputPreviewPreview()
-          }
-          NavigationLinkWithTitle("Divider") {
-            DividerPreview()
           }
         }
 
