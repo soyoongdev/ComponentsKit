@@ -7,6 +7,11 @@ struct DividerPreview: View {
   
   var body: some View {
     VStack {
+      PreviewWrapper(title: "UIKit") {
+        UKComponentPreview(model: self.model) {
+          UKDivider(model: self.model)
+        }
+      }
       PreviewWrapper(title: "SwiftUI") {
         SUDivider(model: self.model)
       }
