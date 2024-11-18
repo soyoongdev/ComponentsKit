@@ -3,7 +3,7 @@ import SwiftUI
 
 struct App: View {
   var body: some View {
-    NavigationStack {
+    NavigationView {
       List {
         Section("Components") {
           NavigationLinkWithTitle("Button") {
@@ -30,10 +30,10 @@ struct App: View {
         }
 
         Section("Login Demo") {
-          NavigationLink("SwiftUI") {
+          NavigationLinkWithTitle("SwiftUI") {
             SwiftUILogin()
           }
-          NavigationLink("UIKit") {
+          NavigationLinkWithTitle("UIKit") {
             UIViewControllerRepresenting {
               UIKitLogin()
             }

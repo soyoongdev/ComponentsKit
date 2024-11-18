@@ -115,7 +115,7 @@ final class UIKitLogin: UIViewController {
     self.stackView.addArrangedSubview(self.consentCheckbox)
     self.stackView.addArrangedSubview(self.continueButton)
 
-    self.pageControl.onSelectionChange = { [weak self] selectedPage in
+    self.pageControl.onSelectionChange = { [weak self] _ in
       guard let self else { return }
 
       self.dismissKeyboard()
