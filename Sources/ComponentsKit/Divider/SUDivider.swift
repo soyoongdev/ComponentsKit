@@ -1,6 +1,6 @@
 import SwiftUI
 
-/// A SwiftUI component that displays a divider.
+/// A SwiftUI component that displays a separating line.
 public struct SUDivider: View {
   // MARK: - Properties
 
@@ -22,24 +22,10 @@ public struct SUDivider: View {
 
   public var body: some View {
     Rectangle()
-      .fill(self.model.color.color(for: colorScheme))
+      .fill(self.model.color.color(for: self.colorScheme))
       .frame(
-        width: self.model.orientation == .vertical ? model.lineSize : nil,
-        height: self.model.orientation == .horizontal ? model.lineSize : nil
+        maxWidth: self.model.orientation == .vertical ? self.model.lineSize : nil,
+        maxHeight: self.model.orientation == .horizontal ? self.model.lineSize : nil
       )
-  }
-}
-
-// MARK: - Previews
-
-struct CustomDivider_Previews: PreviewProvider {
-  static var previews: some View {
-    SUDivider(
-      model: .init {
-        $0.size = .large
-        $0.color = .danger
-        $0.orientation = .horizontal
-      }
-    )
   }
 }

@@ -24,6 +24,9 @@ struct App: View {
           NavigationLinkWithTitle("Text Field") {
             TextInputPreviewPreview()
           }
+          NavigationLinkWithTitle("Divider") {
+            DividerPreview()
+          }
         }
 
         Section("Login Demo") {

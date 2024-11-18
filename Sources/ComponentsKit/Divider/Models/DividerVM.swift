@@ -5,7 +5,7 @@ public struct DividerVM: ComponentVM {
   /// The orientation of the divider (horizontal or vertical).
   ///
   /// Defaults to `.horizontal`.
-  public var orientation: Orientation = .horizontal
+  public var orientation: DividerOrientation = .horizontal
 
   /// The color of the divider.
   ///
@@ -33,13 +33,5 @@ extension DividerVM {
     case .large:
       return 2.0
     }
-  }
-}
-
-extension DividerVM {
-  /// Defines the possible orientations for the divider.
-  public enum Orientation {
-    case horizontal
-    case vertical
   }
 }
