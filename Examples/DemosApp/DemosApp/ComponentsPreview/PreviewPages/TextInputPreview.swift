@@ -61,7 +61,7 @@ struct TextInputPreviewPreview: View {
         UniversalColorPicker(
           title: "Tint Color",
           selection: self.$model.tintColor
-        ) {}
+        )
       }
     }
     .toolbar {

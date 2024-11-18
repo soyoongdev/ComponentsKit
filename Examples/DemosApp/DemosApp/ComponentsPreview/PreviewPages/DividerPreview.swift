@@ -4,7 +4,7 @@ import UIKit
 
 struct DividerPreview: View {
   @State private var model = DividerVM()
-
+  
   var body: some View {
     VStack {
       PreviewWrapper(title: "SwiftUI") {
@@ -16,11 +16,15 @@ struct DividerPreview: View {
           Text("Vertical").tag(DividerVM.Orientation.vertical)
         }
         SizePicker(selection: self.$model.size)
-        UniversalColorPicker(
-          title: "Color",
-          selection: self.$model.color
-        ) {
+        Picker("Color", selection: self.$model.color) {
           Text("Default").tag(Palette.Base.divider)
+          Text("Primary").tag(UniversalColor.primary)
+          Text("Secondary").tag(UniversalColor.secondary)
+          Text("Accent").tag(UniversalColor.accent)
+          Text("Success").tag(UniversalColor.success)
+          Text("Warning").tag(UniversalColor.warning)
+          Text("Danger").tag(UniversalColor.danger)
+          Text("Custom").tag(UniversalColor.universal(.uiColor(.systemPurple)))
         }
       }
     }
