@@ -11,20 +11,10 @@ open class UKDivider: UIView, UKComponent {
     }
   }
 
-  // MARK: - UIView methods
+  // MARK: - UIView Properties
 
   open override var intrinsicContentSize: CGSize {
     return self.sizeThatFits(UIView.layoutFittingExpandedSize)
-  }
-
-  open override func sizeThatFits(_ size: CGSize) -> CGSize {
-    let lineSize = self.model.lineSize
-    switch self.model.orientation {
-    case .vertical:
-      return CGSize(width: lineSize, height: size.height)
-    case .horizontal:
-      return CGSize(width: size.width, height: lineSize)
-    }
   }
 
   // MARK: - Initializers
@@ -59,6 +49,18 @@ open class UKDivider: UIView, UKComponent {
 
     if self.model.shouldUpdateLayout(oldModel) {
       self.invalidateIntrinsicContentSize()
+    }
+  }
+
+  // MARK: - UIView Methods
+
+  open override func sizeThatFits(_ size: CGSize) -> CGSize {
+    let lineSize = self.model.lineSize
+    switch self.model.orientation {
+    case .vertical:
+      return CGSize(width: lineSize, height: size.height)
+    case .horizontal:
+      return CGSize(width: size.width, height: lineSize)
     }
   }
 }

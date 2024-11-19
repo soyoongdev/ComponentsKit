@@ -34,7 +34,11 @@ extension DividerVM {
       return 2.0
     }
   }
+}
 
+// MARK: - UIKit Helpers
+
+extension DividerVM {
   func shouldUpdateLayout(_ oldModel: Self) -> Bool {
     return self.orientation != oldModel.orientation
     || self.size != oldModel.size
