@@ -11,48 +11,7 @@ open class UKDivider: UIView, UKComponent {
     }
   }
 
-  // MARK: - Initializers
-
-  /// Initializer.
-  /// - Parameters:
-  ///   - model: A model that defines the appearance properties.
-  public init(model: DividerVM = .init()) {
-    self.model = model
-    super.init(frame: .zero)
-    self.setup()
-  }
-
-  public required init?(coder: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
-  }
-
-  // MARK: - Setup
-
-  private func setup() {
-    self.backgroundColor = self.model.color.uiColor
-  }
-
-  // MARK: - Update
-
-  public func update(_ oldModel: DividerVM) {
-    guard self.model != oldModel else { return }
-
-    self.backgroundColor = self.model.color.uiColor
-
-    if self.model.orientation != oldModel.orientation || self.model.size != oldModel.size {
-      self.invalidateIntrinsicContentSize()
-    }
-
-    self.setNeedsLayout()
-  }
-
-  // MARK: - Layout
-
-  open override func layoutSubviews() {
-    super.layoutSubviews()
-  }
-
-  // MARK: - UIView Properties
+  // MARK: - UIView methods
 
   open override var intrinsicContentSize: CGSize {
     return self.sizeThatFits(UIView.layoutFittingExpandedSize)
@@ -65,6 +24,41 @@ open class UKDivider: UIView, UKComponent {
       return CGSize(width: lineSize, height: size.height)
     case .horizontal:
       return CGSize(width: size.width, height: lineSize)
+    }
+  }
+
+  // MARK: - Initializers
+
+  /// Initializer.
+  /// - Parameters:
+  ///   - model: A model that defines the appearance properties.
+  public init(model: DividerVM = .init()) {
+    self.model = model
+    super.init(frame: .zero)
+    self.style()
+  }
+
+  public required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+
+  // MARK: - Setup
+
+  private func style() {
+    self.backgroundColor = self.model.color.uiColor
+    self.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+    self.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
+  }
+
+  // MARK: - Update
+
+  public func update(_ oldModel: DividerVM) {
+    guard self.model != oldModel else { return }
+
+    self.backgroundColor = self.model.color.uiColor
+
+    if self.model.shouldUpdateLayout(oldModel) {
+      self.invalidateIntrinsicContentSize()
     }
   }
 }

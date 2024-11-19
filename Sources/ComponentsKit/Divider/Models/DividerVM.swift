@@ -34,4 +34,9 @@ extension DividerVM {
       return 2.0
     }
   }
+
+  func shouldUpdateLayout(_ oldModel: Self) -> Bool {
+    return self.orientation != oldModel.orientation
+    || self.size != oldModel.size
+  }
 }
