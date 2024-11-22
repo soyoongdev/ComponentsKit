@@ -2,13 +2,17 @@ import SwiftUI
 
 public struct SURadioGroup<ID: Hashable>: View {
   @Binding var selectedId: ID?
+
   public var model: RadioGroupVM<ID>
 
   @Environment(\.colorScheme) private var colorScheme
 
   @State private var tappingId: ID?
 
-  public init(selectedId: Binding<ID?>, model: RadioGroupVM<ID>) {
+  public init(
+    selectedId: Binding<ID?>,
+    model: RadioGroupVM<ID>
+  ) {
     self._selectedId = selectedId
     self.model = model
   }
@@ -20,14 +24,14 @@ public struct SURadioGroup<ID: Hashable>: View {
           ZStack {
             Circle()
               .strokeBorder(
-                self.selectedId == item.id ? self.model.color.color(for: self.colorScheme) : Color.secondary,
-                lineWidth: 2
+                self.adjustedColor(for: item),
+                lineWidth: self.model.lineWidth
               )
-              .frame(width: 20, height: 20)
+              .frame(maxWidth: self.model.circleSize, maxHeight: self.model.circleSize)
             if self.selectedId == item.id {
               Circle()
-                .fill(self.model.color.color(for: self.colorScheme))
-                .frame(width: 12, height: 12)
+                .fill(self.adjustedColor(for: item))
+                .frame(maxWidth: self.model.innerCircleSize, maxHeight: self.model.innerCircleSize)
                 .transition(.scale)
             }
           }
@@ -35,7 +39,7 @@ public struct SURadioGroup<ID: Hashable>: View {
           .scaleEffect(self.tappingId == item.id ? 0.92 : 1.0)
           Text(item.title)
             .font(item.font?.font ?? self.model.font?.font ?? .body)
-            .foregroundColor(.primary)
+            .foregroundColor(self.textColor(for: item))
         }
         .contentShape(Rectangle())
         .gesture(
@@ -59,5 +63,21 @@ public struct SURadioGroup<ID: Hashable>: View {
         .disabled(!item.isEnabled || !self.model.isEnabled)
       }
     }
+  }
+
+  private func adjustedColor(for item: RadioItemVM<ID>) -> Color {
+    let baseColor = self.selectedId == item.id
+    ? self.model.color.color(for: self.colorScheme)
+    : Color.secondary
+    return (!item.isEnabled || !self.model.isEnabled)
+    ? baseColor.opacity(0.5)
+    : baseColor
+  }
+
+  private func textColor(for item: RadioItemVM<ID>) -> Color {
+    let baseColor = Color.primary
+    return (!item.isEnabled || !self.model.isEnabled)
+    ? baseColor.opacity(0.5)
+    : baseColor
   }
 }

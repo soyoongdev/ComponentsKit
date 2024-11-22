@@ -21,6 +21,9 @@ struct App: View {
           NavigationLinkWithTitle("Loading") {
             LoadingPreview()
           }
+          NavigationLinkWithTitle("Radio Group") {
+            RadioGroupPreview()
+          }
           NavigationLinkWithTitle("Segmented Control") {
             SegmentedControlPreview()
           }
