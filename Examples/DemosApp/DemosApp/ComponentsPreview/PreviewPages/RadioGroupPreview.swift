@@ -9,7 +9,6 @@ struct RadioGroupPreview: View {
     model.items = [
       RadioItemVM(id: "option1") { item in
         item.title = "Option 1"
-        item.isEnabled = false
       },
       RadioItemVM(id: "option2") { item in
         item.title = "Option 2"

@@ -1,14 +1,24 @@
 import SwiftUI
 
+/// A SwiftUI component that displays a group of radio buttons, allowing users to select one option from multiple choices.
 public struct SURadioGroup<ID: Hashable>: View {
-  @Binding var selectedId: ID?
+  // MARK: Properties
 
+  /// A model that defines the appearance properties.
   public var model: RadioGroupVM<ID>
 
-  @Environment(\.colorScheme) private var colorScheme
+  /// A Binding value to control the selected identifier.
+  @Binding public var selectedId: ID?
 
+  @Environment(\.colorScheme) private var colorScheme
   @State private var tappingId: ID?
 
+  // MARK: Initialization
+
+  /// Initializer.
+  /// - Parameters:
+  ///   - selectedId: A binding to the selected identifier.
+  ///   - model: A model that defines the appearance properties.
   public init(
     selectedId: Binding<ID?>,
     model: RadioGroupVM<ID>
@@ -16,6 +26,8 @@ public struct SURadioGroup<ID: Hashable>: View {
     self._selectedId = selectedId
     self.model = model
   }
+
+  // MARK: Body
 
   public var body: some View {
     VStack(alignment: .leading, spacing: 8) {
@@ -65,6 +77,12 @@ public struct SURadioGroup<ID: Hashable>: View {
     }
   }
 
+  // MARK: Methods
+
+  /// Adjusts the color based on the item's state.
+  ///
+  /// - Parameter item: The radio item.
+  /// - Returns: The adjusted color for the radio button.
   private func adjustedColor(for item: RadioItemVM<ID>) -> Color {
     let baseColor = self.selectedId == item.id
     ? self.model.color.color(for: self.colorScheme)
@@ -74,6 +92,10 @@ public struct SURadioGroup<ID: Hashable>: View {
     : baseColor
   }
 
+  /// Determines the text color based on the item's state.
+  ///
+  /// - Parameter item: The radio item.
+  /// - Returns: The color for the item's text.
   private func textColor(for item: RadioItemVM<ID>) -> Color {
     let baseColor = Color.primary
     return (!item.isEnabled || !self.model.isEnabled)
