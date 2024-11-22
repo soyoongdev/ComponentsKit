@@ -15,10 +15,10 @@ public class UKCenterModalController: UKModalController<CenterModalVM> {
   public override func layout() {
     super.layout()
 
-    self.container.bottomAnchor.constraint(
+    self.containerWrapper.bottomAnchor.constraint(
       lessThanOrEqualTo: self.view.safeAreaLayoutGuide.bottomAnchor,
       constant: -20
     ).isActive = true
-    self.container.centerVertically()
+    self.containerWrapper.centerVertically()
   }
 }

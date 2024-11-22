@@ -1,7 +1,18 @@
 import Foundation
+import SwiftUICore
 
 /// A model that defines the appearance properties for a bottom modal component.
 public struct BottomModalVM: ModalVM {
+  public var backgroundColor: UniversalColor = Palette.Base.background
+
+  public var closesOnOverlayTap: Bool = true
+
+  public var contentPaddings: EdgeInsets = .init(top: 16, leading: 16, bottom: 16, trailing: 16)
+
+  public var hasCloseButton: Bool = false
+
+  public var overlayStyle: ModalOverlayStyle = .dimmed
+
   public var isDraggable: Bool = true
   public var hidesOnSwap: Bool = true
 

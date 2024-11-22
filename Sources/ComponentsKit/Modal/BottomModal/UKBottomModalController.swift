@@ -16,14 +16,15 @@ public class UKBottomModalController: UKModalController<BottomModalVM> {
     super.viewDidAppear(animated)
 
     UIView.animate(withDuration: 0.3) {
-      self.container.transform = .identity
+      self.containerWrapper.transform = .identity
+      self.overlay.alpha = 1
     }
   }
 
   public override func setup() {
     super.setup()
 
-    self.container.addGestureRecognizer(UIPanGestureRecognizer(
+    self.containerWrapper.addGestureRecognizer(UIPanGestureRecognizer(
       target: self,
       action: #selector(self.handleDragGesture)
     ))
@@ -32,7 +33,7 @@ public class UKBottomModalController: UKModalController<BottomModalVM> {
   public override func layout() {
     super.layout()
 
-    self.container.bottom(20, safeArea: true)
+    self.containerWrapper.bottom(20, safeArea: true)
   }
 
   public override func dismiss(
@@ -41,8 +42,8 @@ public class UKBottomModalController: UKModalController<BottomModalVM> {
   ) {
     if flag {
       UIView.animate(withDuration: 0.3) {
-        self.container.transform = .init(translationX: 0, y: self.view.screenBounds.height)
-        self.dimOverlay.backgroundColor = .clear
+        self.containerWrapper.transform = .init(translationX: 0, y: self.view.screenBounds.height)
+        self.overlay.alpha = 0
       } completion: { _ in
         super.dismiss(animated: false)
       }
@@ -62,20 +63,20 @@ extension UKBottomModalController {
 
     switch gesture.state {
     case .changed:
-      self.container.transform = .init(translationX: 0, y: offset)
+      self.containerWrapper.transform = .init(translationX: 0, y: offset)
     case .ended:
-      let viewHeight = self.container.frame.height
+      let viewHeight = self.containerWrapper.frame.height
       if abs(offset) > viewHeight / 2 || velocity > 250,
          self.model.hidesOnSwap {
         self.dismiss(animated: true)
       } else {
         UIView.animate(withDuration: 0.3) {
-          self.container.transform = .identity
+          self.containerWrapper.transform = .identity
         }
       }
     case .failed, .cancelled:
       UIView.animate(withDuration: 0.3) {
-        self.container.transform = .identity
+        self.containerWrapper.transform = .identity
       }
     default:
       break
@@ -111,7 +112,8 @@ extension UIViewController {
     completion: (() -> Void)? = nil
   ) {
     if animated {
-      vc.container.transform = .init(translationX: 0, y: self.view.screenBounds.height)
+      vc.containerWrapper.transform = .init(translationX: 0, y: self.view.screenBounds.height)
+      vc.overlay.alpha = 0
     }
     self.present(vc as UIViewController, animated: false)
   }
