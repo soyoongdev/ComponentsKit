@@ -6,7 +6,7 @@ open class UKModalController<VM: ModalVM>: UIViewController {
 
   public var content = UIView()
   public var containerWrapper = UIView()
-  public let container = UIView()
+  public let container = ContentSizedScrollView()
   public let overlay: UIView
 
   init(
@@ -79,8 +79,8 @@ open class UKModalController<VM: ModalVM>: UIViewController {
 
     self.content.top(self.model.contentPaddings.top)
     self.content.bottom(self.model.contentPaddings.bottom)
-    self.content.leading(self.model.contentPaddings.leading)
-    self.content.trailing(self.model.contentPaddings.trailing)
+    self.content.leading(self.model.contentPaddings.leading, to: self.containerWrapper)
+    self.content.trailing(self.model.contentPaddings.trailing, to: self.containerWrapper)
 
     self.containerWrapper.topAnchor.constraint(
       greaterThanOrEqualTo: self.view.safeAreaLayoutGuide.topAnchor,
@@ -124,8 +124,11 @@ extension UKModalController {
       view.layer.cornerRadius = 25
       view.clipsToBounds = true
     }
-    static func container(_ view: UIView, model: VM) {
-      view.backgroundColor = model.backgroundColor.uiColor
+    static func container(_ scrollView: UIScrollView, model: VM) {
+      scrollView.backgroundColor = model.backgroundColor.uiColor
+      scrollView.delaysContentTouches = false
+      scrollView.contentInsetAdjustmentBehavior = .never
+      scrollView.automaticallyAdjustsScrollIndicatorInsets = false
     }
   }
 }
