@@ -9,6 +9,8 @@ public struct CenterModalVM: ModalVM {
 
   public var contentPaddings: EdgeInsets = .init(top: 16, leading: 16, bottom: 16, trailing: 16)
 
+  public var contentSpacing: CGFloat = 16
+
   public var hasCloseButton: Bool = false
 
   public var overlayStyle: ModalOverlayStyle = .dimmed

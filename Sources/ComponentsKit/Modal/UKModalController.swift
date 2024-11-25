@@ -4,14 +4,19 @@ import UIKit
 open class UKModalController<VM: ModalVM>: UIViewController {
   public let model: VM
 
-  public var content = UIView()
-  public var containerWrapper = UIView()
-  public let container = ContentSizedScrollView()
+  public var header: UIView?
+  public var body = UIView()
+  public var footer: UIView?
+  public var container = UIView()
+  public let content = UIView()
+  public let bodyWrapper = ContentSizedScrollView()
   public let overlay: UIView
 
   init(
     model: VM = .init(),
-    content: (_ dismiss: @escaping (_ animated: Bool) -> Void) -> UIView
+    header: ((_ dismiss: @escaping (_ animated: Bool) -> Void) -> UIView)? = nil,
+    body: (_ dismiss: @escaping (_ animated: Bool) -> Void) -> UIView,
+    footer: ((_ dismiss: @escaping (_ animated: Bool) -> Void) -> UIView)? = nil
   ) {
     self.model = model
 
@@ -24,7 +29,13 @@ open class UKModalController<VM: ModalVM>: UIViewController {
 
     super.init(nibName: nil, bundle: nil)
 
-    self.content = content({ [weak self] animated in
+    self.header = header?({ [weak self] animated in
+      self?.dismiss(animated: animated)
+    })
+    self.body = body({ [weak self] animated in
+      self?.dismiss(animated: animated)
+    })
+    self.footer = footer?({ [weak self] animated in
       self?.dismiss(animated: animated)
     })
 
@@ -48,9 +59,17 @@ open class UKModalController<VM: ModalVM>: UIViewController {
 
   open func setup() {
     self.view.addSubview(self.overlay)
-    self.view.addSubview(self.containerWrapper)
-    self.containerWrapper.addSubview(self.container)
+    self.view.addSubview(self.container)
     self.container.addSubview(self.content)
+    if let header {
+      self.content.addSubview(header)
+    }
+    self.content.addSubview(self.bodyWrapper)
+    if let footer {
+      self.content.addSubview(footer)
+    }
+
+    self.bodyWrapper.addSubview(self.body)
 
     self.overlay.addGestureRecognizer(UITapGestureRecognizer(
       target: self,
@@ -67,41 +86,69 @@ open class UKModalController<VM: ModalVM>: UIViewController {
 
   open func style() {
     Self.Style.overlay(self.overlay, model: self.model)
-    Self.Style.containerWrapper(self.containerWrapper)
-    Self.Style.container(self.container, model: self.model)
+    Self.Style.container(self.container)
+    Self.Style.content(self.content, model: self.model)
+    Self.Style.bodyWrapper(self.bodyWrapper)
   }
 
   // MARK: - Layout
 
   open func layout() {
     self.overlay.allEdges()
-    self.container.allEdges()
+    self.content.allEdges()
 
-    self.content.top(self.model.contentPaddings.top)
-    self.content.bottom(self.model.contentPaddings.bottom)
-    self.content.leading(self.model.contentPaddings.leading, to: self.containerWrapper)
-    self.content.trailing(self.model.contentPaddings.trailing, to: self.containerWrapper)
+    if let header {
+      header.top(self.model.contentPaddings.top)
+      header.leading(self.model.contentPaddings.leading)
+      header.trailing(self.model.contentPaddings.trailing)
+      header.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
 
-    self.containerWrapper.topAnchor.constraint(
+      self.bodyWrapper.below(header, padding: self.model.contentSpacing)
+      self.body.top()
+    } else {
+      self.bodyWrapper.top()
+      self.body.top(self.model.contentPaddings.top)
+    }
+
+    if let footer {
+      footer.bottom(self.model.contentPaddings.top)
+      footer.leading(self.model.contentPaddings.leading)
+      footer.trailing(self.model.contentPaddings.trailing)
+      footer.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
+
+      self.bodyWrapper.above(footer, padding: self.model.contentSpacing)
+      self.body.bottom()
+    } else {
+      self.bodyWrapper.bottom()
+      self.body.bottom(self.model.contentPaddings.top)
+    }
+
+    self.bodyWrapper.horizontally()
+    self.bodyWrapper.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
+
+    self.body.leading(self.model.contentPaddings.leading, to: self.container)
+    self.body.trailing(self.model.contentPaddings.trailing, to: self.container)
+
+    self.container.topAnchor.constraint(
       greaterThanOrEqualTo: self.view.safeAreaLayoutGuide.topAnchor,
       constant: 20
     ).isActive = true
-    self.containerWrapper.leadingAnchor.constraint(
+    self.container.leadingAnchor.constraint(
       greaterThanOrEqualTo: self.view.safeAreaLayoutGuide.leadingAnchor,
       constant: 20
     ).isActive = true
-    self.containerWrapper.trailingAnchor.constraint(
+    self.container.trailingAnchor.constraint(
       lessThanOrEqualTo: self.view.safeAreaLayoutGuide.trailingAnchor,
       constant: -20
     ).isActive = true
-    self.containerWrapper.heightAnchor.constraint(
+    self.container.heightAnchor.constraint(
       greaterThanOrEqualToConstant: 80
     ).isActive = true
 
-    let containerWidthConstraint = self.containerWrapper.width(400).width
+    let containerWidthConstraint = self.container.width(400).width
     containerWidthConstraint?.priority = .defaultHigh
 
-    self.containerWrapper.centerHorizontally()
+    self.container.centerHorizontally()
   }
 }
 
@@ -119,13 +166,15 @@ extension UKModalController {
         (view as? UIVisualEffectView)?.effect = UIBlurEffect(style: .systemUltraThinMaterial)
       }
     }
-    static func containerWrapper(_ view: UIView) {
-      view.backgroundColor = .systemBackground
+    static func container(_ view: UIView) {
+      view.backgroundColor = Palette.Base.background.uiColor
       view.layer.cornerRadius = 25
       view.clipsToBounds = true
     }
-    static func container(_ scrollView: UIScrollView, model: VM) {
-      scrollView.backgroundColor = model.backgroundColor.uiColor
+    static func content(_ view: UIView, model: VM) {
+      view.backgroundColor = model.backgroundColor.uiColor
+    }
+    static func bodyWrapper(_ scrollView: UIScrollView) {
       scrollView.delaysContentTouches = false
       scrollView.contentInsetAdjustmentBehavior = .never
       scrollView.automaticallyAdjustsScrollIndicatorInsets = false

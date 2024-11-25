@@ -3,9 +3,11 @@ import UIKit
 public class UKCenterModalController: UKModalController<CenterModalVM> {
   public override init(
     model: CenterModalVM = .init(),
-    content: (_ dismiss: @escaping (_ animated: Bool) -> Void) -> UIView
+    header: ((_ dismiss: @escaping (_ animated: Bool) -> Void) -> UIView)? = nil,
+    body: (_ dismiss: @escaping (_ animated: Bool) -> Void) -> UIView,
+    footer: ((_ dismiss: @escaping (_ animated: Bool) -> Void) -> UIView)? = nil
   ) {
-    super.init(model: model, content: content)
+    super.init(model: model, header: header, body: body, footer: footer)
   }
 
   required public init?(coder: NSCoder) {
@@ -15,10 +17,10 @@ public class UKCenterModalController: UKModalController<CenterModalVM> {
   public override func layout() {
     super.layout()
 
-    self.containerWrapper.bottomAnchor.constraint(
+    self.container.bottomAnchor.constraint(
       lessThanOrEqualTo: self.view.safeAreaLayoutGuide.bottomAnchor,
       constant: -20
     ).isActive = true
-    self.containerWrapper.centerVertically()
+    self.container.centerVertically()
   }
 }
