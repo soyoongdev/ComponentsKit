@@ -66,27 +66,27 @@ public struct Layout: Initializable, Updatable {
 
   // MARK: Properties
 
-  public var disabledOpacity: CGFloat = 0.5
-  public var componentRadius: Radius = .init(
-    small: 10.0,
-    medium: 14.0,
-    large: 18.0
+  public var animationScale: AnimationScale = .init(
+    small: 0.99,
+    medium: 0.98,
+    large: 0.95
   )
   public var borderWidth: BorderWidth = .init(
     small: 1.0,
     medium: 2.0,
     large: 3.0
   )
-  public var animationScale: AnimationScale = .init(
-    small: 0.99,
-    medium: 0.98,
-    large: 0.95
-  )
   public var componentFont: Font = .init(
     small: .system(size: 14, weight: .regular),
     medium: .system(size: 18, weight: .regular),
     large: .system(size: 22, weight: .regular)
   )
+  public var componentRadius: Radius = .init(
+    small: 10.0,
+    medium: 14.0,
+    large: 18.0
+  )
+  public var disabledOpacity: CGFloat = 0.5
 
   public init() {}
 }
