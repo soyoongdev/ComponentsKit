@@ -3,7 +3,7 @@ import SwiftUICore
 
 public enum ModalOverlayStyle {
   case dimmed
-  case blured
+  case blurred
   case opaque
 }
 
