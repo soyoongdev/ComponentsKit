@@ -35,7 +35,7 @@ public class UKBottomModalController: UKModalController<BottomModalVM> {
   public override func layout() {
     super.layout()
 
-    self.container.bottom(20, safeArea: true)
+    self.container.bottom(self.model.modalPaddings.bottom, safeArea: true)
   }
 
   public override func dismiss(

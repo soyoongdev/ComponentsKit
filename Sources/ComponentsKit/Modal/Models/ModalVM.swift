@@ -15,5 +15,6 @@ public protocol ModalVM: ComponentVM {
   var contentSpacing: CGFloat { get set }
   // TODO: [1] Implement close button
   var hasCloseButton: Bool { get set }
+  var modalPaddings: EdgeInsets { get set }
   var overlayStyle: ModalOverlayStyle { get set }
 }
