@@ -87,6 +87,11 @@ public struct Layout: Initializable, Updatable {
     large: 18.0
   )
   public var disabledOpacity: CGFloat = 0.5
+  public var modalRadius: Radius = .init(
+    small: 16.0,
+    medium: 20.0,
+    large: 26.0
+  )
 
   public init() {}
 }

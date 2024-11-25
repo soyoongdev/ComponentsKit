@@ -11,6 +11,8 @@ public struct BottomModalVM: ModalVM {
 
   public var contentSpacing: CGFloat = 16
 
+  public var cornerRadius: ModalRadius = .medium
+
   public var hasCloseButton: Bool = false
 
   public var overlayStyle: ModalOverlayStyle = .dimmed

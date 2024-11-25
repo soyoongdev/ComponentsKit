@@ -86,7 +86,7 @@ open class UKModalController<VM: ModalVM>: UIViewController {
 
   open func style() {
     Self.Style.overlay(self.overlay, model: self.model)
-    Self.Style.container(self.container)
+    Self.Style.container(self.container, model: self.model)
     Self.Style.content(self.content, model: self.model)
     Self.Style.bodyWrapper(self.bodyWrapper)
   }
@@ -166,9 +166,9 @@ extension UKModalController {
         (view as? UIVisualEffectView)?.effect = UIBlurEffect(style: .systemUltraThinMaterial)
       }
     }
-    static func container(_ view: UIView) {
+    static func container(_ view: UIView, model: VM) {
       view.backgroundColor = Palette.Base.background.uiColor
-      view.layer.cornerRadius = 25
+      view.layer.cornerRadius = model.cornerRadius.value
       view.clipsToBounds = true
     }
     static func content(_ view: UIView, model: VM) {
