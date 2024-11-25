@@ -17,6 +17,8 @@ public struct BottomModalVM: ModalVM {
 
   public var modalPaddings: EdgeInsets = .init(top: 20, leading: 20, bottom: 20, trailing: 20)
 
+  public var size: ModalSize = .medium
+
   public var isDraggable: Bool = true
   public var hidesOnSwap: Bool = true
 

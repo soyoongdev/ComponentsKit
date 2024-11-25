@@ -111,7 +111,7 @@ open class UKModalController<VM: ModalVM>: UIViewController {
     }
 
     if let footer {
-      footer.bottom(self.model.contentPaddings.top)
+      footer.bottom(self.model.contentPaddings.bottom)
       footer.leading(self.model.contentPaddings.leading)
       footer.trailing(self.model.contentPaddings.trailing)
       footer.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
@@ -145,7 +145,7 @@ open class UKModalController<VM: ModalVM>: UIViewController {
       greaterThanOrEqualToConstant: 80
     ).isActive = true
 
-    let containerWidthConstraint = self.container.width(400).width
+    let containerWidthConstraint = self.container.width(self.model.size.maxWidth).width
     containerWidthConstraint?.priority = .defaultHigh
 
     self.container.centerHorizontally()

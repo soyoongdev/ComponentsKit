@@ -15,6 +15,8 @@ public struct CenterModalVM: ModalVM {
 
   public var modalPaddings: EdgeInsets = .init(top: 20, leading: 20, bottom: 20, trailing: 20)
 
+  public var size: ModalSize = .medium
+
   public var overlayStyle: ModalOverlayStyle = .dimmed
 
   /// Initializes a new instance of `ModalVM` with default values.

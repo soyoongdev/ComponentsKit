@@ -17,4 +17,5 @@ public protocol ModalVM: ComponentVM {
   var hasCloseButton: Bool { get set }
   var modalPaddings: EdgeInsets { get set }
   var overlayStyle: ModalOverlayStyle { get set }
+  var size: ModalSize { get set }
 }
