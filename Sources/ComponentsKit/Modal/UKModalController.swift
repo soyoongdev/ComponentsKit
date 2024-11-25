@@ -148,6 +148,9 @@ open class UKModalController<VM: ModalVM>: UIViewController {
     let containerWidthConstraint = self.container.width(self.model.size.maxWidth).width
     containerWidthConstraint?.priority = .defaultHigh
 
+    let bodyWrapperWidthConstraint = self.bodyWrapper.width(self.model.size.maxWidth).width
+    bodyWrapperWidthConstraint?.priority = .defaultHigh
+
     self.container.centerHorizontally()
   }
 }
@@ -169,10 +172,11 @@ extension UKModalController {
     static func container(_ view: UIView, model: VM) {
       view.backgroundColor = Palette.Base.background.uiColor
       view.layer.cornerRadius = model.cornerRadius.value
-      view.clipsToBounds = true
     }
     static func content(_ view: UIView, model: VM) {
       view.backgroundColor = model.backgroundColor.uiColor
+      view.layer.cornerRadius = model.cornerRadius.value
+      view.clipsToBounds = true
     }
     static func bodyWrapper(_ scrollView: UIScrollView) {
       scrollView.delaysContentTouches = false
