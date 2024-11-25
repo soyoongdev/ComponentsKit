@@ -1,6 +1,22 @@
 import ComponentsKit
 import SwiftUI
 
+// MARK: - AnimationScalePicker
+
+struct AnimationScalePicker: View {
+  @Binding var selection: AnimationScale
+
+  var body: some View {
+    Picker("Animation Scale", selection: self.$selection) {
+      Text("None").tag(AnimationScale.none)
+      Text("Small").tag(AnimationScale.small)
+      Text("Medium").tag(AnimationScale.medium)
+      Text("Large").tag(AnimationScale.large)
+      Text("Custom: 0.9").tag(AnimationScale.custom(0.9))
+    }
+  }
+}
+
 // MARK: - AutocapitalizationPicker
 
 struct AutocapitalizationPicker: View {

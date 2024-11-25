@@ -18,13 +18,7 @@ struct ButtonPreview: View {
         SUButton(model: self.model)
       }
       Form {
-        Picker("Animation Scale", selection: self.$model.animationScale) {
-          Text("None").tag(AnimationScale.none)
-          Text("Small").tag(AnimationScale.small)
-          Text("Medium").tag(AnimationScale.medium)
-          Text("Large").tag(AnimationScale.large)
-          Text("Custom: 0.9").tag(AnimationScale.custom(0.9))
-        }
+        AnimationScalePicker(selection: self.$model.animationScale)
         ComponentColorPicker(selection: self.$model.color)
         CornerRadiusPicker(selection: self.$model.cornerRadius) {
           Text("Custom: 20px").tag(ComponentRadius.custom(20))

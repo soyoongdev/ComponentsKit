@@ -26,6 +26,7 @@ struct RadioGroupPreview: View {
         SURadioGroup(selectedId: $selectedId, model: self.model)
       }
       Form {
+        AnimationScalePicker(selection: self.$model.animationScale)
         Toggle("Enabled", isOn: self.$model.isEnabled)
         FontPicker(selection: self.$model.font)
         SizePicker(selection: self.$model.size)
