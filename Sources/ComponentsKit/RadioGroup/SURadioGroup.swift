@@ -36,70 +36,39 @@ public struct SURadioGroup<ID: Hashable>: View {
           ZStack {
             Circle()
               .strokeBorder(
-                self.adjustedColor(for: item),
+                self.model.radioItemColor(for: item, selectedId: self.selectedId).color(for: self.colorScheme),
                 lineWidth: self.model.lineWidth
               )
-              .frame(maxWidth: self.model.circleSize, maxHeight: self.model.circleSize)
+              .frame(width: self.model.circleSize, height: self.model.circleSize)
             if self.selectedId == item.id {
               Circle()
-                .fill(self.adjustedColor(for: item))
-                .frame(maxWidth: self.model.innerCircleSize, maxHeight: self.model.innerCircleSize)
+                .fill(
+                  self.model.radioItemColor(for: item, selectedId: self.selectedId).color(for: self.colorScheme)
+                )
+                .frame(width: self.model.innerCircleSize, height: self.model.innerCircleSize)
                 .transition(.scale)
             }
           }
           .animation(.easeOut(duration: 0.2), value: self.selectedId)
-          .scaleEffect(self.tappingId == item.id ? 0.92 : 1.0)
+          .scaleEffect(self.tappingId == item.id ? self.model.animationScale.value : 1.0)
           Text(item.title)
-            .font(item.font?.font ?? self.model.font?.font ?? .body)
-            .foregroundColor(self.textColor(for: item))
+            .font(self.model.preferredFont(for: item.id).font)
+            .foregroundColor(
+              self.model.textColor(for: item, selectedId: self.selectedId).color(for: self.colorScheme)
+            )
         }
-        .contentShape(Rectangle())
         .gesture(
           DragGesture(minimumDistance: 0)
             .onChanged { _ in
-              if item.isEnabled && self.model.isEnabled {
-                withAnimation(.easeIn(duration: 0.1)) {
-                  self.tappingId = item.id
-                }
-              }
+              self.tappingId = item.id
             }
             .onEnded { _ in
-              if item.isEnabled && self.model.isEnabled {
-                withAnimation(.spring(response: 0.5, dampingFraction: 0.5)) {
-                  self.tappingId = nil
-                }
-                self.selectedId = item.id
-              }
+              self.tappingId = nil
+              self.selectedId = item.id
             }
         )
         .disabled(!item.isEnabled || !self.model.isEnabled)
       }
     }
-  }
-
-  // MARK: Methods
-
-  /// Adjusts the color based on the item's state.
-  ///
-  /// - Parameter item: The radio item.
-  /// - Returns: The adjusted color for the radio button.
-  private func adjustedColor(for item: RadioItemVM<ID>) -> Color {
-    let baseColor = self.selectedId == item.id
-    ? self.model.color.color(for: self.colorScheme)
-    : Color.secondary
-    return (!item.isEnabled || !self.model.isEnabled)
-    ? baseColor.opacity(0.5)
-    : baseColor
-  }
-
-  /// Determines the text color based on the item's state.
-  ///
-  /// - Parameter item: The radio item.
-  /// - Returns: The color for the item's text.
-  private func textColor(for item: RadioItemVM<ID>) -> Color {
-    let baseColor = Color.primary
-    return (!item.isEnabled || !self.model.isEnabled)
-    ? baseColor.opacity(0.5)
-    : baseColor
   }
 }

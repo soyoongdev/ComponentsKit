@@ -1,7 +1,12 @@
 import Foundation
 
-/// A model that defines the appearance and behavior of a radio group component.
+/// A model that defines the appearance of a radio group component.
 public struct RadioGroupVM<ID: Hashable> {
+  /// The scaling factor for the button's press animation, with a value between 0 and 1.
+  ///
+  /// Defaults to `.medium`.
+  public var animationScale: AnimationScale = .medium
+
   /// The color of the selected radio button.
   public var color: UniversalColor = .primary
 
@@ -72,6 +77,47 @@ extension RadioGroupVM {
       return 2.0
     }
   }
+
+  func preferredFont(for id: ID) -> UniversalFont {
+    if let itemFont = self.item(for: id)?.font {
+      return itemFont
+    } else if let font = self.font {
+      return font
+    }
+
+    switch self.size {
+    case .small:
+      return UniversalFont.Component.small
+    case .medium:
+      return UniversalFont.Component.medium
+    case .large:
+      return UniversalFont.Component.large
+    }
+  }
+
+  func item(for id: ID) -> RadioItemVM<ID>? {
+    return self.items.first(where: { $0.id == id })
+  }
+}
+
+// MARK: - Appearance
+
+extension RadioGroupVM {
+  func radioItemColor(for item: RadioItemVM<ID>, selectedId: ID?) -> UniversalColor {
+    let isSelected = item.id == selectedId && item.isEnabled
+    let defaultColor = UniversalColor.universal(.uiColor(.lightGray))
+    let color = isSelected ? self.color : defaultColor
+    return (item.isEnabled && self.isEnabled)
+    ? color
+    : color.withOpacity(ComponentsKitConfig.shared.layout.disabledOpacity)
+  }
+
+  func textColor(for item: RadioItemVM<ID>, selectedId: ID?) -> UniversalColor {
+    let baseColor = Palette.Text.primary
+    return (item.isEnabled && self.isEnabled)
+    ? baseColor
+    : baseColor.withOpacity(ComponentsKitConfig.shared.layout.disabledOpacity)
+  }
 }
 
 // MARK: - Validation
@@ -79,12 +125,12 @@ extension RadioGroupVM {
 extension RadioGroupVM {
   /// Checks for duplicated item identifiers in the radio group.
   private var duplicatedId: ID? {
-    var dict: [ID: Bool] = [:]
+    var set: Set<ID> = []
     for item in self.items {
-      if dict[item.id].isNotNil {
+      if set.contains(item.id) {
         return item.id
       }
-      dict[item.id] = true
+      set.insert(item.id)
     }
     return nil
   }
