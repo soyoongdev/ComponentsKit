@@ -3,7 +3,7 @@ import SwiftUICore
 
 /// A model that defines the appearance properties for a center modal component.
 public struct CenterModalVM: ModalVM {
-  public var backgroundColor: UniversalColor = Palette.Base.background
+  public var backgroundColor: UniversalColor = Palette.Base.secondaryBackground
 
   public var closesOnOverlayTap: Bool = true
 
@@ -12,8 +12,6 @@ public struct CenterModalVM: ModalVM {
   public var contentSpacing: CGFloat = 16
 
   public var cornerRadius: ModalRadius = .medium
-
-  public var hasCloseButton: Bool = false
 
   public var modalPaddings: EdgeInsets = .init(top: 20, leading: 20, bottom: 20, trailing: 20)
 
