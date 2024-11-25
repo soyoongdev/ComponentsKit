@@ -47,7 +47,7 @@ extension Palette {
       return ComponentsKitConfig.shared.colors.background
     }
     public static var secondaryBackground: UniversalColor {
-      return ComponentsKitConfig.shared.colors.background
+      return ComponentsKitConfig.shared.colors.secondaryBackground
     }
     public static var divider: UniversalColor {
       return ComponentsKitConfig.shared.colors.divider
