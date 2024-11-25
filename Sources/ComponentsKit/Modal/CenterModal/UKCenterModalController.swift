@@ -19,7 +19,7 @@ public class UKCenterModalController: UKModalController<CenterModalVM> {
 
     self.container.bottomAnchor.constraint(
       lessThanOrEqualTo: self.view.safeAreaLayoutGuide.bottomAnchor,
-      constant: -self.model.modalPaddings.bottom
+      constant: -self.model.outerPaddings.bottom
     ).isActive = true
     self.container.centerVertically()
   }

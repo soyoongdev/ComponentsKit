@@ -1,5 +1,4 @@
 import Foundation
-import SwiftUICore
 
 /// A model that defines the appearance properties for a bottom modal component.
 public struct BottomModalVM: ModalVM {
@@ -7,7 +6,7 @@ public struct BottomModalVM: ModalVM {
 
   public var closesOnOverlayTap: Bool = true
 
-  public var contentPaddings: EdgeInsets = .init(top: 16, leading: 16, bottom: 16, trailing: 16)
+  public var contentPaddings: Paddings = .init(padding: 16)
 
   public var contentSpacing: CGFloat = 16
 
@@ -15,7 +14,7 @@ public struct BottomModalVM: ModalVM {
 
   public var overlayStyle: ModalOverlayStyle = .dimmed
 
-  public var modalPaddings: EdgeInsets = .init(top: 20, leading: 20, bottom: 20, trailing: 20)
+  public var outerPaddings: Paddings = .init(padding: 20)
 
   public var size: ModalSize = .medium
 

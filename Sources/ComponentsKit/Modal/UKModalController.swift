@@ -131,15 +131,15 @@ open class UKModalController<VM: ModalVM>: UIViewController {
 
     self.container.topAnchor.constraint(
       greaterThanOrEqualTo: self.view.safeAreaLayoutGuide.topAnchor,
-      constant: self.model.modalPaddings.top
+      constant: self.model.outerPaddings.top
     ).isActive = true
     self.container.leadingAnchor.constraint(
       greaterThanOrEqualTo: self.view.safeAreaLayoutGuide.leadingAnchor,
-      constant: self.model.modalPaddings.leading
+      constant: self.model.outerPaddings.leading
     ).isActive = true
     self.container.trailingAnchor.constraint(
       lessThanOrEqualTo: self.view.safeAreaLayoutGuide.trailingAnchor,
-      constant: -self.model.modalPaddings.trailing
+      constant: -self.model.outerPaddings.trailing
     ).isActive = true
     self.container.heightAnchor.constraint(
       greaterThanOrEqualToConstant: 80
