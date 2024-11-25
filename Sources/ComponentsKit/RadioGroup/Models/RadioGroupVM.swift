@@ -104,7 +104,7 @@ extension RadioGroupVM {
 
 extension RadioGroupVM {
   func radioItemColor(for item: RadioItemVM<ID>, selectedId: ID?) -> UniversalColor {
-    let isSelected = item.id == selectedId && item.isEnabled
+    let isSelected = item.id == selectedId
     let defaultColor = UniversalColor.universal(.uiColor(.lightGray))
     let color = isSelected ? self.color : defaultColor
     return (item.isEnabled && self.isEnabled)
