@@ -2,6 +2,8 @@ import AutoLayout
 import UIKit
 
 open class UKModalController<VM: ModalVM>: UIViewController {
+  public typealias Content = (_ dismiss: @escaping (_ animated: Bool) -> Void) -> UIView
+
   public let model: VM
 
   public var header: UIView?
@@ -14,9 +16,9 @@ open class UKModalController<VM: ModalVM>: UIViewController {
 
   init(
     model: VM = .init(),
-    header: ((_ dismiss: @escaping (_ animated: Bool) -> Void) -> UIView)? = nil,
-    body: (_ dismiss: @escaping (_ animated: Bool) -> Void) -> UIView,
-    footer: ((_ dismiss: @escaping (_ animated: Bool) -> Void) -> UIView)? = nil
+    header: Content? = nil,
+    body: Content,
+    footer: Content? = nil
   ) {
     self.model = model
 

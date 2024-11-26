@@ -3,9 +3,9 @@ import UIKit
 public class UKBottomModalController: UKModalController<BottomModalVM> {
   public override init(
     model: BottomModalVM = .init(),
-    header: ((_ dismiss: @escaping (_ animated: Bool) -> Void) -> UIView)? = nil,
-    body: (_ dismiss: @escaping (_ animated: Bool) -> Void) -> UIView,
-    footer: ((_ dismiss: @escaping (_ animated: Bool) -> Void) -> UIView)? = nil
+    header: Content? = nil,
+    body: Content,
+    footer: Content? = nil
   ) {
     super.init(model: model, header: header, body: body, footer: footer)
   }

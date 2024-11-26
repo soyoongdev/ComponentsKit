@@ -2,15 +2,15 @@ import ComponentsKit
 import SwiftUI
 import UIKit
 
-struct CenterModalPreview: View {
-  @State var model = CenterModalVM()
+struct BottomModalPreview: View {
+  @State var model = BottomModalVM()
 
   var body: some View {
     ModalPreview(
       model: self.$model,
       presentController: { header, body, footer in
         UIApplication.shared.topViewController?.present(
-          UKCenterModalController(
+          UKBottomModalController(
             model: self.model,
             header: header,
             body: body,
@@ -20,12 +20,13 @@ struct CenterModalPreview: View {
         )
       },
       additionalPickers: {
-        EmptyView()
+        Toggle("Draggable", isOn: self.$model.isDraggable)
+        Toggle("Hides On Swap", isOn: self.$model.hidesOnSwap)
       }
     )
   }
 }
 
 #Preview {
-  CenterModalPreview()
+  BottomModalPreview()
 }
