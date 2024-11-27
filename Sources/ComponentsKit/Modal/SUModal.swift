@@ -1,9 +1,49 @@
 import SwiftUI
 
-public struct SUModal<VM: ModalVM, Header: View, Body: View, Footer: View>: View {
+struct ModalOverlay<VM: ModalVM>: View {
   let model: VM
 
   @Binding var isPresented: Bool
+  @Binding var isVisible: Bool
+
+  init(
+    isPresented: Binding<Bool>,
+    isVisible: Binding<Bool>,
+    model: VM
+  ) {
+    self._isPresented = isPresented
+    self._isVisible = isVisible
+    self.model = model
+  }
+
+  var body: some View {
+    Group {
+      switch self.model.overlayStyle {
+      case .dimmed:
+        Color.black.opacity(0.7)
+      case .blurred:
+        Color.clear.background(.ultraThinMaterial)
+      case .opaque:
+        // Note: It can't be completely transparent as it won't receive touch gestures.
+        Color.black.opacity(0.0001)
+      }
+    }
+    .ignoresSafeArea(.all)
+    .onTapGesture {
+      guard self.model.closesOnOverlayTap else {
+        return
+      }
+
+      self.isVisible = false
+      DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+        self.isPresented = false
+      }
+    }
+  }
+}
+
+struct ModalContent<VM: ModalVM, Header: View, Body: View, Footer: View>: View {
+  let model: VM
 
   @ViewBuilder let contentHeader: () -> Header
   @ViewBuilder let contentBody: () -> Body
@@ -13,9 +53,88 @@ public struct SUModal<VM: ModalVM, Header: View, Body: View, Footer: View>: View
   @State private var bodySize: CGSize = .zero
   @State private var footerSize: CGSize = .zero
 
-  @State private var overlayOpacity: CGFloat = 0
-
   @Environment(\.colorScheme) private var colorScheme
+
+  init(
+    model: VM,
+    @ViewBuilder header: @escaping () -> Header,
+    @ViewBuilder body: @escaping () -> Body,
+    @ViewBuilder footer: @escaping () -> Footer
+  ) {
+    self.model = model
+    self.contentHeader = header
+    self.contentBody = body
+    self.contentFooter = footer
+  }
+
+  var body: some View {
+    VStack(
+      alignment: .leading,
+      spacing: self.model.contentSpacing
+    ) {
+      self.contentHeader()
+        .observeSize {
+          self.headerSize = $0
+        }
+        .padding(.top, self.model.contentPaddings.top)
+        .padding(.leading, self.model.contentPaddings.leading)
+        .padding(.trailing, self.model.contentPaddings.trailing)
+
+      ScrollView {
+        self.contentBody()
+          .padding(.leading, self.model.contentPaddings.leading)
+          .padding(.trailing, self.model.contentPaddings.trailing)
+          .observeSize {
+            self.bodySize = $0
+          }
+          .padding(.top, self.bodyTopPadding)
+          .padding(.bottom, self.bodyBottomPadding)
+      }
+      .frame(maxHeight: self.scrollViewMaxHeight)
+      .disableScrollWhenContentFits()
+
+      self.contentFooter()
+        .observeSize {
+          self.footerSize = $0
+        }
+        .padding(.leading, self.model.contentPaddings.leading)
+        .padding(.trailing, self.model.contentPaddings.trailing)
+        .padding(.bottom, self.model.contentPaddings.bottom)
+    }
+    .frame(maxWidth: self.model.size.maxWidth)
+    .background(self.model.backgroundColor.color(for: self.colorScheme))
+    .background(Palette.Base.background.color(for: self.colorScheme))
+    .clipShape(RoundedRectangle(
+      cornerRadius: self.model.cornerRadius.value
+    ))
+    .padding(.top, self.model.outerPaddings.top)
+    .padding(.leading, self.model.outerPaddings.leading)
+    .padding(.bottom, self.model.outerPaddings.bottom)
+    .padding(.trailing, self.model.outerPaddings.trailing)
+  }
+
+  private var bodyTopPadding: CGFloat {
+    return self.headerSize.height > 0 ? 0 : self.model.contentPaddings.top
+  }
+  private var bodyBottomPadding: CGFloat {
+    return self.footerSize.height > 0 ? 0 : self.model.contentPaddings.bottom
+  }
+  private var scrollViewMaxHeight: CGFloat {
+    return self.bodySize.height + self.bodyTopPadding + self.bodyBottomPadding
+  }
+}
+
+public struct SUCenterModal<VM: ModalVM, Header: View, Body: View, Footer: View>: View {
+  let model: VM
+
+  @Binding var isPresented: Bool
+  @State private var isVisible: Bool = false
+
+  @ViewBuilder let contentHeader: () -> Header
+  @ViewBuilder let contentBody: () -> Body
+  @ViewBuilder let contentFooter: () -> Footer
+
+  @State private var contentOpacity: CGFloat = 0
 
   public init(
     isPresented: Binding<Bool>,
@@ -33,71 +152,22 @@ public struct SUModal<VM: ModalVM, Header: View, Body: View, Footer: View>: View
 
   public var body: some View {
     ZStack(alignment: .center) {
-      Color.black.opacity(self.overlayOpacity)
-        .animation(.linear(duration: 0.3), value: self.overlayOpacity)
-        .onAppear {
-          self.overlayOpacity = 0.7
-        }
-        .ignoresSafeArea(.all)
-        .onTapGesture {
-          if self.model.closesOnOverlayTap {
-            self.isPresented = false
-          }
-        }
+      ModalOverlay(isPresented: self.$isPresented, isVisible: self.$isVisible, model: self.model)
 
-      VStack(
-        alignment: .leading,
-        spacing: self.model.contentSpacing
-      ) {
-        self.contentHeader()
-          .observeSize {
-            self.headerSize = $0
-          }
-          .padding(.top, self.model.contentPaddings.top)
-          .padding(.leading, self.model.contentPaddings.leading)
-          .padding(.trailing, self.model.contentPaddings.trailing)
-
-        ScrollView {
-          self.contentBody()
-            .padding(.leading, self.model.contentPaddings.leading)
-            .padding(.trailing, self.model.contentPaddings.trailing)
-            .observeSize {
-              self.bodySize = $0
-            }
-            .padding(.top, self.bodyTopPadding)
-            .padding(.bottom, self.bodyBottomPadding)
-        }
-        .frame(maxHeight: self.scrollViewMaxHeight)
-        .disableScrollWhenContentFits()
-
-        self.contentFooter()
-          .observeSize {
-            self.footerSize = $0
-          }
-          .padding(.leading, self.model.contentPaddings.leading)
-          .padding(.trailing, self.model.contentPaddings.trailing)
-          .padding(.bottom, self.model.contentPaddings.bottom)
-      }
-      .frame(maxWidth: self.model.size.maxWidth)
-      .background(self.model.backgroundColor.color(for: self.colorScheme))
-      .clipShape(RoundedRectangle(
-        cornerRadius: self.model.cornerRadius.value
-      ))
-      .padding(.top, self.model.outerPaddings.top)
-      .padding(.leading, self.model.outerPaddings.leading)
-      .padding(.bottom, self.model.outerPaddings.bottom)
-      .padding(.trailing, self.model.outerPaddings.trailing)
+      ModalContent(model: self.model, header: self.contentHeader, body: self.contentBody, footer: self.contentFooter)
     }
-  }
-
-  private var bodyTopPadding: CGFloat {
-    return self.headerSize.height > 0 ? 0 : self.model.contentPaddings.top
-  }
-  private var bodyBottomPadding: CGFloat {
-    return self.footerSize.height > 0 ? 0 : self.model.contentPaddings.bottom
-  }
-  private var scrollViewMaxHeight: CGFloat {
-    return self.bodySize.height + self.bodyTopPadding + self.bodyBottomPadding
+    .opacity(self.contentOpacity)
+    .animation(.linear(duration: 0.2), value: self.contentOpacity)
+    .onAppear {
+      self.isVisible = true
+    }
+    .onChange(of: self.isVisible) { newValue in
+      if newValue {
+        self.contentOpacity = 1.0
+      } else {
+        self.contentOpacity = 0.0
+      }
+    }
   }
 }
 
@@ -147,7 +217,7 @@ extension View {
 }
 
 extension View {
-  public func modal<VM: ModalVM, Header: View, Body: View, Footer: View>(
+  public func centerModal<VM: ModalVM, Header: View, Body: View, Footer: View>(
     isPresented: Binding<Bool>,
     model: VM,
     @ViewBuilder header: @escaping () -> Header = { EmptyView() },
@@ -155,7 +225,7 @@ extension View {
     @ViewBuilder footer: @escaping () -> Footer = { EmptyView() }
   ) -> some View {
     return self.fullScreenCover(isPresented: isPresented) {
-      SUModal(
+      SUCenterModal(
         isPresented: isPresented,
         model: model,
         header: header,
@@ -194,9 +264,11 @@ Enim habitant laoreet inceptos scelerisque senectus, tellus molestie ut. Eros ri
         isPresented = true
       }
     )
-    .modal(
+    .centerModal(
       isPresented: $isPresented,
-      model: CenterModalVM(),
+      model: CenterModalVM {
+        $0.overlayStyle = .dimmed
+      },
       header: {
         Text("Header")
           .font(.title2)
