@@ -3,7 +3,7 @@ import SwiftUI
 import UIKit
 
 struct RadioGroupPreview: View {
-  @State private var selectedId: String? = nil
+  @State private var selectedId: String?
   @State private var model: RadioGroupVM<String> = {
     var model = RadioGroupVM<String>()
     model.items = [
@@ -19,9 +19,14 @@ struct RadioGroupPreview: View {
     ]
     return model
   }()
-  
+
   var body: some View {
     VStack {
+      PreviewWrapper(title: "UIKit") {
+        UKComponentPreview(model: self.model) {
+          UKRadioGroup(model: self.model)
+        }
+      }
       PreviewWrapper(title: "SwiftUI") {
         SURadioGroup(selectedId: $selectedId, model: self.model)
       }

@@ -135,3 +135,14 @@ extension RadioGroupVM {
     return nil
   }
 }
+
+extension RadioGroupVM: Equatable where ID: Equatable {
+    public static func == (lhs: RadioGroupVM<ID>, rhs: RadioGroupVM<ID>) -> Bool {
+        return lhs.animationScale == rhs.animationScale &&
+               lhs.color == rhs.color &&
+               lhs.font == rhs.font &&
+               lhs.isEnabled == rhs.isEnabled &&
+               lhs.items == rhs.items &&
+               lhs.size == rhs.size
+    }
+}
