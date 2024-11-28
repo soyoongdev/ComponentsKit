@@ -3,8 +3,7 @@ import SwiftUI
 struct SUBottomModal<Header: View, Body: View, Footer: View>: View {
   let model: BottomModalVM
 
-  @Binding var isPresented: Bool
-  @State private var isVisible: Bool = false
+  @Binding var isVisible: Bool
 
   @ViewBuilder let contentHeader: () -> Header
   @ViewBuilder let contentBody: () -> Body
@@ -15,13 +14,13 @@ struct SUBottomModal<Header: View, Body: View, Footer: View>: View {
   @State private var overlayOpacity: CGFloat = 0
 
   init(
-    isPresented: Binding<Bool>,
+    isVisible: Binding<Bool>,
     model: BottomModalVM,
     @ViewBuilder header: @escaping () -> Header,
     @ViewBuilder body: @escaping () -> Body,
     @ViewBuilder footer: @escaping () -> Footer
   ) {
-    self._isPresented = isPresented
+    self._isVisible = isVisible
     self.model = model
     self.contentHeader = header
     self.contentBody = body
@@ -30,7 +29,7 @@ struct SUBottomModal<Header: View, Body: View, Footer: View>: View {
 
   var body: some View {
     ZStack(alignment: .bottom) {
-      ModalOverlay(isPresented: self.$isPresented, isVisible: self.$isVisible, model: self.model)
+      ModalOverlay(isVisible: self.$isVisible, model: self.model)
         .opacity(self.overlayOpacity)
 
       ModalContent(model: self.model, header: self.contentHeader, body: self.contentBody, footer: self.contentFooter)
@@ -52,9 +51,6 @@ struct SUBottomModal<Header: View, Body: View, Footer: View>: View {
                 model: self.model
               ) {
                 self.isVisible = false
-                DispatchQueue.main.asyncAfter(deadline: .now() + ModalAnimation.duration) {
-                  self.isPresented = false
-                }
               } else {
                 withAnimation(.linear(duration: ModalAnimation.duration)) {
                   self.contentOffsetY = 0
@@ -65,7 +61,11 @@ struct SUBottomModal<Header: View, Body: View, Footer: View>: View {
     }
     .onAppear {
       self.contentOffsetY = self.screenHeight
-      self.isVisible = true
+
+      withAnimation(.linear(duration: ModalAnimation.duration)) {
+        self.overlayOpacity = 1.0
+        self.contentOffsetY = 0
+      }
     }
     .onChange(of: self.isVisible) { newValue in
       withAnimation(.linear(duration: ModalAnimation.duration)) {
@@ -98,23 +98,19 @@ extension View {
     @ViewBuilder body: @escaping () -> Body,
     @ViewBuilder footer: @escaping () -> Footer = { EmptyView() }
   ) -> some View {
-    return self.fullScreenCover(
-      isPresented: isPresented,
+    return self.modal(
+      isVisible: isPresented,
       onDismiss: onDismiss,
       content: {
         SUBottomModal(
-          isPresented: isPresented,
+          isVisible: isPresented,
           model: model,
           header: header,
           body: body,
           footer: footer
         )
-        .transparentPresentationBackground()
       }
     )
-    .transaction {
-      $0.disablesAnimations = true
-    }
   }
 }
 
@@ -127,12 +123,12 @@ extension View {
     @ViewBuilder body: @escaping (Item) -> Body,
     @ViewBuilder footer: @escaping (Item) -> Footer
   ) -> some View {
-    return self.fullScreenCover(
+    return self.modal(
       item: item,
       onDismiss: onDismiss,
       content: { unwrappedItem in
         SUBottomModal(
-          isPresented: .init(
+          isVisible: .init(
             get: {
               return item.wrappedValue.isNotNil
             },
@@ -149,12 +145,8 @@ extension View {
           body: { body(unwrappedItem) },
           footer: { footer(unwrappedItem) }
         )
-        .transparentPresentationBackground()
       }
     )
-    .transaction {
-      $0.disablesAnimations = true
-    }
   }
 
   public func bottomModal<Item: Identifiable, Body: View>(

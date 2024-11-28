@@ -3,15 +3,12 @@ import SwiftUI
 struct ModalOverlay<VM: ModalVM>: View {
   let model: VM
 
-  @Binding var isPresented: Bool
   @Binding var isVisible: Bool
 
   init(
-    isPresented: Binding<Bool>,
     isVisible: Binding<Bool>,
     model: VM
   ) {
-    self._isPresented = isPresented
     self._isVisible = isVisible
     self.model = model
   }
@@ -30,13 +27,8 @@ struct ModalOverlay<VM: ModalVM>: View {
     }
     .ignoresSafeArea(.all)
     .onTapGesture {
-      guard self.model.closesOnOverlayTap else {
-        return
-      }
-
-      self.isVisible = false
-      DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-        self.isPresented = false
+      if self.model.closesOnOverlayTap {
+        self.isVisible = false
       }
     }
   }

@@ -3,8 +3,7 @@ import SwiftUI
 struct SUCenterModal<Header: View, Body: View, Footer: View>: View {
   let model: CenterModalVM
 
-  @Binding var isPresented: Bool
-  @State private var isVisible: Bool = false
+  @Binding var isVisible: Bool
 
   @ViewBuilder let contentHeader: () -> Header
   @ViewBuilder let contentBody: () -> Body
@@ -13,13 +12,13 @@ struct SUCenterModal<Header: View, Body: View, Footer: View>: View {
   @State private var contentOpacity: CGFloat = 0
 
   init(
-    isPresented: Binding<Bool>,
+    isVisible: Binding<Bool>,
     model: CenterModalVM,
     @ViewBuilder header: @escaping () -> Header,
     @ViewBuilder body: @escaping () -> Body,
     @ViewBuilder footer: @escaping () -> Footer
   ) {
-    self._isPresented = isPresented
+    self._isVisible = isVisible
     self.model = model
     self.contentHeader = header
     self.contentBody = body
@@ -28,20 +27,23 @@ struct SUCenterModal<Header: View, Body: View, Footer: View>: View {
 
   var body: some View {
     ZStack(alignment: .center) {
-      ModalOverlay(isPresented: self.$isPresented, isVisible: self.$isVisible, model: self.model)
+      ModalOverlay(isVisible: self.$isVisible, model: self.model)
 
       ModalContent(model: self.model, header: self.contentHeader, body: self.contentBody, footer: self.contentFooter)
     }
     .opacity(self.contentOpacity)
-    .animation(.linear(duration: 0.2), value: self.contentOpacity)
     .onAppear {
-      self.isVisible = true
+      withAnimation(.linear(duration: ModalAnimation.duration)) {
+        self.contentOpacity = 1.0
+      }
     }
     .onChange(of: self.isVisible) { newValue in
-      if newValue {
-        self.contentOpacity = 1.0
-      } else {
-        self.contentOpacity = 0.0
+      withAnimation(.linear(duration: ModalAnimation.duration)) {
+        if newValue {
+          self.contentOpacity = 1.0
+        } else {
+          self.contentOpacity = 0.0
+        }
       }
     }
   }
@@ -58,23 +60,19 @@ extension View {
     @ViewBuilder body: @escaping () -> Body,
     @ViewBuilder footer: @escaping () -> Footer = { EmptyView() }
   ) -> some View {
-    return self.fullScreenCover(
-      isPresented: isPresented,
+    return self.modal(
+      isVisible: isPresented,
       onDismiss: onDismiss,
       content: {
         SUCenterModal(
-          isPresented: isPresented,
+          isVisible: isPresented,
           model: model,
           header: header,
           body: body,
           footer: footer
         )
-        .transparentPresentationBackground()
       }
     )
-    .transaction {
-      $0.disablesAnimations = true
-    }
   }
 }
 
@@ -87,12 +85,12 @@ extension View {
     @ViewBuilder body: @escaping (Item) -> Body,
     @ViewBuilder footer: @escaping (Item) -> Footer
   ) -> some View {
-    return self.fullScreenCover(
+    return self.modal(
       item: item,
       onDismiss: onDismiss,
       content: { unwrappedItem in
         SUCenterModal(
-          isPresented: .init(
+          isVisible: .init(
             get: {
               return item.wrappedValue.isNotNil
             },
@@ -109,12 +107,8 @@ extension View {
           body: { body(unwrappedItem) },
           footer: { footer(unwrappedItem) }
         )
-        .transparentPresentationBackground()
       }
     )
-    .transaction {
-      $0.disablesAnimations = true
-    }
   }
 
   public func centerModal<Item: Identifiable, Body: View>(
