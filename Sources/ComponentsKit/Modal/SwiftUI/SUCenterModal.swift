@@ -1,7 +1,7 @@
 import SwiftUI
 
-public struct SUCenterModal<VM: ModalVM, Header: View, Body: View, Footer: View>: View {
-  let model: VM
+struct SUCenterModal<Header: View, Body: View, Footer: View>: View {
+  let model: CenterModalVM
 
   @Binding var isPresented: Bool
   @State private var isVisible: Bool = false
@@ -12,12 +12,12 @@ public struct SUCenterModal<VM: ModalVM, Header: View, Body: View, Footer: View>
 
   @State private var contentOpacity: CGFloat = 0
 
-  public init(
+  init(
     isPresented: Binding<Bool>,
-    model: VM,
-    @ViewBuilder header: @escaping () -> Header = { EmptyView() },
+    model: CenterModalVM,
+    @ViewBuilder header: @escaping () -> Header,
     @ViewBuilder body: @escaping () -> Body,
-    @ViewBuilder footer: @escaping () -> Footer = { EmptyView() }
+    @ViewBuilder footer: @escaping () -> Footer
   ) {
     self._isPresented = isPresented
     self.model = model
@@ -26,7 +26,7 @@ public struct SUCenterModal<VM: ModalVM, Header: View, Body: View, Footer: View>
     self.contentFooter = footer
   }
 
-  public var body: some View {
+  var body: some View {
     ZStack(alignment: .center) {
       ModalOverlay(isPresented: self.$isPresented, isVisible: self.$isVisible, model: self.model)
 
@@ -47,27 +47,89 @@ public struct SUCenterModal<VM: ModalVM, Header: View, Body: View, Footer: View>
   }
 }
 
+// MARK: - Presentation Helpers
+
 extension View {
-  public func centerModal<VM: ModalVM, Header: View, Body: View, Footer: View>(
+  public func centerModal<Header: View, Body: View, Footer: View>(
     isPresented: Binding<Bool>,
-    model: VM,
+    model: CenterModalVM = .init(),
+    onDismiss: (() -> Void)? = nil,
     @ViewBuilder header: @escaping () -> Header = { EmptyView() },
     @ViewBuilder body: @escaping () -> Body,
     @ViewBuilder footer: @escaping () -> Footer = { EmptyView() }
   ) -> some View {
-    return self.fullScreenCover(isPresented: isPresented) {
-      SUCenterModal(
-        isPresented: isPresented,
-        model: model,
-        header: header,
-        body: body,
-        footer: footer
-      )
-      .transparentPresentationBackground()
-    }
+    return self.fullScreenCover(
+      isPresented: isPresented,
+      onDismiss: onDismiss,
+      content: {
+        SUCenterModal(
+          isPresented: isPresented,
+          model: model,
+          header: header,
+          body: body,
+          footer: footer
+        )
+        .transparentPresentationBackground()
+      }
+    )
     .transaction {
       $0.disablesAnimations = true
     }
+  }
+}
+
+extension View {
+  public func centerModal<Item: Identifiable, Header: View, Body: View, Footer: View>(
+    item: Binding<Item?>,
+    model: CenterModalVM = .init(),
+    onDismiss: (() -> Void)? = nil,
+    @ViewBuilder header: @escaping (Item) -> Header,
+    @ViewBuilder body: @escaping (Item) -> Body,
+    @ViewBuilder footer: @escaping (Item) -> Footer
+  ) -> some View {
+    return self.fullScreenCover(
+      item: item,
+      onDismiss: onDismiss,
+      content: { unwrappedItem in
+        SUCenterModal(
+          isPresented: .init(
+            get: {
+              return item.wrappedValue.isNotNil
+            },
+            set: { isPresented in
+              if isPresented {
+                item.wrappedValue = unwrappedItem
+              } else {
+                item.wrappedValue = nil
+              }
+            }
+          ),
+          model: model,
+          header: { header(unwrappedItem) },
+          body: { body(unwrappedItem) },
+          footer: { footer(unwrappedItem) }
+        )
+        .transparentPresentationBackground()
+      }
+    )
+    .transaction {
+      $0.disablesAnimations = true
+    }
+  }
+
+  public func centerModal<Item: Identifiable, Body: View>(
+    item: Binding<Item?>,
+    model: CenterModalVM = .init(),
+    onDismiss: (() -> Void)? = nil,
+    @ViewBuilder body: @escaping (Item) -> Body
+  ) -> some View {
+    return self.centerModal(
+      item: item,
+      model: model,
+      header: { _ in EmptyView() },
+      body: body,
+      footer: { _ in EmptyView() }
+    )
   }
 }
 
