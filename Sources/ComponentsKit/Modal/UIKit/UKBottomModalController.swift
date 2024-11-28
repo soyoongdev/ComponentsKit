@@ -17,7 +17,7 @@ public class UKBottomModalController: UKModalController<BottomModalVM> {
   public override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
 
-    UIView.animate(withDuration: 0.3) {
+    UIView.animate(withDuration: ModalAnimation.duration) {
       self.container.transform = .identity
       self.overlay.alpha = 1
     }
@@ -43,7 +43,7 @@ public class UKBottomModalController: UKModalController<BottomModalVM> {
     completion: (() -> Void)? = nil
   ) {
     if flag {
-      UIView.animate(withDuration: 0.3) {
+      UIView.animate(withDuration: ModalAnimation.duration) {
         self.container.transform = .init(translationX: 0, y: self.view.screenBounds.height)
         self.overlay.alpha = 0
       } completion: { _ in
@@ -61,47 +61,27 @@ extension UKBottomModalController {
   @objc private func handleDragGesture(_ gesture: UIPanGestureRecognizer) {
     let translation = gesture.translation(in: self.container).y
     let velocity = gesture.velocity(in: self.container).y
-    let offset = self.calculateOffset(translation)
+    let offset = ModalAnimation.bottomModalOffset(translation, model: self.model)
 
     switch gesture.state {
     case .changed:
       self.container.transform = .init(translationX: 0, y: offset)
     case .ended:
       let viewHeight = self.container.frame.height
-      if abs(offset) > viewHeight / 2 || velocity > 250,
-         self.model.hidesOnSwap {
+      if ModalAnimation.shouldHideBottomModal(offset: offset, height: viewHeight, velocity: velocity, model: self.model) {
         self.dismiss(animated: true)
       } else {
-        UIView.animate(withDuration: 0.3) {
+        UIView.animate(withDuration: ModalAnimation.duration) {
           self.container.transform = .identity
         }
       }
     case .failed, .cancelled:
-      UIView.animate(withDuration: 0.3) {
+      UIView.animate(withDuration: ModalAnimation.duration) {
         self.container.transform = .identity
       }
     default:
       break
     }
-  }
-
-  private func calculateOffset(_ translation: CGFloat) -> CGFloat {
-    if translation > 0 {
-      return self.model.hidesOnSwap
-      ? translation
-      : (self.model.isDraggable ? self.rubberBandClamp(translation) : 0)
-    } else {
-      return self.model.isDraggable
-      ? -self.rubberBandClamp(abs(translation))
-      : 0
-    }
-  }
-
-  /// Calculates an offset with rubber band effect.
-  private func rubberBandClamp(_ translation: CGFloat) -> CGFloat {
-    let dim: CGFloat = 20
-    let coef: CGFloat = 0.2
-    return (1.0 - (1.0 / ((translation * coef / dim) + 1.0))) * dim
   }
 }
 
