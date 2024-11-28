@@ -10,7 +10,9 @@ struct SUBottomModal<Header: View, Body: View, Footer: View>: View {
   @ViewBuilder let contentBody: () -> Body
   @ViewBuilder let contentFooter: () -> Footer
 
-  @State private var contentOpacity: CGFloat = 0
+  @State private var contentHeight: CGFloat = 0
+  @State private var contentOffsetY: CGFloat = 0
+  @State private var overlayOpacity: CGFloat = 0
 
   init(
     isPresented: Binding<Bool>,
@@ -27,23 +29,61 @@ struct SUBottomModal<Header: View, Body: View, Footer: View>: View {
   }
 
   var body: some View {
-    ZStack(alignment: .center) {
+    ZStack(alignment: .bottom) {
       ModalOverlay(isPresented: self.$isPresented, isVisible: self.$isVisible, model: self.model)
+        .opacity(self.overlayOpacity)
 
       ModalContent(model: self.model, header: self.contentHeader, body: self.contentBody, footer: self.contentFooter)
+        .observeSize {
+          self.contentHeight = $0.height
+        }
+        .offset(y: self.contentOffsetY)
+        .gesture(
+          DragGesture()
+            .onChanged { gesture in
+              let translation = gesture.translation.height
+              self.contentOffsetY = ModalAnimation.bottomModalOffset(translation, model: self.model)
+            }
+            .onEnded { gesture in
+              if ModalAnimation.shouldHideBottomModal(
+                offset: self.contentOffsetY,
+                height: self.contentHeight,
+                velocity: gesture.velocity.height,
+                model: self.model
+              ) {
+                self.isVisible = false
+                DispatchQueue.main.asyncAfter(deadline: .now() + ModalAnimation.duration) {
+                  self.isPresented = false
+                }
+              } else {
+                withAnimation(.linear(duration: ModalAnimation.duration)) {
+                  self.contentOffsetY = 0
+                }
+              }
+            }
+        )
     }
-    .opacity(self.contentOpacity)
-    .animation(.linear(duration: 0.2), value: self.contentOpacity)
     .onAppear {
+      self.contentOffsetY = self.screenHeight
       self.isVisible = true
     }
     .onChange(of: self.isVisible) { newValue in
-      if newValue {
-        self.contentOpacity = 1.0
-      } else {
-        self.contentOpacity = 0.0
+      withAnimation(.linear(duration: ModalAnimation.duration)) {
+        if newValue {
+          self.overlayOpacity = 1.0
+          self.contentOffsetY = 0
+        } else {
+          self.overlayOpacity = 0.0
+          self.contentOffsetY = self.screenHeight
+        }
       }
     }
+  }
+
+  // MARK: - Helpers
+
+  private var screenHeight: CGFloat {
+    return UIScreen.main.bounds.height
   }
 }
 
@@ -167,7 +207,7 @@ Enim habitant laoreet inceptos scelerisque senectus, tellus molestie ut. Eros ri
           .font(.title2)
       },
       body: {
-        Text(shortText)
+        Text(longText)
       },
       footer: {
         VStack(alignment: .leading, spacing: 16) {
