@@ -1,6 +1,33 @@
 import UIKit
 
 /// A center-aligned modal controller.
+///
+/// - Example:
+/// ```swift
+/// let centerModal = UKCenterModalController(
+///   model: CenterModalVM(),
+///   header: { _ in
+///     let headerLabel = UILabel()
+///     headerLabel.text = "Header"
+///     return headerLabel
+///   },
+///   body: { _ in
+///     let bodyLabel = UILabel()
+///     bodyLabel.text = "This is the body content of the modal."
+///     bodyLabel.numberOfLines = 0
+///     return bodyLabel
+///   },
+///   footer: { dismiss in
+///     return UKButton(model: .init {
+///       $0.title = "Close"
+///     }) {
+///       dismiss(true)
+///     }
+///   }
+/// )
+///
+/// vc.present(centerModal, animated: true)
+/// ```
 public class UKCenterModalController: UKModalController<CenterModalVM> {
   // MARK: - Initialization
 

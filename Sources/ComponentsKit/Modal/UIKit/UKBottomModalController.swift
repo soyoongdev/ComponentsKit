@@ -1,6 +1,33 @@
 import UIKit
 
 /// A bottom-aligned modal controller.
+///
+/// - Example:
+/// ```swift
+/// let bottomModal = UKBottomModalController(
+///   model: BottomModalVM(),
+///   header: { _ in
+///     let headerLabel = UILabel()
+///     headerLabel.text = "Header"
+///     return headerLabel
+///   },
+///   body: { _ in
+///     let bodyLabel = UILabel()
+///     bodyLabel.text = "This is the body content of the modal."
+///     bodyLabel.numberOfLines = 0
+///     return bodyLabel
+///   },
+///   footer: { dismiss in
+///     return UKButton(model: .init {
+///       $0.title = "Close"
+///     }) {
+///       dismiss(true)
+///     }
+///   }
+/// )
+///
+/// vc.present(bottomModal, animated: true)
+/// ```
 public class UKBottomModalController: UKModalController<BottomModalVM> {
   // MARK: - Initialization
 
