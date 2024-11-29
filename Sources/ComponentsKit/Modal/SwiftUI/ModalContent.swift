@@ -59,7 +59,7 @@ struct ModalContent<VM: ModalVM, Header: View, Body: View, Footer: View>: View {
         .padding(.trailing, self.model.contentPaddings.trailing)
         .padding(.bottom, self.model.contentPaddings.bottom)
     }
-    .frame(maxWidth: self.model.size.maxWidth)
+    .frame(maxWidth: self.model.size.maxWidth, alignment: .leading)
     .background(self.model.backgroundColor.color(for: self.colorScheme))
     .background(Palette.Base.background.color(for: self.colorScheme))
     .clipShape(RoundedRectangle(
