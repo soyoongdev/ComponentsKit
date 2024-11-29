@@ -1,27 +1,34 @@
 import Foundation
 
-public struct ModalTransition: Hashable {
-  var value: TimeInterval
-
-  init(_ value: CGFloat) {
-    self.value = value
-  }
+/// Defines the transition speed options for a modal's appearance and dismissal animations.
+public enum ModalTransition: Hashable {
+  /// No transition is applied; the modal appears and disappears instantly.
+  case none
+  /// A slow transition speed.
+  case slow
+  /// A normal transition speed.
+  case normal
+  /// A fast transition speed.
+  case fast
+  /// A custom transition speed defined by a specific time interval.
+  ///
+  /// - Parameter duration: The duration of the custom transition in seconds.
+  case custom(TimeInterval)
 }
 
 extension ModalTransition {
-  public static var none: Self {
-    return Self(0.0)
-  }
-  public static var slow: Self {
-    return Self(0.5)
-  }
-  public static var normal: Self {
-    return Self(0.3)
-  }
-  public static var fast: Self {
-    return Self(0.2)
-  }
-  public static func custom(_ value: CGFloat) -> Self {
-    return Self(value)
+  var value: TimeInterval {
+    switch self {
+    case .none:
+      return 0.0
+    case .slow:
+      return 0.5
+    case .normal:
+      return 0.3
+    case .fast:
+      return 0.2
+    case .custom(let value):
+      return max(0, value)
+    }
   }
 }

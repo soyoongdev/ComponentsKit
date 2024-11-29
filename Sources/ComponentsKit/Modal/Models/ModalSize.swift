@@ -1,9 +1,14 @@
 import Foundation
 
+/// Defines the size options for a modal.
 public enum ModalSize {
+  /// A small modal size.
   case small
+  /// A medium modal size.
   case medium
+  /// A large modal size.
   case large
+  /// A full-screen modal that occupies the entire screen.
   case full
 }
 
