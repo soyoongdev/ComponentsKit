@@ -18,7 +18,7 @@ public struct BottomModalVM: ModalVM {
 
   public var size: ModalSize = .medium
 
-  public var transitionDuration: TimeInterval = 0.2
+  public var transition: ModalTransition = .fast
 
   public var isDraggable: Bool = true
   public var hidesOnSwap: Bool = true

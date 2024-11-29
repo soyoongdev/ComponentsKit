@@ -98,11 +98,11 @@ struct ModalPreviewHelpers {
           Text("Large").tag(ModalSize.large)
           Text("Full").tag(ModalSize.full)
         }
-        Picker("Transition Duration", selection: self.$model.transitionDuration) {
-          Text("0").tag(TimeInterval(0))
-          Text("0.2").tag(TimeInterval(0.2))
-          Text("0.3").tag(TimeInterval(0.3))
-          Text("0.5").tag(TimeInterval(0.5))
+        Picker("Transition", selection: self.$model.transition) {
+          Text("None").tag(ModalTransition.none)
+          Text("Fast").tag(ModalTransition.fast)
+          Text("Normal").tag(ModalTransition.normal)
+          Text("Slow").tag(ModalTransition.slow)
         }
         self.additionalPickers()
       }
