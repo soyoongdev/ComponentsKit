@@ -90,6 +90,45 @@ struct SUBottomModal<Header: View, Body: View, Footer: View>: View {
 // MARK: - Presentation Helpers
 
 extension View {
+  /// A SwiftUI view modifier that presents a bottom-aligned modal.
+  ///
+  /// This modifier allows you to attach a bottom modal to any SwiftUI view, providing a structured way to display modals
+  /// with a header, body, and footer, all styled and laid out according to the provided `BottomModalVM` model.
+  ///
+  /// - Parameters:
+  ///   - isPresented: A binding that determines whether the modal is presented.
+  ///   - model: A model that defines the appearance properties.
+  ///   - onDismiss: An optional closure executed when the modal is dismissed.
+  ///   - header: A closure that provides the view for the modal's header.
+  ///   - body: A closure that provides the view for the modal's main content.
+  ///   - footer: A closure that provides the view for the modal's footer.
+  ///
+  /// - Returns: A modified `View` with a bottom modal attached.
+  ///
+  /// - Example:
+  ///   ```swift
+  ///   SomeView()
+  ///     .bottomModal(
+  ///       isPresented: $isModalPresented,
+  ///       model: BottomModalVM(),
+  ///       onDismiss: {
+  ///         print("Modal dismissed")
+  ///       },
+  ///       header: {
+  ///         Text("Header")
+  ///       },
+  ///       body: {
+  ///         Text("Body content goes here")
+  ///       },
+  ///       footer: {
+  ///         SUButton(model: .init {
+  ///           $0.title = "Close"
+  ///         }) {
+  ///           isModalPresented = false
+  ///         }
+  ///       }
+  ///     )
+  ///   ```
   public func bottomModal<Header: View, Body: View, Footer: View>(
     isPresented: Binding<Bool>,
     model: BottomModalVM = .init(),
@@ -116,6 +155,67 @@ extension View {
 }
 
 extension View {
+  /// A SwiftUI view modifier that presents a bottom-aligned modal bound to an optional identifiable item.
+  ///
+  /// This modifier allows you to attach a modal to any SwiftUI view, which is displayed when the `item` binding
+  /// is non-`nil`. The modal content is dynamically generated based on the unwrapped `Item`.
+  ///
+  /// - Parameters:
+  ///   - item: A binding to an optional `Item` that determines whether the modal is presented.
+  ///           When `item` is `nil`, the modal is hidden.
+  ///   - model: A model that defines the appearance properties.
+  ///   - onDismiss: An optional closure executed when the modal is dismissed. Defaults to `nil`.
+  ///   - header: A closure that provides the view for the modal's header, based on the unwrapped `Item`.
+  ///   - body: A closure that provides the view for the modal's main content, based on the unwrapped `Item`.
+  ///   - footer: A closure that provides the view for the modal's footer, based on the unwrapped `Item`.
+  ///
+  /// - Returns: A modified `View` with a bottom modal attached.
+  ///
+  /// - Example:
+  ///   ```swift
+  ///   struct ContentView: View {
+  ///     struct ModalData: Identifiable {
+  ///       var id: String {
+  ///         return text
+  ///       }
+  ///       let text: String
+  ///     }
+  ///
+  ///     @State private var selectedItem: ModalData?
+  ///     private let items: [ModalData] = [
+  ///       ModalData(text: "data 1"),
+  ///       ModalData(text: "data 2")
+  ///     ]
+  ///
+  ///     var body: some View {
+  ///       List(items) { item in
+  ///         Button("Show Modal") {
+  ///           selectedItem = item
+  ///         }
+  ///       }
+  ///       .bottomModal(
+  ///         item: $selectedItem,
+  ///         model: BottomModalVM(),
+  ///         onDismiss: {
+  ///           print("Modal dismissed")
+  ///         },
+  ///         header: { item in
+  ///           Text("Header for \(item.text)")
+  ///         },
+  ///         body: { item in
+  ///           Text("Body content for \(item.text)")
+  ///         },
+  ///         footer: { _ in
+  ///           SUButton(model: .init {
+  ///             $0.title = "Close"
+  ///           }) {
+  ///             selectedItem = nil
+  ///           }
+  ///         }
+  ///       )
+  ///     }
+  ///   }
+  ///   ```
   public func bottomModal<Item: Identifiable, Header: View, Body: View, Footer: View>(
     item: Binding<Item?>,
     model: BottomModalVM = .init(),
@@ -151,6 +251,55 @@ extension View {
     )
   }
 
+  /// A SwiftUI view modifier that presents a bottom-aligned modal bound to an optional identifiable item.
+  ///
+  /// This modifier allows you to attach a modal to any SwiftUI view, which is displayed when the `item` binding
+  /// is non-`nil`. The modal content is dynamically generated based on the unwrapped `Item`.
+  ///
+  /// - Parameters:
+  ///   - item: A binding to an optional `Item` that determines whether the modal is presented.
+  ///           When `item` is `nil`, the modal is hidden.
+  ///   - model: A model that defines the appearance properties.
+  ///   - onDismiss: An optional closure executed when the modal is dismissed. Defaults to `nil`.
+  ///   - body: A closure that provides the view for the modal's main content, based on the unwrapped `Item`.
+  ///
+  /// - Returns: A modified `View` with a bottom modal attached.
+  ///
+  /// - Example:
+  ///   ```swift
+  ///   struct ContentView: View {
+  ///     struct ModalData: Identifiable {
+  ///       var id: String {
+  ///         return text
+  ///       }
+  ///       let text: String
+  ///     }
+  ///
+  ///     @State private var selectedItem: ModalData?
+  ///     private let items: [ModalData] = [
+  ///       ModalData(text: "data 1"),
+  ///       ModalData(text: "data 2")
+  ///     ]
+  ///
+  ///     var body: some View {
+  ///       List(items) { item in
+  ///         Button("Show Modal") {
+  ///           selectedItem = item
+  ///         }
+  ///       }
+  ///       .bottomModal(
+  ///         item: $selectedItem,
+  ///         model: BottomModalVM(),
+  ///         onDismiss: {
+  ///           print("Modal dismissed")
+  ///         },
+  ///         body: { item in
+  ///           Text("Body content for \(item.text)")
+  ///         }
+  ///       )
+  ///     }
+  ///   }
+  ///   ```
   public func bottomModal<Item: Identifiable, Body: View>(
     item: Binding<Item?>,
     model: BottomModalVM = .init(),
