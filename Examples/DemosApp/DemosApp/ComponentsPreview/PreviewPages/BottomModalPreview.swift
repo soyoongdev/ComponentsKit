@@ -29,6 +29,28 @@ struct BottomModalPreview: View {
           }
         }
       }
+      PreviewWrapper(title: "SwiftUI") {
+        SUButton(model: .init { $0.title = "Show Modal" }) {
+          self.isModalPresented = true
+        }
+        .bottomModal(
+          isPresented: self.$isModalPresented,
+          model: self.model,
+          header: {
+            ModalPreviewHelpers.suHeader(hasHeader: self.hasHeader)
+          },
+          body: {
+            ModalPreviewHelpers.suBody(body: self.contentBody)
+          },
+          footer: {
+            ModalPreviewHelpers.suFooter(
+              isPresented: self.$isModalPresented,
+              isCheckboxSelected: self.$isCheckboxSelected,
+              footer: self.contentFooter
+            )
+          }
+        )
+      }
       Form {
         ModalPreviewHelpers.ContentSection(
           model: self.$model,

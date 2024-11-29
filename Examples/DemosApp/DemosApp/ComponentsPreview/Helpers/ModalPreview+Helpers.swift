@@ -194,4 +194,60 @@ Enim habitant laoreet inceptos scelerisque senectus, tellus molestie ut. Eros ri
       }
     }
   }
+
+  // MARK: - SwiftUI
+
+  static func suHeader(hasHeader: Bool) -> some View {
+    Group {
+      if hasHeader {
+        HStack {
+          Text(self.headerTitle)
+            .font(self.headerFont.font)
+        }
+      } else {
+        EmptyView()
+      }
+    }
+  }
+
+  static func suBody(body: ContentBody) -> some View {
+    Group {
+      switch body {
+      case .shortText:
+        Text(self.bodyShortText)
+      case .longText:
+        Text(self.bodyLongText)
+      }
+    }
+    .font(self.bodyFont.font)
+  }
+
+  static func suFooter(
+    isPresented: Binding<Bool>,
+    isCheckboxSelected: Binding<Bool>,
+    footer: ContentFooter?
+  ) -> some View {
+    Group {
+      switch footer {
+      case .none:
+        EmptyView()
+      case .button:
+        SUButton(model: self.footerButtonVM) {
+          isPresented.wrappedValue = false
+        }
+      case .buttonAndCheckbox:
+        VStack(alignment: .leading, spacing: 16) {
+          SUCheckbox(
+            isSelected: isCheckboxSelected,
+            model: self.footerCheckboxVM
+          )
+          SUButton(model: self.footerButtonVM.updating {
+            $0.isEnabled = isCheckboxSelected.wrappedValue
+          }) {
+            isPresented.wrappedValue = false
+          }
+        }
+      }
+    }
+  }
 }
