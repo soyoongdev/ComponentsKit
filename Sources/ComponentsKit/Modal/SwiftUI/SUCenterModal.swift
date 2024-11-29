@@ -33,12 +33,12 @@ struct SUCenterModal<Header: View, Body: View, Footer: View>: View {
     }
     .opacity(self.contentOpacity)
     .onAppear {
-      withAnimation(.linear(duration: self.model.transitionDuration)) {
+      withAnimation(.linear(duration: self.model.transition.value)) {
         self.contentOpacity = 1.0
       }
     }
     .onChange(of: self.isVisible) { newValue in
-      withAnimation(.linear(duration: self.model.transitionDuration)) {
+      withAnimation(.linear(duration: self.model.transition.value)) {
         if newValue {
           self.contentOpacity = 1.0
         } else {
@@ -62,7 +62,7 @@ extension View {
   ) -> some View {
     return self.modal(
       isVisible: isPresented,
-      transitionDuration: model.transitionDuration,
+      transitionDuration: model.transition.value,
       onDismiss: onDismiss,
       content: {
         SUCenterModal(
@@ -88,7 +88,7 @@ extension View {
   ) -> some View {
     return self.modal(
       item: item,
-      transitionDuration: model.transitionDuration,
+      transitionDuration: model.transition.value,
       onDismiss: onDismiss,
       content: { unwrappedItem in
         SUCenterModal(

@@ -18,7 +18,7 @@ public struct CenterModalVM: ModalVM {
 
   public var size: ModalSize = .medium
 
-  public var transitionDuration: TimeInterval = 0.2
+  public var transition: ModalTransition = .fast
 
   /// Initializes a new instance of `ModalVM` with default values.
   public init() {}

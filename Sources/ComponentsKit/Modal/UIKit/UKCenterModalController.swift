@@ -24,7 +24,7 @@ public class UKCenterModalController: UKModalController<CenterModalVM> {
   public override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
 
-    UIView.animate(withDuration: self.model.transitionDuration) {
+    UIView.animate(withDuration: self.model.transition.value) {
       self.overlay.alpha = 1
       self.container.alpha = 1
     }
@@ -44,7 +44,7 @@ public class UKCenterModalController: UKModalController<CenterModalVM> {
     animated flag: Bool,
     completion: (() -> Void)? = nil
   ) {
-    UIView.animate(withDuration: self.model.transitionDuration) {
+    UIView.animate(withDuration: self.model.transition.value) {
       self.overlay.alpha = 0
       self.container.alpha = 0
     } completion: { _ in
