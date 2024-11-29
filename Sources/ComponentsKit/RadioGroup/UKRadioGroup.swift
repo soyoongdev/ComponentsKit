@@ -145,8 +145,9 @@ open class UKRadioGroup<ID: Hashable>: UIView, UKComponent {
           self.zoomIn(view: radioGroupItem.innerCircle)
         }
       } else {
-        radioGroupItem.innerCircle.alpha = 0.0
-        radioGroupItem.innerCircle.transform = CGAffineTransform(scaleX: 0.0, y: 0.0)
+        if radioGroupItem.innerCircle.alpha == 1.0 {
+          self.zoomOut(view: radioGroupItem.innerCircle)
+        }
       }
 
       if self.tappingId != item.id {
@@ -188,6 +189,19 @@ open class UKRadioGroup<ID: Hashable>: UIView, UKComponent {
       options: [.curveEaseOut],
       animations: {
         view.transform = CGAffineTransform.identity
+      },
+      completion: nil
+    )
+  }
+
+  private func zoomOut(view: UIView) {
+    UIView.animate(
+      withDuration: 0.2,
+      delay: 0.0,
+      options: [.curveEaseOut],
+      animations: {
+        view.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
+        view.alpha = 0.0
       },
       completion: nil
     )
@@ -250,7 +264,7 @@ extension UKRadioGroup {
 
     static func innerCircle(_ view: UIView, model: RadioGroupVM<ID>, isSelected: Bool, radioColor: UIColor) {
       view.layer.cornerRadius = model.innerCircleSize / 2
-      view.backgroundColor = isSelected ? radioColor : .clear
+      view.backgroundColor = radioColor
     }
 
     static func titleLabel(
