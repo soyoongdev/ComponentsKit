@@ -23,7 +23,7 @@ open class UKModalController<VM: ModalVM>: UIViewController {
     self.model = model
 
     switch model.overlayStyle {
-    case .dimmed, .opaque:
+    case .dimmed, .transparent:
       self.overlay = UIView()
     case .blurred:
       self.overlay = UIVisualEffectView()
@@ -165,7 +165,7 @@ extension UKModalController {
       switch model.overlayStyle {
       case .dimmed:
         view.backgroundColor = .black.withAlphaComponent(0.7)
-      case .opaque:
+      case .transparent:
         view.backgroundColor = .clear
       case .blurred:
         (view as? UIVisualEffectView)?.effect = UIBlurEffect(style: .systemUltraThinMaterial)
