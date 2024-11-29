@@ -1,13 +1,15 @@
 import UIKit
 
-public final class ContentSizedScrollView: UIScrollView {
-  public override var contentSize: CGSize {
+/// A custom `UIScrollView` subclass that automatically adjusts its intrinsic content size
+/// based on its content size, ensuring it fits its content vertically.
+final class ContentSizedScrollView: UIScrollView {
+  override var contentSize: CGSize {
     didSet {
       self.invalidateIntrinsicContentSize()
     }
   }
 
-  public override var intrinsicContentSize: CGSize {
+  override var intrinsicContentSize: CGSize {
     self.layoutIfNeeded()
     return CGSize(
       width: UIView.noIntrinsicMetric,

@@ -1,6 +1,16 @@
 import UIKit
 
+/// A bottom-aligned modal controller.
 public class UKBottomModalController: UKModalController<BottomModalVM> {
+  // MARK: - Initialization
+
+  /// Initializer.
+  ///
+  /// - Parameters:
+  ///   - model: A model that defines the appearance properties.
+  ///   - header: An optional content block for the modal's header.
+  ///   - body: The main content block for the modal.
+  ///   - footer: An optional content block for the modal's footer.
   public override init(
     model: BottomModalVM = .init(),
     header: Content? = nil,
@@ -13,6 +23,8 @@ public class UKBottomModalController: UKModalController<BottomModalVM> {
   required public init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
+
+  // MARK: - Lifecycle
 
   public override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
@@ -30,6 +42,8 @@ public class UKBottomModalController: UKModalController<BottomModalVM> {
     }
   }
 
+  // MARK: - Setup
+
   public override func setup() {
     super.setup()
 
@@ -39,11 +53,15 @@ public class UKBottomModalController: UKModalController<BottomModalVM> {
     ))
   }
 
+  // MARK: - Layout
+
   public override func layout() {
     super.layout()
 
     self.container.bottom(self.model.outerPaddings.bottom, safeArea: true)
   }
+
+  // MARK: - UIViewController Methods
 
   public override func dismiss(
     animated flag: Bool,

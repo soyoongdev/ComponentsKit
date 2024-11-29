@@ -1,18 +1,35 @@
 import AutoLayout
 import UIKit
 
+/// A generic class that defines shared behavior for modal controllers.
 open class UKModalController<VM: ModalVM>: UIViewController {
+  // MARK: - Typealiases
+
+  /// A typealias for content providers, which create views for the header, body, or footer.
+  /// The content provider closure receives a dismiss action that can be called to close the modal.
   public typealias Content = (_ dismiss: @escaping (_ animated: Bool) -> Void) -> UIView
 
+  // MARK: - Properties
+
+  /// A model that defines the appearance properties.
   public let model: VM
 
+  /// The optional header view of the modal.
   public var header: UIView?
+  /// The main body view of the modal.
   public var body = UIView()
+  /// The optional footer view of the modal.
   public var footer: UIView?
-  public var container = UIView()
+  /// The container view that holds the modal's content.
+  public let container = UIView()
+  /// The content view inside the container, holding the header, body, and footer.
   public let content = UIView()
-  public let bodyWrapper = ContentSizedScrollView()
+  /// A scrollable wrapper for the body content.
+  public let bodyWrapper: UIScrollView = ContentSizedScrollView()
+  /// The overlay view that appears behind the modal.
   public let overlay: UIView
+
+  // MARK: - Initialization
 
   init(
     model: VM = .init(),
@@ -49,6 +66,8 @@ open class UKModalController<VM: ModalVM>: UIViewController {
     fatalError("init(coder:) has not been implemented")
   }
 
+  // MARK: - Lifecycle
+
   open override func viewDidLoad() {
     super.viewDidLoad()
 
@@ -59,6 +78,7 @@ open class UKModalController<VM: ModalVM>: UIViewController {
 
   // MARK: - Setup
 
+  /// Sets up the modal's subviews and gesture recognizers.
   open func setup() {
     self.view.addSubview(self.overlay)
     self.view.addSubview(self.container)
@@ -86,6 +106,7 @@ open class UKModalController<VM: ModalVM>: UIViewController {
 
   // MARK: - Style
 
+  /// Applies styling to the modal's components based on the model.
   open func style() {
     Self.Style.overlay(self.overlay, model: self.model)
     Self.Style.container(self.container, model: self.model)
@@ -95,6 +116,7 @@ open class UKModalController<VM: ModalVM>: UIViewController {
 
   // MARK: - Layout
 
+  /// Configures the layout of the modal's components.
   open func layout() {
     self.overlay.allEdges()
     self.content.allEdges()

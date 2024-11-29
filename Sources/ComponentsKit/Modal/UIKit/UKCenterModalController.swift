@@ -1,6 +1,16 @@
 import UIKit
 
+/// A center-aligned modal controller.
 public class UKCenterModalController: UKModalController<CenterModalVM> {
+  // MARK: - Initialization
+
+  /// Initializer.
+  ///
+  /// - Parameters:
+  ///   - model: A model that defines the appearance properties.
+  ///   - header: An optional content block for the modal's header.
+  ///   - body: The main content block for the modal.
+  ///   - footer: An optional content block for the modal's footer.
   public override init(
     model: CenterModalVM = .init(),
     header: Content? = nil,
@@ -13,6 +23,8 @@ public class UKCenterModalController: UKModalController<CenterModalVM> {
   required public init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
+
+  // MARK: - Lifecycle
 
   public override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
@@ -30,6 +42,8 @@ public class UKCenterModalController: UKModalController<CenterModalVM> {
     }
   }
 
+  // MARK: - Layout
+
   public override func layout() {
     super.layout()
 
@@ -39,6 +53,8 @@ public class UKCenterModalController: UKModalController<CenterModalVM> {
     ).isActive = true
     self.container.centerVertically()
   }
+
+  // MARK: - UIViewController Methods
 
   public override func dismiss(
     animated flag: Bool,
