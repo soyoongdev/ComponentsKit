@@ -43,23 +43,6 @@ public struct RadioGroupVM<ID: Hashable>: ComponentVM {
   public init() {}
 }
 
-extension UKRadioGroup {
-  /// A class representing a single item in the radio group.
-  public class RadioGroupItem {
-    let container: UIView
-    let radioView: UIView
-    let innerCircle: UIView
-    let titleLabel: UILabel
-
-    init(container: UIView, radioView: UIView, innerCircle: UIView, titleLabel: UILabel) {
-      self.container = container
-      self.radioView = radioView
-      self.innerCircle = innerCircle
-      self.titleLabel = titleLabel
-    }
-  }
-}
-
 // MARK: - Shared Helpers
 
 extension RadioGroupVM {

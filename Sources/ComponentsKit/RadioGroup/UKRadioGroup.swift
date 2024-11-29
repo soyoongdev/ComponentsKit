@@ -29,7 +29,7 @@ open class UKRadioGroup<ID: Hashable>: UIView, UKComponent {
   // MARK: Subviews
 
   public var stackView = UIStackView()
-  private var items: [ID: RadioGroupItem] = [:]
+  private var items: [ID: RadioGroupItemView<ID>] = [:]
 
   // MARK: Initialization
 
@@ -69,49 +69,20 @@ open class UKRadioGroup<ID: Hashable>: UIView, UKComponent {
     self.items.removeAll()
 
     self.model.items.forEach { item in
-      let container = UIView()
-      let radioView = UIView()
-      let innerCircle = UIView()
-      let titleLabel = UILabel()
-
-      container.addSubview(radioView)
-      radioView.addSubview(innerCircle)
-      container.addSubview(titleLabel)
+      let radioGroupItemView = RadioGroupItemView(item: item, model: self.model)
 
       let longPressGesture = UILongPressGestureRecognizer(
         target: self,
         action: #selector(handleContainerLongPress(_:))
       )
       longPressGesture.minimumPressDuration = 0
-      container.addGestureRecognizer(longPressGesture)
+      radioGroupItemView.addGestureRecognizer(longPressGesture)
 
-      container.isUserInteractionEnabled = item.isEnabled && self.model.isEnabled
+      radioGroupItemView.isUserInteractionEnabled = item.isEnabled && self.model.isEnabled
 
-      radioView.size(self.model.circleSize)
-      radioView.leading()
-      radioView.centerVertically()
-      radioView.topAnchor.constraint(greaterThanOrEqualTo: container.topAnchor).isActive = true
-      radioView.bottomAnchor.constraint(lessThanOrEqualTo: container.bottomAnchor).isActive = true
+      self.items[item.id] = radioGroupItemView
 
-      innerCircle.size(self.model.innerCircleSize)
-      innerCircle.center(in: radioView)
-
-      titleLabel.after(radioView, padding: 8)
-      titleLabel.trailing()
-      titleLabel.centerVertically()
-      titleLabel.topAnchor.constraint(greaterThanOrEqualTo: container.topAnchor).isActive = true
-      titleLabel.bottomAnchor.constraint(lessThanOrEqualTo: container.bottomAnchor).isActive = true
-
-      let radioGroupItem = RadioGroupItem(
-        container: container,
-        radioView: radioView,
-        innerCircle: innerCircle,
-        titleLabel: titleLabel
-      )
-
-      self.items[item.id] = radioGroupItem
-
-      self.stackView.addArrangedSubview(container)
+      self.stackView.addArrangedSubview(radioGroupItemView)
     }
   }
 
@@ -124,34 +95,25 @@ open class UKRadioGroup<ID: Hashable>: UIView, UKComponent {
 
   private func updateViewStyles() {
     self.model.items.forEach { item in
-      guard let radioGroupItem = self.items[item.id] else { return }
+      guard let radioGroupItemView = self.items[item.id] else { return }
 
       let isSelected = item.id == self.selectedId
-      let radioColor = self.model.radioItemColor(for: item, selectedId: self.selectedId).uiColor
-      let textColor = self.model.textColor(for: item, selectedId: self.selectedId).uiColor
 
-      Self.Style.radioView(radioGroupItem.radioView, model: self.model, radioColor: radioColor)
-      Self.Style.innerCircle(radioGroupItem.innerCircle, model: self.model, isSelected: isSelected, radioColor: radioColor)
-      Self.Style.titleLabel(
-        radioGroupItem.titleLabel,
-        text: item.title,
-        textColor: textColor,
-        font: self.model.preferredFont(for: item.id).uiFont
-      )
+      radioGroupItemView.updateStyle(isSelected: isSelected, model: self.model, item: item, selectedId: self.selectedId)
 
       if isSelected {
-        if radioGroupItem.innerCircle.alpha == 0.0 {
-          radioGroupItem.innerCircle.alpha = 1.0
-          self.zoomIn(view: radioGroupItem.innerCircle)
+        if radioGroupItemView.innerCircle.alpha == 0.0 {
+          radioGroupItemView.innerCircle.alpha = 1.0
+          self.zoomIn(view: radioGroupItemView.innerCircle)
         }
       } else {
-        if radioGroupItem.innerCircle.alpha == 1.0 {
-          self.zoomOut(view: radioGroupItem.innerCircle)
+        if radioGroupItemView.innerCircle.alpha == 1.0 {
+          self.zoomOut(view: radioGroupItemView.innerCircle)
         }
       }
 
       if self.tappingId != item.id {
-        radioGroupItem.radioView.transform = .identity
+        radioGroupItemView.radioView.transform = .identity
       }
     }
   }
@@ -223,9 +185,8 @@ open class UKRadioGroup<ID: Hashable>: UIView, UKComponent {
   // MARK: Gesture Handlers
 
   @objc private func handleContainerLongPress(_ sender: UILongPressGestureRecognizer) {
-    guard let tappedContainer = sender.view,
-          let tappedItem = self.items.first(where: { $0.value.container == tappedContainer }) else { return }
-    let tappedId = tappedItem.key
+    guard let tappedView = sender.view as? RadioGroupItemView<ID> else { return }
+    let tappedId = tappedView.itemID
 
     switch sender.state {
     case .began:
@@ -253,30 +214,6 @@ extension UKRadioGroup {
       stackView.alignment = .leading
       stackView.spacing = 8
       stackView.distribution = .equalSpacing
-    }
-
-    static func radioView(_ view: UIView, model: RadioGroupVM<ID>, radioColor: UIColor) {
-      view.layer.cornerRadius = model.circleSize / 2
-      view.layer.borderWidth = model.lineWidth
-      view.layer.borderColor = radioColor.cgColor
-      view.backgroundColor = .clear
-    }
-
-    static func innerCircle(_ view: UIView, model: RadioGroupVM<ID>, isSelected: Bool, radioColor: UIColor) {
-      view.layer.cornerRadius = model.innerCircleSize / 2
-      view.backgroundColor = radioColor
-    }
-
-    static func titleLabel(
-      _ label: UILabel,
-      text: String,
-      textColor: UIColor,
-      font: UIFont
-    ) {
-      label.text = text
-      label.font = font
-      label.textColor = textColor
-      label.numberOfLines = 0
     }
   }
 }
