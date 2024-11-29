@@ -10,4 +10,5 @@ public protocol ModalVM: ComponentVM {
   var overlayStyle: ModalOverlayStyle { get set }
   var outerPaddings: Paddings { get set }
   var size: ModalSize { get set }
+  var transitionDuration: TimeInterval { get set }
 }

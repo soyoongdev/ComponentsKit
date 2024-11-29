@@ -14,10 +14,17 @@ public class UKBottomModalController: UKModalController<BottomModalVM> {
     fatalError("init(coder:) has not been implemented")
   }
 
+  public override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+
+    self.container.transform = .init(translationX: 0, y: self.view.screenBounds.height)
+    self.overlay.alpha = 0
+  }
+
   public override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
 
-    UIView.animate(withDuration: ModalAnimation.duration) {
+    UIView.animate(withDuration: self.model.transitionDuration) {
       self.container.transform = .identity
       self.overlay.alpha = 1
     }
@@ -42,14 +49,10 @@ public class UKBottomModalController: UKModalController<BottomModalVM> {
     animated flag: Bool,
     completion: (() -> Void)? = nil
   ) {
-    if flag {
-      UIView.animate(withDuration: ModalAnimation.duration) {
-        self.container.transform = .init(translationX: 0, y: self.view.screenBounds.height)
-        self.overlay.alpha = 0
-      } completion: { _ in
-        super.dismiss(animated: false)
-      }
-    } else {
+    UIView.animate(withDuration: self.model.transitionDuration) {
+      self.container.transform = .init(translationX: 0, y: self.view.screenBounds.height)
+      self.overlay.alpha = 0
+    } completion: { _ in
       super.dismiss(animated: false)
     }
   }
@@ -71,12 +74,12 @@ extension UKBottomModalController {
       if ModalAnimation.shouldHideBottomModal(offset: offset, height: viewHeight, velocity: velocity, model: self.model) {
         self.dismiss(animated: true)
       } else {
-        UIView.animate(withDuration: ModalAnimation.duration) {
+        UIView.animate(withDuration: 0.2) {
           self.container.transform = .identity
         }
       }
     case .failed, .cancelled:
-      UIView.animate(withDuration: ModalAnimation.duration) {
+      UIView.animate(withDuration: 0.2) {
         self.container.transform = .identity
       }
     default:
@@ -85,7 +88,7 @@ extension UKBottomModalController {
   }
 }
 
-// MARK: - UIViewController + Present Modal
+// MARK: - UIViewController + Present Bottom Modal
 
 extension UIViewController {
   public func present(
@@ -93,10 +96,6 @@ extension UIViewController {
     animated: Bool,
     completion: (() -> Void)? = nil
   ) {
-    if animated {
-      vc.container.transform = .init(translationX: 0, y: self.view.screenBounds.height)
-      vc.overlay.alpha = 0
-    }
     self.present(vc as UIViewController, animated: false)
   }
 }
