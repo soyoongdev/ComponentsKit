@@ -90,7 +90,7 @@ struct ModalPreviewHelpers {
         Picker("Overlay Style", selection: self.$model.overlayStyle) {
           Text("Blurred").tag(ModalOverlayStyle.blurred)
           Text("Dimmed").tag(ModalOverlayStyle.dimmed)
-          Text("Opaque").tag(ModalOverlayStyle.transparent)
+          Text("Transparent").tag(ModalOverlayStyle.transparent)
         }
         Picker("Size", selection: self.$model.size) {
           Text("Small").tag(ModalSize.small)
