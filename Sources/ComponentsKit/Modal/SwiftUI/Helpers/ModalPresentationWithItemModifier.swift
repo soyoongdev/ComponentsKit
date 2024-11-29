@@ -6,14 +6,17 @@ struct ModalPresentationWithItemModifier<Modal: View, Item: Identifiable>: ViewM
 
   @ViewBuilder var content: (Item) -> Modal
 
+  let transitionDuration: TimeInterval
   let onDismiss: (() -> Void)?
 
   init(
     item: Binding<Item?>,
+    transitionDuration: TimeInterval,
     onDismiss: (() -> Void)?,
     @ViewBuilder content: @escaping (Item) -> Modal
   ) {
     self._visibleItem = item
+    self.transitionDuration = transitionDuration
     self.onDismiss = onDismiss
     self.content = content
   }
@@ -24,7 +27,7 @@ struct ModalPresentationWithItemModifier<Modal: View, Item: Identifiable>: ViewM
         if newValue {
           self.presentedItem = self.visibleItem
         } else {
-          DispatchQueue.main.asyncAfter(deadline: .now() + ModalAnimation.duration) {
+          DispatchQueue.main.asyncAfter(deadline: .now() + self.transitionDuration) {
             self.presentedItem = self.visibleItem
           }
         }
@@ -46,9 +49,15 @@ struct ModalPresentationWithItemModifier<Modal: View, Item: Identifiable>: ViewM
 extension View {
   func modal<Modal: View, Item: Identifiable>(
     item: Binding<Item?>,
+    transitionDuration: TimeInterval,
     onDismiss: (() -> Void)? = nil,
     @ViewBuilder content: @escaping (Item) -> Modal
   ) -> some View {
-    modifier(ModalPresentationWithItemModifier(item: item, onDismiss: onDismiss, content: content))
+    modifier(ModalPresentationWithItemModifier(
+      item: item,
+      transitionDuration: transitionDuration,
+      onDismiss: onDismiss,
+      content: content
+    ))
   }
 }

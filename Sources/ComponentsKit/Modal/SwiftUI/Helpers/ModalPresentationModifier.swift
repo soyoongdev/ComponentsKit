@@ -6,14 +6,17 @@ struct ModalPresentationModifier<Modal: View>: ViewModifier {
 
   @ViewBuilder var content: () -> Modal
 
+  let transitionDuration: TimeInterval
   let onDismiss: (() -> Void)?
 
   init(
     isVisible: Binding<Bool>,
+    transitionDuration: TimeInterval,
     onDismiss: (() -> Void)?,
     @ViewBuilder content: @escaping () -> Modal
   ) {
     self._isContentVisible = isVisible
+    self.transitionDuration = transitionDuration
     self.onDismiss = onDismiss
     self.content = content
   }
@@ -24,7 +27,7 @@ struct ModalPresentationModifier<Modal: View>: ViewModifier {
         if newValue {
           self.isPresented = true
         } else {
-          DispatchQueue.main.asyncAfter(deadline: .now() + ModalAnimation.duration) {
+          DispatchQueue.main.asyncAfter(deadline: .now() + self.transitionDuration) {
             self.isPresented = false
           }
         }
@@ -46,9 +49,15 @@ struct ModalPresentationModifier<Modal: View>: ViewModifier {
 extension View {
   func modal<Modal: View>(
     isVisible: Binding<Bool>,
+    transitionDuration: TimeInterval,
     onDismiss: (() -> Void)? = nil,
     @ViewBuilder content: @escaping () -> Modal
   ) -> some View {
-    modifier(ModalPresentationModifier(isVisible: isVisible, onDismiss: onDismiss, content: content))
+    modifier(ModalPresentationModifier(
+      isVisible: isVisible,
+      transitionDuration: transitionDuration,
+      onDismiss: onDismiss,
+      content: content
+    ))
   }
 }

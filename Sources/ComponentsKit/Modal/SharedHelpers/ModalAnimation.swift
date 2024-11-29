@@ -1,8 +1,6 @@
 import Foundation
 
 enum ModalAnimation {
-  static let duration: TimeInterval = 0.2
-
   /// Calculates an offset with rubber band effect.
   static func rubberBandClamp(_ translation: CGFloat) -> CGFloat {
     let dim: CGFloat = 20

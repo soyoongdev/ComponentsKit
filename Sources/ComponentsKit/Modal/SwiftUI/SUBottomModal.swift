@@ -52,7 +52,7 @@ struct SUBottomModal<Header: View, Body: View, Footer: View>: View {
               ) {
                 self.isVisible = false
               } else {
-                withAnimation(.linear(duration: ModalAnimation.duration)) {
+                withAnimation(.linear(duration: 0.2)) {
                   self.contentOffsetY = 0
                 }
               }
@@ -62,13 +62,13 @@ struct SUBottomModal<Header: View, Body: View, Footer: View>: View {
     .onAppear {
       self.contentOffsetY = self.screenHeight
 
-      withAnimation(.linear(duration: ModalAnimation.duration)) {
+      withAnimation(.linear(duration: self.model.transitionDuration)) {
         self.overlayOpacity = 1.0
         self.contentOffsetY = 0
       }
     }
     .onChange(of: self.isVisible) { newValue in
-      withAnimation(.linear(duration: ModalAnimation.duration)) {
+      withAnimation(.linear(duration: self.model.transitionDuration)) {
         if newValue {
           self.overlayOpacity = 1.0
           self.contentOffsetY = 0
@@ -100,6 +100,7 @@ extension View {
   ) -> some View {
     return self.modal(
       isVisible: isPresented,
+      transitionDuration: model.transitionDuration,
       onDismiss: onDismiss,
       content: {
         SUBottomModal(
@@ -125,6 +126,7 @@ extension View {
   ) -> some View {
     return self.modal(
       item: item,
+      transitionDuration: model.transitionDuration,
       onDismiss: onDismiss,
       content: { unwrappedItem in
         SUBottomModal(
