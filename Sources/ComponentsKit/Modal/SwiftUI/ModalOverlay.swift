@@ -20,7 +20,7 @@ struct ModalOverlay<VM: ModalVM>: View {
         Color.black.opacity(0.7)
       case .blurred:
         Color.clear.background(.ultraThinMaterial)
-      case .opaque:
+      case .transparent:
         // Note: It can't be completely transparent as it won't receive touch gestures.
         Color.black.opacity(0.0001)
       }
