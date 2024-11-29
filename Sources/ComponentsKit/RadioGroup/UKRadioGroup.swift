@@ -25,14 +25,11 @@ open class UKRadioGroup<ID: Hashable>: UIView, UKComponent {
   }
   /// The identifier of the radio button currently being tapped.
   private var tappingId: ID?
-  private var stackViewConstraints: LayoutConstraints = .init()
 
   // MARK: Subviews
 
   public var stackView = UIStackView()
-  private var radioViews: [ID: UIView] = [:]
-  private var innerCircles: [ID: UIView] = [:]
-  private var titleLabels: [ID: UILabel] = [:]
+  private var items: [ID: RadioGroupItem] = [:]
 
   // MARK: Initialization
 
@@ -69,9 +66,7 @@ open class UKRadioGroup<ID: Hashable>: UIView, UKComponent {
 
   private func updateRadioViews() {
     self.stackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
-    self.radioViews.removeAll()
-    self.innerCircles.removeAll()
-    self.titleLabels.removeAll()
+    self.items.removeAll()
 
     self.model.items.forEach { item in
       let container = UIView()
@@ -95,23 +90,29 @@ open class UKRadioGroup<ID: Hashable>: UIView, UKComponent {
       radioView.size(self.model.circleSize)
       radioView.leading()
       radioView.centerVertically()
+      radioView.topAnchor.constraint(greaterThanOrEqualTo: container.topAnchor).isActive = true
+      radioView.bottomAnchor.constraint(lessThanOrEqualTo: container.bottomAnchor).isActive = true
 
       innerCircle.size(self.model.innerCircleSize)
       innerCircle.center(in: radioView)
 
       titleLabel.after(radioView, padding: 8)
       titleLabel.trailing()
-      titleLabel.top()
-      titleLabel.bottom()
+      titleLabel.centerVertically()
+      titleLabel.topAnchor.constraint(greaterThanOrEqualTo: container.topAnchor).isActive = true
+      titleLabel.bottomAnchor.constraint(lessThanOrEqualTo: container.bottomAnchor).isActive = true
 
-      self.radioViews[item.id] = radioView
-      self.innerCircles[item.id] = innerCircle
-      self.titleLabels[item.id] = titleLabel
+      let radioGroupItem = RadioGroupItem(
+        container: container,
+        radioView: radioView,
+        innerCircle: innerCircle,
+        titleLabel: titleLabel
+      )
+
+      self.items[item.id] = radioGroupItem
 
       self.stackView.addArrangedSubview(container)
     }
-
-    self.updateSelection()
   }
 
   // MARK: Style
@@ -123,35 +124,33 @@ open class UKRadioGroup<ID: Hashable>: UIView, UKComponent {
 
   private func updateViewStyles() {
     self.model.items.forEach { item in
-      guard let radioView = self.radioViews[item.id],
-            let innerCircle = self.innerCircles[item.id],
-            let titleLabel = self.titleLabels[item.id] else { return }
+      guard let radioGroupItem = self.items[item.id] else { return }
 
       let isSelected = item.id == self.selectedId
       let radioColor = self.model.radioItemColor(for: item, selectedId: self.selectedId).uiColor
       let textColor = self.model.textColor(for: item, selectedId: self.selectedId).uiColor
 
-      Self.Style.radioView(radioView, model: self.model, radioColor: radioColor)
-      Self.Style.innerCircle(innerCircle, model: self.model, isSelected: isSelected, radioColor: radioColor)
+      Self.Style.radioView(radioGroupItem.radioView, model: self.model, radioColor: radioColor)
+      Self.Style.innerCircle(radioGroupItem.innerCircle, model: self.model, isSelected: isSelected, radioColor: radioColor)
       Self.Style.titleLabel(
-        titleLabel,
+        radioGroupItem.titleLabel,
         text: item.title,
         textColor: textColor,
         font: self.model.preferredFont(for: item.id).uiFont
       )
 
       if isSelected {
-        if innerCircle.alpha == 0.0 {
-          innerCircle.alpha = 1.0
-          self.zoomIn(view: innerCircle, duration: 0.2)
+        if radioGroupItem.innerCircle.alpha == 0.0 {
+          radioGroupItem.innerCircle.alpha = 1.0
+          self.zoomIn(view: radioGroupItem.innerCircle)
         }
       } else {
-        innerCircle.alpha = 0.0
-        innerCircle.transform = CGAffineTransform(scaleX: 0.0, y: 0.0)
+        radioGroupItem.innerCircle.alpha = 0.0
+        radioGroupItem.innerCircle.transform = CGAffineTransform(scaleX: 0.0, y: 0.0)
       }
 
       if self.tappingId != item.id {
-        radioView.transform = .identity
+        radioGroupItem.radioView.transform = .identity
       }
     }
   }
@@ -159,15 +158,20 @@ open class UKRadioGroup<ID: Hashable>: UIView, UKComponent {
   // MARK: Layout
 
   private func layout() {
-    self.stackViewConstraints = self.stackView.allEdges()
+    self.stackView.allEdges()
   }
 
   // MARK: Update
 
   public func update(_ oldModel: RadioGroupVM<ID>) {
     guard self.model != oldModel else { return }
-    self.updateRadioViews()
-    self.style()
+
+    if self.model.shouldUpdateLayout(oldModel) {
+      self.updateRadioViews()
+      self.style()
+    } else {
+      self.updateViewStyles()
+    }
   }
 
   private func updateSelection() {
@@ -176,10 +180,10 @@ open class UKRadioGroup<ID: Hashable>: UIView, UKComponent {
 
   // MARK: Helpers
 
-  private func zoomIn(view: UIView, duration: TimeInterval = 0.2) {
+  private func zoomIn(view: UIView) {
     view.transform = CGAffineTransform(scaleX: 0.0, y: 0.0)
     UIView.animate(
-      withDuration: duration,
+      withDuration: 0.2,
       delay: 0.0,
       options: [.curveEaseOut],
       animations: {
@@ -190,7 +194,7 @@ open class UKRadioGroup<ID: Hashable>: UIView, UKComponent {
   }
 
   private func animateRadioView(for id: ID, scale: CGFloat) {
-    guard let radioView = self.radioViews[id] else { return }
+    guard let radioView = self.items[id]?.radioView else { return }
     UIView.animate(
       withDuration: 0.1,
       delay: 0,
@@ -206,16 +210,20 @@ open class UKRadioGroup<ID: Hashable>: UIView, UKComponent {
 
   @objc private func handleContainerLongPress(_ sender: UILongPressGestureRecognizer) {
     guard let tappedContainer = sender.view,
-          let tappedId = self.radioViews.first(where: { $0.value.superview == tappedContainer })?.key else { return }
+          let tappedItem = self.items.first(where: { $0.value.container == tappedContainer }) else { return }
+    let tappedId = tappedItem.key
 
     switch sender.state {
     case .began:
       self.tappingId = tappedId
       self.animateRadioView(for: tappedId, scale: self.model.animationScale.value)
-    case .ended, .cancelled, .failed:
+    case .ended:
       self.tappingId = nil
       self.animateRadioView(for: tappedId, scale: 1.0)
       self.selectedId = tappedId
+    case .cancelled, .failed:
+      self.tappingId = nil
+      self.animateRadioView(for: tappedId, scale: 1.0)
     default:
       break
     }
@@ -230,6 +238,7 @@ extension UKRadioGroup {
       stackView.axis = .vertical
       stackView.alignment = .leading
       stackView.spacing = 8
+      stackView.distribution = .equalSpacing
     }
 
     static func radioView(_ view: UIView, model: RadioGroupVM<ID>, radioColor: UIColor) {

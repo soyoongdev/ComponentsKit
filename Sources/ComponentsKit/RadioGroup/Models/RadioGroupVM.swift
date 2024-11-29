@@ -1,7 +1,8 @@
 import Foundation
+import UIKit
 
 /// A model that defines the appearance of a radio group component.
-public struct RadioGroupVM<ID: Hashable> {
+public struct RadioGroupVM<ID: Hashable>: ComponentVM {
   /// The scaling factor for the button's press animation, with a value between 0 and 1.
   ///
   /// Defaults to `.medium`.
@@ -40,6 +41,23 @@ public struct RadioGroupVM<ID: Hashable> {
 
   /// Initializes a new instance of `RadioGroupVM` with default values.
   public init() {}
+}
+
+extension UKRadioGroup {
+  /// A class representing a single item in the radio group.
+  public class RadioGroupItem {
+    let container: UIView
+    let radioView: UIView
+    let innerCircle: UIView
+    let titleLabel: UILabel
+
+    init(container: UIView, radioView: UIView, innerCircle: UIView, titleLabel: UILabel) {
+      self.container = container
+      self.radioView = radioView
+      self.innerCircle = innerCircle
+      self.titleLabel = titleLabel
+    }
+  }
 }
 
 // MARK: - Shared Helpers
@@ -100,6 +118,12 @@ extension RadioGroupVM {
   }
 }
 
+extension RadioGroupVM {
+    func shouldUpdateLayout(_ oldModel: RadioGroupVM<ID>) -> Bool {
+        return self.items != oldModel.items || self.size != oldModel.size
+    }
+}
+
 // MARK: - Appearance
 
 extension RadioGroupVM {
@@ -134,15 +158,4 @@ extension RadioGroupVM {
     }
     return nil
   }
-}
-
-extension RadioGroupVM: Equatable where ID: Equatable {
-    public static func == (lhs: RadioGroupVM<ID>, rhs: RadioGroupVM<ID>) -> Bool {
-        return lhs.animationScale == rhs.animationScale &&
-               lhs.color == rhs.color &&
-               lhs.font == rhs.font &&
-               lhs.isEnabled == rhs.isEnabled &&
-               lhs.items == rhs.items &&
-               lhs.size == rhs.size
-    }
 }

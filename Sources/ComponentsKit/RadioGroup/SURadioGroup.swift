@@ -32,7 +32,7 @@ public struct SURadioGroup<ID: Hashable>: View {
   public var body: some View {
     VStack(alignment: .leading, spacing: 8) {
       ForEach(self.model.items) { item in
-        HStack {
+        HStack(spacing: 8) {
           ZStack {
             Circle()
               .strokeBorder(
