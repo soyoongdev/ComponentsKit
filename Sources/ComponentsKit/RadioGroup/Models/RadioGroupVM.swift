@@ -39,6 +39,11 @@ public struct RadioGroupVM<ID: Hashable>: ComponentVM {
   /// Defaults to `.medium`.
   public var size: ComponentSize = .medium
 
+  /// The spacing between radio items.
+  ///
+  /// Defaults to `10`.
+  public var spacing: CGFloat = 10
+
   /// Initializes a new instance of `RadioGroupVM` with default values.
   public init() {}
 }

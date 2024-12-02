@@ -30,7 +30,7 @@ public struct SURadioGroup<ID: Hashable>: View {
   // MARK: Body
 
   public var body: some View {
-    VStack(alignment: .leading, spacing: 8) {
+    VStack(alignment: .leading, spacing: self.model.spacing) {
       ForEach(self.model.items) { item in
         HStack(spacing: 8) {
           ZStack {

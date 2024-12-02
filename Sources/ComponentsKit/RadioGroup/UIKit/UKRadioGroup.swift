@@ -92,7 +92,7 @@ open class UKRadioGroup<ID: Hashable>: UIView, UKComponent {
   // MARK: Style
 
   private func style() {
-    Self.Style.stackView(self.stackView)
+    Self.Style.stackView(self.stackView, model: self.model)
   }
 
   // MARK: Layout
@@ -105,6 +105,8 @@ open class UKRadioGroup<ID: Hashable>: UIView, UKComponent {
 
   public func update(_ oldModel: RadioGroupVM<ID>) {
     guard self.model != oldModel else { return }
+
+    self.stackView.spacing = self.model.spacing
 
     if self.model.shouldUpdateLayout(oldModel) {
       self.setupItems()
@@ -166,10 +168,10 @@ open class UKRadioGroup<ID: Hashable>: UIView, UKComponent {
 
 extension UKRadioGroup {
   fileprivate enum Style {
-    static func stackView(_ stackView: UIStackView) {
+    static func stackView(_ stackView: UIStackView, model: Model) {
       stackView.axis = .vertical
       stackView.alignment = .leading
-      stackView.spacing = 8
+      stackView.spacing = model.spacing
       stackView.distribution = .equalSpacing
     }
   }
