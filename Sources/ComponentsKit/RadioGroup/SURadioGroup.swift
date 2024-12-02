@@ -36,14 +36,14 @@ public struct SURadioGroup<ID: Hashable>: View {
           ZStack {
             Circle()
               .strokeBorder(
-                self.model.radioItemColor(for: item, selectedId: self.selectedId).color(for: self.colorScheme),
+                self.model.radioItemColor(for: item, isSelected: self.selectedId == item.id).color(for: self.colorScheme),
                 lineWidth: self.model.lineWidth
               )
               .frame(width: self.model.circleSize, height: self.model.circleSize)
             if self.selectedId == item.id {
               Circle()
                 .fill(
-                  self.model.radioItemColor(for: item, selectedId: self.selectedId).color(for: self.colorScheme)
+                  self.model.radioItemColor(for: item, isSelected: true).color(for: self.colorScheme)
                 )
                 .frame(width: self.model.innerCircleSize, height: self.model.innerCircleSize)
                 .transition(.scale)
@@ -54,7 +54,7 @@ public struct SURadioGroup<ID: Hashable>: View {
           Text(item.title)
             .font(self.model.preferredFont(for: item.id).font)
             .foregroundColor(
-              self.model.textColor(for: item, selectedId: self.selectedId).color(for: self.colorScheme)
+              self.model.textColor(for: item).color(for: self.colorScheme)
             )
         }
         .gesture(

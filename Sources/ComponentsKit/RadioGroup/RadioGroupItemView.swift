@@ -5,23 +5,43 @@ import UIKit
 public class RadioGroupItemView<ID: Hashable>: UIView {
   // MARK: Properties
 
-  let radioView: UIView = UIView()
-  let innerCircle: UIView = UIView()
-  let titleLabel: UILabel = UILabel()
+  public let radioView = UIView()
+  public let innerCircle = UIView()
+  public let titleLabel = UILabel()
 
-  var itemID: ID
-  var isEnabled: Bool
-  var isSelected: Bool = false
+  let itemVM: RadioItemVM<ID>
+  var groupVM: RadioGroupVM<ID> {
+    didSet {
+      self.update(oldValue)
+    }
+  }
+  var isSelected: Bool {
+    didSet {
+      guard isSelected != oldValue else { return }
+      if self.isSelected {
+        self.select()
+      } else {
+        self.deselect()
+      }
+    }
+  }
 
   // MARK: Initialization
 
-  init(item: RadioItemVM<ID>, model: RadioGroupVM<ID>) {
-    self.itemID = item.id
-    self.isEnabled = item.isEnabled
+  init(
+    isSelected: Bool,
+    groupVM: RadioGroupVM<ID>,
+    itemVM: RadioItemVM<ID>
+  ) {
+    self.groupVM = groupVM
+    self.itemVM = itemVM
+    self.isSelected = isSelected
+
     super.init(frame: .zero)
+
     self.setup()
-    self.style(model: model, item: item)
-    self.layout(model: model)
+    self.style()
+    self.layout()
   }
 
   required init?(coder: NSCoder) {
@@ -38,29 +58,41 @@ public class RadioGroupItemView<ID: Hashable>: UIView {
 
   // MARK: Style
 
-  private func style(model: RadioGroupVM<ID>, item: RadioItemVM<ID>) {
-    let radioColor = model.radioItemColor(for: item, selectedId: nil).uiColor
-    Style.radioView(self.radioView, model: model, radioColor: radioColor)
-    Style.innerCircle(self.innerCircle, model: model, isSelected: self.isSelected, radioColor: radioColor)
-    let textColor = model.textColor(for: item, selectedId: nil).uiColor
-    Style.titleLabel(
+  private func style() {
+    Self.Style.mainView(
+      self,
+      itemVM: self.itemVM,
+      groupVM: self.groupVM
+    )
+    Self.Style.radioView(
+      self.radioView,
+      itemVM: self.itemVM,
+      groupVM: self.groupVM,
+      isSelected: self.isSelected
+    )
+    Self.Style.innerCircle(
+      self.innerCircle,
+      itemVM: self.itemVM,
+      groupVM: self.groupVM,
+      isSelected: self.isSelected
+    )
+    Self.Style.titleLabel(
       self.titleLabel,
-      text: item.title,
-      textColor: textColor,
-      font: model.preferredFont(for: item.id).uiFont
+      itemVM: self.itemVM,
+      groupVM: self.groupVM
     )
   }
 
   // MARK: Layout
 
-  private func layout(model: RadioGroupVM<ID>) {
-    self.radioView.size(model.circleSize)
+  private func layout() {
+    self.radioView.size(self.groupVM.circleSize)
     self.radioView.leading()
     self.radioView.centerVertically()
     self.radioView.topAnchor.constraint(greaterThanOrEqualTo: self.topAnchor).isActive = true
     self.radioView.bottomAnchor.constraint(lessThanOrEqualTo: self.bottomAnchor).isActive = true
 
-    self.innerCircle.size(model.innerCircleSize)
+    self.innerCircle.size(self.groupVM.innerCircleSize)
     self.innerCircle.center(in: self.radioView)
 
     self.titleLabel.after(self.radioView, padding: 8)
@@ -70,48 +102,99 @@ public class RadioGroupItemView<ID: Hashable>: UIView {
     self.titleLabel.bottomAnchor.constraint(lessThanOrEqualTo: self.bottomAnchor).isActive = true
   }
 
-  // MARK: Update Style
+  // MARK: Update
 
-  func updateStyle(isSelected: Bool, model: RadioGroupVM<ID>, item: RadioItemVM<ID>, selectedId: ID?) {
-    self.isSelected = isSelected
+  func update(_ oldModel: RadioGroupVM<ID>) {
+    self.style()
+  }
 
-    let radioColor = model.radioItemColor(for: item, selectedId: selectedId).uiColor
-    let textColor = model.textColor(for: item, selectedId: selectedId).uiColor
+  // MARK: Selection
 
-    Style.radioView(self.radioView, model: model, radioColor: radioColor)
-    Style.innerCircle(self.innerCircle, model: model, isSelected: isSelected, radioColor: radioColor)
-    Style.titleLabel(
-      self.titleLabel,
-      text: item.title,
-      textColor: textColor,
-      font: model.preferredFont(for: item.id).uiFont
+  private func select() {
+    self.radioView.layer.borderColor = self.groupVM.radioItemColor(
+      for: self.itemVM,
+      isSelected: true
+    ).uiColor.cgColor
+    self.innerCircle.backgroundColor = self.groupVM.radioItemColor(
+      for: self.itemVM,
+      isSelected: true
+    ).uiColor
+
+    UIView.animate(
+      withDuration: 0.2,
+      delay: 0.0,
+      options: [.curveEaseOut],
+      animations: {
+        self.innerCircle.transform = CGAffineTransform.identity
+        self.innerCircle.alpha = 1
+      },
+      completion: nil
     )
   }
 
-  // MARK: Style Helpers
+  private func deselect() {
+    self.radioView.layer.borderColor = self.groupVM.radioItemColor(
+      for: self.itemVM,
+      isSelected: false
+    ).uiColor.cgColor
 
+    UIView.animate(
+      withDuration: 0.2,
+      delay: 0.0,
+      options: [.curveEaseOut],
+      animations: {
+        self.innerCircle.transform = .init(scaleX: 0.1, y: 0.1)
+        self.innerCircle.alpha = 0
+      },
+      completion: nil
+    )
+  }
+}
+
+// MARK: - Style Helpers
+
+extension RadioGroupItemView {
   fileprivate enum Style {
-    static func radioView(_ view: UIView, model: RadioGroupVM<ID>, radioColor: UIColor) {
-      view.layer.cornerRadius = model.circleSize / 2
-      view.layer.borderWidth = model.lineWidth
-      view.layer.borderColor = radioColor.cgColor
+    static func mainView(
+      _ view: UIView,
+      itemVM: RadioItemVM<ID>,
+      groupVM: RadioGroupVM<ID>
+    ) {
+      view.isUserInteractionEnabled = groupVM.isItemEnabled(itemVM)
+    }
+
+    static func radioView(
+      _ view: UIView,
+      itemVM: RadioItemVM<ID>,
+      groupVM: RadioGroupVM<ID>,
+      isSelected: Bool
+    ) {
+      view.layer.cornerRadius = groupVM.circleSize / 2
+      view.layer.borderWidth = groupVM.lineWidth
+      view.layer.borderColor = groupVM.radioItemColor(for: itemVM, isSelected: isSelected).uiColor.cgColor
       view.backgroundColor = .clear
     }
 
-    static func innerCircle(_ view: UIView, model: RadioGroupVM<ID>, isSelected: Bool, radioColor: UIColor) {
-      view.layer.cornerRadius = model.innerCircleSize / 2
-      view.backgroundColor = isSelected ? radioColor : .clear
+    static func innerCircle(
+      _ view: UIView,
+      itemVM: RadioItemVM<ID>,
+      groupVM: RadioGroupVM<ID>,
+      isSelected: Bool
+    ) {
+      view.layer.cornerRadius = groupVM.innerCircleSize / 2
+      view.backgroundColor = groupVM.radioItemColor(for: itemVM, isSelected: isSelected).uiColor
+      view.alpha = isSelected ? 1 : 0
+      view.transform = isSelected ? .identity : .init(scaleX: 0.1, y: 0.1)
     }
 
     static func titleLabel(
       _ label: UILabel,
-      text: String,
-      textColor: UIColor,
-      font: UIFont
+      itemVM: RadioItemVM<ID>,
+      groupVM: RadioGroupVM<ID>
     ) {
-      label.text = text
-      label.font = font
-      label.textColor = textColor
+      label.text = itemVM.title
+      label.font = groupVM.preferredFont(for: itemVM.id).uiFont
+      label.textColor = groupVM.textColor(for: itemVM).uiColor
       label.numberOfLines = 0
     }
   }

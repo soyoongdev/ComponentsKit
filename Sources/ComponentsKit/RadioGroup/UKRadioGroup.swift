@@ -19,7 +19,7 @@ open class UKRadioGroup<ID: Hashable>: UIView, UKComponent {
   public var selectedId: ID? {
     didSet {
       guard self.selectedId != oldValue else { return }
-      self.updateSelection()
+      self.updateSelection(oldValue)
       self.onSelectionChange?(self.selectedId)
     }
   }
@@ -61,24 +61,26 @@ open class UKRadioGroup<ID: Hashable>: UIView, UKComponent {
 
   private func setup() {
     self.addSubview(self.stackView)
-    self.updateRadioViews()
+    self.setupItems()
   }
 
-  private func updateRadioViews() {
+  private func setupItems() {
     self.stackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
     self.items.removeAll()
 
     self.model.items.forEach { item in
-      let radioGroupItemView = RadioGroupItemView(item: item, model: self.model)
+      let radioGroupItemView = RadioGroupItemView(
+        isSelected: self.selectedId == item.id,
+        groupVM: self.model,
+        itemVM: item
+      )
 
       let longPressGesture = UILongPressGestureRecognizer(
         target: self,
-        action: #selector(handleContainerLongPress(_:))
+        action: #selector(self.handleContainerLongPress(_:))
       )
       longPressGesture.minimumPressDuration = 0
       radioGroupItemView.addGestureRecognizer(longPressGesture)
-
-      radioGroupItemView.isUserInteractionEnabled = item.isEnabled && self.model.isEnabled
 
       self.items[item.id] = radioGroupItemView
 
@@ -89,33 +91,7 @@ open class UKRadioGroup<ID: Hashable>: UIView, UKComponent {
   // MARK: Style
 
   private func style() {
-    Self.Style.stackView(self.stackView, model: self.model)
-    self.updateViewStyles()
-  }
-
-  private func updateViewStyles() {
-    self.model.items.forEach { item in
-      guard let radioGroupItemView = self.items[item.id] else { return }
-
-      let isSelected = item.id == self.selectedId
-
-      radioGroupItemView.updateStyle(isSelected: isSelected, model: self.model, item: item, selectedId: self.selectedId)
-
-      if isSelected {
-        if radioGroupItemView.innerCircle.alpha == 0.0 {
-          radioGroupItemView.innerCircle.alpha = 1.0
-          self.zoomIn(view: radioGroupItemView.innerCircle)
-        }
-      } else {
-        if radioGroupItemView.innerCircle.alpha == 1.0 {
-          self.zoomOut(view: radioGroupItemView.innerCircle)
-        }
-      }
-
-      if self.tappingId != item.id {
-        radioGroupItemView.radioView.transform = .identity
-      }
-    }
+    Self.Style.stackView(self.stackView)
   }
 
   // MARK: Layout
@@ -130,44 +106,24 @@ open class UKRadioGroup<ID: Hashable>: UIView, UKComponent {
     guard self.model != oldModel else { return }
 
     if self.model.shouldUpdateLayout(oldModel) {
-      self.updateRadioViews()
-      self.style()
+      self.setupItems()
     } else {
-      self.updateViewStyles()
+      self.model.items.forEach { item in
+        self.items[item.id]?.groupVM = self.model
+      }
     }
   }
 
-  private func updateSelection() {
-    self.updateViewStyles()
+  private func updateSelection(_ oldSelection: ID?) {
+    if let oldSelection {
+      self.items[oldSelection]?.isSelected = false
+    }
+    if let selectedId {
+      self.items[selectedId]?.isSelected = true
+    }
   }
 
   // MARK: Helpers
-
-  private func zoomIn(view: UIView) {
-    view.transform = CGAffineTransform(scaleX: 0.0, y: 0.0)
-    UIView.animate(
-      withDuration: 0.2,
-      delay: 0.0,
-      options: [.curveEaseOut],
-      animations: {
-        view.transform = CGAffineTransform.identity
-      },
-      completion: nil
-    )
-  }
-
-  private func zoomOut(view: UIView) {
-    UIView.animate(
-      withDuration: 0.2,
-      delay: 0.0,
-      options: [.curveEaseOut],
-      animations: {
-        view.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
-        view.alpha = 0.0
-      },
-      completion: nil
-    )
-  }
 
   private func animateRadioView(for id: ID, scale: CGFloat) {
     guard let radioView = self.items[id]?.radioView else { return }
@@ -186,7 +142,7 @@ open class UKRadioGroup<ID: Hashable>: UIView, UKComponent {
 
   @objc private func handleContainerLongPress(_ sender: UILongPressGestureRecognizer) {
     guard let tappedView = sender.view as? RadioGroupItemView<ID> else { return }
-    let tappedId = tappedView.itemID
+    let tappedId = tappedView.itemVM.id
 
     switch sender.state {
     case .began:
@@ -209,7 +165,7 @@ open class UKRadioGroup<ID: Hashable>: UIView, UKComponent {
 
 extension UKRadioGroup {
   fileprivate enum Style {
-    static func stackView(_ stackView: UIStackView, model: RadioGroupVM<ID>) {
+    static func stackView(_ stackView: UIStackView) {
       stackView.axis = .vertical
       stackView.alignment = .leading
       stackView.spacing = 8
