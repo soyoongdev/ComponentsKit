@@ -39,6 +39,11 @@ public struct RadioGroupVM<ID: Hashable>: ComponentVM {
   /// Defaults to `.medium`.
   public var size: ComponentSize = .medium
 
+  /// The spacing between radio items.
+  ///
+  /// Defaults to `10`.
+  public var spacing: CGFloat = 10
+
   /// Initializes a new instance of `RadioGroupVM` with default values.
   public init() {}
 }
@@ -101,29 +106,34 @@ extension RadioGroupVM {
   }
 }
 
-extension RadioGroupVM {
-    func shouldUpdateLayout(_ oldModel: RadioGroupVM<ID>) -> Bool {
-        return self.items != oldModel.items || self.size != oldModel.size
-    }
-}
-
 // MARK: - Appearance
 
 extension RadioGroupVM {
-  func radioItemColor(for item: RadioItemVM<ID>, selectedId: ID?) -> UniversalColor {
-    let isSelected = item.id == selectedId
+  func isItemEnabled(_ item: RadioItemVM<ID>) -> Bool {
+    return item.isEnabled && self.isEnabled
+  }
+
+  func radioItemColor(for item: RadioItemVM<ID>, isSelected: Bool) -> UniversalColor {
     let defaultColor = UniversalColor.universal(.uiColor(.lightGray))
     let color = isSelected ? self.color : defaultColor
-    return (item.isEnabled && self.isEnabled)
+    return self.isItemEnabled(item)
     ? color
     : color.withOpacity(ComponentsKitConfig.shared.layout.disabledOpacity)
   }
 
-  func textColor(for item: RadioItemVM<ID>, selectedId: ID?) -> UniversalColor {
+  func textColor(for item: RadioItemVM<ID>) -> UniversalColor {
     let baseColor = Palette.Text.primary
-    return (item.isEnabled && self.isEnabled)
+    return self.isItemEnabled(item)
     ? baseColor
     : baseColor.withOpacity(ComponentsKitConfig.shared.layout.disabledOpacity)
+  }
+}
+
+// MARK: - UIKit Helpers
+
+extension RadioGroupVM {
+  func shouldUpdateLayout(_ oldModel: RadioGroupVM<ID>) -> Bool {
+    return self.items != oldModel.items || self.size != oldModel.size
   }
 }
 

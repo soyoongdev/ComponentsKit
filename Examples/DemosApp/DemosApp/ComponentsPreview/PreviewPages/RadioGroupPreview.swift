@@ -32,10 +32,15 @@ struct RadioGroupPreview: View {
       }
       Form {
         AnimationScalePicker(selection: self.$model.animationScale)
+        UniversalColorPicker(title: "Color", selection: self.$model.color)
         Toggle("Enabled", isOn: self.$model.isEnabled)
         FontPicker(selection: self.$model.font)
         SizePicker(selection: self.$model.size)
-        UniversalColorPicker(title: "Color", selection: self.$model.color)
+        Picker("Spacing", selection: self.$model.spacing) {
+          Text("8px").tag(CGFloat(8))
+          Text("10px").tag(CGFloat(10))
+          Text("14px").tag(CGFloat(14))
+        }
       }
     }
   }
