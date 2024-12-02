@@ -3,7 +3,7 @@ import SwiftUI
 import UIKit
 
 struct RadioGroupPreview: View {
-  @State private var selectedId: String? = nil
+  @State private var selectedId: String?
   @State private var model: RadioGroupVM<String> = {
     var model = RadioGroupVM<String>()
     model.items = [
@@ -19,18 +19,28 @@ struct RadioGroupPreview: View {
     ]
     return model
   }()
-  
+
   var body: some View {
     VStack {
+      PreviewWrapper(title: "UIKit") {
+        UKComponentPreview(model: self.model) {
+          UKRadioGroup(model: self.model)
+        }
+      }
       PreviewWrapper(title: "SwiftUI") {
         SURadioGroup(selectedId: $selectedId, model: self.model)
       }
       Form {
         AnimationScalePicker(selection: self.$model.animationScale)
+        UniversalColorPicker(title: "Color", selection: self.$model.color)
         Toggle("Enabled", isOn: self.$model.isEnabled)
         FontPicker(selection: self.$model.font)
         SizePicker(selection: self.$model.size)
-        UniversalColorPicker(title: "Color", selection: self.$model.color)
+        Picker("Spacing", selection: self.$model.spacing) {
+          Text("8px").tag(CGFloat(8))
+          Text("10px").tag(CGFloat(10))
+          Text("14px").tag(CGFloat(14))
+        }
       }
     }
   }
