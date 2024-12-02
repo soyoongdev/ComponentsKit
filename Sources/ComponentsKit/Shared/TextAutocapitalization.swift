@@ -1,8 +1,8 @@
-import UIKit
 import SwiftUI
+import UIKit
 
 /// The autocapitalization behavior applied during text input.
-public enum InputFieldTextAutocapitalization {
+public enum TextAutocapitalization {
   /// Do not capitalize anything.
   case never
   /// Capitalize every letter.
@@ -13,7 +13,7 @@ public enum InputFieldTextAutocapitalization {
   case sentences
 }
 
-extension InputFieldTextAutocapitalization {
+extension TextAutocapitalization {
   var textAutocapitalizationType: UITextAutocapitalizationType {
     switch self {
     case .never:
@@ -28,7 +28,7 @@ extension InputFieldTextAutocapitalization {
   }
 }
 
-extension InputFieldTextAutocapitalization {
+extension TextAutocapitalization {
   var textInputAutocapitalization: TextInputAutocapitalization {
     switch self {
     case .never:

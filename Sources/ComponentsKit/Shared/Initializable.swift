@@ -1,6 +1,5 @@
 /// A type that can be initialized with an empty initializer or with a transformation closure that modifies default parameters.
 public protocol Initializable {
-
   /// Initializes a new instance with default values.
   init()
 

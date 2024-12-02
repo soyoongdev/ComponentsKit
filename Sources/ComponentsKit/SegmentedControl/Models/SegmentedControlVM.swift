@@ -55,7 +55,8 @@ extension SegmentedControlVM {
     return .init(
       light: .rgba(r: 244, g: 244, b: 245, a: 1.0),
       dark: .rgba(r: 39, g: 39, b: 42, a: 1.0)
-    ).withOpacity(
+    )
+    .withOpacity(
       self.isEnabled
       ? 1.0
       : ComponentsKitConfig.shared.layout.disabledOpacity
@@ -154,12 +155,12 @@ extension SegmentedControlVM {
 
 extension SegmentedControlVM {
   private var duplicatedId: ID? {
-    var dict: [ID: Bool] = [:]
+    var set: Set<ID> = []
     for item in self.items {
-      if dict[item.id].isNotNil {
+      if set.contains(item.id) {
         return item.id
       }
-      dict[item.id] = true
+      set.insert(item.id)
     }
     return nil
   }

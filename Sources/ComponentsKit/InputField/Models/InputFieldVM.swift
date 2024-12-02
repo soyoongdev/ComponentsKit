@@ -6,7 +6,7 @@ public struct InputFieldVM: ComponentVM {
   /// The autocapitalization behavior for the input field.
   ///
   /// Defaults to `.sentences`, which capitalizes the first letter of each sentence.
-  public var autocapitalization: InputFieldTextAutocapitalization = .sentences
+  public var autocapitalization: TextAutocapitalization = .sentences
 
   /// The color of the input field.
   public var color: ComponentColor?
@@ -133,6 +133,9 @@ extension InputFieldVM {
 // MARK: - UIKit Helpers
 
 extension InputFieldVM {
+  var autocorrectionType: UITextAutocorrectionType {
+    return self.isAutocorrectionEnabled ? .yes : .no
+  }
   var nsAttributedPlaceholder: NSAttributedString? {
     guard let placeholder else {
       return nil
@@ -178,14 +181,14 @@ extension InputFieldVM {
     || self.spacing != oldModel.spacing
     || self.cornerRadius != oldModel.cornerRadius
   }
+  func shouldUpdateCornerRadius(_ oldModel: Self) -> Bool {
+    return self.cornerRadius != oldModel.cornerRadius
+  }
 }
 
 // MARK: - SwiftUI Helpers
 
 extension InputFieldVM {
-  var autocorrectionType: UITextAutocorrectionType {
-    return self.isAutocorrectionEnabled ? .yes : .no
-  }
   var attributedTitle: AttributedString? {
     guard let nsAttributedTitle else {
       return nil

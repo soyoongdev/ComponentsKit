@@ -14,13 +14,17 @@ let package = Package(
     )
   ],
   dependencies: [
-    .package(url: "https://github.com/componentskit/AutoLayout", from: "1.0.0")
+    .package(url: "https://github.com/componentskit/AutoLayout", from: "1.0.0"),
+    .package(url: "https://github.com/SimplyDanny/SwiftLintPlugins", from: "0.57.0"),
   ],
   targets: [
     .target(
       name: "ComponentsKit",
       dependencies: [
         .product(name: "AutoLayout", package: "AutoLayout")
+      ],
+      plugins: [
+        .plugin(name: "SwiftLintBuildToolPlugin", package: "SwiftLintPlugins")
       ]
     )
   ]

@@ -10,6 +10,7 @@ struct SwiftUILogin: View {
     case name
     case email
     case password
+    case bio
   }
 
   @State private var selectedPage = Pages.signIn
@@ -17,6 +18,7 @@ struct SwiftUILogin: View {
   @State private var name = ""
   @State private var email = ""
   @State private var password = ""
+  @State private var bio = ""
 
   @FocusState private var focusedInput: Input?
   @State private var isConsented: Bool = false
@@ -97,6 +99,20 @@ struct SwiftUILogin: View {
             }
           )
 
+          if self.selectedPage == .signUp {
+            SUTextInput(
+              text: self.$bio,
+              globalFocus: self.$focusedInput,
+              localFocus: .bio,
+              model: .init {
+                $0.placeholder = "Tell about yourself"
+                $0.minRows = 3
+                $0.maxRows = 5
+                $0.isEnabled = !self.isLoading
+              }
+            )
+          }
+
           SUCheckbox(
             isSelected: self.$isConsented,
             model: .init {
@@ -131,8 +147,9 @@ struct SwiftUILogin: View {
       }
     }
     .frame(maxWidth: 500)
-    .onChange(of: self.selectedPage) { _, newValue in
-      if newValue == .signIn && self.focusedInput == .name {
+    .onChange(of: self.selectedPage) { newValue in
+      if newValue == .signIn,
+         self.focusedInput == .name || self.focusedInput == .bio {
         self.focusedInput = .email
       }
     }

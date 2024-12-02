@@ -1,0 +1,416 @@
+only_rules:
+  # Warn about listing a non-constant (var) variable in a closure's capture list. This captures the variable's value at closure creation time instead of closure call time, which may be unexpected.
+  - capture_variable
+
+  # Delegate protocols should be class-only so they can be weakly referenced
+  - class_delegate_protocol
+
+  # Closing brace with closing parenthesis should not have any whitespaces in the middle
+  - closing_brace
+
+  # Closure parameters should be on the same line as opening brace
+  - closure_parameter_position
+
+  # Closure expressions should have a single space inside each brace
+  - closure_spacing
+
+  # All elements in a collection literal should be vertically aligned
+  - collection_alignment
+
+  # Colons should be next to the identifier when specifying a type and next to the key in dictionary literals
+  - colon
+
+  # There should be no space before and one after any comma
+  - comma
+
+  # Use `,` instead of `&` in inheritance lists
+  - comma_inheritance
+
+  # Prefer at least one space after slashes for comments
+  - comment_spacing
+
+  # The initializers declared in compiler protocols such as ExpressibleByArrayLiteral shouldn’t be called directly
+  - compiler_protocol_init
+
+  # Getter and setters in computed properties and subscripts should be in a consistent order
+  - computed_accessors_order
+
+  # Prefer contains over comparing filter(where:).count to 0
+  - contains_over_filter_count
+
+  # Prefer contains over using filter(where:).isEmpty
+  - contains_over_filter_is_empty
+
+  # Prefer contains over first(where:) != nil and firstIndex(where:) != nil
+  - contains_over_first_not_nil
+
+  # Prefer contains over range(of:) != nil and range(of:) == nil
+  - contains_over_range_nil_comparison
+
+  # if, for, guard, switch, while, and catch statements shouldn’t unnecessarily wrap their conditionals or arguments in parentheses
+  - control_statement
+
+  # Types used for hosting only static members should be implemented as a caseless enum to avoid instantiation
+  - convenience_type
+
+  # Availability checks or attributes shouldn’t be using older versions that are satisfied by the deployment target
+  - deployment_target
+
+  # When registering for a notification using a block, the opaque observer that is returned should be stored so it can be removed later
+  - discarded_notification_center_observer
+
+  # Prefer assertionFailure() and/or preconditionFailure() over assert(false)
+  - discouraged_assert
+
+  # Avoid `none` name to avoid confusion with Optional.none
+  # - discouraged_none_name
+
+  # Prefer initializers over object literals.
+  - discouraged_object_literal
+
+  # Prefer non-optional booleans over optional booleans.
+  - discouraged_optional_boolean
+
+  # Prefer empty collection over optional collection.
+  - discouraged_optional_collection
+
+  # Enum can’t contain multiple cases with the same name
+  - duplicate_enum_cases
+
+  # Imports should be unique
+  - duplicate_imports
+
+  # Dictionary keys should be unique
+  - duplicated_key_in_dictionary_literal
+
+  # Avoid using ‘dynamic’ and ‘@inline(__always)’ together
+  # - dynamic_inline
+
+  # Prefer checking isEmpty over comparing collection to an empty array or dictionary literal
+  - empty_collection_literal
+
+  # Prefer checking isEmpty over comparing count to zero
+  - empty_count
+
+  # Prefer () -> over Void ->.
+  - empty_parameters
+
+  # When using trailing closures, empty parentheses should be avoided after the method call
+  - empty_parentheses_with_trailing_closure
+
+  # Prefer checking isEmpty over comparing string to an empty string literal
+  - empty_string
+
+  # Empty XCTest method should be avoided
+  - empty_xctest_method
+
+  # Explicitly calling .init() should be avoided
+  - explicit_init
+
+  # Instance variables and functions should be explicitly accessed with ‘self.’
+  - explicit_self
+
+  # Fallthrough should be avoided
+  - fallthrough
+
+  # A fatalError call should have a message
+  - fatal_error_message
+
+  # Header comments should be consistent with project patterns.
+  # The SWIFTLINT_CURRENT_FILENAME placeholder can optionally be used in the required and forbidden patterns.
+  # It will be replaced by the real file name.
+  # - file_header
+
+  # File name should not contain any whitespace
+  - file_name_no_space
+
+  # Prefer using .first(where:) over .filter { }.first in collections
+  - first_where
+
+  # Prefer flatMap over map followed by reduce([], +)
+  - flatmap_over_map_reduce
+
+  # where clauses are preferred over a single if inside a for
+  - for_where
+
+  # Force casts should be avoided
+  - force_cast
+
+  # Force tries should be avoided
+  - force_try
+
+  # Force unwrapping should be avoided
+  - force_unwrapping
+
+  # Functions bodies should not span too many lines
+  - function_body_length
+
+  # Generic type name should only contain alphanumeric characters, start with an uppercase character and span between 1 and 20 characters in length
+  - generic_type_name
+
+  # Comparing two identical operands is likely a mistake
+  - identical_operands
+
+  # Identifier names should only contain alphanumeric characters and start with a lowercase character or should only contain capital letters.
+  # In an exception to the above, variable names may start with a capital letter when they are declared static and immutable.
+  # Variable names should not be too long or too short
+  - identifier_name
+
+  # Computed read-only properties and subscripts should avoid using the get keyword
+  - implicit_getter
+
+  # Implicitly unwrapped optionals should be avoided when possible
+  - implicitly_unwrapped_optional
+
+  # Prefer using Set.isDisjoint(with:) over Set.intersection(_:).isEmpty
+  - is_disjoint
+
+  # Tuples shouldn’t have too many members. Create a custom type instead
+  - large_tuple
+
+  # Prefer using .last(where:) over .filter { }.last in collections
+  - last_where
+
+  # Files should not contain leading whitespace
+  - leading_whitespace
+
+  # Struct extension properties and methods are preferred over legacy functions
+  - legacy_cggeometry_functions
+
+  # Struct-scoped constants are preferred over legacy global constants
+  - legacy_constant
+
+  # Swift constructors are preferred over legacy convenience functions
+  - legacy_constructor
+
+  # Prefer using the hash(into:) function instead of overriding hashValue
+  - legacy_hashing
+
+  # Prefer using the isMultiple(of:) function instead of using the remainder operator (%)
+  - legacy_multiple
+
+  # Struct extension properties and methods are preferred over legacy functions
+  - legacy_nsgeometry_functions
+
+  # Prefer using type.random(in:) over legacy functions
+  - legacy_random
+
+  # Lines should not span too many characters
+  - line_length
+
+  # Array and dictionary literal end should have the same indentation as the line that started it
+  - literal_expression_end_indentation
+
+  # Ensure definitions have a lower access control level than their enclosing parent
+  - lower_acl_than_parent
+
+  # MARK comment should be in valid format. e.g. ‘// MARK: …’ or ‘// MARK: - …’
+  - mark
+  
+  # Arguments should be either on the same line, or one per line
+  - multiline_arguments
+
+  # Chained function calls should be either on the same line, or one per line
+  - multiline_function_chains
+
+  # Multiline literals should have their surrounding brackets in a new line
+  - multiline_literal_brackets
+
+  # Functions and methods parameters should be either on the same line, or one per line
+  - multiline_parameters
+
+  # Multiline parameters should have their surrounding brackets in a new line
+  - multiline_parameters_brackets
+
+  # Trailing closure syntax should not be used when passing more than one closure argument
+  - multiple_closures_with_trailing_closure
+
+  # Don’t add a space between the method name and the parentheses
+  - no_space_in_method_call
+
+  # Avoid passing NSNumber.init as a function reference
+  - ns_number_init_as_function_reference
+
+  # Prefer object literals over image and color inits
+  - object_literal
+
+  # Operators should be surrounded by a single whitespace when they are being used
+  - operator_usage_whitespace
+
+  # Operators should be surrounded by a single whitespace when defining them
+  - operator_whitespace
+
+  # Matching an enum case against an optional enum without ‘?’ is supported on Swift 5.1 and above
+  - optional_enum_case_matching
+
+  # A doc comment should be attached to a declaration
+  - orphaned_doc_comment
+
+  # Some overridden methods should always call super
+  - overridden_super_call
+
+  # Prefer Self when accessing static properties or calling methods
+  - prefer_self_in_static_references
+
+  # Prefer Self over type(of: self) when accessing properties or calling methods
+  - prefer_self_type_over_type_of_self
+
+  # Prefer .zero over explicit init with zero parameters (e.g. CGPoint(x: 0, y: 0))
+  - prefer_zero_over_explicit_init
+
+  # Some methods should not call super
+  - prohibited_super_call
+
+  # When declaring properties in protocols, the order of accessors should be get set
+  - protocol_property_accessors_order
+
+  # Prefer using .allSatisfy() or .contains() over reduce(true) or reduce(false)
+  - reduce_boolean
+
+  # Prefer _ = foo() over let _ = foo() when discarding a result from a function
+  - redundant_discardable_let
+
+  # nil coalescing operator is only evaluated if the lhs is nil, coalescing operator with nil as rhs is redundant
+  - redundant_nil_coalescing
+
+  # Objective-C attribute (@objc) is redundant in declaration
+  - redundant_objc_attribute
+
+  # Initializing an optional variable with nil is redundant
+  - redundant_optional_initialization
+
+  # String enum values can be omitted when they are equal to the enumcase name
+  - redundant_string_enum_value
+
+  # Variables should not have redundant type annotation
+  # - redundant_type_annotation
+
+  # Returning Void in a function declaration is redundant
+  - redundant_void_return
+
+  # Return arrow and return type should be separated by a single space or on a separate line
+  - return_arrow_whitespace
+
+  # Avoid referring the wrong `self` instance in property initialization
+  - self_in_property_initialization
+
+  # Prefer shorthand operators (+=, -=, *=, /=) over doing the operation and assigning
+  - shorthand_operator
+
+  # Test files should contain a single QuickSpec or XCTestCase class
+  - single_test_class
+
+  # Prefer using min() or max() over sorted().first or sorted().last
+  - sorted_first_last
+
+  # Imports should be sorted.
+  - sorted_imports
+
+  # Else and catch should be on the same line, one space after the previous declaration
+  - statement_position
+
+  # Operators should be declared as static functions, not free functions
+  - static_operator
+
+  # SwiftLint ‘disable’ commands are superfluous when the disabled rule would not have triggered a violation
+  # in the disabled region. Use “ - ” if you wish to document a command
+  - superfluous_disable_command
+
+  # Case statements should vertically align with their enclosing switch statement, or indented if configured otherwise
+  - switch_case_alignment
+
+  # Shorthand syntactic sugar should be used, i.e. [Int] instead of Array
+  - syntactic_sugar
+
+  # Prefer someBool.toggle() over someBool = !someBool
+  - toggle_bool
+
+  # Files should have a single trailing newline
+  - trailing_newline
+
+  # Lines should not have trailing semicolons
+  - trailing_semicolon
+
+  # Lines should not have trailing whitespace
+  - trailing_whitespace
+
+  # Type name should only contain alphanumeric characters, start with an uppercase character and span between 3 and 40 characters in length
+  - type_name
+
+  # Prefer `if #unavailable` to `if #available` with an empty body and an else
+  - unavailable_condition
+
+  # Avoid using unneeded break statements
+  - unneeded_break_in_switch
+
+  # Parentheses are not needed when declaring closure arguments
+  - unneeded_parentheses_in_closure_argument
+
+  # Unused parameter in a closure should be replaced with _
+  - unused_closure_parameter
+
+  # Unused control flow label should be removed
+  - unused_control_flow_label
+
+  # Declarations should be referenced at least once within all files linted
+  - unused_declaration
+
+  # When the index or the item is not used, .enumerated() can be removed
+  - unused_enumerated
+
+  # All imported modules should be required to make the file compile
+  - unused_import
+
+  # Prefer != nil over let _ =
+  - unused_optional_binding
+
+  # Setter value is not used
+  - unused_setter_value
+
+  # Limit vertical whitespace to a single empty line
+  - vertical_whitespace
+
+  # Don’t include vertical whitespace (empty line) before closing braces
+  - vertical_whitespace_closing_braces
+
+  # Don’t include vertical whitespace (empty line) after opening braces
+  - vertical_whitespace_opening_braces
+
+  # Prefer -> Void over -> ()
+  - void_return
+
+  # Delegates should be weak to avoid reference cycles
+  - weak_delegate
+
+  # Prefer specific XCTest matchers over XCTAssertEqual and XCTAssertNotEqual
+  - xct_specific_matcher
+
+  # An XCTFail call should include a description of the assertion
+  - xctfail_message
+
+  # The variable should be placed on the left, the constant on the right of a comparison operator.
+  - yoda_condition
+
+line_length: 150
+
+identifier_name:
+  min_length: 1
+  max_length: 60
+
+type_name:
+  min_length: 1
+  max_length: 60
+
+generic_type_name:
+  max_length: 35
+
+function_body_length:
+  warning: 100
+  
+included:
+  - Sources
+  - Examples
+
+excluded:
+  - .swiftpm
+

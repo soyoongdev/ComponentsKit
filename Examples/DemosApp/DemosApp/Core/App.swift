@@ -3,13 +3,40 @@ import SwiftUI
 
 struct App: View {
   var body: some View {
-    NavigationStack {
+    NavigationView {
       List {
-        Section("Login") {
-          NavigationLink("SwiftUI") {
+        Section("Components") {
+          NavigationLinkWithTitle("Button") {
+            ButtonPreview()
+          }
+          NavigationLinkWithTitle("Checkbox") {
+            CheckboxPreview()
+          }
+          NavigationLinkWithTitle("Divider") {
+            DividerPreview()
+          }
+          NavigationLinkWithTitle("Input Field") {
+            InputFieldPreview()
+          }
+          NavigationLinkWithTitle("Loading") {
+            LoadingPreview()
+          }
+          NavigationLinkWithTitle("Radio Group") {
+            RadioGroupPreview()
+          }
+          NavigationLinkWithTitle("Segmented Control") {
+            SegmentedControlPreview()
+          }
+          NavigationLinkWithTitle("Text Field") {
+            TextInputPreviewPreview()
+          }
+        }
+
+        Section("Login Demo") {
+          NavigationLinkWithTitle("SwiftUI") {
             SwiftUILogin()
           }
-          NavigationLink("UIKit") {
+          NavigationLinkWithTitle("UIKit") {
             UIViewControllerRepresenting {
               UIKitLogin()
             }
@@ -18,6 +45,25 @@ struct App: View {
       }
       .navigationTitle("Examples")
       .navigationBarTitleDisplayMode(.inline)
+    }
+  }
+}
+
+// MARK: - Helper
+
+private struct NavigationLinkWithTitle<Destination: View>: View {
+  let title: String
+  @ViewBuilder let destination: () -> Destination
+
+  init(_ title: String, destination: @escaping () -> Destination) {
+    self.title = title
+    self.destination = destination
+  }
+
+  var body: some View {
+    NavigationLink(self.title) {
+      self.destination()
+        .navigationTitle(self.title)
     }
   }
 }

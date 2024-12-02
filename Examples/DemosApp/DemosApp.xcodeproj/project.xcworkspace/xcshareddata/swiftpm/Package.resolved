@@ -1,4 +1,5 @@
 {
+  "originHash" : "5750ee9f6b665533d5c59ce2e9fc4c78e08b258f84db6ca2921bdd1bd026f8f8",
   "pins" : [
     {
       "identity" : "autolayout",
@@ -19,5 +20,5 @@
       }
     }
   ],
-  "version" : 2
+  "version" : 3
 }
