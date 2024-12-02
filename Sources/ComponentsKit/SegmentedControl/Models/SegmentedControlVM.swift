@@ -155,12 +155,12 @@ extension SegmentedControlVM {
 
 extension SegmentedControlVM {
   private var duplicatedId: ID? {
-    var dict: [ID: Bool] = [:]
+    var set: Set<ID> = []
     for item in self.items {
-      if dict[item.id].isNotNil {
+      if set.contains(item.id) {
         return item.id
       }
-      dict[item.id] = true
+      set.insert(item.id)
     }
     return nil
   }
