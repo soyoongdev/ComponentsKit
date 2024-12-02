@@ -5,8 +5,11 @@ import UIKit
 public class RadioGroupItemView<ID: Hashable>: UIView {
   // MARK: Properties
 
+  /// A view that represents an outer circle and contains an inner circle.
   public let radioView = UIView()
+  /// A view that represents an inner circle in the radio button.
   public let innerCircle = UIView()
+  /// A label that displays the title from the model.
   public let titleLabel = UILabel()
 
   let itemVM: RadioItemVM<ID>

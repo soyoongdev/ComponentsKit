@@ -28,6 +28,7 @@ open class UKRadioGroup<ID: Hashable>: UIView, UKComponent {
 
   // MARK: Subviews
 
+  /// A stack view that contains radio button items.
   public var stackView = UIStackView()
   private var items: [ID: RadioGroupItemView<ID>] = [:]
 
