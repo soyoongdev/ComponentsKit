@@ -10,6 +10,7 @@ public struct SURadioGroup<ID: Hashable>: View {
   /// A Binding value to control the selected identifier.
   @Binding public var selectedId: ID?
 
+  @State private var viewSizes: [ID: CGSize] = [:]
   @Environment(\.colorScheme) private var colorScheme
   @State private var tappingId: ID?
 
@@ -57,14 +58,29 @@ public struct SURadioGroup<ID: Hashable>: View {
               self.model.textColor(for: item).color(for: self.colorScheme)
             )
         }
-        .gesture(
+        .background(
+          GeometryReader { proxy in
+            Color.clear
+              .onAppear {
+                self.viewSizes[item.id] = proxy.size
+              }
+              .onChange(of: proxy.size) { value in
+                self.viewSizes[item.id] = value
+              }
+          }
+        )
+        .simultaneousGesture(
           DragGesture(minimumDistance: 0)
             .onChanged { _ in
               self.tappingId = item.id
             }
-            .onEnded { _ in
+            .onEnded { gesture in
               self.tappingId = nil
-              self.selectedId = item.id
+
+              if let size = self.viewSizes[item.id],
+                 CGRect(origin: .zero, size: size).contains(gesture.location) {
+                self.selectedId = item.id
+              }
             }
         )
         .disabled(!item.isEnabled || !self.model.isEnabled)

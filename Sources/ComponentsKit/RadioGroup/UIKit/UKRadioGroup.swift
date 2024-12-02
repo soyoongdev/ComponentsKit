@@ -2,7 +2,7 @@ import AutoLayout
 import UIKit
 
 /// A UIKit component that displays a group of radio buttons, allowing users to select one option from multiple choices.
-open class UKRadioGroup<ID: Hashable>: UIView, UKComponent {
+open class UKRadioGroup<ID: Hashable>: UIView, UKComponent, UIGestureRecognizerDelegate {
   // MARK: Properties
 
   /// A closure that is triggered when a selected segment changes.
@@ -81,6 +81,7 @@ open class UKRadioGroup<ID: Hashable>: UIView, UKComponent {
         action: #selector(self.handleContainerLongPress(_:))
       )
       longPressGesture.minimumPressDuration = 0
+      longPressGesture.delegate = self
       radioGroupItemView.addGestureRecognizer(longPressGesture)
 
       self.items[item.id] = radioGroupItemView
@@ -154,13 +155,25 @@ open class UKRadioGroup<ID: Hashable>: UIView, UKComponent {
     case .ended:
       self.tappingId = nil
       self.animateRadioView(for: tappedId, scale: 1.0)
-      self.selectedId = tappedId
+
+      if tappedView.bounds.contains(sender.location(in: tappedView)) {
+        self.selectedId = tappedId
+      }
     case .cancelled, .failed:
       self.tappingId = nil
       self.animateRadioView(for: tappedId, scale: 1.0)
     default:
       break
     }
+  }
+
+  // MARK: UKRadioGroup + UIGestureRecognizerDelegate
+
+  public func gestureRecognizer(
+    _ gestureRecognizer: UIGestureRecognizer,
+    shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer
+  ) -> Bool {
+    return true
   }
 }
 
