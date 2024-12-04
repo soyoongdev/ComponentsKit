@@ -8,9 +8,8 @@ struct LoadingPreview: View {
   var body: some View {
     VStack {
       PreviewWrapper(title: "UIKit") {
-        UKComponentPreview(model: self.model) {
-          UKLoading(model: self.model)
-        }
+        UKLoading(model: self.model)
+          .preview
       }
       PreviewWrapper(title: "SwiftUI") {
         SULoading(model: self.model)

@@ -23,9 +23,8 @@ struct RadioGroupPreview: View {
   var body: some View {
     VStack {
       PreviewWrapper(title: "UIKit") {
-        UKComponentPreview(model: self.model) {
-          UKRadioGroup(model: self.model)
-        }
+        UKRadioGroup(model: self.model)
+          .preview
       }
       PreviewWrapper(title: "SwiftUI") {
         SURadioGroup(selectedId: $selectedId, model: self.model)

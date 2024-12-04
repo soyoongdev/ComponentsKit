@@ -10,9 +10,8 @@ struct ButtonPreview: View {
   var body: some View {
     VStack {
       PreviewWrapper(title: "UIKit") {
-        UKComponentPreview(model: self.model) {
-          UKButton(model: self.model)
-        }
+        UKButton(model: self.model)
+          .preview
       }
       PreviewWrapper(title: "SwiftUI") {
         SUButton(model: self.model)

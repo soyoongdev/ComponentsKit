@@ -8,9 +8,8 @@ struct DividerPreview: View {
   var body: some View {
     VStack {
       PreviewWrapper(title: "UIKit") {
-        UKComponentPreview(model: self.model) {
-          UKDivider(model: self.model)
-        }
+        UKDivider(model: self.model)
+          .preview
       }
       PreviewWrapper(title: "SwiftUI") {
         SUDivider(model: self.model)
