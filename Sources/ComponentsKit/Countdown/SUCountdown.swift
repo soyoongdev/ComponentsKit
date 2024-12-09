@@ -1,9 +1,16 @@
 import SwiftUI
 
+/// A SwiftUI component that displays a countdown.
 public struct SUCountdown: View {
+  // MARK: - Properties
+
+  /// The countdown manager handling the countdown logic.
   @StateObject private var manager: CountdownManager
 
+  /// A model that defines the appearance properties.
   public var model: CountdownVM
+
+  // MARK: - Initializers
 
   public init(model: CountdownVM = CountdownVM()) {
     self.model = model
@@ -11,6 +18,8 @@ public struct SUCountdown: View {
   }
 
   @Environment(\.colorScheme) private var colorScheme
+
+  // MARK: - Body
 
   public var body: some View {
     VStack {
@@ -22,13 +31,13 @@ public struct SUCountdown: View {
           )
       } else if model.unitsPosition == .bottom {
         HStack(spacing: 10) {
-          styledCountdownUnitView(value: manager.days, unit: "day")
+          styledCountdownUnitView(value: manager.days, unit: "Days")
           if model.style != .light { colonView().padding(.bottom, 16) }
-          styledCountdownUnitView(value: manager.hours, unit: "hour")
+          styledCountdownUnitView(value: manager.hours, unit: "Hours")
           if model.style != .light { colonView().padding(.bottom, 16) }
-          styledCountdownUnitView(value: manager.minutes, unit: "minute")
+          styledCountdownUnitView(value: manager.minutes, unit: "Minutes")
           if model.style != .light { colonView().padding(.bottom, 16) }
-          styledCountdownUnitView(value: manager.seconds, unit: "second")
+          styledCountdownUnitView(value: manager.seconds, unit: "Seconds")
         }
       } else if model.unitsPosition == .none {
         HStack(spacing: 4) {
@@ -70,15 +79,31 @@ public struct SUCountdown: View {
     }
   }
 
+  // MARK: - Methods
+
   private func formattedTimeWithUnits() -> String {
-    return String(format: "%02d d : %02d h : %02d m : %02d s", manager.days, manager.hours, manager.minutes, manager.seconds)
+    guard let localization = model.localization[model.locale] else {
+      return String(format: "%02d d : %02d h : %02d m : %02d s", manager.days, manager.hours, manager.minutes, manager.seconds)
+    }
+
+    return String(
+      format: "%02d %@ : %02d %@ : %02d %@ : %02d %@",
+      manager.days,
+      localization.days.short,
+      manager.hours,
+      localization.hours.short,
+      manager.minutes,
+      localization.minutes.short,
+      manager.seconds,
+      localization.seconds.short
+    )
   }
 
   private func styledCountdownUnitView(value: Int, unit: String) -> some View {
     Group {
       if model.style == .light && model.unitsPosition == .bottom {
         countdownUnitView(value: value, unit: unit)
-          .padding(12)
+          .frame(width: 55, height: self.model.height)
           .background(
             RoundedRectangle(cornerRadius: 8)
               .fill(model.backgroundColor.color(for: colorScheme))
@@ -89,17 +114,17 @@ public struct SUCountdown: View {
     }
   }
 
-  private func localizedUnit(_ unit: String, isShort: Bool) -> String {
+  private func localizedUnit(_ unit: String) -> String {
     guard let localization = model.localization[model.locale] else { return unit }
     switch unit {
-    case "second":
-      return isShort ? localization.seconds.short : localization.seconds.long
-    case "minute":
-      return isShort ? localization.minutes.short : localization.minutes.long
-    case "hour":
-      return isShort ? localization.hours.short : localization.hours.long
-    case "day":
-      return isShort ? localization.days.short : localization.days.long
+    case "Seconds":
+      return localization.seconds.long
+    case "Minutes":
+      return localization.minutes.long
+    case "Hours":
+      return localization.hours.long
+    case "Days":
+      return localization.days.long
     default:
       return unit
     }
@@ -112,8 +137,8 @@ public struct SUCountdown: View {
         .foregroundStyle(
           model.foregroundColor.color(for: colorScheme)
         )
-      Text(localizedUnit(unit, isShort: model.unitsPosition == .trailing))
-        .font(.system(size: 8))
+      Text(localizedUnit(unit))
+        .font(.system(size: model.unitFontSize))
         .foregroundStyle(
           model.foregroundColor.color(for: colorScheme)
         )

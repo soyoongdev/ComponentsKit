@@ -1,13 +1,19 @@
 import SwiftUI
 
 class CountdownManager: ObservableObject {
+  // MARK: - Published Properties
+
   @Published var days: Int = 0
   @Published var hours: Int = 0
   @Published var minutes: Int = 0
   @Published var seconds: Int = 0
 
+  // MARK: - Properties
+
   private var timer: Timer?
   private var until: Date?
+
+  // MARK: - Methods
 
   func start(until: Date) {
     self.until = until
