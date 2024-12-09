@@ -26,22 +26,22 @@ public struct UnitsLocalization: Equatable {
 
 public let defaultLocalizations: [Locale: UnitsLocalization] = [
   Locale(identifier: "en"): UnitsLocalization(
-    seconds: .init(short: "s", long: "seconds"),
-    minutes: .init(short: "m", long: "minutes"),
-    hours: .init(short: "h", long: "hours"),
-    days: .init(short: "d", long: "days")
+    seconds: .init(short: "s", long: "Seconds"),
+    minutes: .init(short: "m", long: "Minutes"),
+    hours: .init(short: "h", long: "Hours"),
+    days: .init(short: "d", long: "Days")
   ),
   Locale(identifier: "es"): UnitsLocalization(
-    seconds: .init(short: "s", long: "segundos"),
-    minutes: .init(short: "m", long: "minutos"),
-    hours: .init(short: "h", long: "horas"),
-    days: .init(short: "d", long: "días")
+    seconds: .init(short: "s", long: "Segundos"),
+    minutes: .init(short: "m", long: "Minutos"),
+    hours: .init(short: "h", long: "Horas"),
+    days: .init(short: "d", long: "Días")
   ),
   Locale(identifier: "fr"): UnitsLocalization(
-    seconds: .init(short: "s", long: "secondes"),
-    minutes: .init(short: "m", long: "minutes"),
-    hours: .init(short: "h", long: "heures"),
-    days: .init(short: "j", long: "jours")
+    seconds: .init(short: "s", long: "Secondes"),
+    minutes: .init(short: "m", long: "Minutes"),
+    hours: .init(short: "h", long: "Heures"),
+    days: .init(short: "j", long: "Jours")
   ),
   Locale(identifier: "de"): UnitsLocalization(
     seconds: .init(short: "s", long: "Sekunden"),
@@ -62,10 +62,10 @@ public let defaultLocalizations: [Locale: UnitsLocalization] = [
     days: .init(short: "日", long: "日")
   ),
   Locale(identifier: "ru"): UnitsLocalization(
-    seconds: .init(short: "с", long: "секунд"),
-    minutes: .init(short: "м", long: "минут"),
-    hours: .init(short: "ч", long: "часов"),
-    days: .init(short: "д", long: "дней")
+    seconds: .init(short: "с", long: "Секунд"),
+    minutes: .init(short: "м", long: "Минут"),
+    hours: .init(short: "ч", long: "Часов"),
+    days: .init(short: "д", long: "Дней")
   ),
   Locale(identifier: "ar"): UnitsLocalization(
     seconds: .init(short: "ث", long: "ثوانٍ"),
@@ -80,9 +80,9 @@ public let defaultLocalizations: [Locale: UnitsLocalization] = [
     days: .init(short: "दि", long: "दिन")
   ),
   Locale(identifier: "pt"): UnitsLocalization(
-    seconds: .init(short: "s", long: "segundos"),
-    minutes: .init(short: "m", long: "minutos"),
-    hours: .init(short: "h", long: "horas"),
-    days: .init(short: "d", long: "dias")
+    seconds: .init(short: "s", long: "Segundos"),
+    minutes: .init(short: "m", long: "Minutos"),
+    hours: .init(short: "h", long: "Horas"),
+    days: .init(short: "d", long: "Dias")
   )
 ]

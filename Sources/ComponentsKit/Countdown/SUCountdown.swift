@@ -78,7 +78,7 @@ public struct SUCountdown: View {
     Group {
       if model.style == .light && model.unitsPosition == .bottom {
         countdownUnitView(value: value, unit: unit)
-          .padding(8)
+          .padding(12)
           .background(
             RoundedRectangle(cornerRadius: 8)
               .fill(model.backgroundColor.color(for: colorScheme))
