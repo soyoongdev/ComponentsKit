@@ -89,6 +89,22 @@ public struct SUCountdown: View {
     }
   }
 
+  private func localizedUnit(_ unit: String, isShort: Bool) -> String {
+    guard let localization = model.localization[model.locale] else { return unit }
+    switch unit {
+    case "second":
+      return isShort ? localization.seconds.short : localization.seconds.long
+    case "minute":
+      return isShort ? localization.minutes.short : localization.minutes.long
+    case "hour":
+      return isShort ? localization.hours.short : localization.hours.long
+    case "day":
+      return isShort ? localization.days.short : localization.days.long
+    default:
+      return unit
+    }
+  }
+
   private func countdownUnitView(value: Int, unit: String) -> some View {
     VStack(spacing: 2) {
       Text(String(format: "%02d", value))
@@ -96,7 +112,7 @@ public struct SUCountdown: View {
         .foregroundStyle(
           model.foregroundColor.color(for: colorScheme)
         )
-      Text(unit)
+      Text(localizedUnit(unit, isShort: model.unitsPosition == .trailing))
         .font(.system(size: 8))
         .foregroundStyle(
           model.foregroundColor.color(for: colorScheme)

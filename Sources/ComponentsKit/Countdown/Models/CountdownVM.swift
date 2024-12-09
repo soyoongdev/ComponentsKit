@@ -18,11 +18,15 @@ public struct CountdownVM: ComponentVM {
   public var unitsPosition: UnitsPosition = .bottom
   public var style: CountdownStyle = .plain
   public var until: Date = Date().addingTimeInterval(3600)
+  public var locale: Locale = .current
+  public var localization: [Locale: UnitsLocalization] = [:]
 
   public init() {}
 
-  public init(until: Date) {
+  public init(until: Date, locale: Locale = .current, localization: [Locale: UnitsLocalization] = [:]) {
     self.until = until
+    self.locale = locale
+    self.localization = localization
   }
 }
 

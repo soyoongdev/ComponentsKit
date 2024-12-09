@@ -3,8 +3,12 @@ import SwiftUI
 import UIKit
 
 struct CountdownPreview: View {
-  @State private var model = CountdownVM()
+  @State private var model = CountdownVM(
+    until: Date().addingTimeInterval(3600),
+    localization: defaultLocalizations
+  )
   @State private var tempUntil = Date()
+  @State private var selectedLocale = Locale(identifier: "en")
 
   var body: some View {
     VStack {
@@ -33,6 +37,15 @@ struct CountdownPreview: View {
           if newValue == .light && model.unitsPosition != .bottom {
             model.unitsPosition = .bottom
           }
+        }
+        Picker("Localization", selection: $selectedLocale) {
+          ForEach(defaultLocalizations.keys.sorted(by: { $0.identifier < $1.identifier }), id: \.self) { locale in
+            Text(locale.localizedString(forIdentifier: locale.identifier) ?? locale.identifier)
+              .tag(locale)
+          }
+        }
+        .onChange(of: selectedLocale) { newLocale in
+          model.locale = newLocale
         }
         DatePicker("Select Date and Time", selection: $tempUntil, in: Date()..., displayedComponents: [.date, .hourAndMinute])
           .datePickerStyle(.compact)
