@@ -16,8 +16,8 @@ struct DividerPreview: View {
       }
       Form {
         Picker("Orientation", selection: self.$model.orientation) {
-          Text("Horizontal").tag(DividerVM.DividerOrientation.horizontal)
-          Text("Vertical").tag(DividerVM.DividerOrientation.vertical)
+          Text("Horizontal").tag(DividerVM.Orientation.horizontal)
+          Text("Vertical").tag(DividerVM.Orientation.vertical)
         }
         SizePicker(selection: self.$model.size)
         Picker("Color", selection: self.$model.color) {

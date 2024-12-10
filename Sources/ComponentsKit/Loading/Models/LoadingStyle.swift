@@ -1,6 +1,8 @@
 import Foundation
 
-/// The loading appearance style.
-public enum LoadingStyle {
-  case spinner
+extension LoadingVM {
+  /// The loading appearance style.
+  public enum Style {
+    case spinner
+  }
 }

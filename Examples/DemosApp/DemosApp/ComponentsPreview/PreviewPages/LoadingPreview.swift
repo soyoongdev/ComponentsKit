@@ -22,7 +22,7 @@ struct LoadingPreview: View {
         }
         SizePicker(selection: self.$model.size)
         Picker("Style", selection: self.$model.style) {
-          Text("Spinner").tag(LoadingStyle.spinner)
+          Text("Spinner").tag(LoadingVM.Style.spinner)
         }
       }
     }

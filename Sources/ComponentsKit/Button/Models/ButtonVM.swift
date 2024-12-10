@@ -43,7 +43,7 @@ public struct ButtonVM: ComponentVM {
   /// The visual style of the button.
   ///
   /// Defaults to `.filled`.
-  public var style: ButtonStyle = .filled
+  public var style: Style = .filled
 
   /// Initializes a new instance of `ButtonVM` with default values.
   public init() {}
