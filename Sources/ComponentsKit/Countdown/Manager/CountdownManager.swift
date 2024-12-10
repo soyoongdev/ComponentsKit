@@ -17,19 +17,19 @@ class CountdownManager: ObservableObject {
 
   func start(until: Date) {
     self.until = until
-    updateTime()
-    timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
-      self.updateTime()
+    self.updateUnitValues()
+    self.timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
+      self?.updateUnitValues()
     }
   }
 
   func stop() {
-    timer?.invalidate()
-    timer = nil
+    self.timer?.invalidate()
+    self.timer = nil
   }
 
-  private func updateTime() {
-    guard let until = until else { return }
+  private func updateUnitValues() {
+    guard let until = self.until else { return }
 
     let now = Date()
     let calendar = Calendar.current
@@ -38,13 +38,13 @@ class CountdownManager: ObservableObject {
       from: now,
       to: until
     )
-    days = max(0, components.day ?? 0)
-    hours = max(0, components.hour ?? 0)
-    minutes = max(0, components.minute ?? 0)
-    seconds = max(0, components.second ?? 0)
+    self.days = max(0, components.day ?? 0)
+    self.hours = max(0, components.hour ?? 0)
+    self.minutes = max(0, components.minute ?? 0)
+    self.seconds = max(0, components.second ?? 0)
 
     if now >= until {
-      stop()
+      self.stop()
     }
   }
 }

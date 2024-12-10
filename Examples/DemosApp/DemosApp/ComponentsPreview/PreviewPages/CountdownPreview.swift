@@ -3,11 +3,12 @@ import SwiftUI
 import UIKit
 
 struct CountdownPreview: View {
-  @State private var model = CountdownVM(
-    until: Date().addingTimeInterval(3600),
-    localization: defaultLocalizations
-  )
-  @State private var tempUntil = Date()
+  @State private var model: CountdownVM = {
+    var vm = CountdownVM()
+    vm.until = Date().addingTimeInterval(3600)
+    vm.localization = UnitsLocalization.defaultLocalizations
+    return vm
+  }()
   @State private var selectedLocale = Locale(identifier: "en")
 
   var body: some View {
@@ -20,44 +21,39 @@ struct CountdownPreview: View {
         FontPicker(selection: self.$model.font)
         SizePicker(selection: self.$model.size)
         Picker("Units Position", selection: $model.unitsPosition) {
-          Text("None").tag(UnitsPosition.none)
-          Text("Bottom").tag(UnitsPosition.bottom)
-          Text("Trailing").tag(UnitsPosition.trailing)
+          Text("None").tag(CountdownUnitsPosition.none)
+          Text("Bottom").tag(CountdownUnitsPosition.bottom)
+          Text("Trailing").tag(CountdownUnitsPosition.trailing)
         }
-        .onChange(of: model.unitsPosition) { newValue in
+        .onChange(of: self.model.unitsPosition) { newValue in
           if newValue != .bottom {
-            model.style = .plain
+            self.model.style = .plain
           }
         }
         Picker("Style", selection: $model.style) {
           Text("Plain").tag(CountdownStyle.plain)
           Text("Light").tag(CountdownStyle.light)
         }
-        .onChange(of: model.style) { newValue in
-          if newValue == .light && model.unitsPosition != .bottom {
-            model.unitsPosition = .bottom
+        .onChange(of: self.model.style) { newValue in
+          if newValue == .light && self.model.unitsPosition != .bottom {
+            self.model.unitsPosition = .bottom
           }
         }
-        Picker("Localization", selection: $selectedLocale) {
-          ForEach(defaultLocalizations.keys.sorted(by: { $0.identifier < $1.identifier }), id: \.self) { locale in
-            Text(locale.localizedString(forIdentifier: locale.identifier) ?? locale.identifier)
-              .tag(locale)
-          }
+        Picker("Locale", selection: self.$model.locale) {
+          Text("Current").tag(Locale.current)
+          Text("EN").tag(Locale.current)
+          Text("ES").tag(Locale(identifier: "es"))
+          Text("FR").tag(Locale(identifier: "fr"))
+          Text("DE").tag(Locale(identifier: "de"))
+          Text("ZH").tag(Locale(identifier: "zh"))
+          Text("JA").tag(Locale(identifier: "ja"))
+          Text("RU").tag(Locale(identifier: "ru"))
+          Text("AR").tag(Locale(identifier: "ar"))
+          Text("HI").tag(Locale(identifier: "hi"))
+          Text("PT").tag(Locale(identifier: "pt"))
         }
-        .onChange(of: selectedLocale) { newLocale in
-          model.locale = newLocale
-        }
-        DatePicker("Select Date and Time", selection: $tempUntil, in: Date()..., displayedComponents: [.date, .hourAndMinute])
+        DatePicker("Until Date", selection: $model.until, in: Date()..., displayedComponents: [.date, .hourAndMinute])
           .datePickerStyle(.compact)
-      }
-    }
-    .toolbar {
-      ToolbarItem(placement: .navigationBarTrailing) {
-        if tempUntil > Date() {
-          Button("Update Timer") {
-            model.until = tempUntil
-          }
-        }
       }
     }
   }

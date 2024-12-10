@@ -1,10 +1,17 @@
 import SwiftUI
 
 /// Defines the possible positions for units in the countdown.
-public enum UnitsPosition {
+public enum CountdownUnitsPosition {
   case none
   case bottom
   case trailing
+}
+
+public enum Unit: String {
+  case days = "Days"
+  case hours = "Hours"
+  case minutes = "Minutes"
+  case seconds = "Seconds"
 }
 
 /// A model that defines the appearance properties for a countdown component.
@@ -22,33 +29,39 @@ public struct CountdownVM: ComponentVM {
 
   /// The position of the units relative to the countdown numbers.
   ///
-  /// - Default value: `.bottom`
-  public var unitsPosition: UnitsPosition = .bottom
+  /// Defaults to `.bottom`.
+  public var unitsPosition: CountdownUnitsPosition = .bottom
 
   /// The visual style of the countdown component.
   ///
-  /// - Default value: `.plain`
+  /// Defaults to `.plain`.
   public var style: CountdownStyle = .light
 
   /// The target date until which the countdown runs.
-  ///
   public var until: Date = Date().addingTimeInterval(3600)
 
-  /// The locale used for formatting the countdown.
+  /// The locale used for localizing the countdown.
   public var locale: Locale = .current
 
-  /// Localization.
+  /// A dictionary containing localized representations of time units (days, hours, minutes, seconds) for various locales.
+  ///
+  /// This property can be used to override the default localizations for supported languages or to add
+  /// localizations for unsupported languages. By default, the library provides strings for the following locales:
+  /// - English ("en")
+  /// - Spanish ("es")
+  /// - French ("fr")
+  /// - German ("de")
+  /// - Chinese ("zh")
+  /// - Japanese ("ja")
+  /// - Russian ("ru")
+  /// - Arabic ("ar")
+  /// - Hindi ("hi")
+  /// - Portuguese ("pt")
   public var localization: [Locale: UnitsLocalization] = [:]
 
   /// Initializes a new instance of `CountdownVM` with default values.
   public init() {}
 
-  /// Initializes a new instance of `CountdownVM` with specified parameters.
-  ///
-  /// - Parameters:
-  ///   - until: The target date until which the countdown runs.
-  ///   - locale: The locale used for formatting the countdown. Defaults to `.current`.
-  ///   - localization: Localization.
   public init(until: Date, locale: Locale = .current, localization: [Locale: UnitsLocalization] = [:]) {
     self.until = until
     self.locale = locale
@@ -74,14 +87,11 @@ extension CountdownVM {
     }
   }
   var unitFontSize: CGFloat {
-    switch self.size {
-    case .small:
-      return 6
-    case .medium:
-      return 8
-    case .large:
-      return 10
-    }
+    let preferredFontSize = self.preferredFont.uiFont.pointSize
+    return preferredFontSize * 0.4
+  }
+  var unitFont: UniversalFont {
+    return self.preferredFont.withSize(self.unitFontSize)
   }
   var backgroundColor: UniversalColor {
     if let color {
