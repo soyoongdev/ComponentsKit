@@ -16,7 +16,14 @@ jobs:
 
       # Step 2: Install SwiftLint
       - name: Install SwiftLint
-        run: brew install swiftlint
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y curl git libssl-dev libcurl4-openssl-dev libz-dev
+          curl -fsSL https://swift.org/builds/swift-5.9.1-release/ubuntu2004/swift-5.9.1-RELEASE/swift-5.9.1-RELEASE-ubuntu20.04.tar.gz | tar -xz -C /usr/local --strip-components=1
+          git clone https://github.com/realm/SwiftLint.git
+          cd SwiftLint
+          swift build -c release
+          sudo cp .build/release/swiftlint /usr/local/bin
 
       # Step 3: Run SwiftLint and parse errors
       - name: Run SwiftLint
