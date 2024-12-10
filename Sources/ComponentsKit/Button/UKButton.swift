@@ -157,13 +157,7 @@ open class UKButton: UIView, UKComponent {
   ) {
     super.touchesCancelled(touches, with: event)
 
-    defer { self.isPressed = false }
-
-    if self.model.isEnabled,
-       let location = touches.first?.location(in: self),
-       self.bounds.contains(location) {
-      self.action()
-    }
+    self.isPressed = false
   }
 
   open override func traitCollectionDidChange(
