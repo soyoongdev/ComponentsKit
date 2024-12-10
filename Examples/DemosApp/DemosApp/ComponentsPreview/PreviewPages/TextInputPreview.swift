@@ -16,6 +16,9 @@ struct TextInputPreviewPreview: View {
       PreviewWrapper(title: "UIKit") {
         self.textInput
           .preview
+          .onAppear {
+            self.textInput.model = Self.initialModel
+          }
           .onChange(of: self.model) { newValue in
             self.textInput.model = newValue
           }

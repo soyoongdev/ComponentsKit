@@ -16,6 +16,9 @@ struct InputFieldPreview: View {
       PreviewWrapper(title: "UIKit") {
         self.inputField
           .preview
+          .onAppear {
+            self.inputField.model = Self.initialModel
+          }
           .onChange(of: self.model) { newValue in
             self.inputField.model = newValue
           }
