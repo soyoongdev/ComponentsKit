@@ -409,7 +409,6 @@ function_body_length:
   
 included:
   - Sources
-  - Examples
 
 excluded:
   - .swiftpm
