@@ -3,12 +3,7 @@ import SwiftUI
 import UIKit
 
 struct CountdownPreview: View {
-  @State private var model: CountdownVM = {
-    var vm = CountdownVM()
-    vm.until = Date().addingTimeInterval(3600)
-    vm.localization = UnitsLocalization.defaultLocalizations
-    return vm
-  }()
+  @State private var model = CountdownVM()
   @State private var selectedLocale = Locale(identifier: "en")
 
   var body: some View {

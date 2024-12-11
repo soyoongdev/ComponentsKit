@@ -118,7 +118,9 @@ public struct SUCountdown: View {
   }
 
   private func localizedUnit(_ unit: Unit) -> String {
-    let localization = self.model.localization[self.model.locale] ?? UnitsLocalization.defaultLocalization
+    let localization = self.model.localization[self.model.locale]
+    ?? UnitsLocalization.defaultLocalizations[self.model.locale]
+    ?? UnitsLocalization.defaultLocalization
 
     switch unit {
     case .days:
