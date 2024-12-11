@@ -6,6 +6,13 @@ struct CountdownPreview: View {
   @State private var model = CountdownVM()
   @State private var selectedLocale = Locale(identifier: "en")
 
+  enum BaseStyle: String, CaseIterable {
+    case plain, light
+  }
+
+  @State private var selectedBaseStyle: BaseStyle = .light
+  @State private var selectedUnitsPosition: CountdownStyle.UnitsPosition = .bottom
+
   var body: some View {
     VStack {
       PreviewWrapper(title: "SwiftUI") {
@@ -15,28 +22,25 @@ struct CountdownPreview: View {
         ComponentOptionalColorPicker(selection: self.$model.color)
         FontPicker(selection: self.$model.font)
         SizePicker(selection: self.$model.size)
-        Picker("Units Position", selection: $model.unitsPosition) {
-          Text("None").tag(CountdownUnitsPosition.none)
-          Text("Bottom").tag(CountdownUnitsPosition.bottom)
-          Text("Trailing").tag(CountdownUnitsPosition.trailing)
+        Picker("Units Position", selection: $selectedUnitsPosition) {
+          Text("None").tag(CountdownStyle.UnitsPosition.none)
+          Text("Bottom").tag(CountdownStyle.UnitsPosition.bottom)
+          Text("Trailing").tag(CountdownStyle.UnitsPosition.trailing)
         }
-        .onChange(of: self.model.unitsPosition) { newValue in
-          if newValue != .bottom {
-            self.model.style = .plain
-          }
+        .onChange(of: self.selectedUnitsPosition) { _ in
+          self.updateModelStyle()
         }
-        Picker("Style", selection: $model.style) {
-          Text("Plain").tag(CountdownStyle.plain)
-          Text("Light").tag(CountdownStyle.light)
+        Picker("Style", selection: $selectedBaseStyle) {
+          Text("Plain").tag(BaseStyle.plain)
+          Text("Light").tag(BaseStyle.light)
         }
-        .onChange(of: self.model.style) { newValue in
-          if newValue == .light && self.model.unitsPosition != .bottom {
-            self.model.unitsPosition = .bottom
-          }
+        .onChange(of: self.selectedBaseStyle) { _ in
+          self.updateModelStyle()
         }
+
         Picker("Locale", selection: self.$model.locale) {
           Text("Current").tag(Locale.current)
-          Text("EN").tag(Locale.current)
+          Text("EN").tag(Locale(identifier: "en"))
           Text("ES").tag(Locale(identifier: "es"))
           Text("FR").tag(Locale(identifier: "fr"))
           Text("DE").tag(Locale(identifier: "de"))
@@ -47,9 +51,22 @@ struct CountdownPreview: View {
           Text("HI").tag(Locale(identifier: "hi"))
           Text("PT").tag(Locale(identifier: "pt"))
         }
+
         DatePicker("Until Date", selection: $model.until, in: Date()..., displayedComponents: [.date, .hourAndMinute])
           .datePickerStyle(.compact)
       }
+    }
+    .onAppear {
+      self.updateModelStyle()
+    }
+  }
+
+  private func updateModelStyle() {
+    switch self.selectedBaseStyle {
+    case .plain:
+      self.model.style = .plain(self.selectedUnitsPosition)
+    case .light:
+      self.model.style = .light(self.selectedUnitsPosition)
     }
   }
 }
