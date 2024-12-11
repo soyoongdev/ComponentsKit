@@ -10,9 +10,8 @@ struct ButtonPreview: View {
   var body: some View {
     VStack {
       PreviewWrapper(title: "UIKit") {
-        UKComponentPreview(model: self.model) {
-          UKButton(model: self.model)
-        }
+        UKButton(model: self.model)
+          .preview
       }
       PreviewWrapper(title: "SwiftUI") {
         SUButton(model: self.model)
@@ -28,12 +27,12 @@ struct ButtonPreview: View {
         Toggle("Full Width", isOn: self.$model.isFullWidth)
         SizePicker(selection: self.$model.size)
         Picker("Style", selection: self.$model.style) {
-          Text("Filled").tag(ButtonStyle.filled)
-          Text("Plain").tag(ButtonStyle.plain)
-          Text("Bordered with small border").tag(ButtonStyle.bordered(.small))
-          Text("Bordered with medium border").tag(ButtonStyle.bordered(.medium))
-          Text("Bordered with large border").tag(ButtonStyle.bordered(.large))
-          Text("Bordered with custom border: 6px").tag(ButtonStyle.bordered(.custom(6)))
+          Text("Filled").tag(ButtonVM.Style.filled)
+          Text("Plain").tag(ButtonVM.Style.plain)
+          Text("Bordered with small border").tag(ButtonVM.Style.bordered(.small))
+          Text("Bordered with medium border").tag(ButtonVM.Style.bordered(.medium))
+          Text("Bordered with large border").tag(ButtonVM.Style.bordered(.large))
+          Text("Bordered with custom border: 6px").tag(ButtonVM.Style.bordered(.custom(6)))
         }
       }
     }

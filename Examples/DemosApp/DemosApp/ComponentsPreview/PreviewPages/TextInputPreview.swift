@@ -4,23 +4,24 @@ import SwiftUI
 import UIKit
 
 struct TextInputPreviewPreview: View {
-  @State private var model = TextInputVM {
-    $0.placeholder = "Placeholder"
-    $0.minRows = 1
-    $0.maxRows = nil
-  }
+  @State private var model = Self.initialModel
 
   @State private var text: String = ""
   @FocusState private var isFocused: Bool
 
-  @ObservedObject private var textInput = PreviewTextInput()
+  @ObservedObject private var textInput = PreviewTextInput(model: Self.initialModel)
 
   var body: some View {
     VStack {
       PreviewWrapper(title: "UIKit") {
-        UKComponentPreview(model: self.model) {
-          self.textInput
-        }
+        self.textInput
+          .preview
+          .onAppear {
+            self.textInput.model = Self.initialModel
+          }
+          .onChange(of: self.model) { newValue in
+            self.textInput.model = newValue
+          }
       }
       PreviewWrapper(title: "SwiftUI") {
         SUTextInput(
@@ -73,6 +74,14 @@ struct TextInputPreviewPreview: View {
           }
         }
       }
+    }
+  }
+
+  private static var initialModel: TextInputVM {
+    return .init {
+      $0.placeholder = "Placeholder"
+      $0.minRows = 1
+      $0.maxRows = nil
     }
   }
 }

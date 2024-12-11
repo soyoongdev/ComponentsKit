@@ -20,7 +20,7 @@ public struct LoadingVM: ComponentVM {
   /// The style of the loading indicator (e.g., spinner, bar).
   ///
   /// Defaults to `.spinner`.
-  public var style: LoadingStyle = .spinner
+  public var style: Style = .spinner
 
   /// Initializes a new instance of `LoadingVM` with default values.
   public init() {}

@@ -149,7 +149,9 @@ extension TextInputVM {
   }
 
   private func height(forRows rows: Int) -> CGFloat {
-    // TODO: [2] Show a warning if number of rows less than 1
+    if rows < 1 {
+      assertionFailure("Number of rows in TextInput must be greater than or equal to 1")
+    }
     let numberOfRows = max(1, rows)
     return self.preferredFont.uiFont.lineHeight * CGFloat(numberOfRows) + 2 * self.contentPadding
   }
