@@ -4,7 +4,6 @@ import UIKit
 
 struct CountdownPreview: View {
   @State private var model = CountdownVM()
-  @State private var selectedLocale = Locale(identifier: "en")
 
   enum BaseStyle: String, CaseIterable {
     case plain, light

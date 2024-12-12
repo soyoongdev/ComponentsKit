@@ -54,12 +54,6 @@ public struct CountdownVM: ComponentVM {
 
   /// Initializes a new instance of `CountdownVM` with default values.
   public init() {}
-
-  public init(until: Date, locale: Locale = .current, localization: [Locale: UnitsLocalization] = [:]) {
-    self.until = until
-    self.locale = locale
-    self.localization = localization
-  }
 }
 
 // MARK: - Shared Helpers
@@ -108,13 +102,6 @@ extension CountdownVM {
     case .small: 45
     case .medium: 55
     case .large: 60
-    }
-  }
-  var horizontalPadding: CGFloat {
-    return switch self.size {
-    case .small: 8
-    case .medium: 12
-    case .large: 16
     }
   }
 }
