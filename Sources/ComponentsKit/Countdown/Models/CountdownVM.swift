@@ -1,12 +1,5 @@
 import SwiftUI
 
-public enum Unit: String {
-  case days = "Days"
-  case hours = "Hours"
-  case minutes = "Minutes"
-  case seconds = "Seconds"
-}
-
 /// A model that defines the appearance properties for a countdown component.
 public struct CountdownVM: ComponentVM {
   /// The font used for displaying the countdown numbers and units.
@@ -28,7 +21,7 @@ public struct CountdownVM: ComponentVM {
   /// The position of the units relative to the countdown numbers.
   ///
   /// Defaults to `.bottom`.
-  public var unitsPosition: UnitsPosition = .bottom
+  public var unitsPosition: UnitsStyle = .bottom
 
   /// The target date until which the countdown runs.
   public var until: Date = Date().addingTimeInterval(3600 * 85)

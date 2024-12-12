@@ -14,7 +14,7 @@ struct CountdownPreview: View {
   }
 
   @State private var selectedBaseStyle: BaseStyle = .light
-  @State private var selectedUnitsPosition: UnitsPosition = .bottom
+  @State private var selectedUnitsPosition: UnitsStyle = .bottom
 
   var body: some View {
     VStack {
@@ -27,9 +27,9 @@ struct CountdownPreview: View {
         SizePicker(selection: self.$model.size)
 
         Picker("Units Position", selection: $selectedUnitsPosition) {
-          Text("None").tag(UnitsPosition.none)
-          Text("Bottom").tag(UnitsPosition.bottom)
-          Text("Trailing").tag(UnitsPosition.trailing)
+          Text("None").tag(UnitsStyle.hidden)
+          Text("Bottom").tag(UnitsStyle.bottom)
+          Text("Trailing").tag(UnitsStyle.trailing)
         }
         .onChange(of: self.selectedUnitsPosition) { _ in
           self.updateModel()

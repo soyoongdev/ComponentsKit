@@ -7,8 +7,8 @@ public enum CountdownStyle: Equatable {
 }
 
 /// Defines the units position for the countdown component.
-public enum UnitsPosition: Equatable {
-  case none
+public enum UnitsStyle: Equatable {
+  case hidden
   case bottom
   case trailing
 }

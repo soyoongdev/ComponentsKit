@@ -28,7 +28,7 @@ public struct SUCountdown: View {
       switch self.model.style {
       case .plain:
         switch self.model.unitsPosition {
-        case .none:
+        case .hidden:
           self.plainNoneLayout
         case .bottom:
           self.plainBottomLayout
@@ -38,7 +38,7 @@ public struct SUCountdown: View {
 
       case .light:
         switch self.model.unitsPosition {
-        case .none:
+        case .hidden:
           self.lightNoneLayout
         case .bottom:
           self.lightBottomLayout
@@ -156,7 +156,7 @@ public struct SUCountdown: View {
       .foregroundStyle(self.model.foregroundColor.color(for: self.colorScheme))
   }
 
-  private func plainStyledTimeWithShortUnit(value: Int, unit: Unit) -> some View {
+  private func plainStyledTimeWithShortUnit(value: Int, unit: CountdownHelpers.Unit) -> some View {
     Text(String(format: "%02d %@", value, self.localizedUnit(unit, length: .short)))
       .font(self.model.preferredFont.font)
       .foregroundStyle(self.model.foregroundColor.color(for: self.colorScheme))
@@ -171,14 +171,14 @@ public struct SUCountdown: View {
       )
   }
 
-  private func plainUnitView(value: Int, unit: Unit) -> some View {
+  private func plainUnitView(value: Int, unit: CountdownHelpers.Unit) -> some View {
     VStack(spacing: 2) {
       self.plainStyledText(value: value)
       self.unitLabel(for: unit)
     }
   }
 
-  private func lightUnitView(value: Int, unit: Unit) -> some View {
+  private func lightUnitView(value: Int, unit: CountdownHelpers.Unit) -> some View {
     lightBackground {
       VStack(spacing: 2) {
         self.plainStyledText(value: value)
@@ -187,7 +187,7 @@ public struct SUCountdown: View {
     }
   }
 
-  private func unitLabel(for unit: Unit) -> some View {
+  private func unitLabel(for unit: CountdownHelpers.Unit) -> some View {
     Text(self.localizedUnit(unit, length: .long))
       .font(self.model.unitFont.font)
       .foregroundStyle(
@@ -195,9 +195,7 @@ public struct SUCountdown: View {
       )
   }
 
-  private enum UnitLength { case short, long }
-
-  private func localizedUnit(_ unit: Unit, length: UnitLength) -> String {
+  private func localizedUnit(_ unit: CountdownHelpers.Unit, length: CountdownHelpers.UnitLength) -> String {
     let localization = model.localization[model.locale]
     ?? UnitsLocalization.defaultLocalizations[model.locale]
     ?? UnitsLocalization.localizationFallback
