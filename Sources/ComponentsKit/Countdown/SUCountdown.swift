@@ -5,18 +5,20 @@ public struct SUCountdown: View {
   // MARK: - Properties
 
   /// The countdown manager handling the countdown logic.
-  @StateObject private var manager: CountdownManager
+  @StateObject private var manager = CountdownManager()
 
   /// A model that defines the appearance properties.
   public var model: CountdownVM
 
   @Environment(\.colorScheme) private var colorScheme
 
-  // MARK: - Initializers
+  // MARK: - Initializer
 
+  /// Initializer.
+  /// - Parameters:
+  ///   - model: A model that defines the appearance properties.
   public init(model: CountdownVM = .init()) {
     self.model = model
-    _manager = StateObject(wrappedValue: CountdownManager())
   }
 
   // MARK: - Body
@@ -62,11 +64,11 @@ public struct SUCountdown: View {
   private var plainNoneLayout: some View {
     HStack(spacing: 6) {
       self.plainStyledText(value: self.manager.days)
-      self.colonView()
+      self.colonView
       self.plainStyledText(value: self.manager.hours)
-      self.colonView()
+      self.colonView
       self.plainStyledText(value: self.manager.minutes)
-      self.colonView()
+      self.colonView
       self.plainStyledText(value: self.manager.seconds)
     }
   }
@@ -74,11 +76,11 @@ public struct SUCountdown: View {
   private var plainBottomLayout: some View {
     HStack(spacing: 10) {
       self.plainUnitView(value: self.manager.days, unit: .days)
-      self.colonView().padding(.bottom, 16)
+      self.colonView.padding(.bottom, 16)
       self.plainUnitView(value: self.manager.hours, unit: .hours)
-      self.colonView().padding(.bottom, 16)
+      self.colonView.padding(.bottom, 16)
       self.plainUnitView(value: self.manager.minutes, unit: .minutes)
-      self.colonView().padding(.bottom, 16)
+      self.colonView.padding(.bottom, 16)
       self.plainUnitView(value: self.manager.seconds, unit: .seconds)
     }
   }
@@ -86,11 +88,11 @@ public struct SUCountdown: View {
   private var plainTrailingLayout: some View {
     HStack(spacing: 6) {
       self.plainStyledTimeWithShortUnit(value: self.manager.days, unit: .days)
-      self.colonView()
+      self.colonView
       self.plainStyledTimeWithShortUnit(value: self.manager.hours, unit: .hours)
-      self.colonView()
+      self.colonView
       self.plainStyledTimeWithShortUnit(value: self.manager.minutes, unit: .minutes)
-      self.colonView()
+      self.colonView
       self.plainStyledTimeWithShortUnit(value: self.manager.seconds, unit: .seconds)
     }
   }
@@ -99,10 +101,18 @@ public struct SUCountdown: View {
 
   private var lightNoneLayout: some View {
     HStack(spacing: 10) {
-      self.lightBackground(self.plainStyledText(value: self.manager.days))
-      self.lightBackground(self.plainStyledText(value: self.manager.hours))
-      self.lightBackground(self.plainStyledText(value: self.manager.minutes))
-      self.lightBackground(self.plainStyledText(value: self.manager.seconds))
+      self.lightBackground {
+        self.plainStyledText(value: self.manager.days)
+      }
+      self.lightBackground {
+        self.plainStyledText(value: self.manager.hours)
+      }
+      self.lightBackground {
+        self.plainStyledText(value: self.manager.minutes)
+      }
+      self.lightBackground {
+        self.plainStyledText(value: self.manager.seconds)
+      }
     }
   }
 
@@ -117,16 +127,24 @@ public struct SUCountdown: View {
 
   private var lightTrailingLayout: some View {
     HStack(spacing: 10) {
-      self.lightBackground(self.plainStyledTimeWithShortUnit(value: self.manager.days, unit: .days))
-      self.lightBackground(self.plainStyledTimeWithShortUnit(value: self.manager.hours, unit: .hours))
-      self.lightBackground(self.plainStyledTimeWithShortUnit(value: self.manager.minutes, unit: .minutes))
-      self.lightBackground(self.plainStyledTimeWithShortUnit(value: self.manager.seconds, unit: .seconds))
+      self.lightBackground {
+        self.plainStyledTimeWithShortUnit(value: self.manager.days, unit: .days)
+      }
+      self.lightBackground {
+        self.plainStyledTimeWithShortUnit(value: self.manager.hours, unit: .hours)
+      }
+      self.lightBackground {
+        self.plainStyledTimeWithShortUnit(value: self.manager.minutes, unit: .minutes)
+      }
+      self.lightBackground {
+        self.plainStyledTimeWithShortUnit(value: self.manager.seconds, unit: .seconds)
+      }
     }
   }
 
   // MARK: - Methods
 
-  private func colonView() -> some View {
+  private var colonView: some View {
     Text(":")
       .font(self.model.preferredFont.font)
       .foregroundColor(.gray)
@@ -144,8 +162,8 @@ public struct SUCountdown: View {
       .foregroundStyle(self.model.foregroundColor.color(for: self.colorScheme))
   }
 
-  private func lightBackground<Content: View>(_ content: Content) -> some View {
-    content
+  private func lightBackground<Content: View>(@ViewBuilder _ content: () -> Content) -> some View {
+    content()
       .frame(width: 55, height: self.model.height)
       .background(
         RoundedRectangle(cornerRadius: 8)
@@ -161,12 +179,12 @@ public struct SUCountdown: View {
   }
 
   private func lightUnitView(value: Int, unit: Unit) -> some View {
-    lightBackground(
+    lightBackground {
       VStack(spacing: 2) {
         self.plainStyledText(value: value)
         self.unitLabel(for: unit)
       }
-    )
+    }
   }
 
   private func unitLabel(for unit: Unit) -> some View {
