@@ -59,107 +59,126 @@ public struct SUCountdown: View {
     }
   }
 
-  // MARK: - Layouts for Style .plain
+  // MARK: - Components
+
+  private func timeWithoutUnit(value: Int) -> some View {
+    Text(String(format: "%02d", value))
+      .font(self.model.preferredFont.font)
+      .foregroundStyle(self.model.foregroundColor.color(for: self.colorScheme))
+  }
+
+  private func timeWithShortUnit(value: Int, unit: CountdownHelpers.Unit) -> some View {
+    Text(String(format: "%02d %@", value, self.localizedUnit(unit, length: .short)))
+      .font(self.model.preferredFont.font)
+      .foregroundStyle(self.model.foregroundColor.color(for: self.colorScheme))
+  }
+
+  private func timeWithLongUnit(value: Int, unit: CountdownHelpers.Unit) -> some View {
+    VStack(spacing: 2) {
+      self.timeWithoutUnit(value: value)
+      Text(self.localizedUnit(unit, length: .long))
+        .font(self.model.unitFont.font)
+        .foregroundStyle(self.model.foregroundColor.color(for: self.colorScheme))
+    }
+  }
+
+  // MARK: - Plain Layouts
 
   private var plainNoneLayout: some View {
     HStack(spacing: 6) {
-      self.plainStyledText(value: self.manager.days)
+      self.timeWithoutUnit(value: self.manager.days)
       self.colonView
-      self.plainStyledText(value: self.manager.hours)
+      self.timeWithoutUnit(value: self.manager.hours)
       self.colonView
-      self.plainStyledText(value: self.manager.minutes)
+      self.timeWithoutUnit(value: self.manager.minutes)
       self.colonView
-      self.plainStyledText(value: self.manager.seconds)
+      self.timeWithoutUnit(value: self.manager.seconds)
     }
   }
 
   private var plainBottomLayout: some View {
     HStack(spacing: 10) {
-      self.plainUnitView(value: self.manager.days, unit: .days)
+      self.timeWithLongUnit(value: self.manager.days, unit: .days)
       self.colonView.padding(.bottom, 16)
-      self.plainUnitView(value: self.manager.hours, unit: .hours)
+      self.timeWithLongUnit(value: self.manager.hours, unit: .hours)
       self.colonView.padding(.bottom, 16)
-      self.plainUnitView(value: self.manager.minutes, unit: .minutes)
+      self.timeWithLongUnit(value: self.manager.minutes, unit: .minutes)
       self.colonView.padding(.bottom, 16)
-      self.plainUnitView(value: self.manager.seconds, unit: .seconds)
+      self.timeWithLongUnit(value: self.manager.seconds, unit: .seconds)
     }
   }
 
   private var plainTrailingLayout: some View {
     HStack(spacing: 6) {
-      self.plainStyledTimeWithShortUnit(value: self.manager.days, unit: .days)
+      self.timeWithShortUnit(value: self.manager.days, unit: .days)
       self.colonView
-      self.plainStyledTimeWithShortUnit(value: self.manager.hours, unit: .hours)
+      self.timeWithShortUnit(value: self.manager.hours, unit: .hours)
       self.colonView
-      self.plainStyledTimeWithShortUnit(value: self.manager.minutes, unit: .minutes)
+      self.timeWithShortUnit(value: self.manager.minutes, unit: .minutes)
       self.colonView
-      self.plainStyledTimeWithShortUnit(value: self.manager.seconds, unit: .seconds)
+      self.timeWithShortUnit(value: self.manager.seconds, unit: .seconds)
     }
   }
 
-  // MARK: - Layouts for Style .light
+  // MARK: - Light Layouts
 
   private var lightNoneLayout: some View {
     HStack(spacing: 10) {
       self.lightBackground {
-        self.plainStyledText(value: self.manager.days)
+        self.timeWithoutUnit(value: self.manager.days)
       }
       self.lightBackground {
-        self.plainStyledText(value: self.manager.hours)
+        self.timeWithoutUnit(value: self.manager.hours)
       }
       self.lightBackground {
-        self.plainStyledText(value: self.manager.minutes)
+        self.timeWithoutUnit(value: self.manager.minutes)
       }
       self.lightBackground {
-        self.plainStyledText(value: self.manager.seconds)
+        self.timeWithoutUnit(value: self.manager.seconds)
       }
     }
   }
 
   private var lightBottomLayout: some View {
     HStack(spacing: 10) {
-      self.lightUnitView(value: self.manager.days, unit: .days)
-      self.lightUnitView(value: self.manager.hours, unit: .hours)
-      self.lightUnitView(value: self.manager.minutes, unit: .minutes)
-      self.lightUnitView(value: self.manager.seconds, unit: .seconds)
+      self.lightBackground {
+        self.timeWithLongUnit(value: self.manager.days, unit: .days)
+      }
+      self.lightBackground {
+        self.timeWithLongUnit(value: self.manager.hours, unit: .hours)
+      }
+      self.lightBackground {
+        self.timeWithLongUnit(value: self.manager.minutes, unit: .minutes)
+      }
+      self.lightBackground {
+        self.timeWithLongUnit(value: self.manager.seconds, unit: .seconds)
+      }
     }
   }
 
   private var lightTrailingLayout: some View {
     HStack(spacing: 10) {
       self.lightBackground {
-        self.plainStyledTimeWithShortUnit(value: self.manager.days, unit: .days)
+        self.timeWithShortUnit(value: self.manager.days, unit: .days)
       }
       self.lightBackground {
-        self.plainStyledTimeWithShortUnit(value: self.manager.hours, unit: .hours)
+        self.timeWithShortUnit(value: self.manager.hours, unit: .hours)
       }
       self.lightBackground {
-        self.plainStyledTimeWithShortUnit(value: self.manager.minutes, unit: .minutes)
+        self.timeWithShortUnit(value: self.manager.minutes, unit: .minutes)
       }
       self.lightBackground {
-        self.plainStyledTimeWithShortUnit(value: self.manager.seconds, unit: .seconds)
+        self.timeWithShortUnit(value: self.manager.seconds, unit: .seconds)
       }
     }
   }
 
-  // MARK: - Methods
+  // MARK: - Helpers
 
   private var colonView: some View {
     Text(":")
       .font(self.model.preferredFont.font)
       .foregroundColor(.gray)
-  }
-
-  private func plainStyledText(value: Int) -> some View {
-    Text(String(format: "%02d", value))
-      .font(self.model.preferredFont.font)
-      .foregroundStyle(self.model.foregroundColor.color(for: self.colorScheme))
-  }
-
-  private func plainStyledTimeWithShortUnit(value: Int, unit: CountdownHelpers.Unit) -> some View {
-    Text(String(format: "%02d %@", value, self.localizedUnit(unit, length: .short)))
-      .font(self.model.preferredFont.font)
-      .foregroundStyle(self.model.foregroundColor.color(for: self.colorScheme))
   }
 
   private func lightBackground<Content: View>(@ViewBuilder _ content: () -> Content) -> some View {
@@ -168,30 +187,6 @@ public struct SUCountdown: View {
       .background(
         RoundedRectangle(cornerRadius: 8)
           .fill(self.model.backgroundColor.color(for: self.colorScheme))
-      )
-  }
-
-  private func plainUnitView(value: Int, unit: CountdownHelpers.Unit) -> some View {
-    VStack(spacing: 2) {
-      self.plainStyledText(value: value)
-      self.unitLabel(for: unit)
-    }
-  }
-
-  private func lightUnitView(value: Int, unit: CountdownHelpers.Unit) -> some View {
-    lightBackground {
-      VStack(spacing: 2) {
-        self.plainStyledText(value: value)
-        self.unitLabel(for: unit)
-      }
-    }
-  }
-
-  private func unitLabel(for unit: CountdownHelpers.Unit) -> some View {
-    Text(self.localizedUnit(unit, length: .long))
-      .font(self.model.unitFont.font)
-      .foregroundStyle(
-        self.model.foregroundColor.color(for: self.colorScheme)
       )
   }
 
