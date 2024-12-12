@@ -22,8 +22,13 @@ public struct CountdownVM: ComponentVM {
 
   /// The visual style of the countdown component.
   ///
-  /// Defaults to `.plain`.
-  public var style: CountdownStyle = .light(.bottom)
+  /// Defaults to `.light`.
+  public var style: CountdownStyle = .light
+
+  /// The position of the units relative to the countdown numbers.
+  ///
+  /// Defaults to `.bottom`.
+  public var unitsPosition: UnitsPosition = .bottom
 
   /// The target date until which the countdown runs.
   public var until: Date = Date().addingTimeInterval(3600 * 85)

@@ -10,8 +10,12 @@ struct CountdownPreview: View {
     case plain, light
   }
 
+  enum PositionOption: String, CaseIterable {
+    case none, bottom, trailing
+  }
+
   @State private var selectedBaseStyle: BaseStyle = .light
-  @State private var selectedUnitsPosition: CountdownStyle.UnitsPosition = .bottom
+  @State private var selectedUnitsPosition: UnitsPosition = .bottom
 
   var body: some View {
     VStack {
@@ -22,20 +26,22 @@ struct CountdownPreview: View {
         ComponentOptionalColorPicker(selection: self.$model.color)
         FontPicker(selection: self.$model.font)
         SizePicker(selection: self.$model.size)
+
         Picker("Units Position", selection: $selectedUnitsPosition) {
-          Text("None").tag(CountdownStyle.UnitsPosition.none)
-          Text("Bottom").tag(CountdownStyle.UnitsPosition.bottom)
-          Text("Trailing").tag(CountdownStyle.UnitsPosition.trailing)
+          Text("None").tag(UnitsPosition.none)
+          Text("Bottom").tag(UnitsPosition.bottom)
+          Text("Trailing").tag(UnitsPosition.trailing)
         }
         .onChange(of: self.selectedUnitsPosition) { _ in
-          self.updateModelStyle()
+          self.updateModel()
         }
+
         Picker("Style", selection: $selectedBaseStyle) {
           Text("Plain").tag(BaseStyle.plain)
           Text("Light").tag(BaseStyle.light)
         }
         .onChange(of: self.selectedBaseStyle) { _ in
-          self.updateModelStyle()
+          self.updateModel()
         }
 
         Picker("Locale", selection: self.$model.locale) {
@@ -57,17 +63,18 @@ struct CountdownPreview: View {
       }
     }
     .onAppear {
-      self.updateModelStyle()
+      self.updateModel()
     }
   }
 
-  private func updateModelStyle() {
+  private func updateModel() {
     switch self.selectedBaseStyle {
     case .plain:
-      self.model.style = .plain(self.selectedUnitsPosition)
+      self.model.style = .plain
     case .light:
-      self.model.style = .light(self.selectedUnitsPosition)
+      self.model.style = .light
     }
+    self.model.unitsPosition = self.selectedUnitsPosition
   }
 }
 

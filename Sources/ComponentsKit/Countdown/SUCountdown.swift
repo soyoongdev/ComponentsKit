@@ -24,8 +24,8 @@ public struct SUCountdown: View {
   public var body: some View {
     VStack {
       switch self.model.style {
-      case .plain(let unitsPosition):
-        switch unitsPosition {
+      case .plain:
+        switch self.model.unitsPosition {
         case .none:
           self.plainNoneLayout
         case .bottom:
@@ -34,8 +34,8 @@ public struct SUCountdown: View {
           self.plainTrailingLayout
         }
 
-      case .light(let unitsPosition):
-        switch unitsPosition {
+      case .light:
+        switch self.model.unitsPosition {
         case .none:
           self.lightNoneLayout
         case .bottom:
