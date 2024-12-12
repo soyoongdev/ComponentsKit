@@ -33,7 +33,7 @@ public struct UnitsLocalization: Equatable {
 // MARK: - Localizations
 
 extension UnitsLocalization {
-  public static let defaultLocalizations: [Locale: UnitsLocalization] = [
+  static let defaultLocalizations: [Locale: UnitsLocalization] = [
     // English (en)
     Locale(identifier: "en"): UnitsLocalization(
       seconds: .init(short: "s", long: "Seconds"),
@@ -115,12 +115,12 @@ extension UnitsLocalization {
     )
   ]
 
-  public static let defaultLocalization: UnitsLocalization = {
-    return defaultLocalizations[Locale(identifier: "en")] ?? UnitsLocalization(
+  static var localizationFallback: UnitsLocalization {
+    return UnitsLocalization(
       seconds: .init(short: "s", long: "Seconds"),
       minutes: .init(short: "m", long: "Minutes"),
       hours: .init(short: "h", long: "Hours"),
       days: .init(short: "d", long: "Days")
     )
-  }()
+  }
 }
