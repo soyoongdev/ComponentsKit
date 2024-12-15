@@ -68,7 +68,7 @@ extension CountdownVM {
   }
   var unitFontSize: CGFloat {
     let preferredFontSize = self.preferredFont.uiFont.pointSize
-    return preferredFontSize * 0.4
+    return preferredFontSize * 0.6
   }
   var unitFont: UniversalFont {
     return self.preferredFont.withSize(self.unitFontSize)
@@ -95,6 +95,65 @@ extension CountdownVM {
     case .small: 45
     case .medium: 55
     case .large: 60
+    }
+  }
+}
+
+extension CountdownVM {
+  func localizedUnit(_ unit: CountdownHelpers.Unit, length: CountdownHelpers.UnitLength) -> String {
+    let localization = self.localization[self.locale]
+    ?? UnitsLocalization.defaultLocalizations[self.locale]
+    ?? UnitsLocalization.localizationFallback
+
+    switch (unit, length) {
+    case (.days, .long):
+      return localization.days.long
+    case (.days, .short):
+      return localization.days.short
+
+    case (.hours, .long):
+      return localization.hours.long
+    case (.hours, .short):
+      return localization.hours.short
+
+    case (.minutes, .long):
+      return localization.minutes.long
+    case (.minutes, .short):
+      return localization.minutes.short
+
+    case (.seconds, .long):
+      return localization.seconds.long
+    case (.seconds, .short):
+      return localization.seconds.short
+    }
+  }
+
+  func unitText(value: Int, unit: CountdownHelpers.Unit) -> AttributedString {
+    var result = AttributedString(String(format: "%02d", value))
+    let mainFont = self.preferredFont.font.monospacedDigit()
+    result.font = mainFont
+
+    switch self.unitsPosition {
+    case .hidden:
+      return result
+
+    case .trailing:
+      let localized = self.localizedUnit(unit, length: .short)
+      var unitPart = AttributedString(" " + localized)
+      unitPart.font = mainFont
+      result.append(unitPart)
+      return result
+
+    case .bottom:
+      let localized = self.localizedUnit(unit, length: .long)
+      var newline = AttributedString("\n")
+      newline.font = mainFont
+      result.append(newline)
+
+      var unitPart = AttributedString(localized)
+      unitPart.font = self.unitFont.font
+      result.append(unitPart)
+      return result
     }
   }
 }
