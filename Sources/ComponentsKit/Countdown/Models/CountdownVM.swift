@@ -132,6 +132,7 @@ extension CountdownVM {
     let mainUIFont = self.preferredFont.uiFont
     let mainAttributes: [NSAttributedString.Key: Any] = [
       .font: mainUIFont,
+      .foregroundColor: self.foregroundColor
     ]
 
     let formattedValue = String(format: "%02d", value)
@@ -146,6 +147,7 @@ extension CountdownVM {
       let trailingStr = " " + localized
       let trailingAttributes: [NSAttributedString.Key: Any] = [
         .font: mainUIFont,
+        .foregroundColor: self.foregroundColor
       ]
       result.append(NSAttributedString(string: trailingStr, attributes: trailingAttributes))
       return result

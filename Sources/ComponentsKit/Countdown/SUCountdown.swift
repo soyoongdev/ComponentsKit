@@ -26,11 +26,11 @@ public struct SUCountdown: View {
   // MARK: - Body
 
   public var body: some View {
-    HStack(spacing: self.model.style == .light ? 10 : 6) {
+    HStack(alignment: .top, spacing: self.model.style == .light ? 10 : 6) {
       switch (self.model.style, self.model.unitsPosition) {
       case (.plain, .bottom):
         self.styledTime(value: self.manager.days, unit: .days)
-        colonView.offset(y: colonOffset())
+        colonView
         self.styledTime(value: self.manager.hours, unit: .hours)
         colonView
         self.styledTime(value: self.manager.minutes, unit: .minutes)
@@ -55,24 +55,15 @@ public struct SUCountdown: View {
     }
     .onAppear {
       self.manager.start(until: self.model.until)
-      self.calculateWidth()
+      self.calculateWidth(model: self.model)
     }
     .onChange(of: self.model.until) { newDate in
       self.manager.stop()
       self.manager.start(until: newDate)
-      self.calculateWidth()
+      self.calculateWidth(model: self.model)
     }
-    .onChange(of: self.model.style) { _ in
-      self.calculateWidth()
-    }
-    .onChange(of: self.model.size) { _ in
-      self.calculateWidth()
-    }
-    .onChange(of: self.model.unitsPosition) { _ in
-      self.calculateWidth()
-    }
-    .onChange(of: self.model.font) { _ in
-      self.calculateWidth()
+    .onChange(of: self.model) { newValue in
+      self.calculateWidth(model: newValue)
     }
     .onDisappear {
       self.manager.stop()
@@ -84,7 +75,6 @@ public struct SUCountdown: View {
     let nsAttrStr = self.model.unitText(value: value, unit: unit)
     let attrString = AttributedString(nsAttrStr)
     return Text(attrString)
-      .foregroundColor(self.model.foregroundColor.color(for: colorScheme))
       .multilineTextAlignment(.center)
       .frame(width: self.width)
   }
@@ -95,21 +85,16 @@ public struct SUCountdown: View {
       .foregroundColor(.gray)
   }
 
-  private func colonOffset() -> CGFloat {
-    let mainFontHeight = self.model.preferredFont.uiFont.lineHeight
-    let colonFontHeight = self.model.preferredFont.uiFont.lineHeight
-    return (mainFontHeight - colonFontHeight)
-  }
-
   private func lightStyledTime(value: Int, unit: CountdownHelpers.Unit) -> some
   View {
     return self.styledTime(value: value, unit: unit)
-      .frame(width: self.width, height: self.model.height)
+      .padding(.horizontal, 4)
+      .frame(height: self.model.height)
       .background(RoundedRectangle(cornerRadius: 8)
         .fill(self.model.backgroundColor.color(for: self.colorScheme))
       )
   }
-  private func calculateWidth() {
+  private func calculateWidth(model: CountdownVM) {
     let values: [(Int, CountdownHelpers.Unit)] = [
       (self.manager.days, .days),
       (self.manager.hours, .hours),
@@ -118,8 +103,8 @@ public struct SUCountdown: View {
     ]
 
     let widths = values.map { value, unit -> CGFloat in
-      let nsAttrStr = self.model.unitText(value: value, unit: unit)
-      return CountdownWidthCalculator.preferredWidth(for: nsAttrStr, model: self.model)
+      let nsAttrStr = model.unitText(value: value, unit: unit)
+      return CountdownWidthCalculator.preferredWidth(for: nsAttrStr, model: model)
     }
 
     if let newMax = widths.max() {
