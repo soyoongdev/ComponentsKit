@@ -6,20 +6,19 @@ struct CountdownWidthCalculator {
   private init() {}
 
   static func preferredWidth(
-    for text: String,
+    for attributedText: NSAttributedString,
     model: CountdownVM
   ) -> CGFloat {
-    self.style(self.label, with: model)
-    self.label.text = text
+    self.style(label, with: model)
+    label.attributedText = attributedText
 
     let targetSize = CGSize(width: CGFloat.greatestFiniteMagnitude, height: model.height)
-    let estimatedSize = self.label.sizeThatFits(targetSize)
+    let estimatedSize = label.sizeThatFits(targetSize)
 
     return estimatedSize.width
   }
 
   private static func style(_ label: UILabel, with model: CountdownVM) {
-    label.font = model.preferredFont.uiFont
     label.numberOfLines = 0
   }
 }

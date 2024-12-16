@@ -128,10 +128,14 @@ extension CountdownVM {
     }
   }
 
-  func unitText(value: Int, unit: CountdownHelpers.Unit) -> AttributedString {
-    var result = AttributedString(String(format: "%02d", value))
-    let mainFont = self.preferredFont.font.monospacedDigit()
-    result.font = mainFont
+  func unitText(value: Int, unit: CountdownHelpers.Unit) -> NSAttributedString {
+    let mainUIFont = self.preferredFont.uiFont
+    let mainAttributes: [NSAttributedString.Key: Any] = [
+      .font: mainUIFont,
+    ]
+
+    let formattedValue = String(format: "%02d", value)
+    let result = NSMutableAttributedString(string: formattedValue, attributes: mainAttributes)
 
     switch self.unitsPosition {
     case .hidden:
@@ -139,20 +143,23 @@ extension CountdownVM {
 
     case .trailing:
       let localized = self.localizedUnit(unit, length: .short)
-      var unitPart = AttributedString(" " + localized)
-      unitPart.font = mainFont
-      result.append(unitPart)
+      let trailingStr = " " + localized
+      let trailingAttributes: [NSAttributedString.Key: Any] = [
+        .font: mainUIFont,
+      ]
+      result.append(NSAttributedString(string: trailingStr, attributes: trailingAttributes))
       return result
 
     case .bottom:
       let localized = self.localizedUnit(unit, length: .long)
-      var newline = AttributedString("\n")
-      newline.font = mainFont
-      result.append(newline)
 
-      var unitPart = AttributedString(localized)
-      unitPart.font = self.unitFont.font
-      result.append(unitPart)
+      result.append(NSAttributedString(string: "\n", attributes: mainAttributes))
+
+      let unitUIFont = self.unitFont.uiFont
+      let unitAttributes: [NSAttributedString.Key: Any] = [
+        .font: unitUIFont,
+      ]
+      result.append(NSAttributedString(string: localized, attributes: unitAttributes))
       return result
     }
   }
