@@ -35,7 +35,7 @@ open class UKDivider: UIView, UKComponent {
   // MARK: - Setup
 
   private func style() {
-    self.backgroundColor = self.model.color.uiColor
+    self.backgroundColor = self.model.lineColor.uiColor
     self.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
     self.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
   }
@@ -45,7 +45,7 @@ open class UKDivider: UIView, UKComponent {
   public func update(_ oldModel: DividerVM) {
     guard self.model != oldModel else { return }
 
-    self.backgroundColor = self.model.color.uiColor
+    self.backgroundColor = self.model.lineColor.uiColor
 
     if self.model.shouldUpdateLayout(oldModel) {
       self.invalidateIntrinsicContentSize()

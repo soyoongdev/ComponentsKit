@@ -4,8 +4,8 @@ import Foundation
 public struct LoadingVM: ComponentVM {
   /// The color of the loading indicator.
   ///
-  /// Defaults to `.primary`.
-  public var color: ComponentColor = .primary
+  /// Defaults to `.accent`.
+  public var color: ComponentColor = .accent
 
   /// The width of the lines used in the loading indicator.
   ///

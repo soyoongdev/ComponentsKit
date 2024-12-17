@@ -55,9 +55,6 @@ public struct SUInputField<FocusValue: Hashable>: View {
       if let title = self.model.attributedTitle {
         Text(title)
           .font(self.model.preferredFont.font)
-          .foregroundStyle(
-            self.model.foregroundColor.color(for: self.colorScheme)
-          )
       }
 
       Group {

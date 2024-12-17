@@ -157,7 +157,7 @@ final class UIKitLogin: UIViewController {
   }
 
   private func style() {
-    self.scrollView.backgroundColor = Palette.Base.background.uiColor
+    self.scrollView.backgroundColor = UniversalColor.background.uiColor
 
     self.stackView.setCustomSpacing(50, after: self.pageControl)
     self.stackView.setCustomSpacing(50, after: self.titleLabel)

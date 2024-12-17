@@ -18,7 +18,7 @@ struct ButtonPreview: View {
       }
       Form {
         AnimationScalePicker(selection: self.$model.animationScale)
-        ComponentColorPicker(selection: self.$model.color)
+        ComponentOptionalColorPicker(selection: self.$model.color)
         CornerRadiusPicker(selection: self.$model.cornerRadius) {
           Text("Custom: 20px").tag(ComponentRadius.custom(20))
         }

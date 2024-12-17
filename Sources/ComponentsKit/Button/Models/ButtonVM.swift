@@ -11,9 +11,7 @@ public struct ButtonVM: ComponentVM {
   public var animationScale: AnimationScale = .medium
 
   /// The color of the button.
-  ///
-  /// Defaults to `.primary`.
-  public var color: ComponentColor = .primary
+  public var color: ComponentColor?
 
   /// The corner radius of the button.
   ///
@@ -53,18 +51,12 @@ public struct ButtonVM: ComponentVM {
 
 extension ButtonVM {
   private var mainColor: UniversalColor {
-    return self.isEnabled
-    ? self.color.main
-    : self.color.main.withOpacity(
-      ComponentsKitConfig.shared.layout.disabledOpacity
-    )
+    let color = self.color?.main ?? .content2
+    return color.enabled(self.isEnabled)
   }
   private var contrastColor: UniversalColor {
-    return self.isEnabled
-    ? self.color.contrast
-    : self.color.contrast.withOpacity(
-      ComponentsKitConfig.shared.layout.disabledOpacity
-    )
+    let color = self.color?.contrast ?? .foreground
+    return color.enabled(self.isEnabled)
   }
   var backgroundColor: UniversalColor? {
     switch self.style {
@@ -81,7 +73,8 @@ extension ButtonVM {
     case .plain:
       return self.mainColor
     case .bordered:
-      return self.mainColor
+      let color = self.color?.main ?? .foreground
+      return color.enabled(self.isEnabled)
     }
   }
   var borderWidth: CGFloat {
@@ -97,7 +90,11 @@ extension ButtonVM {
     case .filled, .plain:
       return nil
     case .bordered:
-      return self.mainColor
+      if let color {
+        return color.main.enabled(self.isEnabled)
+      } else {
+        return .divider
+      }
     }
   }
   var preferredFont: UniversalFont {

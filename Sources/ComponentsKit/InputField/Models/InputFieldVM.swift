@@ -107,26 +107,18 @@ extension InputFieldVM {
     return self.title.isNotNilAndEmpty ? 12 : 0
   }
   var backgroundColor: UniversalColor {
-    if let color {
-      return color.main.withOpacity(0.25)
-    } else {
-      return .init(
-        light: .rgba(r: 244, g: 244, b: 245, a: 1.0),
-        dark: .rgba(r: 39, g: 39, b: 42, a: 1.0)
-      )
-    }
+    return self.color?.background ?? .content1
   }
   var foregroundColor: UniversalColor {
-    let foregroundColor = self.color?.main ?? .init(
-      light: .rgba(r: 0, g: 0, b: 0, a: 1.0),
-      dark: .rgba(r: 255, g: 255, b: 255, a: 1.0)
-    )
-    return foregroundColor.withOpacity(
-      self.isEnabled ? 1.0 : 0.5
-    )
+    let color = self.color?.main ?? .foreground
+    return color.enabled(self.isEnabled)
   }
   var placeholderColor: UniversalColor {
-    return self.foregroundColor.withOpacity(self.isEnabled ? 0.7 : 0.3)
+    if let color {
+      return color.main.withOpacity(self.isEnabled ? 0.7 : 0.3)
+    } else {
+      return .secondaryForeground.enabled(self.isEnabled)
+    }
   }
 }
 

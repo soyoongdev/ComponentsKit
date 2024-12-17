@@ -38,32 +38,16 @@ public struct CheckboxVM: ComponentVM {
 
 extension CheckboxVM {
   var backgroundColor: UniversalColor {
-    return self.color.main.withOpacity(
-      self.isEnabled
-      ? 1.0
-      : ComponentsKitConfig.shared.layout.disabledOpacity
-    )
+    return self.color.main.enabled(self.isEnabled)
   }
   var foregroundColor: UniversalColor {
-    return self.color.contrast.withOpacity(
-      self.isEnabled
-      ? 1.0
-      : ComponentsKitConfig.shared.layout.disabledOpacity
-    )
+    return self.color.contrast.enabled(self.isEnabled)
   }
   var titleColor: UniversalColor {
-    return Palette.Text.primary.withOpacity(
-      self.isEnabled
-      ? 1.0
-      : ComponentsKitConfig.shared.layout.disabledOpacity
-    )
+    return .foreground.enabled(self.isEnabled)
   }
   var borderColor: UniversalColor {
-    return .universal(.uiColor(.lightGray)).withOpacity(
-      self.isEnabled
-      ? 1.0
-      : ComponentsKitConfig.shared.layout.disabledOpacity
-    )
+    return .divider
   }
   var borderWidth: CGFloat {
     return 2.0

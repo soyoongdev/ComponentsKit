@@ -40,15 +40,14 @@ struct ComponentColorPicker: View {
   var body: some View {
     Picker("Color", selection: self.$selection) {
       Text("Primary").tag(ComponentColor.primary)
-      Text("Secondary").tag(ComponentColor.secondary)
       Text("Accent").tag(ComponentColor.accent)
       Text("Success").tag(ComponentColor.success)
       Text("Warning").tag(ComponentColor.warning)
       Text("Danger").tag(ComponentColor.danger)
       Text("Custom").tag(ComponentColor(
         main: .universal(.uiColor(.systemPurple)),
-        contrast: .universal(.uiColor(.systemYellow)))
-      )
+        contrast: .universal(.uiColor(.systemYellow))
+      ))
     }
   }
 }
@@ -62,15 +61,14 @@ struct ComponentOptionalColorPicker: View {
     Picker("Color", selection: self.$selection) {
       Text("Default").tag(Optional<ComponentColor>.none)
       Text("Primary").tag(ComponentColor.primary)
-      Text("Secondary").tag(ComponentColor.secondary)
       Text("Accent").tag(ComponentColor.accent)
       Text("Success").tag(ComponentColor.success)
       Text("Warning").tag(ComponentColor.warning)
       Text("Danger").tag(ComponentColor.danger)
       Text("Custom").tag(ComponentColor(
         main: .universal(.uiColor(.systemPurple)),
-        contrast: .universal(.uiColor(.systemYellow)))
-      )
+        contrast: .universal(.uiColor(.systemYellow))
+      ))
     }
   }
 }
@@ -173,7 +171,6 @@ struct UniversalColorPicker: View {
   var body: some View {
     Picker(self.title, selection: self.$selection) {
       Text("Primary").tag(UniversalColor.primary)
-      Text("Secondary").tag(UniversalColor.secondary)
       Text("Accent").tag(UniversalColor.accent)
       Text("Success").tag(UniversalColor.success)
       Text("Warning").tag(UniversalColor.warning)

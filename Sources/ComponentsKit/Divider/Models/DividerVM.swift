@@ -9,8 +9,8 @@ public struct DividerVM: ComponentVM {
 
   /// The color of the divider.
   ///
-  /// Defaults to `Palette.Base.divider`.
-  public var color: UniversalColor = Palette.Base.divider
+  /// Defaults to `.divider`.
+  public var color: ComponentColor?
 
   /// The predefined size of the divider, which affects its thickness.
   ///
@@ -24,6 +24,9 @@ public struct DividerVM: ComponentVM {
 // MARK: - Shared Helpers
 
 extension DividerVM {
+  var lineColor: UniversalColor {
+    return self.color?.background ?? .divider
+  }
   var lineSize: CGFloat {
     switch self.size {
     case .small:

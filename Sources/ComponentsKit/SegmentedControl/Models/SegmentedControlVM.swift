@@ -52,26 +52,14 @@ public struct SegmentedControlVM<ID: Hashable>: ComponentVM {
 
 extension SegmentedControlVM {
   var backgroundColor: UniversalColor {
-    return .init(
-      light: .rgba(r: 244, g: 244, b: 245, a: 1.0),
-      dark: .rgba(r: 39, g: 39, b: 42, a: 1.0)
-    )
-    .withOpacity(
-      self.isEnabled
-      ? 1.0
-      : ComponentsKitConfig.shared.layout.disabledOpacity
-    )
+    return .content1
   }
   var selectedSegmentColor: UniversalColor {
-    let selectedSegmentColor = self.color?.main ?? .init(
-      light: .rgba(r: 255, g: 255, b: 255, a: 1.0),
-      dark: .rgba(r: 62, g: 62, b: 69, a: 1.0)
+    let color = self.color?.main ?? .themed(
+      light: UniversalColor.white.light,
+      dark: UniversalColor.content2.dark
     )
-    return selectedSegmentColor.withOpacity(
-      self.isEnabled
-      ? 1.0
-      : ComponentsKitConfig.shared.layout.disabledOpacity
-    )
+    return color.enabled(self.isEnabled)
   }
   func item(for id: ID) -> SegmentedControlItemVM<ID>? {
     return self.items.first(where: { $0.id == id })
@@ -79,25 +67,11 @@ extension SegmentedControlVM {
   func foregroundColor(id: ID, selectedId: ID) -> UniversalColor {
     let isItemEnabled = self.item(for: id)?.isEnabled == true
     let isSelected = id == selectedId && isItemEnabled
-    let defaultColor = UniversalColor(
-      light: .rgba(r: 0, g: 0, b: 0, a: 1.0),
-      dark: .rgba(r: 255, g: 255, b: 255, a: 1.0)
-    )
 
-    guard isSelected else {
-      return defaultColor.withOpacity(
-        self.isEnabled && isItemEnabled
-        ? 0.7
-        : 0.7 * ComponentsKitConfig.shared.layout.disabledOpacity
-      )
-    }
-
-    let foregroundColor = self.color?.contrast ?? defaultColor
-    return foregroundColor.withOpacity(
-      self.isEnabled
-      ? 1.0
-      : ComponentsKitConfig.shared.layout.disabledOpacity
-    )
+    let color = isSelected
+    ? self.color?.contrast ?? .foreground
+    : .secondaryForeground
+    return color.enabled(self.isEnabled && isItemEnabled)
   }
   var horizontalInnerPaddings: CGFloat? {
     guard !self.isFullWidth else {

@@ -262,6 +262,7 @@ open class UKCheckbox: UIView, UKComponent {
     self.checkboxContainer.layer.borderColor = self.isSelected
     ? UIColor.clear.cgColor
     : self.model.borderColor.uiColor.cgColor
+    Self.Style.checkmarkLayer(self.checkmarkLayer, model: self.model)
   }
 }
 
@@ -275,7 +276,7 @@ extension UKCheckbox {
       stackView.alignment = .center
     }
     static func titleLabel(_ label: UILabel, model: Model) {
-      label.textColor = Palette.Text.primary.uiColor
+      label.textColor = model.titleColor.uiColor
       label.numberOfLines = 0
       label.text = model.title
       label.textColor = model.titleColor.uiColor

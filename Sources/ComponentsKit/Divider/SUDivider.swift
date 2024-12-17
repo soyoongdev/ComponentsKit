@@ -22,7 +22,7 @@ public struct SUDivider: View {
 
   public var body: some View {
     Rectangle()
-      .fill(self.model.color.color(for: self.colorScheme))
+      .fill(self.model.lineColor.color(for: self.colorScheme))
       .frame(
         maxWidth: self.model.orientation == .vertical ? self.model.lineSize : nil,
         maxHeight: self.model.orientation == .horizontal ? self.model.lineSize : nil
