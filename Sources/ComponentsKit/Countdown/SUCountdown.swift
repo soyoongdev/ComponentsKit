@@ -4,13 +4,13 @@ import SwiftUI
 public struct SUCountdown: View {
   // MARK: - Properties
 
-  /// The countdown manager handling the countdown logic.
-  @StateObject private var manager = CountdownManager()
-
   /// A model that defines the appearance properties.
   public var model: CountdownVM
 
-  @State private var width: CGFloat = 70
+  @State private var timeWidth: CGFloat = 70
+
+  /// The countdown manager handling the countdown logic.
+  @StateObject private var manager = CountdownManager()
 
   @Environment(\.colorScheme) private var colorScheme
 
@@ -60,23 +60,26 @@ public struct SUCountdown: View {
     .onChange(of: self.model.until) { newDate in
       self.manager.stop()
       self.manager.start(until: newDate)
-      self.calculateWidth(model: self.model)
     }
     .onChange(of: self.model) { newValue in
-      self.calculateWidth(model: newValue)
+      if newValue.shouldRecalculateWidth(self.model) {
+        self.calculateWidth(model: newValue)
+      }
     }
     .onDisappear {
       self.manager.stop()
     }
   }
 
-  @ViewBuilder
-  private func styledTime(value: Int, unit: CountdownHelpers.Unit) -> some View {
-    let nsAttrStr = self.model.unitText(value: value, unit: unit)
-    let attrString = AttributedString(nsAttrStr)
-    return Text(attrString)
+  private func styledTime(
+    value: Int,
+    unit: CountdownHelpers.Unit
+  ) -> some View {
+    let attributedString = AttributedString(self.model.timeText(value: value, unit: unit))
+    return Text(attributedString)
       .multilineTextAlignment(.center)
-      .frame(width: self.width)
+      .frame(width: self.timeWidth)
+      .monospacedDigit()
   }
 
   private var colonView: some View {
@@ -85,15 +88,18 @@ public struct SUCountdown: View {
       .foregroundColor(.gray)
   }
 
-  private func lightStyledTime(value: Int, unit: CountdownHelpers.Unit) -> some
-  View {
+  private func lightStyledTime(
+    value: Int,
+    unit: CountdownHelpers.Unit
+  ) -> some View {
     return self.styledTime(value: value, unit: unit)
-      .padding(.horizontal, 4)
-      .frame(height: self.model.height)
+      .frame(minHeight: self.model.height)
+      .frame(minWidth: self.model.lightBackgroundMinWidth)
       .background(RoundedRectangle(cornerRadius: 8)
         .fill(self.model.backgroundColor.color(for: self.colorScheme))
       )
   }
+
   private func calculateWidth(model: CountdownVM) {
     let values: [(Int, CountdownHelpers.Unit)] = [
       (self.manager.days, .days),
@@ -103,20 +109,10 @@ public struct SUCountdown: View {
     ]
 
     let widths = values.map { value, unit -> CGFloat in
-      let nsAttrStr = model.unitText(value: value, unit: unit)
-      return CountdownWidthCalculator.preferredWidth(for: nsAttrStr, model: model)
+      let attributedString = model.timeText(value: value, unit: unit)
+      return CountdownWidthCalculator.preferredWidth(for: attributedString, model: model)
     }
 
-    if let newMax = widths.max() {
-      self.width = newMax
-    } else {
-      self.width = 55
-    }
-  }
-}
-
-extension View {
-  func eraseToAnyView() -> AnyView {
-    AnyView(self)
+    self.timeWidth = (widths.max() ?? self.model.defaultMinWidth) + self.model.horizontalPadding * 2
   }
 }

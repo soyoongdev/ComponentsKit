@@ -5,17 +5,6 @@ import UIKit
 struct CountdownPreview: View {
   @State private var model = CountdownVM()
 
-  enum BaseStyle: String, CaseIterable {
-    case plain, light
-  }
-
-  enum PositionOption: String, CaseIterable {
-    case none, bottom, trailing
-  }
-
-  @State private var selectedBaseStyle: BaseStyle = .light
-  @State private var selectedUnitsPosition: UnitsStyle = .bottom
-
   var body: some View {
     VStack {
       PreviewWrapper(title: "SwiftUI") {
@@ -25,24 +14,15 @@ struct CountdownPreview: View {
         ComponentOptionalColorPicker(selection: self.$model.color)
         FontPicker(selection: self.$model.font)
         SizePicker(selection: self.$model.size)
-
-        Picker("Units Position", selection: $selectedUnitsPosition) {
-          Text("None").tag(UnitsStyle.hidden)
-          Text("Bottom").tag(UnitsStyle.bottom)
-          Text("Trailing").tag(UnitsStyle.trailing)
+        Picker("Units Position", selection: self.$model.unitsPosition) {
+          Text("None").tag(CountdownVM.UnitsStyle.hidden)
+          Text("Bottom").tag(CountdownVM.UnitsStyle.bottom)
+          Text("Trailing").tag(CountdownVM.UnitsStyle.trailing)
         }
-        .onChange(of: self.selectedUnitsPosition) { _ in
-          self.updateModel()
+        Picker("Style", selection: self.$model.style) {
+          Text("Plain").tag(CountdownVM.Style.plain)
+          Text("Light").tag(CountdownVM.Style.light)
         }
-
-        Picker("Style", selection: $selectedBaseStyle) {
-          Text("Plain").tag(BaseStyle.plain)
-          Text("Light").tag(BaseStyle.light)
-        }
-        .onChange(of: self.selectedBaseStyle) { _ in
-          self.updateModel()
-        }
-
         Picker("Locale", selection: self.$model.locale) {
           Text("Current").tag(Locale.current)
           Text("EN").tag(Locale(identifier: "en"))
@@ -56,24 +36,10 @@ struct CountdownPreview: View {
           Text("HI").tag(Locale(identifier: "hi"))
           Text("PT").tag(Locale(identifier: "pt"))
         }
-
-        DatePicker("Until Date", selection: $model.until, in: Date()..., displayedComponents: [.date, .hourAndMinute])
+        DatePicker("Until Date", selection: self.$model.until, in: Date()..., displayedComponents: [.date, .hourAndMinute])
           .datePickerStyle(.compact)
       }
     }
-    .onAppear {
-      self.updateModel()
-    }
-  }
-
-  private func updateModel() {
-    switch self.selectedBaseStyle {
-    case .plain:
-      self.model.style = .plain
-    case .light:
-      self.model.style = .light
-    }
-    self.model.unitsPosition = self.selectedUnitsPosition
   }
 }
 

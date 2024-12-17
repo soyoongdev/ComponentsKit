@@ -16,7 +16,7 @@ public struct CountdownVM: ComponentVM {
   /// The visual style of the countdown component.
   ///
   /// Defaults to `.light`.
-  public var style: CountdownStyle = .light
+  public var style: Style = .light
 
   /// The position of the units relative to the countdown numbers.
   ///
@@ -97,10 +97,30 @@ extension CountdownVM {
     case .large: 60
     }
   }
+  var defaultMinWidth: CGFloat {
+    return switch self.size {
+    case .small: 40
+    case .medium: 50
+    case .large: 55
+    }
+  }
+  var lightBackgroundMinWidth: CGFloat {
+    return switch self.size {
+    case .small: 45
+    case .medium: 55
+    case .large: 60
+    }
+  }
+  var horizontalPadding: CGFloat {
+    return 4
+  }
 }
 
 extension CountdownVM {
-  func localizedUnit(_ unit: CountdownHelpers.Unit, length: CountdownHelpers.UnitLength) -> String {
+  func localizedUnit(
+    _ unit: CountdownHelpers.Unit,
+    length: CountdownHelpers.UnitLength
+  ) -> String {
     let localization = self.localization[self.locale]
     ?? UnitsLocalization.defaultLocalizations[self.locale]
     ?? UnitsLocalization.localizationFallback
@@ -128,15 +148,17 @@ extension CountdownVM {
     }
   }
 
-  func unitText(value: Int, unit: CountdownHelpers.Unit) -> NSAttributedString {
-    let mainUIFont = self.preferredFont.uiFont
-    let mainAttributes: [NSAttributedString.Key: Any] = [
-      .font: mainUIFont,
-      .foregroundColor: self.foregroundColor
+  func timeText(
+    value: Int,
+    unit: CountdownHelpers.Unit
+  ) -> NSAttributedString {
+    let mainTextAttributes: [NSAttributedString.Key: Any] = [
+      .font: self.preferredFont.uiFont,
+      .foregroundColor: self.foregroundColor.uiColor
     ]
 
     let formattedValue = String(format: "%02d", value)
-    let result = NSMutableAttributedString(string: formattedValue, attributes: mainAttributes)
+    let result = NSMutableAttributedString(string: formattedValue, attributes: mainTextAttributes)
 
     switch self.unitsPosition {
     case .hidden:
@@ -144,25 +166,30 @@ extension CountdownVM {
 
     case .trailing:
       let localized = self.localizedUnit(unit, length: .short)
-      let trailingStr = " " + localized
+      let trailingString = " " + localized
       let trailingAttributes: [NSAttributedString.Key: Any] = [
-        .font: mainUIFont,
-        .foregroundColor: self.foregroundColor
+        .font: self.preferredFont.uiFont,
+        .foregroundColor: self.foregroundColor.uiColor
       ]
-      result.append(NSAttributedString(string: trailingStr, attributes: trailingAttributes))
+      result.append(NSAttributedString(string: trailingString, attributes: trailingAttributes))
       return result
 
     case .bottom:
       let localized = self.localizedUnit(unit, length: .long)
-
-      result.append(NSAttributedString(string: "\n", attributes: mainAttributes))
-
-      let unitUIFont = self.unitFont.uiFont
-      let unitAttributes: [NSAttributedString.Key: Any] = [
-        .font: unitUIFont,
+      let bottomString = "\n" + localized
+      let bottomAttributes: [NSAttributedString.Key: Any] = [
+        .font: self.unitFont.uiFont,
+        .foregroundColor: self.foregroundColor.uiColor
       ]
-      result.append(NSAttributedString(string: localized, attributes: unitAttributes))
+      result.append(NSAttributedString(string: bottomString, attributes: bottomAttributes))
       return result
     }
+  }
+
+  func shouldRecalculateWidth(_ oldModel: Self) -> Bool {
+    return self.unitsPosition != oldModel.unitsPosition
+    || self.style != oldModel.style
+    || self.preferredFont != oldModel.preferredFont
+    || self.size != oldModel.size
   }
 }
