@@ -185,11 +185,30 @@ extension CountdownVM {
       return result
     }
   }
+}
 
+extension CountdownVM {
   func shouldRecalculateWidth(_ oldModel: Self) -> Bool {
     return self.unitsPosition != oldModel.unitsPosition
     || self.style != oldModel.style
     || self.preferredFont != oldModel.preferredFont
     || self.size != oldModel.size
+    || self.locale != oldModel.locale
+  }
+
+  func timeWidth(manager: CountdownManager) -> CGFloat {
+    let values: [(Int, CountdownHelpers.Unit)] = [
+      (manager.days, .days),
+      (manager.hours, .hours),
+      (manager.minutes, .minutes),
+      (manager.seconds, .seconds)
+    ]
+
+    let widths = values.map { value, unit -> CGFloat in
+      let attributedString = self.timeText(value: value, unit: unit)
+      return CountdownWidthCalculator.preferredWidth(for: attributedString, model: self)
+    }
+
+    return (widths.max() ?? self.defaultMinWidth) + self.horizontalPadding * 2
   }
 }

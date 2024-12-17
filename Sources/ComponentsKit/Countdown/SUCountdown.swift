@@ -55,7 +55,7 @@ public struct SUCountdown: View {
     }
     .onAppear {
       self.manager.start(until: self.model.until)
-      self.calculateWidth(model: self.model)
+      self.timeWidth = self.model.timeWidth(manager: self.manager)
     }
     .onChange(of: self.model.until) { newDate in
       self.manager.stop()
@@ -63,13 +63,15 @@ public struct SUCountdown: View {
     }
     .onChange(of: self.model) { newValue in
       if newValue.shouldRecalculateWidth(self.model) {
-        self.calculateWidth(model: newValue)
+        self.timeWidth = newValue.timeWidth(manager: self.manager)
       }
     }
     .onDisappear {
       self.manager.stop()
     }
   }
+
+  // MARK: - Subviews
 
   private func styledTime(
     value: Int,
@@ -98,21 +100,5 @@ public struct SUCountdown: View {
       .background(RoundedRectangle(cornerRadius: 8)
         .fill(self.model.backgroundColor.color(for: self.colorScheme))
       )
-  }
-
-  private func calculateWidth(model: CountdownVM) {
-    let values: [(Int, CountdownHelpers.Unit)] = [
-      (self.manager.days, .days),
-      (self.manager.hours, .hours),
-      (self.manager.minutes, .minutes),
-      (self.manager.seconds, .seconds)
-    ]
-
-    let widths = values.map { value, unit -> CGFloat in
-      let attributedString = model.timeText(value: value, unit: unit)
-      return CountdownWidthCalculator.preferredWidth(for: attributedString, model: model)
-    }
-
-    self.timeWidth = (widths.max() ?? self.model.defaultMinWidth) + self.model.horizontalPadding * 2
   }
 }
