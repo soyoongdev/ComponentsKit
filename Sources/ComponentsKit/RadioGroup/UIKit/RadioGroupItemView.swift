@@ -57,6 +57,12 @@ public class RadioGroupItemView<ID: Hashable>: UIView {
     self.addSubview(self.radioView)
     self.radioView.addSubview(self.innerCircle)
     self.addSubview(self.titleLabel)
+
+    if #available(iOS 17.0, *) {
+      self.registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (view: Self, _: UITraitCollection) in
+        view.handleTraitChanges()
+      }
+    }
   }
 
   // MARK: Style
@@ -150,6 +156,26 @@ public class RadioGroupItemView<ID: Hashable>: UIView {
         self.innerCircle.alpha = 0
       },
       completion: nil
+    )
+  }
+
+  // MARK: UIView Methods
+
+  public override func traitCollectionDidChange(
+    _ previousTraitCollection: UITraitCollection?
+  ) {
+    super.traitCollectionDidChange(previousTraitCollection)
+    self.handleTraitChanges()
+  }
+
+  // MARK: Helpers
+
+  @objc private func handleTraitChanges() {
+    Self.Style.radioView(
+      self.radioView,
+      itemVM: self.itemVM,
+      groupVM: self.groupVM,
+      isSelected: self.isSelected
     )
   }
 }
