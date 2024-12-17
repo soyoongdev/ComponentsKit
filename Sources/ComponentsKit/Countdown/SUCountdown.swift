@@ -26,8 +26,8 @@ public struct SUCountdown: View {
   // MARK: - Body
 
   public var body: some View {
-    HStack(alignment: .top, spacing: self.model.style == .light ? 10 : 6) {
-      switch (self.model.style, self.model.unitsPosition) {
+    HStack(alignment: .top, spacing: self.model.spacing) {
+      switch (self.model.style, self.model.unitsStyle) {
       case (.plain, .bottom):
         self.styledTime(value: self.manager.days, unit: .days)
         colonView

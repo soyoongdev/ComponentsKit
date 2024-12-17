@@ -18,10 +18,10 @@ public struct CountdownVM: ComponentVM {
   /// Defaults to `.light`.
   public var style: Style = .light
 
-  /// The position of the units relative to the countdown numbers.
+  /// The visual style of the units.
   ///
   /// Defaults to `.bottom`.
-  public var unitsPosition: UnitsStyle = .bottom
+  public var unitsStyle: UnitsStyle = .bottom
 
   /// The target date until which the countdown runs.
   public var until: Date = Date().addingTimeInterval(3600 * 85)
@@ -114,6 +114,14 @@ extension CountdownVM {
   var horizontalPadding: CGFloat {
     return 4
   }
+  var spacing: CGFloat {
+    switch self.style {
+    case .light:
+      return 10
+    case .plain:
+      return 6
+    }
+  }
 }
 
 extension CountdownVM {
@@ -160,7 +168,7 @@ extension CountdownVM {
     let formattedValue = String(format: "%02d", value)
     let result = NSMutableAttributedString(string: formattedValue, attributes: mainTextAttributes)
 
-    switch self.unitsPosition {
+    switch self.unitsStyle {
     case .hidden:
       return result
 
@@ -189,7 +197,7 @@ extension CountdownVM {
 
 extension CountdownVM {
   func shouldRecalculateWidth(_ oldModel: Self) -> Bool {
-    return self.unitsPosition != oldModel.unitsPosition
+    return self.unitsStyle != oldModel.unitsStyle
     || self.style != oldModel.style
     || self.preferredFont != oldModel.preferredFont
     || self.size != oldModel.size
