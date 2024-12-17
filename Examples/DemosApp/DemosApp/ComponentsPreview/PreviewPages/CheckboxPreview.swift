@@ -12,12 +12,11 @@ struct CheckboxPreview: View {
   var body: some View {
     VStack {
       PreviewWrapper(title: "UIKit") {
-        UKComponentPreview(model: self.model) {
-          UKCheckbox(
-            initialValue: false,
-            model: self.model
-          )
-        }
+        UKCheckbox(
+          initialValue: false,
+          model: self.model
+        )
+        .preview
       }
       PreviewWrapper(title: "SwiftUI") {
         SUCheckbox(

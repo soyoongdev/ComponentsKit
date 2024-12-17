@@ -4,21 +4,24 @@ import SwiftUI
 import UIKit
 
 struct InputFieldPreview: View {
-  @State private var model = InputFieldVM {
-    $0.title = "Title"
-  }
+  @State private var model = Self.initialModel
 
   @State private var text: String = ""
   @FocusState private var isFocused: Bool
 
-  @ObservedObject private var inputField = PreviewInputField()
+  @ObservedObject private var inputField = PreviewInputField(model: Self.initialModel)
 
   var body: some View {
     VStack {
       PreviewWrapper(title: "UIKit") {
-        UKComponentPreview(model: self.model) {
-          self.inputField
-        }
+        self.inputField
+          .preview
+          .onAppear {
+            self.inputField.model = Self.initialModel
+          }
+          .onChange(of: self.model) { newValue in
+            self.inputField.model = newValue
+          }
       }
       PreviewWrapper(title: "SwiftUI") {
         SUInputField(
@@ -72,6 +75,12 @@ struct InputFieldPreview: View {
           }
         }
       }
+    }
+  }
+
+  private static var initialModel: InputFieldVM {
+    return .init {
+      $0.title = "Title"
     }
   }
 }

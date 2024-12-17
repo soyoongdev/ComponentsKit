@@ -5,7 +5,7 @@ public struct DividerVM: ComponentVM {
   /// The orientation of the divider (horizontal or vertical).
   ///
   /// Defaults to `.horizontal`.
-  public var orientation: DividerOrientation = .horizontal
+  public var orientation: Orientation = .horizontal
 
   /// The color of the divider.
   ///
