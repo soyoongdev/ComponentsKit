@@ -91,8 +91,8 @@ extension InputFieldVM {
   var height: CGFloat {
     return switch self.size {
     case .small: 40
-    case .medium: 60
-    case .large: 80
+    case .medium: 48
+    case .large: 56
     }
   }
   var horizontalPadding: CGFloat {

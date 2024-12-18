@@ -92,8 +92,17 @@ extension SegmentedControlVM {
   var height: CGFloat {
     return switch self.size {
     case .small: 36
-    case .medium: 50
-    case .large: 70
+    case .medium: 44
+    case .large: 52
+    }
+  }
+  func selectedSegmentCornerRadius(for height: CGFloat = 10_000) -> CGFloat {
+    let componentRadius = self.cornerRadius.value(for: height)
+    switch self.cornerRadius {
+    case .none, .full, .custom:
+      return componentRadius
+    case .small, .medium, .large:
+      return max(0, componentRadius - self.outerPaddings / 2)
     }
   }
   func preferredFont(for id: ID) -> UniversalFont {

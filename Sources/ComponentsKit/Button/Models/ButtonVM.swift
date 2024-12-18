@@ -114,15 +114,15 @@ extension ButtonVM {
   var height: CGFloat {
     return switch self.size {
     case .small: 36
-    case .medium: 50
-    case .large: 70
+    case .medium: 44
+    case .large: 52
     }
   }
   var horizontalPadding: CGFloat {
     return switch self.size {
-    case .small: 8
-    case .medium: 12
-    case .large: 16
+    case .small: 16
+    case .medium: 20
+    case .large: 24
     }
   }
 }
