@@ -50,9 +50,9 @@ public struct Layout: Initializable, Updatable {
     }
   }
 
-  // MARK: Font
+  // MARK: Fonts
 
-  public struct Font {
+  public struct FontSet {
     public var small: UniversalFont
     public var medium: UniversalFont
     public var large: UniversalFont
@@ -64,13 +64,25 @@ public struct Layout: Initializable, Updatable {
     }
   }
 
+  public struct Typography {
+    public var headline: FontSet
+    public var body: FontSet
+    public var button: FontSet
+
+    public init(headline: FontSet, body: FontSet, button: FontSet) {
+      self.headline = headline
+      self.body = body
+      self.button = button
+    }
+  }
+
   // MARK: Properties
 
   public var disabledOpacity: CGFloat = 0.5
   public var componentRadius: Radius = .init(
     small: 10.0,
-    medium: 14.0,
-    large: 18.0
+    medium: 12.0,
+    large: 16.0
   )
   public var borderWidth: BorderWidth = .init(
     small: 1.0,
@@ -82,10 +94,22 @@ public struct Layout: Initializable, Updatable {
     medium: 0.98,
     large: 0.95
   )
-  public var componentFont: Font = .init(
-    small: .system(size: 14, weight: .regular),
-    medium: .system(size: 18, weight: .regular),
-    large: .system(size: 22, weight: .regular)
+  public var typography: Typography = .init(
+    headline: .init(
+      small: .system(size: 14, weight: .semibold),
+      medium: .system(size: 20, weight: .semibold),
+      large: .system(size: 28, weight: .semibold)
+    ),
+    body: .init(
+      small: .system(size: 14, weight: .regular),
+      medium: .system(size: 16, weight: .regular),
+      large: .system(size: 18, weight: .regular)
+    ),
+    button: .init(
+      small: .system(size: 14, weight: .medium),
+      medium: .system(size: 16, weight: .medium),
+      large: .system(size: 20, weight: .medium)
+    )
   )
 
   public init() {}

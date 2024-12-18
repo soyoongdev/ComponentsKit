@@ -34,7 +34,7 @@ struct CheckboxPreview: View {
         CornerRadiusPicker(selection: self.$model.cornerRadius) {
           Text("Custom: 2px").tag(ComponentRadius.custom(2))
         }
-        FontPicker(selection: self.$model.font)
+        BodyFontPicker(selection: self.$model.font)
         Toggle("Enabled", isOn: self.$model.isEnabled)
         SizePicker(selection: self.$model.size)
       }

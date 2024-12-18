@@ -22,7 +22,7 @@ struct ButtonPreview: View {
         CornerRadiusPicker(selection: self.$model.cornerRadius) {
           Text("Custom: 20px").tag(ComponentRadius.custom(20))
         }
-        FontPicker(selection: self.$model.font)
+        ButtonFontPicker(selection: self.$model.font)
         Toggle("Enabled", isOn: self.$model.isEnabled)
         Toggle("Full Width", isOn: self.$model.isFullWidth)
         SizePicker(selection: self.$model.size)

@@ -91,17 +91,45 @@ struct CornerRadiusPicker<Custom: View>: View {
   }
 }
 
-// MARK: - FontPicker
+// MARK: - FontPickers
 
-struct FontPicker: View {
+struct BodyFontPicker: View {
   @Binding var selection: UniversalFont?
 
   var body: some View {
     Picker("Font", selection: self.$selection) {
       Text("Default").tag(Optional<UniversalFont>.none)
-      Text("Small").tag(UniversalFont.Component.small)
-      Text("Medium").tag(UniversalFont.Component.medium)
-      Text("Large").tag(UniversalFont.Component.large)
+      Text("Small").tag(UniversalFont.smBody)
+      Text("Medium").tag(UniversalFont.mdBody)
+      Text("Large").tag(UniversalFont.lgBody)
+      Text("Custom: system bold of size 18").tag(UniversalFont.system(size: 18, weight: .bold))
+    }
+  }
+}
+
+struct ButtonFontPicker: View {
+  @Binding var selection: UniversalFont?
+  
+  var body: some View {
+    Picker("Font", selection: self.$selection) {
+      Text("Default").tag(Optional<UniversalFont>.none)
+      Text("Small").tag(UniversalFont.smButton)
+      Text("Medium").tag(UniversalFont.mdButton)
+      Text("Large").tag(UniversalFont.lgButton)
+      Text("Custom: system bold of size 18").tag(UniversalFont.system(size: 18, weight: .bold))
+    }
+  }
+}
+
+struct HeadlineFontPicker: View {
+  @Binding var selection: UniversalFont?
+
+  var body: some View {
+    Picker("Font", selection: self.$selection) {
+      Text("Default").tag(Optional<UniversalFont>.none)
+      Text("Small").tag(UniversalFont.smHeadline)
+      Text("Medium").tag(UniversalFont.mdHeadline)
+      Text("Large").tag(UniversalFont.lgHeadline)
       Text("Custom: system bold of size 18").tag(UniversalFont.system(size: 18, weight: .bold))
     }
   }

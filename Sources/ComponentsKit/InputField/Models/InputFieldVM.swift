@@ -81,11 +81,11 @@ extension InputFieldVM {
 
     switch self.size {
     case .small:
-      return UniversalFont.Component.medium
+      return .smBody
     case .medium:
-      return UniversalFont.Component.medium
+      return .mdBody
     case .large:
-      return UniversalFont.Component.large
+      return .lgBody
     }
   }
   var height: CGFloat {

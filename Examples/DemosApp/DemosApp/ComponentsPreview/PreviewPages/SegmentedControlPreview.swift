@@ -46,7 +46,7 @@ struct SegmentedControlPreview: View {
           Text("Custom: 4px").tag(ComponentRadius.custom(4))
         }
         Toggle("Enabled", isOn: self.$model.isEnabled)
-        FontPicker(selection: self.$model.font)
+        BodyFontPicker(selection: self.$model.font)
         Toggle("Full Width", isOn: self.$model.isFullWidth)
         SizePicker(selection: self.$model.size)
       }

@@ -38,7 +38,7 @@ struct TextInputPreviewPreview: View {
           Text("Custom: 20px").tag(ComponentRadius.custom(20))
         }
         Toggle("Enabled", isOn: self.$model.isEnabled)
-        FontPicker(selection: self.$model.font)
+        BodyFontPicker(selection: self.$model.font)
         KeyboardTypePicker(selection: self.$model.keyboardType)
         Picker("Max Rows", selection: self.$model.maxRows) {
           Text("2 Rows").tag(2)

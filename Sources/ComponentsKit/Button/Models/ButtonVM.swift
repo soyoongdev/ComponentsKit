@@ -104,11 +104,11 @@ extension ButtonVM {
 
     switch self.size {
     case .small:
-      return UniversalFont.Component.small
+      return .smButton
     case .medium:
-      return UniversalFont.Component.medium
+      return .mdButton
     case .large:
-      return UniversalFont.Component.large
+      return .mdButton
     }
   }
   var height: CGFloat {
