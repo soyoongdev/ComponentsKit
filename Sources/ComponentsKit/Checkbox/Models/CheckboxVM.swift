@@ -68,11 +68,11 @@ extension CheckboxVM {
   var checkboxSide: CGFloat {
     switch self.size {
     case .small:
-      return 18.0
+      return 16.0
     case .medium:
-      return 24.0
+      return 20.0
     case .large:
-      return 32.0
+      return 24.0
     }
   }
   var checkboxCornerRadius: CGFloat {
