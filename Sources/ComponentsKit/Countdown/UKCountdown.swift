@@ -99,16 +99,16 @@ public class UKCountdown: UIView, UKComponent {
     label.self.bottom()
     label.self.leading()
     label.self.trailing()
-    
+
     let minHeightConstraint = container.heightAnchor.constraint(greaterThanOrEqualToConstant: self.model.height)
     minHeightConstraint.isActive = true
-    
+
     if self.model.style == .light {
       let minWidthConstraint = container.widthAnchor.constraint(greaterThanOrEqualToConstant: self.model.lightBackgroundMinWidth)
       minWidthConstraint.isActive = true
     }
   }
-  
+
   private func applyLayoutAccordingToStyle() {
     self.stackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
     self.colonLabels.forEach { $0.removeFromSuperview() }
