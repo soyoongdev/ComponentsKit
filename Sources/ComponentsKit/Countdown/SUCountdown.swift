@@ -81,13 +81,12 @@ public struct SUCountdown: View {
     return Text(attributedString)
       .multilineTextAlignment(.center)
       .frame(width: self.timeWidth)
-      .monospacedDigit()
   }
 
   private var colonView: some View {
     Text(":")
       .font(self.model.preferredFont.font)
-      .foregroundColor(.gray)
+      .foregroundColor(self.model.colonColor.color(for: self.colorScheme))
   }
 
   private func lightStyledTime(

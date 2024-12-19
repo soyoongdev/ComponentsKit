@@ -90,6 +90,9 @@ extension CountdownVM {
     )
     return foregroundColor
   }
+  var colonColor: UniversalColor {
+    return self.foregroundColor.withOpacity(0.5)
+  }
   var height: CGFloat {
     return switch self.size {
     case .small: 45
@@ -218,5 +221,18 @@ extension CountdownVM {
     }
 
     return (widths.max() ?? self.defaultMinWidth) + self.horizontalPadding * 2
+  }
+}
+
+// MARK: - UIKit Helpers
+
+extension CountdownVM {
+  var isColumnLabelVisible: Bool {
+    switch self.style {
+    case .plain:
+      return true
+    case .light:
+      return false
+    }
   }
 }
