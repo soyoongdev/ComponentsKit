@@ -119,20 +119,14 @@ public class UKCountdown: UIView, UKComponent {
   // MARK: - Layout
 
   private func layout() {
+    self.stackView.horizontally()
     self.stackView.centerVertically()
-    self.stackView.centerHorizontally()
 
     self.stackView.topAnchor.constraint(
       greaterThanOrEqualTo: self.topAnchor
     ).isActive = true
     self.stackView.bottomAnchor.constraint(
       lessThanOrEqualTo: self.bottomAnchor
-    ).isActive = true
-    self.stackView.leadingAnchor.constraint(
-      greaterThanOrEqualTo: self.leadingAnchor
-    ).isActive = true
-    self.stackView.trailingAnchor.constraint(
-      lessThanOrEqualTo: self.trailingAnchor
     ).isActive = true
 
     self.daysConstraints.width = self.daysLabel.widthAnchor.constraint(
