@@ -7,6 +7,10 @@ struct CountdownPreview: View {
 
   var body: some View {
     VStack {
+      PreviewWrapper(title: "UIKit") {
+        UKCountdown(model: self.model)
+        .preview
+      }
       PreviewWrapper(title: "SwiftUI") {
         SUCountdown(model: self.model)
       }
