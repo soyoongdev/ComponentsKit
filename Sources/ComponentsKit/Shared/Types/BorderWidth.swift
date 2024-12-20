@@ -1,24 +1,25 @@
 import Foundation
 
-public struct BorderWidth: Hashable {
-  var value: CGFloat
-
-  init(_ value: CGFloat) {
-    self.value = value
-  }
+/// An enumeration that defines border thickness for components.
+public enum BorderWidth: Hashable {
+  /// A small border width.
+  case small
+  /// A medium border width.
+  case medium
+  /// A large border width.
+  case large
 }
 
 extension BorderWidth {
-  public static var small: Self {
-    return Self(ComponentsKitConfig.shared.layout.borderWidth.small)
-  }
-  public static var medium: Self {
-    return Self(ComponentsKitConfig.shared.layout.borderWidth.medium)
-  }
-  public static var large: Self {
-    return Self(ComponentsKitConfig.shared.layout.borderWidth.large)
-  }
-  public static func custom(_ value: CGFloat) -> Self {
-    return Self(value)
+  /// The numeric value of the border width as a `CGFloat`.
+  public var value: CGFloat {
+    switch self {
+    case .small:
+      return ComponentsKitConfig.shared.layout.borderWidth.small
+    case .medium:
+      return ComponentsKitConfig.shared.layout.borderWidth.medium
+    case .large:
+      return ComponentsKitConfig.shared.layout.borderWidth.large
+    }
   }
 }
