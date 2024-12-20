@@ -3,7 +3,7 @@ import Foundation
 /// A model that defines generic appearance properties that can be in any modal component.
 public protocol ModalVM: ComponentVM {
   /// The background color of the modal's content area.
-  var backgroundColor: UniversalColor { get set }
+  var backgroundColor: UniversalColor? { get set }
 
   /// A Boolean value indicating whether the modal should close when tapping on the overlay.
   var closesOnOverlayTap: Bool { get set }
@@ -28,4 +28,15 @@ public protocol ModalVM: ComponentVM {
 
   /// The transition duration of the modal's appearance and dismissal animations.
   var transition: ModalTransition { get set }
+}
+
+// MARK: - Helpers
+
+extension ModalVM {
+  var preferredBackgroundColor: UniversalColor {
+    return self.backgroundColor ?? .themed(
+      light: UniversalColor.background.light,
+      dark: UniversalColor.secondaryBackground.dark
+    )
+  }
 }

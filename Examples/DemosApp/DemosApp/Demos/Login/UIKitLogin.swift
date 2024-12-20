@@ -36,7 +36,7 @@ final class UIKitLogin: UIViewController {
   )
   private let titleLabel: UILabel = {
     let label = UILabel()
-    label.font = .systemFont(ofSize: 30, weight: .bold)
+    label.font = UniversalFont.lgHeadline.uiFont
     return label
   }()
   private let nameInput = UKInputField(
@@ -74,6 +74,7 @@ final class UIKitLogin: UIViewController {
     model: .init {
       $0.title = "Continue"
       $0.isFullWidth = true
+      $0.color = .primary
     }
   )
   private let loader = UKLoading()
@@ -157,7 +158,7 @@ final class UIKitLogin: UIViewController {
   }
 
   private func style() {
-    self.scrollView.backgroundColor = Palette.Base.background.uiColor
+    self.scrollView.backgroundColor = UniversalColor.background.uiColor
 
     self.stackView.setCustomSpacing(50, after: self.pageControl)
     self.stackView.setCustomSpacing(50, after: self.titleLabel)

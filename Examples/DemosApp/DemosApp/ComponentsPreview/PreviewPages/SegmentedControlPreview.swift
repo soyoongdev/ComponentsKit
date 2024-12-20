@@ -28,12 +28,11 @@ struct SegmentedControlPreview: View {
   var body: some View {
     VStack {
       PreviewWrapper(title: "UIKit") {
-        UKComponentPreview(model: self.model) {
-          UKSegmentedControl(
-            selectedId: .iPad,
-            model: self.model
-          )
-        }
+        UKSegmentedControl(
+          selectedId: .iPad,
+          model: self.model
+        )
+        .preview
       }
       PreviewWrapper(title: "SwiftUI") {
         SUSegmentedControl(
@@ -47,7 +46,7 @@ struct SegmentedControlPreview: View {
           Text("Custom: 4px").tag(ComponentRadius.custom(4))
         }
         Toggle("Enabled", isOn: self.$model.isEnabled)
-        FontPicker(selection: self.$model.font)
+        BodyFontPicker(selection: self.$model.font)
         Toggle("Full Width", isOn: self.$model.isFullWidth)
         SizePicker(selection: self.$model.size)
       }

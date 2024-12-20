@@ -8,29 +8,30 @@ struct DividerPreview: View {
   var body: some View {
     VStack {
       PreviewWrapper(title: "UIKit") {
-        UKComponentPreview(model: self.model) {
-          UKDivider(model: self.model)
-        }
+        UKDivider(model: self.model)
+          .preview
       }
       PreviewWrapper(title: "SwiftUI") {
         SUDivider(model: self.model)
       }
       Form {
+        Picker("Color", selection: self.$model.color) {
+          Text("Default").tag(Optional<ComponentColor>.none)
+          Text("Primary").tag(ComponentColor.primary)
+          Text("Accent").tag(ComponentColor.accent)
+          Text("Success").tag(ComponentColor.success)
+          Text("Warning").tag(ComponentColor.warning)
+          Text("Danger").tag(ComponentColor.danger)
+          Text("Custom").tag(ComponentColor(
+            main: .universal(.uiColor(.systemPurple)),
+            contrast: .universal(.uiColor(.systemYellow))
+          ))
+        }
         Picker("Orientation", selection: self.$model.orientation) {
-          Text("Horizontal").tag(DividerVM.DividerOrientation.horizontal)
-          Text("Vertical").tag(DividerVM.DividerOrientation.vertical)
+          Text("Horizontal").tag(DividerVM.Orientation.horizontal)
+          Text("Vertical").tag(DividerVM.Orientation.vertical)
         }
         SizePicker(selection: self.$model.size)
-        Picker("Color", selection: self.$model.color) {
-          Text("Default").tag(Palette.Base.divider)
-          Text("Primary").tag(UniversalColor.primary)
-          Text("Secondary").tag(UniversalColor.secondary)
-          Text("Accent").tag(UniversalColor.accent)
-          Text("Success").tag(UniversalColor.success)
-          Text("Warning").tag(UniversalColor.warning)
-          Text("Danger").tag(UniversalColor.danger)
-          Text("Custom").tag(UniversalColor.universal(.uiColor(.systemPurple)))
-        }
       }
     }
   }
