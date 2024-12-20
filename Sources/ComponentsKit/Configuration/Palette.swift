@@ -73,8 +73,14 @@ public struct Palette: Initializable, Updatable {
   )
   /// The success state color, used for indicating positive actions or statuses.
   public var success: ComponentColor = .init(
-    main: .universal(.hex("#3ED661")),
-    contrast: .universal(.hex("#FFFFFF")),
+    main: .themed(
+      light: .hex("#3ED661"),
+      dark: .hex("#1EC645")
+    ),
+    contrast: .themed(
+      light: .hex("#FFFFFF"),
+      dark: .hex("#0B0C0E")
+    ),
     background: .themed(
       light: .hex("#DAF6E1"),
       dark: .hex("#344B3C")
@@ -82,7 +88,10 @@ public struct Palette: Initializable, Updatable {
   )
   /// The warning state color, used for indicating caution or non-critical alerts.
   public var warning: ComponentColor = .init(
-    main: .universal(.hex("#FFC936")),
+    main: .themed(
+      light: .hex("#FFC936"),
+      dark: .hex("#F4B300")
+    ),
     contrast: .universal(.hex("#0B0C0E")),
     background: .themed(
       light: .hex("#FFF1CB"),
@@ -91,7 +100,10 @@ public struct Palette: Initializable, Updatable {
   )
   /// The danger state color, used for indicating errors, destructive actions, or critical alerts.
   public var danger: ComponentColor = .init(
-    main: .universal(.hex("#F03E53")),
+    main: .themed(
+      light: .hex("#F03E53"),
+      dark: .hex("#D22338")
+    ),
     contrast: .universal(.hex("#FFFFFF")),
     background: .themed(
       light: .hex("#FFE5E8"),
