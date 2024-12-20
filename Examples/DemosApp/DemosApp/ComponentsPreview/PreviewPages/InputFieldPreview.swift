@@ -17,6 +17,7 @@ struct InputFieldPreview: View {
         self.inputField
           .preview
           .onAppear {
+            self.inputField.text = ""
             self.inputField.model = Self.initialModel
           }
           .onChange(of: self.model) { newValue in
