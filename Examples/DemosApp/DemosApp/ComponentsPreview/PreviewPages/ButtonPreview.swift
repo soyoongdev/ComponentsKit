@@ -29,6 +29,7 @@ struct ButtonPreview: View {
         Picker("Style", selection: self.$model.style) {
           Text("Filled").tag(ButtonVM.Style.filled)
           Text("Plain").tag(ButtonVM.Style.plain)
+          Text("Light").tag(ButtonVM.Style.light)
           Text("Bordered with small border").tag(ButtonVM.Style.bordered(.small))
           Text("Bordered with medium border").tag(ButtonVM.Style.bordered(.medium))
           Text("Bordered with large border").tag(ButtonVM.Style.bordered(.large))
