@@ -21,8 +21,8 @@ struct PreviewWrapper<Content: View>: View {
             LinearGradient(
               gradient: Gradient(
                 colors: [
-                  Palette.Brand.blue.color(for: self.colorScheme),
-                  Palette.Brand.purple.color(for: self.colorScheme)
+                  UniversalColor.blue.color(for: self.colorScheme),
+                  UniversalColor.purple.color(for: self.colorScheme),
                 ]
               ),
               startPoint: .topLeading,
@@ -41,4 +41,17 @@ struct PreviewWrapper<Content: View>: View {
     }
     .padding(.horizontal)
   }
+}
+
+// MARK: - Colors
+
+extension UniversalColor {
+  fileprivate static let blue: Self = .themed(
+    light: .hex("#3684F8"),
+    dark: .hex("#0058DB")
+  )
+  fileprivate static let purple: Self = .themed(
+    light: .hex("#A920FD"),
+    dark: .hex("#7800C1")
+  )
 }

@@ -15,19 +15,18 @@ struct CenterModalPreview: View {
   var body: some View {
     VStack {
       PreviewWrapper(title: "UIKit") {
-        UKComponentPreview(model: .init { $0.title = "Show Modal" }) {
-          UKButton {
-            UIApplication.shared.topViewController?.present(
-              UKCenterModalController(
-                model: self.model,
-                header: ModalPreviewHelpers.ukHeader(hasHeader: self.hasHeader),
-                body: ModalPreviewHelpers.ukBody(body: self.contentBody),
-                footer: ModalPreviewHelpers.ukFooter(footer: self.contentFooter)
-              ),
-              animated: true
-            )
-          }
+        UKButton(model: .init { $0.title = "Show Modal" }) {
+          UIApplication.shared.topViewController?.present(
+            UKCenterModalController(
+              model: self.model,
+              header: ModalPreviewHelpers.ukHeader(hasHeader: self.hasHeader),
+              body: ModalPreviewHelpers.ukBody(body: self.contentBody),
+              footer: ModalPreviewHelpers.ukFooter(footer: self.contentFooter)
+            ),
+            animated: true
+          )
         }
+        .preview
       }
       PreviewWrapper(title: "SwiftUI") {
         SUButton(model: .init { $0.title = "Show Modal" }) {

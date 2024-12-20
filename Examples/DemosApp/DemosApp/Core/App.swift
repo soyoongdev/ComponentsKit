@@ -12,6 +12,9 @@ struct App: View {
           NavigationLinkWithTitle("Checkbox") {
             CheckboxPreview()
           }
+          NavigationLinkWithTitle("Countdown") {
+            CountdownPreview()
+          }
           NavigationLinkWithTitle("Divider") {
             DividerPreview()
           }
@@ -20,6 +23,9 @@ struct App: View {
           }
           NavigationLinkWithTitle("Loading") {
             LoadingPreview()
+          }
+          NavigationLinkWithTitle("Radio Group") {
+            RadioGroupPreview()
           }
           NavigationLinkWithTitle("Segmented Control") {
             SegmentedControlPreview()

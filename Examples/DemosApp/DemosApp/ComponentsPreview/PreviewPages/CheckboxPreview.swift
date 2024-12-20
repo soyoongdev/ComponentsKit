@@ -12,12 +12,11 @@ struct CheckboxPreview: View {
   var body: some View {
     VStack {
       PreviewWrapper(title: "UIKit") {
-        UKComponentPreview(model: self.model) {
-          UKCheckbox(
-            initialValue: false,
-            model: self.model
-          )
-        }
+        UKCheckbox(
+          initialValue: false,
+          model: self.model
+        )
+        .preview
       }
       PreviewWrapper(title: "SwiftUI") {
         SUCheckbox(
@@ -35,7 +34,7 @@ struct CheckboxPreview: View {
         CornerRadiusPicker(selection: self.$model.cornerRadius) {
           Text("Custom: 2px").tag(ComponentRadius.custom(2))
         }
-        FontPicker(selection: self.$model.font)
+        BodyFontPicker(selection: self.$model.font)
         Toggle("Enabled", isOn: self.$model.isEnabled)
         SizePicker(selection: self.$model.size)
       }

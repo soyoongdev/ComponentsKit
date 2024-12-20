@@ -81,7 +81,7 @@ inputField.resignFirstResponder()
 
 **Config**
 
-The library comes with predefined sizes and colors, but you can change these values to customize the appearance of your app. To do this, alter the config:
+The library comes with predefined fonts, sizes and colors, but you can change these values to customize the appearance of your app. To do this, alter the config:
 
 ```swift
 ComponentsKitConfig.shared.update {
@@ -89,7 +89,7 @@ ComponentsKitConfig.shared.update {
   $0.colors.primary = ...
   
   // Update layout
-  $0.layout.componentFont.medium = ...
+  $0.layout.componentRadius.medium = ...
 }
 ```
 
@@ -120,47 +120,43 @@ All colors from the config can be used within the app. For example:
 
 ```swift
 // in UIKit
-view.backgroundColor = Palette.Base.background.uiColor
+view.backgroundColor = UniversalColor.background.uiColor
 
 // in SwiftUI
 @Environment(\.colorScheme) var colorScheme
-Palette.Base.background.color(for: colorScheme)
+UniversalColor.background.color(for: colorScheme)
 ```
 
-If you want to use additional colors that are not included in the config, you can extend `Palette`:
+If you want to use additional colors that are not included in the config, you can extend `UniversalColor`:
 
 ```swift
-extension Palette {
-  enum MyColors {
-    static var special: UniversalColor {
-      if selectedTheme == .halloween {
-        return ...
-      } else {
-        return ...
-      }
+extension UniversalColor {
+  static var special: UniversalColor {
+    if selectedTheme == .halloween {
+      return ...
+    } else {
+      return ...
     }
   }
 }
 
 // Then in your class
 let view = UIView()
-view.backgroundColor = Palette.MyColors.special.uiColor
+view.backgroundColor = UniversalColor.special.uiColor
 ```
 
 **Extend Fonts**
 
-The config defines only three font sizes, but if you want to use semantic font values in your app, you can extend the `UniversalFont` struct:
+If you want to use additional fonts that are not included in the config, you can extend `UniversalFont`:
 
 ```swift
 extension UniversalFont {
-  enum Text {
-    static let body: UniversalFont = .system(size: 16, weight: .regular)
-  }
+  static let title: UniversalFont = .system(size: 16, weight: .regular)
 }
 
 // Then in your view
 Text("Hello, World")
-  .font(UniversalFont.Text.body.font)
+  .font(UniversalFont.title.font)
 ```
 
 You can also extend `UniversalFont` for easier access to custom fonts:

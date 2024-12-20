@@ -20,9 +20,9 @@ extension ModalRadius {
   var value: CGFloat {
     return switch self {
     case .none: CGFloat(0)
-    case .small: ComponentsKitConfig.shared.layout.modalRadius.small
-    case .medium: ComponentsKitConfig.shared.layout.modalRadius.medium
-    case .large: ComponentsKitConfig.shared.layout.modalRadius.large
+    case .small: ComponentsKitConfig.shared.layout.containerRadius.small
+    case .medium: ComponentsKitConfig.shared.layout.containerRadius.medium
+    case .large: ComponentsKitConfig.shared.layout.containerRadius.large
     case .custom(let value): value
     }
   }

@@ -59,9 +59,11 @@ struct ModalPreviewHelpers {
     var body: some View {
       Section("Properties") {
         Picker("Background Color", selection: self.$model.backgroundColor) {
-          Text("Primary").tag(Palette.Base.background)
-          Text("Secondary").tag(Palette.Base.secondaryBackground)
-          Text("Custom").tag(UniversalColor.success.withOpacity(0.5))
+          Text("Default").tag(Optional<UniversalColor>.none)
+          Text("Accent Background").tag(ComponentColor.accent.background)
+          Text("Success Background").tag(ComponentColor.success.background)
+          Text("Warning Background").tag(ComponentColor.warning.background)
+          Text("Danger Background").tag(ComponentColor.danger.background)
         }
         Toggle("Closes On Overlay Tap", isOn: self.$model.closesOnOverlayTap)
           .disabled(self.footer == nil)
@@ -127,6 +129,7 @@ Enim habitant laoreet inceptos scelerisque senectus, tellus molestie ut. Eros ri
   private static let footerButtonVM = ButtonVM {
     $0.title = "Close"
     $0.isFullWidth = true
+    $0.color = .primary
   }
   private static let footerCheckboxVM = CheckboxVM {
     $0.title = "Agree and continue"

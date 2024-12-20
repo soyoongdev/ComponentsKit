@@ -194,11 +194,11 @@ extension UKModalController {
       }
     }
     static func container(_ view: UIView, model: VM) {
-      view.backgroundColor = Palette.Base.background.uiColor
+      view.backgroundColor = UniversalColor.background.uiColor
       view.layer.cornerRadius = model.cornerRadius.value
     }
     static func content(_ view: UIView, model: VM) {
-      view.backgroundColor = model.backgroundColor.uiColor
+      view.backgroundColor = model.preferredBackgroundColor.uiColor
       view.layer.cornerRadius = model.cornerRadius.value
       view.clipsToBounds = true
     }

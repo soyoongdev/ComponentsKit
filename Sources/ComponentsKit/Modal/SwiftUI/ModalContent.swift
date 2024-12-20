@@ -60,8 +60,8 @@ struct ModalContent<VM: ModalVM, Header: View, Body: View, Footer: View>: View {
         .padding(.bottom, self.model.contentPaddings.bottom)
     }
     .frame(maxWidth: self.model.size.maxWidth, alignment: .leading)
-    .background(self.model.backgroundColor.color(for: self.colorScheme))
-    .background(Palette.Base.background.color(for: self.colorScheme))
+    .background(self.model.preferredBackgroundColor.color(for: self.colorScheme))
+    .background(UniversalColor.background.color(for: self.colorScheme))
     .clipShape(RoundedRectangle(
       cornerRadius: self.model.cornerRadius.value
     ))

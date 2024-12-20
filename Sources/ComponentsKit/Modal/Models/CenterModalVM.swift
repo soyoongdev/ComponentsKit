@@ -3,7 +3,7 @@ import Foundation
 /// A model that defines the appearance properties for a center modal component.
 public struct CenterModalVM: ModalVM {
   /// The background color of the modal's content area.
-  public var backgroundColor: UniversalColor = Palette.Base.secondaryBackground
+  public var backgroundColor: UniversalColor?
 
   /// A Boolean value indicating whether the modal should close when tapping on the overlay.
   ///
