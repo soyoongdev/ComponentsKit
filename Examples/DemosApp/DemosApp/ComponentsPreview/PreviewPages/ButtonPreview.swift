@@ -33,7 +33,6 @@ struct ButtonPreview: View {
           Text("Bordered with small border").tag(ButtonVM.Style.bordered(.small))
           Text("Bordered with medium border").tag(ButtonVM.Style.bordered(.medium))
           Text("Bordered with large border").tag(ButtonVM.Style.bordered(.large))
-          Text("Bordered with custom border: 6px").tag(ButtonVM.Style.bordered(.custom(6)))
         }
       }
     }

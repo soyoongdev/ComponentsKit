@@ -17,6 +17,7 @@ struct TextInputPreviewPreview: View {
         self.textInput
           .preview
           .onAppear {
+            self.textInput.text = ""
             self.textInput.model = Self.initialModel
           }
           .onChange(of: self.model) { newValue in
