@@ -11,7 +11,6 @@ public struct SUSegmentedControl<ID: Hashable>: View {
   @Binding public var selectedId: ID
 
   @Namespace private var animationNamespace
-  @Environment(\.colorScheme) private var colorScheme
 
   // MARK: Initialization
 
@@ -35,12 +34,8 @@ public struct SUSegmentedControl<ID: Hashable>: View {
         Text(itemVM.title)
           .lineLimit(1)
           .font(self.model.preferredFont(for: itemVM.id).font)
-          .foregroundStyle(self.model
-            .foregroundColor(
-              id: itemVM.id,
-              selectedId: self.selectedId
-            )
-              .color(for: self.colorScheme)
+          .foregroundStyle(
+            self.model.foregroundColor(id: itemVM.id, selectedId: self.selectedId).color
           )
           .frame(maxWidth: self.model.width, maxHeight: self.model.height)
           .padding(.horizontal, self.model.horizontalInnerPaddings)
@@ -57,9 +52,7 @@ public struct SUSegmentedControl<ID: Hashable>: View {
                 RoundedRectangle(
                   cornerRadius: self.model.selectedSegmentCornerRadius()
                 )
-                .fill(self.model.selectedSegmentColor.color(
-                  for: self.colorScheme
-                ))
+                .fill(self.model.selectedSegmentColor.color)
                 .matchedGeometryEffect(
                   id: "segment",
                   in: self.animationNamespace
@@ -71,7 +64,7 @@ public struct SUSegmentedControl<ID: Hashable>: View {
     }
     .padding(.all, self.model.outerPaddings)
     .frame(height: self.model.height)
-    .background(self.model.backgroundColor.color(for: self.colorScheme))
+    .background(self.model.backgroundColor.color)
     .clipShape(
       RoundedRectangle(cornerRadius: self.model.cornerRadius.value())
     )

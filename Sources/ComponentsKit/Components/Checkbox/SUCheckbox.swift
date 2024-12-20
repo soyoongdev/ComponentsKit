@@ -12,7 +12,6 @@ public struct SUCheckbox: View {
 
   @State private var checkmarkStroke: CGFloat
   @State private var borderOpacity: CGFloat
-  @Environment(\.colorScheme) private var colorScheme
 
   // MARK: Initialization
 
@@ -35,7 +34,7 @@ public struct SUCheckbox: View {
   public var body: some View {
     HStack(spacing: self.model.spacing) {
       ZStack {
-        self.model.backgroundColor.color(for: self.colorScheme)
+        self.model.backgroundColor.color
           .clipShape(
             RoundedRectangle(cornerRadius: self.model.checkboxCornerRadius)
           )
@@ -66,12 +65,12 @@ public struct SUCheckbox: View {
           lineCap: .round,
           lineJoin: .round
         ))
-        .foregroundStyle(self.model.foregroundColor.color(for: self.colorScheme))
+        .foregroundStyle(self.model.foregroundColor.color)
       }
       .overlay {
         RoundedRectangle(cornerRadius: self.model.checkboxCornerRadius)
           .stroke(
-            self.model.borderColor.color(for: self.colorScheme),
+            self.model.borderColor.color,
             lineWidth: self.model.borderWidth
           )
           .opacity(self.borderOpacity)
@@ -84,7 +83,7 @@ public struct SUCheckbox: View {
 
       if let title = self.model.title {
         Text(title)
-          .foregroundStyle(self.model.titleColor.color(for: self.colorScheme))
+          .foregroundStyle(self.model.titleColor.color)
           .font(self.model.titleFont.font)
       }
     }

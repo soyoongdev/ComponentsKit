@@ -7,8 +7,6 @@ public struct SUDivider: View {
   /// A model that defines the appearance properties.
   public var model: DividerVM
 
-  @Environment(\.colorScheme) private var colorScheme
-
   // MARK: - Initialization
 
   /// Initializer.
@@ -22,7 +20,7 @@ public struct SUDivider: View {
 
   public var body: some View {
     Rectangle()
-      .fill(self.model.lineColor.color(for: self.colorScheme))
+      .fill(self.model.lineColor.color)
       .frame(
         maxWidth: self.model.orientation == .vertical ? self.model.lineSize : nil,
         maxHeight: self.model.orientation == .horizontal ? self.model.lineSize : nil

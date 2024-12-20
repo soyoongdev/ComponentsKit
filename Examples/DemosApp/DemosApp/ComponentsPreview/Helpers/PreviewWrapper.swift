@@ -5,8 +5,6 @@ struct PreviewWrapper<Content: View>: View {
   let title: String
   @ViewBuilder let content: () -> Content
 
-  @Environment(\.colorScheme) private var colorScheme
-
   var body: some View {
     ZStack(alignment: Alignment(horizontal: .leading, vertical: .top)) {
       self.content()
@@ -21,8 +19,8 @@ struct PreviewWrapper<Content: View>: View {
             LinearGradient(
               gradient: Gradient(
                 colors: [
-                  UniversalColor.blue.color(for: self.colorScheme),
-                  UniversalColor.purple.color(for: self.colorScheme),
+                  UniversalColor.blue.color,
+                  UniversalColor.purple.color,
                 ]
               ),
               startPoint: .topLeading,

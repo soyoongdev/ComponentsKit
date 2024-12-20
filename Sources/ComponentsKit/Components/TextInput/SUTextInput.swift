@@ -26,7 +26,6 @@ public struct SUTextInput<FocusValue: Hashable>: View {
   /// text inputs and input fields within the same view can be independently focused based on the shared `globalFocus`.
   public var localFocus: FocusValue
 
-  @Environment(\.colorScheme) private var colorScheme
   @State private var textEditorPreferredHeight: CGFloat = 0
 
   // MARK: - Initialization
@@ -68,8 +67,8 @@ public struct SUTextInput<FocusValue: Hashable>: View {
         )
         .lineSpacing(0)
         .font(self.model.preferredFont.font)
-        .foregroundStyle(self.model.foregroundColor.color(for: self.colorScheme))
-        .tint(self.model.tintColor.color(for: self.colorScheme))
+        .foregroundStyle(self.model.foregroundColor.color)
+        .tint(self.model.tintColor.color)
         .focused(self.$globalFocus, equals: self.localFocus)
         .disabled(!self.model.isEnabled)
         .keyboardType(self.model.keyboardType)
@@ -82,14 +81,14 @@ public struct SUTextInput<FocusValue: Hashable>: View {
         Text(placeholder)
           .font(self.model.preferredFont.font)
           .foregroundStyle(
-            self.model.placeholderColor.color(for: self.colorScheme)
+            self.model.placeholderColor.color
           )
           .padding(self.model.contentPadding)
       }
     }
     .background(
       GeometryReader { geometry in
-        self.model.backgroundColor.color(for: self.colorScheme)
+        self.model.backgroundColor.color
           .onAppear {
             self.textEditorPreferredHeight = TextInputHeightCalculator.preferredHeight(
               for: self.text,

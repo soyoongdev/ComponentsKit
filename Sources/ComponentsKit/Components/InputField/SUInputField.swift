@@ -26,8 +26,6 @@ public struct SUInputField<FocusValue: Hashable>: View {
   /// text inputs and input fields within the same view can be independently focused based on the shared `globalFocus`.
   public var localFocus: FocusValue
 
-  @Environment(\.colorScheme) private var colorScheme
-
   // MARK: Initialization
 
   /// Initializer.
@@ -61,18 +59,18 @@ public struct SUInputField<FocusValue: Hashable>: View {
         if self.model.isSecureInput {
           SecureField(text: self.$text, label: {
             Text(self.model.placeholder ?? "")
-              .foregroundStyle(self.model.placeholderColor.color(for: self.colorScheme))
+              .foregroundStyle(self.model.placeholderColor.color)
           })
         } else {
           TextField(text: self.$text, label: {
             Text(self.model.placeholder ?? "")
-              .foregroundStyle(self.model.placeholderColor.color(for: self.colorScheme))
+              .foregroundStyle(self.model.placeholderColor.color)
           })
         }
       }
-      .tint(self.model.tintColor.color(for: self.colorScheme))
+      .tint(self.model.tintColor.color)
       .font(self.model.preferredFont.font)
-      .foregroundStyle(self.model.foregroundColor.color(for: self.colorScheme))
+      .foregroundStyle(self.model.foregroundColor.color)
       .focused(self.$globalFocus, equals: self.localFocus)
       .disabled(!self.model.isEnabled)
       .keyboardType(self.model.keyboardType)
@@ -82,7 +80,7 @@ public struct SUInputField<FocusValue: Hashable>: View {
     }
     .padding(.horizontal, self.model.horizontalPadding)
     .frame(height: self.model.height)
-    .background(self.model.backgroundColor.color(for: self.colorScheme))
+    .background(self.model.backgroundColor.color)
     .onTapGesture {
       self.globalFocus = self.localFocus
     }
