@@ -1,14 +1,34 @@
 import SwiftUI
 import UIKit
 
+/// A structure that represents an universal color that can be used in both UIKit and SwiftUI,
+/// with light and dark theme variants.
 public struct UniversalColor: Hashable {
-  // MARK: ColorRepresentable
+  // MARK: - ColorRepresentable
 
+  /// An enumeration that defines the possible representations of a color.
   public enum ColorRepresentable: Hashable {
+    /// A color defined by its RGBA components.
+    ///
+    /// - Parameters:
+    ///   - r: The red component (0–255).
+    ///   - g: The green component (0–255).
+    ///   - b: The blue component (0–255).
+    ///   - a: The alpha (opacity) component (0.0–1.0).
     case rgba(r: CGFloat, g: CGFloat, b: CGFloat, a: CGFloat)
+
+    /// A color represented by a `UIColor` instance.
     case uiColor(UIColor)
+
+    /// A color represented by a SwiftUI `Color` instance.
     case color(Color)
 
+    /// Creates a `ColorRepresentable` instance from a hexadecimal string.
+    ///
+    /// - Parameter value: A hex string representing the color (e.g., `"#FFFFFF"` or `"FFFFFF"`).
+    /// - Returns: A `ColorRepresentable` instance with the corresponding RGBA values.
+    /// - Note: This method assumes the input string has exactly six hexadecimal characters.
+    /// - Warning: This method will trigger an assertion failure if the input is invalid.
     public static func hex(_ value: String) -> Self {
       let start: String.Index
       if value.hasPrefix("#") {
@@ -28,10 +48,17 @@ public struct UniversalColor: Hashable {
 
         return .rgba(r: r, g: g, b: b, a: 1.0)
       } else {
-        fatalError("Unable to initialize color from the provided hex value: \(value)")
+        assertionFailure(
+          "Unable to initialize color from the provided hex value: \(value)"
+        )
+        return .rgba(r: 0, g: 0, b: 0, a: 1.0)
       }
     }
 
+    /// Returns a new `ColorRepresentable` with the specified opacity.
+    ///
+    /// - Parameter alpha: The desired opacity (0.0–1.0).
+    /// - Returns: A `ColorRepresentable` instance with the adjusted opacity.
     fileprivate func withOpacity(_ alpha: CGFloat) -> Self {
       switch self {
       case .rgba(let r, let g, let b, _):
@@ -43,6 +70,7 @@ public struct UniversalColor: Hashable {
       }
     }
 
+    /// Converts the `ColorRepresentable` to a `UIColor` instance.
     fileprivate var uiColor: UIColor {
       switch self {
       case .rgba(let red, let green, let blue, let alpha):
@@ -59,6 +87,7 @@ public struct UniversalColor: Hashable {
       }
     }
 
+    /// Converts the `ColorRepresentable` to a SwiftUI `Color` instance.
     fileprivate var color: Color {
       switch self {
       case .rgba(let r, let g, let b, let a):
@@ -76,13 +105,22 @@ public struct UniversalColor: Hashable {
     }
   }
 
-  // MARK: Properties
+  // MARK: - Properties
 
+  /// The color used in light mode.
   let light: ColorRepresentable
+
+  /// The color used in dark mode.
   let dark: ColorRepresentable
 
-  // MARK: Initialization
+  // MARK: - Initialization
 
+  /// Creates a `UniversalColor` with distinct light and dark mode colors.
+  ///
+  /// - Parameters:
+  ///   - light: The color to use in light mode.
+  ///   - dark: The color to use in dark mode.
+  /// - Returns: A new `UniversalColor` instance.
   public static func themed(
     light: ColorRepresentable,
     dark: ColorRepresentable
@@ -90,12 +128,20 @@ public struct UniversalColor: Hashable {
     return Self(light: light, dark: dark)
   }
 
+  /// Creates a `UniversalColor` with a single color used for both light and dark modes.
+  ///
+  /// - Parameter universal: The universal color to use.
+  /// - Returns: A new `UniversalColor` instance.
   public static func universal(_ universal: ColorRepresentable) -> Self {
     return Self(light: universal, dark: universal)
   }
 
-  // MARK: Methods
+  // MARK: - Methods
 
+  /// Returns a new `UniversalColor` with the specified opacity.
+  ///
+  /// - Parameter alpha: The desired opacity (0.0–1.0).
+  /// - Returns: A new `UniversalColor` instance with the adjusted opacity.
   public func withOpacity(_ alpha: CGFloat) -> Self {
     return .init(
       light: self.light.withOpacity(alpha),
@@ -103,14 +149,19 @@ public struct UniversalColor: Hashable {
     )
   }
 
+  /// Returns a disabled version of the color based on a global opacity configuration.
+  ///
+  /// - Parameter isEnabled: A Boolean value indicating whether the color should be enabled.
+  /// - Returns: A new `UniversalColor` instance with reduced opacity if `isEnabled` is `false`.
   public func enabled(_ isEnabled: Bool) -> Self {
     return isEnabled
     ? self
     : self.withOpacity(ComponentsKitConfig.shared.layout.disabledOpacity)
   }
 
-  // MARK: Colors
+  // MARK: - Colors
 
+  /// Returns the `UIColor` representation of the color, adapting to the current system theme.
   public var uiColor: UIColor {
     return UIColor { trait in
       switch trait.userInterfaceStyle {
@@ -124,6 +175,10 @@ public struct UniversalColor: Hashable {
     }
   }
 
+  /// Returns the `Color` representation of the color for a given SwiftUI `ColorScheme`.
+  ///
+  /// - Parameter colorScheme: The current color scheme (`.light` or `.dark`).
+  /// - Returns: The corresponding `Color` instance.
   public func color(for colorScheme: ColorScheme) -> Color {
     switch colorScheme {
     case .light:
