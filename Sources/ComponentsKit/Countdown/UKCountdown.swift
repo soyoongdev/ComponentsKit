@@ -2,31 +2,53 @@ import AutoLayout
 import Combine
 import UIKit
 
+/// A UIKit component that displays a countdown.
 public class UKCountdown: UIView, UKComponent {
+  // MARK: - Public Properties
+
+  /// A model that defines the appearance properties.
   public var model: CountdownVM {
     didSet {
       self.update(oldValue)
     }
   }
 
+  /// The main container stack view containing all time labels and colon labels.
   public let stackView = UIStackView()
+
+  /// A label showing the number of days remaining.
   public let daysLabel = UILabel()
+
+  /// A label showing the number of hours remaining.
   public let hoursLabel = UILabel()
+
+  /// A label showing the number of minutes remaining.
   public let minutesLabel = UILabel()
+
+  /// A label showing the number of seconds remaining.
   public let secondsLabel = UILabel()
+
+  /// An array of colon labels used as separators between the time segments (days/hours/minutes/seconds).
   public let colonLabels: [UILabel] = [
     UILabel(),
     UILabel(),
-    UILabel(),
+    UILabel()
   ]
 
+  // MARK: - Private Properties
+
+  /// Constraints specifically applied to the "days" label.
   private var daysConstraints = LayoutConstraints()
 
   private let manager = CountdownManager()
+
   private var cancellables: Set<AnyCancellable> = []
 
   // MARK: - Initialization
 
+  /// Initializer.
+  /// - Parameters:
+  ///   - model: A model that defines the appearance properties.
   public init(model: CountdownVM) {
     self.model = model
 
@@ -170,15 +192,15 @@ public class UKCountdown: UIView, UKComponent {
       self.manager.start(until: self.model.until)
     }
 
-    //    if self.model.shouldUpdateHeight(oldModel) {
-    switch self.model.style {
-    case .plain:
-      self.daysConstraints.height?.isActive = false
-    case .light:
-      self.daysConstraints.height?.isActive = true
-      self.daysConstraints.height?.constant = self.model.height
+    if self.model.shouldUpdateHeight(oldModel) {
+      switch self.model.style {
+      case .plain:
+        self.daysConstraints.height?.isActive = false
+      case .light:
+        self.daysConstraints.height?.isActive = true
+        self.daysConstraints.height?.constant = self.model.height
+      }
     }
-//  }
 
     if self.model.shouldRecalculateWidth(oldModel) {
       let newWidth = self.model.timeWidth(manager: self.manager)
@@ -195,6 +217,8 @@ public class UKCountdown: UIView, UKComponent {
     self.layoutIfNeeded()
   }
 }
+
+// MARK: - Style Helpers
 
 extension UKCountdown {
   fileprivate enum Style {

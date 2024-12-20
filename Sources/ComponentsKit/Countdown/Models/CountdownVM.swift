@@ -199,6 +199,11 @@ extension CountdownVM {
 }
 
 extension CountdownVM {
+  func shouldUpdateHeight(_ oldModel: Self) -> Bool {
+    return self.style != oldModel.style
+    || self.height != oldModel.height
+  }
+
   func shouldRecalculateWidth(_ oldModel: Self) -> Bool {
     return self.unitsStyle != oldModel.unitsStyle
     || self.style != oldModel.style
