@@ -75,7 +75,7 @@ extension ComponentsKitConfig {
     /// The success state color, used for indicating positive actions or statuses.
     public var success: ComponentColor = .init(
       main: .themed(
-        light: .hex("#3ED661"),
+        light: .hex("#37D45C"),
         dark: .hex("#1EC645")
       ),
       contrast: .themed(
@@ -83,19 +83,19 @@ extension ComponentsKitConfig {
         dark: .hex("#0B0C0E")
       ),
       background: .themed(
-        light: .hex("#DAF6E1"),
+        light: .hex("#E1FBE7"),
         dark: .hex("#344B3C")
       )
     )
     /// The warning state color, used for indicating caution or non-critical alerts.
     public var warning: ComponentColor = .init(
       main: .themed(
-        light: .hex("#FFC936"),
+        light: .hex("#F4B300"),
         dark: .hex("#F4B300")
       ),
       contrast: .universal(.hex("#0B0C0E")),
       background: .themed(
-        light: .hex("#FFF1CB"),
+        light: .hex("#FFF6DD"),
         dark: .hex("#514A35")
       )
     )
