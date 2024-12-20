@@ -141,8 +141,8 @@ public class UKCountdown: UIView, UKComponent {
   // MARK: - Layout
 
   private func layout() {
-    self.stackView.horizontally()
     self.stackView.centerVertically()
+    self.stackView.centerHorizontally()
 
     self.stackView.topAnchor.constraint(
       greaterThanOrEqualTo: self.topAnchor
@@ -150,15 +150,19 @@ public class UKCountdown: UIView, UKComponent {
     self.stackView.bottomAnchor.constraint(
       lessThanOrEqualTo: self.bottomAnchor
     ).isActive = true
+    self.stackView.leadingAnchor.constraint(
+      greaterThanOrEqualTo: self.leadingAnchor
+    ).isActive = true
+    self.stackView.trailingAnchor.constraint(
+      lessThanOrEqualTo: self.trailingAnchor
+    ).isActive = true
 
     self.daysConstraints.width = self.daysLabel.widthAnchor.constraint(
       equalToConstant: self.model.defaultMinWidth
     )
-    self.daysConstraints.width?.priority = .required
     self.daysConstraints.width?.isActive = true
 
     self.daysConstraints.height = self.daysLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: self.model.height)
-    self.daysConstraints.height?.priority = .required
     self.daysConstraints.height?.isActive = true
 
     self.hoursLabel.widthAnchor.constraint(equalTo: self.daysLabel.widthAnchor).isActive = true
