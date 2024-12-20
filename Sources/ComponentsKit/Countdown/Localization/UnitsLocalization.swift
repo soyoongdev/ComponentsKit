@@ -2,11 +2,20 @@ import Foundation
 
 // MARK: - UnitsLocalization
 
+/// A structure that provides localized representations of time units (seconds, minutes, hours, days).
 public struct UnitsLocalization: Equatable {
+  /// A structure that represents the localized short and long forms of a single time unit.
   public struct UnitItemLocalization: Equatable {
+    /// The short-form representation of the time unit (e.g., "s" for seconds).
     public let short: String
+    /// The long-form representation of the time unit (e.g., "Seconds").
     public let long: String
 
+    /// Initializes a new `UnitItemLocalization` with specified short and long forms.
+    ///
+    /// - Parameters:
+    ///   - short: The short-form representation of the time unit.
+    ///   - long: The long-form representation of the time unit.
     public init(short: String, long: String) {
       self.short = short
       self.long = long
@@ -15,14 +24,33 @@ public struct UnitsLocalization: Equatable {
 
   // MARK: - Properties
 
+  /// The localized representation for seconds.
   public let seconds: UnitItemLocalization
+
+  /// The localized representation for minutes.
   public let minutes: UnitItemLocalization
+
+  /// The localized representation for hours.
   public let hours: UnitItemLocalization
+
+  /// The localized representation for days.
   public let days: UnitItemLocalization
 
-  // MARK: - Initializer
+  // MARK: - Initialization
 
-  public init(seconds: UnitItemLocalization, minutes: UnitItemLocalization, hours: UnitItemLocalization, days: UnitItemLocalization) {
+  /// Initializes a new `UnitsLocalization` with localized representations for all time units.
+  ///
+  /// - Parameters:
+  ///   - seconds: The localization for seconds.
+  ///   - minutes: The localization for minutes.
+  ///   - hours: The localization for hours.
+  ///   - days: The localization for days.
+  public init(
+    seconds: UnitItemLocalization,
+    minutes: UnitItemLocalization,
+    hours: UnitItemLocalization,
+    days: UnitItemLocalization
+  ) {
     self.seconds = seconds
     self.minutes = minutes
     self.hours = hours
