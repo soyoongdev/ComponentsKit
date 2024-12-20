@@ -68,11 +68,13 @@ public struct Layout: Initializable, Updatable {
     public var headline: FontSet
     public var body: FontSet
     public var button: FontSet
+    public var caption: FontSet
 
-    public init(headline: FontSet, body: FontSet, button: FontSet) {
+    public init(headline: FontSet, body: FontSet, button: FontSet, caption: FontSet) {
       self.headline = headline
       self.body = body
       self.button = button
+      self.caption = caption
     }
   }
 
@@ -109,6 +111,11 @@ public struct Layout: Initializable, Updatable {
       small: .system(size: 14, weight: .medium),
       medium: .system(size: 16, weight: .medium),
       large: .system(size: 20, weight: .medium)
+    ),
+    caption: .init(
+      small: .system(size: 10, weight: .regular),
+      medium: .system(size: 12, weight: .regular),
+      large: .system(size: 14, weight: .regular)
     )
   )
 

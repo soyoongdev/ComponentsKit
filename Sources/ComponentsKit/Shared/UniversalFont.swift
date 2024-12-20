@@ -144,4 +144,14 @@ extension UniversalFont {
   public static var lgButton: UniversalFont {
     return ComponentsKitConfig.shared.layout.typography.button.large
   }
+
+  public static var smCaption: UniversalFont {
+    return ComponentsKitConfig.shared.layout.typography.caption.small
+  }
+  public static var mdCaption: UniversalFont {
+    return ComponentsKitConfig.shared.layout.typography.caption.medium
+  }
+  public static var lgCaption: UniversalFont {
+    return ComponentsKitConfig.shared.layout.typography.caption.large
+  }
 }

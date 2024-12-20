@@ -85,7 +85,7 @@ public struct SUCountdown: View {
 
   private var colonView: some View {
     Text(":")
-      .font(self.model.preferredFont.font)
+      .font(self.model.preferredMainFont.font)
       .foregroundColor(self.model.colonColor.color(for: self.colorScheme))
   }
 
@@ -94,7 +94,7 @@ public struct SUCountdown: View {
     unit: CountdownHelpers.Unit
   ) -> some View {
     return self.styledTime(value: value, unit: unit)
-      .frame(minHeight: self.model.height)
+      .frame(minHeight: self.model.lightBackgroundMinHight)
       .frame(minWidth: self.model.lightBackgroundMinWidth)
       .background(RoundedRectangle(cornerRadius: 8)
         .fill(self.model.backgroundColor.color(for: self.colorScheme))

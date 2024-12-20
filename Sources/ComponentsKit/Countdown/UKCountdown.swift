@@ -162,7 +162,7 @@ public class UKCountdown: UIView, UKComponent {
     )
     self.daysConstraints.width?.isActive = true
 
-    self.daysConstraints.height = self.daysLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: self.model.height)
+    self.daysConstraints.height = self.daysLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: self.model.lightBackgroundMinHight)
     self.daysConstraints.height?.isActive = true
 
     self.hoursLabel.widthAnchor.constraint(equalTo: self.daysLabel.widthAnchor).isActive = true
@@ -202,7 +202,7 @@ public class UKCountdown: UIView, UKComponent {
         self.daysConstraints.height?.isActive = false
       case .light:
         self.daysConstraints.height?.isActive = true
-        self.daysConstraints.height?.constant = self.model.height
+        self.daysConstraints.height?.constant = self.model.lightBackgroundMinHight
       }
     }
 
@@ -246,7 +246,6 @@ extension UKCountdown {
         label.layer.cornerRadius = 8
         label.clipsToBounds = true
       }
-      label.font = model.preferredFont.uiFont
       label.textColor = model.foregroundColor.uiColor
       label.textAlignment = .center
       label.numberOfLines = 0
@@ -255,7 +254,7 @@ extension UKCountdown {
 
     static func colonLabel(_ label: UILabel, model: CountdownVM) {
       label.text = ":"
-      label.font = model.preferredFont.uiFont
+      label.font = model.preferredMainFont.uiFont
       label.textColor = model.colonColor.uiColor
       label.textAlignment = .center
       label.isVisible = model.isColumnLabelVisible

@@ -10,10 +10,9 @@ struct CountdownWidthCalculator {
     model: CountdownVM
   ) -> CGFloat {
     self.style(label, with: model)
-    label.attributedText = attributedText
+    self.label.attributedText = attributedText
 
-    let targetSize = CGSize(width: CGFloat.greatestFiniteMagnitude, height: model.height)
-    let estimatedSize = label.sizeThatFits(targetSize)
+    let estimatedSize = self.label.sizeThatFits(UIView.layoutFittingExpandedSize)
 
     return estimatedSize.width
   }

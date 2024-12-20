@@ -2,11 +2,14 @@ import SwiftUI
 
 /// A model that defines the appearance properties for a countdown component.
 public struct CountdownVM: ComponentVM {
-  /// The font used for displaying the countdown numbers and units.
-  public var font: UniversalFont?
-
   /// The color of the countdown.
   public var color: ComponentColor?
+
+  /// The font used for displaying the countdown numbers and trailing units.
+  public var mainFont: UniversalFont?
+
+  /// The font used for displaying the countdown bottom units.
+  public var secondaryFont: UniversalFont?
 
   /// The predefined size of the countdown.
   ///
@@ -52,59 +55,55 @@ public struct CountdownVM: ComponentVM {
 // MARK: - Shared Helpers
 
 extension CountdownVM {
-  var preferredFont: UniversalFont {
-    if let font = self.font {
-      return font
+  var preferredMainFont: UniversalFont {
+    if let mainFont {
+      return mainFont
     }
 
     switch self.size {
     case .small:
-      return UniversalFont.Component.small
+      return .smHeadline
     case .medium:
-      return UniversalFont.Component.medium
+      return .mdHeadline
     case .large:
-      return UniversalFont.Component.large
+      return .lgHeadline
     }
   }
-  var unitFontSize: CGFloat {
-    let preferredFontSize = self.preferredFont.uiFont.pointSize
-    return preferredFontSize * 0.6
-  }
-  var unitFont: UniversalFont {
-    return self.preferredFont.withSize(self.unitFontSize)
+  private var preferredSecondaryFont: UniversalFont {
+    if let secondaryFont {
+      return secondaryFont
+    }
+
+    switch self.size {
+    case .small:
+      return .smCaption
+    case .medium:
+      return .mdCaption
+    case .large:
+      return .lgCaption
+    }
   }
   var backgroundColor: UniversalColor {
-    if let color {
-      return color.main.withOpacity(0.15)
-    } else {
-      return .init(
-        light: .rgba(r: 244, g: 244, b: 245, a: 1.0),
-        dark: .rgba(r: 39, g: 39, b: 42, a: 1.0)
-      )
-    }
+    return self.color?.background ?? .content1
   }
   var foregroundColor: UniversalColor {
-    let foregroundColor = self.color?.main ?? .init(
-      light: .rgba(r: 0, g: 0, b: 0, a: 1.0),
-      dark: .rgba(r: 255, g: 255, b: 255, a: 1.0)
-    )
-    return foregroundColor
+    return self.color?.main ?? .foreground
   }
   var colonColor: UniversalColor {
-    return self.foregroundColor.withOpacity(0.5)
-  }
-  var height: CGFloat {
-    return switch self.size {
-    case .small: 45
-    case .medium: 55
-    case .large: 60
-    }
+    return self.color?.main ?? .secondaryForeground
   }
   var defaultMinWidth: CGFloat {
     return switch self.size {
-    case .small: 40
-    case .medium: 50
-    case .large: 55
+    case .small: 20
+    case .medium: 25
+    case .large: 30
+    }
+  }
+  var lightBackgroundMinHight: CGFloat {
+    return switch self.size {
+    case .small: 45
+    case .medium: 55
+    case .large: 65
     }
   }
   var lightBackgroundMinWidth: CGFloat {
@@ -115,7 +114,12 @@ extension CountdownVM {
     }
   }
   var horizontalPadding: CGFloat {
-    return 4
+    switch self.style {
+    case .light:
+      return 4
+    case .plain:
+      return 0
+    }
   }
   var spacing: CGFloat {
     switch self.style {
@@ -164,7 +168,7 @@ extension CountdownVM {
     unit: CountdownHelpers.Unit
   ) -> NSAttributedString {
     let mainTextAttributes: [NSAttributedString.Key: Any] = [
-      .font: self.preferredFont.uiFont,
+      .font: self.preferredMainFont.uiFont,
       .foregroundColor: self.foregroundColor.uiColor
     ]
 
@@ -179,7 +183,7 @@ extension CountdownVM {
       let localized = self.localizedUnit(unit, length: .short)
       let trailingString = " " + localized
       let trailingAttributes: [NSAttributedString.Key: Any] = [
-        .font: self.preferredFont.uiFont,
+        .font: self.preferredMainFont.uiFont,
         .foregroundColor: self.foregroundColor.uiColor
       ]
       result.append(NSAttributedString(string: trailingString, attributes: trailingAttributes))
@@ -189,7 +193,7 @@ extension CountdownVM {
       let localized = self.localizedUnit(unit, length: .long)
       let bottomString = "\n" + localized
       let bottomAttributes: [NSAttributedString.Key: Any] = [
-        .font: self.unitFont.uiFont,
+        .font: self.preferredSecondaryFont.uiFont,
         .foregroundColor: self.foregroundColor.uiColor
       ]
       result.append(NSAttributedString(string: bottomString, attributes: bottomAttributes))
@@ -202,7 +206,8 @@ extension CountdownVM {
   func shouldRecalculateWidth(_ oldModel: Self) -> Bool {
     return self.unitsStyle != oldModel.unitsStyle
     || self.style != oldModel.style
-    || self.preferredFont != oldModel.preferredFont
+    || self.mainFont != oldModel.mainFont
+    || self.secondaryFont != oldModel.secondaryFont
     || self.size != oldModel.size
     || self.locale != oldModel.locale
   }
@@ -238,6 +243,6 @@ extension CountdownVM {
 
   func shouldUpdateHeight(_ oldModel: Self) -> Bool {
     return self.style != oldModel.style
-    || self.height != oldModel.height
+    || self.size != oldModel.size
   }
 }
