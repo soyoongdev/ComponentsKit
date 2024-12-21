@@ -50,36 +50,30 @@ public struct ButtonVM: ComponentVM {
 // MARK: Shared Helpers
 
 extension ButtonVM {
-  private var mainColor: UniversalColor {
-    let color = self.color?.main ?? .content2
-    return color.enabled(self.isEnabled)
-  }
-  private var contrastColor: UniversalColor {
-    let color = self.color?.contrast ?? .foreground
-    return color.enabled(self.isEnabled)
-  }
   var backgroundColor: UniversalColor? {
     switch self.style {
     case .filled:
-      return self.mainColor
+      let color = self.color?.main ?? .content2
+      return color.enabled(self.isEnabled)
+    case .light:
+      let color = self.color?.background ?? .content1
+      return color.enabled(self.isEnabled)
     case .plain, .bordered:
       return nil
     }
   }
   var foregroundColor: UniversalColor {
-    switch self.style {
+    let color = switch self.style {
     case .filled:
-      return self.contrastColor
-    case .plain:
-      return self.mainColor
-    case .bordered:
-      let color = self.color?.main ?? .foreground
-      return color.enabled(self.isEnabled)
+      self.color?.contrast ?? .foreground
+    case .plain, .light, .bordered:
+      self.color?.main ?? .foreground
     }
+    return color.enabled(self.isEnabled)
   }
   var borderWidth: CGFloat {
     switch self.style {
-    case .filled, .plain:
+    case .filled, .plain, .light:
       return 0.0
     case .bordered(let borderWidth):
       return borderWidth.value
@@ -87,7 +81,7 @@ extension ButtonVM {
   }
   var borderColor: UniversalColor? {
     switch self.style {
-    case .filled, .plain:
+    case .filled, .plain, .light:
       return nil
     case .bordered:
       if let color {
