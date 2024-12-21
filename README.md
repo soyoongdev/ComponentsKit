@@ -123,8 +123,7 @@ All colors from the config can be used within the app. For example:
 view.backgroundColor = UniversalColor.background.uiColor
 
 // in SwiftUI
-@Environment(\.colorScheme) var colorScheme
-UniversalColor.background.color(for: colorScheme)
+UniversalColor.background.color
 ```
 
 If you want to use additional colors that are not included in the config, you can extend `UniversalColor`:

@@ -52,8 +52,6 @@ public struct SUButton: View {
 private struct CustomButtonStyle: SwiftUI.ButtonStyle {
   let model: ButtonVM
 
-  @Environment(\.colorScheme) var colorScheme
-
   func makeBody(configuration: Configuration) -> some View {
     configuration.label
       .font(self.model.preferredFont.font)
@@ -63,9 +61,7 @@ private struct CustomButtonStyle: SwiftUI.ButtonStyle {
       .frame(maxWidth: self.model.width)
       .frame(height: self.model.height)
       .foregroundStyle(self.model.foregroundColor.color)
-      .background(
-        self.model.backgroundColor?.color ?? Color.clear
-      )
+      .background(self.model.backgroundColor?.color ?? .clear)
       .clipShape(
         RoundedRectangle(
           cornerRadius: self.model.cornerRadius.value()
