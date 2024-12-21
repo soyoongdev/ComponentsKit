@@ -9,7 +9,6 @@ public struct SULoading: View {
   public var model: LoadingVM
 
   @State private var rotationAngle: CGFloat = 0.0
-  @Environment(\.colorScheme) private var colorScheme
 
   // MARK: Initialization
 
@@ -34,7 +33,7 @@ public struct SULoading: View {
     }
       .trim(from: 0, to: 0.75)
       .stroke(
-        self.model.color.main.color(for: self.colorScheme),
+        self.model.color.main.color,
         style: StrokeStyle(
           lineWidth: self.model.loadingLineWidth,
           lineCap: .round,

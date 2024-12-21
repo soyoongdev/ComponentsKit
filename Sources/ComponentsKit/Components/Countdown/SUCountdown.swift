@@ -12,8 +12,6 @@ public struct SUCountdown: View {
   /// The countdown manager handling the countdown logic.
   @StateObject private var manager = CountdownManager()
 
-  @Environment(\.colorScheme) private var colorScheme
-
   // MARK: - Initializer
 
   /// Initializer.
@@ -86,7 +84,7 @@ public struct SUCountdown: View {
   private var colonView: some View {
     Text(":")
       .font(self.model.preferredMainFont.font)
-      .foregroundColor(self.model.colonColor.color(for: self.colorScheme))
+      .foregroundColor(self.model.colonColor.color)
   }
 
   private func lightStyledTime(
@@ -97,7 +95,7 @@ public struct SUCountdown: View {
       .frame(minHeight: self.model.lightBackgroundMinHight)
       .frame(minWidth: self.model.lightBackgroundMinWidth)
       .background(RoundedRectangle(cornerRadius: 8)
-        .fill(self.model.backgroundColor.color(for: self.colorScheme))
+        .fill(self.model.backgroundColor.color)
       )
   }
 }

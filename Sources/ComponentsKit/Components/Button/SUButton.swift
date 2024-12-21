@@ -62,9 +62,9 @@ private struct CustomButtonStyle: SwiftUI.ButtonStyle {
       .padding(.trailing, self.model.horizontalPadding)
       .frame(maxWidth: self.model.width)
       .frame(height: self.model.height)
-      .foregroundStyle(self.model.foregroundColor.color(for: self.colorScheme))
+      .foregroundStyle(self.model.foregroundColor.color)
       .background(
-        self.model.backgroundColor?.color(for: self.colorScheme) ?? Color.clear
+        self.model.backgroundColor?.color ?? Color.clear
       )
       .clipShape(
         RoundedRectangle(
@@ -76,7 +76,7 @@ private struct CustomButtonStyle: SwiftUI.ButtonStyle {
           cornerRadius: self.model.cornerRadius.value()
         )
         .stroke(
-          self.model.borderColor?.color(for: self.colorScheme) ?? .clear,
+          self.model.borderColor?.color ?? .clear,
           lineWidth: self.model.borderWidth
         )
       }

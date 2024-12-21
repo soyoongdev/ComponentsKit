@@ -7,6 +7,8 @@ extension ButtonVM {
     case filled
     /// A button with a transparent background.
     case plain
+    /// A button with a partially transparent background.
+    case light
     /// A button with a transparent background and a border.
     case bordered(BorderWidth)
   }

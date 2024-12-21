@@ -11,8 +11,6 @@ struct ModalContent<VM: ModalVM, Header: View, Body: View, Footer: View>: View {
   @State private var bodySize: CGSize = .zero
   @State private var footerSize: CGSize = .zero
 
-  @Environment(\.colorScheme) private var colorScheme
-
   init(
     model: VM,
     @ViewBuilder header: @escaping () -> Header,
@@ -60,8 +58,8 @@ struct ModalContent<VM: ModalVM, Header: View, Body: View, Footer: View>: View {
         .padding(.bottom, self.model.contentPaddings.bottom)
     }
     .frame(maxWidth: self.model.size.maxWidth, alignment: .leading)
-    .background(self.model.preferredBackgroundColor.color(for: self.colorScheme))
-    .background(UniversalColor.background.color(for: self.colorScheme))
+    .background(self.model.preferredBackgroundColor.color)
+    .background(UniversalColor.background.color)
     .clipShape(RoundedRectangle(
       cornerRadius: self.model.cornerRadius.value
     ))

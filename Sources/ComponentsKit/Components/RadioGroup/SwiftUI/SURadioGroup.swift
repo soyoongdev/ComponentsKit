@@ -11,7 +11,6 @@ public struct SURadioGroup<ID: Hashable>: View {
   @Binding public var selectedId: ID?
 
   @State private var viewSizes: [ID: CGSize] = [:]
-  @Environment(\.colorScheme) private var colorScheme
   @State private var tappingId: ID?
 
   // MARK: Initialization
@@ -37,14 +36,14 @@ public struct SURadioGroup<ID: Hashable>: View {
           ZStack {
             Circle()
               .strokeBorder(
-                self.model.radioItemColor(for: item, isSelected: self.selectedId == item.id).color(for: self.colorScheme),
+                self.model.radioItemColor(for: item, isSelected: self.selectedId == item.id).color,
                 lineWidth: self.model.lineWidth
               )
               .frame(width: self.model.circleSize, height: self.model.circleSize)
             if self.selectedId == item.id {
               Circle()
                 .fill(
-                  self.model.radioItemColor(for: item, isSelected: true).color(for: self.colorScheme)
+                  self.model.radioItemColor(for: item, isSelected: true).color
                 )
                 .frame(width: self.model.innerCircleSize, height: self.model.innerCircleSize)
                 .transition(.scale)
@@ -54,9 +53,7 @@ public struct SURadioGroup<ID: Hashable>: View {
           .scaleEffect(self.tappingId == item.id ? self.model.animationScale.value : 1.0)
           Text(item.title)
             .font(self.model.preferredFont(for: item.id).font)
-            .foregroundColor(
-              self.model.textColor(for: item).color(for: self.colorScheme)
-            )
+            .foregroundColor(self.model.textColor(for: item).color)
         }
         .background(
           GeometryReader { proxy in

@@ -34,11 +34,9 @@ struct SwiftUILogin: View {
     )
   }
 
-  @Environment(\.colorScheme) var colorScheme
-
   var body: some View {
     ZStack {
-      UniversalColor.background.color(for: self.colorScheme)
+      UniversalColor.background.color
 
       ScrollView {
         VStack(spacing: 20) {
