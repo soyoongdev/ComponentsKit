@@ -86,23 +86,6 @@ public struct UniversalColor: Hashable {
         return UIColor(color)
       }
     }
-
-    /// Converts the `ColorRepresentable` to a SwiftUI `Color` instance.
-    fileprivate var color: Color {
-      switch self {
-      case .rgba(let r, let g, let b, let a):
-        return Color(
-          red: r / 255,
-          green: g / 255,
-          blue: b / 255,
-          opacity: a
-        )
-      case .uiColor(let uiColor):
-        return Color(uiColor: uiColor)
-      case .color(let color):
-        return color
-      }
-    }
   }
 
   // MARK: - Properties
@@ -161,7 +144,7 @@ public struct UniversalColor: Hashable {
 
   // MARK: - Colors
 
-  /// Returns the `UIColor` representation of the color, adapting to the current system theme.
+  /// Returns the `UIColor` representation of the color.
   public var uiColor: UIColor {
     return UIColor { trait in
       switch trait.userInterfaceStyle {
@@ -175,18 +158,8 @@ public struct UniversalColor: Hashable {
     }
   }
 
-  /// Returns the `Color` representation of the color for a given SwiftUI `ColorScheme`.
-  ///
-  /// - Parameter colorScheme: The current color scheme (`.light` or `.dark`).
-  /// - Returns: The corresponding `Color` instance.
-  public func color(for colorScheme: ColorScheme) -> Color {
-    switch colorScheme {
-    case .light:
-      return self.light.color
-    case .dark:
-      return self.dark.color
-    @unknown default:
-      return self.light.color
-    }
+  /// Returns the `Color` representation of the color.
+  public var color: Color {
+    return Color(self.uiColor)
   }
 }
