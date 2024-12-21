@@ -35,6 +35,15 @@ struct App: View {
           }
         }
 
+        Section("Modals") {
+          NavigationLinkWithTitle("Bottom Modal") {
+            BottomModalPreview()
+          }
+          NavigationLinkWithTitle("Center Modal") {
+            CenterModalPreview()
+          }
+        }
+
         Section("Login Demo") {
           NavigationLinkWithTitle("SwiftUI") {
             SwiftUILogin()

@@ -147,6 +147,13 @@ extension ComponentsKitConfig {
       large: 16.0
     )
 
+    /// The radius configuration for content containers such as modals, cards, etc.
+    public var containerRadius: Radius = .init(
+      small: 16.0,
+      medium: 20.0,
+      large: 26.0
+    )
+
     /// The border width configuration for components.
     public var borderWidth: BorderWidth = .init(
       small: 1.0,

@@ -11,3 +11,10 @@ extension UIView {
     }
   }
 }
+
+extension UIView {
+  /// A helper to get bounds of the device's screen.
+  public var screenBounds: CGRect {
+    return self.window?.windowScene?.screen.bounds ?? UIScreen.main.bounds
+  }
+}
