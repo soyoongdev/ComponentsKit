@@ -17,6 +17,7 @@ struct InputFieldPreview: View {
         self.inputField
           .preview
           .onAppear {
+            self.inputField.text = ""
             self.inputField.model = Self.initialModel
           }
           .onChange(of: self.model) { newValue in
@@ -38,7 +39,7 @@ struct InputFieldPreview: View {
           Text("Custom: 20px").tag(ComponentRadius.custom(20))
         }
         Toggle("Enabled", isOn: self.$model.isEnabled)
-        FontPicker(selection: self.$model.font)
+        BodyFontPicker(selection: self.$model.font)
         KeyboardTypePicker(selection: self.$model.keyboardType)
         Toggle("Placeholder", isOn: .init(
           get: {

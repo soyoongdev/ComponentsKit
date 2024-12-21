@@ -16,7 +16,6 @@ struct CountdownPreview: View {
       }
       Form {
         ComponentOptionalColorPicker(selection: self.$model.color)
-        FontPicker(selection: self.$model.font)
         Picker("Locale", selection: self.$model.locale) {
           Text("Current").tag(Locale.current)
           Text("EN").tag(Locale(identifier: "en"))
@@ -30,6 +29,8 @@ struct CountdownPreview: View {
           Text("HI").tag(Locale(identifier: "hi"))
           Text("PT").tag(Locale(identifier: "pt"))
         }
+        HeadlineFontPicker(title: "Main Font", selection: self.$model.mainFont)
+        CaptionFontPicker(title: "Secondary Font", selection: self.$model.secondaryFont)
         SizePicker(selection: self.$model.size)
         Picker("Style", selection: self.$model.style) {
           Text("Plain").tag(CountdownVM.Style.plain)

@@ -40,15 +40,14 @@ struct ComponentColorPicker: View {
   var body: some View {
     Picker("Color", selection: self.$selection) {
       Text("Primary").tag(ComponentColor.primary)
-      Text("Secondary").tag(ComponentColor.secondary)
       Text("Accent").tag(ComponentColor.accent)
       Text("Success").tag(ComponentColor.success)
       Text("Warning").tag(ComponentColor.warning)
       Text("Danger").tag(ComponentColor.danger)
       Text("Custom").tag(ComponentColor(
         main: .universal(.uiColor(.systemPurple)),
-        contrast: .universal(.uiColor(.systemYellow)))
-      )
+        contrast: .universal(.uiColor(.systemYellow))
+      ))
     }
   }
 }
@@ -62,15 +61,14 @@ struct ComponentOptionalColorPicker: View {
     Picker("Color", selection: self.$selection) {
       Text("Default").tag(Optional<ComponentColor>.none)
       Text("Primary").tag(ComponentColor.primary)
-      Text("Secondary").tag(ComponentColor.secondary)
       Text("Accent").tag(ComponentColor.accent)
       Text("Success").tag(ComponentColor.success)
       Text("Warning").tag(ComponentColor.warning)
       Text("Danger").tag(ComponentColor.danger)
       Text("Custom").tag(ComponentColor(
         main: .universal(.uiColor(.systemPurple)),
-        contrast: .universal(.uiColor(.systemYellow)))
-      )
+        contrast: .universal(.uiColor(.systemYellow))
+      ))
     }
   }
 }
@@ -93,18 +91,84 @@ struct CornerRadiusPicker<Custom: View>: View {
   }
 }
 
-// MARK: - FontPicker
+// MARK: - FontPickers
 
-struct FontPicker: View {
+struct BodyFontPicker: View {
+  let title: String
   @Binding var selection: UniversalFont?
+  
+  init(title: String = "Font", selection: Binding<UniversalFont?>) {
+    self.title = title
+    self._selection = selection
+  }
 
   var body: some View {
-    Picker("Font", selection: self.$selection) {
+    Picker(self.title, selection: self.$selection) {
       Text("Default").tag(Optional<UniversalFont>.none)
-      Text("Small").tag(UniversalFont.Component.small)
-      Text("Medium").tag(UniversalFont.Component.medium)
-      Text("Large").tag(UniversalFont.Component.large)
-      Text("Custom: system bold of size 18").tag(UniversalFont.system(size: 18, weight: .bold))
+      Text("Small").tag(UniversalFont.smBody)
+      Text("Medium").tag(UniversalFont.mdBody)
+      Text("Large").tag(UniversalFont.lgBody)
+      Text("Custom: system semibold of size 16").tag(UniversalFont.system(size: 16, weight: .semibold))
+    }
+  }
+}
+
+struct ButtonFontPicker: View {
+  let title: String
+  @Binding var selection: UniversalFont?
+  
+  init(title: String = "Font", selection: Binding<UniversalFont?>) {
+    self.title = title
+    self._selection = selection
+  }
+  
+  var body: some View {
+    Picker(self.title, selection: self.$selection) {
+      Text("Default").tag(Optional<UniversalFont>.none)
+      Text("Small").tag(UniversalFont.smButton)
+      Text("Medium").tag(UniversalFont.mdButton)
+      Text("Large").tag(UniversalFont.lgButton)
+      Text("Custom: system bold of size 16").tag(UniversalFont.system(size: 16, weight: .bold))
+    }
+  }
+}
+
+struct HeadlineFontPicker: View {
+  let title: String
+  @Binding var selection: UniversalFont?
+  
+  init(title: String = "Font", selection: Binding<UniversalFont?>) {
+    self.title = title
+    self._selection = selection
+  }
+
+  var body: some View {
+    Picker(self.title, selection: self.$selection) {
+      Text("Default").tag(Optional<UniversalFont>.none)
+      Text("Small").tag(UniversalFont.smHeadline)
+      Text("Medium").tag(UniversalFont.mdHeadline)
+      Text("Large").tag(UniversalFont.lgHeadline)
+      Text("Custom: system bold of size 20").tag(UniversalFont.system(size: 20, weight: .bold))
+    }
+  }
+}
+
+struct CaptionFontPicker: View {
+  let title: String
+  @Binding var selection: UniversalFont?
+  
+  init(title: String = "Font", selection: Binding<UniversalFont?>) {
+    self.title = title
+    self._selection = selection
+  }
+  
+  var body: some View {
+    Picker(self.title, selection: self.$selection) {
+      Text("Default").tag(Optional<UniversalFont>.none)
+      Text("Small").tag(UniversalFont.smCaption)
+      Text("Medium").tag(UniversalFont.mdCaption)
+      Text("Large").tag(UniversalFont.lgCaption)
+      Text("Custom: system semibold of size 12").tag(UniversalFont.system(size: 12, weight: .semibold))
     }
   }
 }
@@ -173,7 +237,6 @@ struct UniversalColorPicker: View {
   var body: some View {
     Picker(self.title, selection: self.$selection) {
       Text("Primary").tag(UniversalColor.primary)
-      Text("Secondary").tag(UniversalColor.secondary)
       Text("Accent").tag(UniversalColor.accent)
       Text("Success").tag(UniversalColor.success)
       Text("Warning").tag(UniversalColor.warning)

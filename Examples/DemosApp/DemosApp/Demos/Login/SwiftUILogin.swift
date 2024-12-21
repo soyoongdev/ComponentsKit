@@ -38,7 +38,7 @@ struct SwiftUILogin: View {
 
   var body: some View {
     ZStack {
-      Palette.Base.background.color(for: self.colorScheme)
+      UniversalColor.background.color(for: self.colorScheme)
 
       ScrollView {
         VStack(spacing: 20) {
@@ -62,7 +62,7 @@ struct SwiftUILogin: View {
             ? "Welcome back"
             : "Create an account"
           )
-          .font(.system(size: 30, weight: .bold))
+          .font(UniversalFont.lgHeadline.font)
           .padding(.vertical, 30)
 
           if self.selectedPage == .signUp {
@@ -129,6 +129,7 @@ struct SwiftUILogin: View {
                 model: .init {
                   $0.title = "Continue"
                   $0.isFullWidth = true
+                  $0.color = .primary
                   $0.isEnabled = self.isButtonEnabled
                 },
                 action: {
