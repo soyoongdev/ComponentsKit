@@ -63,10 +63,7 @@ struct ModalContent<VM: ModalVM, Header: View, Body: View, Footer: View>: View {
     .clipShape(RoundedRectangle(
       cornerRadius: self.model.cornerRadius.value
     ))
-    .padding(.top, self.model.outerPaddings.top)
-    .padding(.leading, self.model.outerPaddings.leading)
-    .padding(.bottom, self.model.outerPaddings.bottom)
-    .padding(.trailing, self.model.outerPaddings.trailing)
+    .padding(self.model.outerPaddings.edgeInsets)
   }
 
   private var bodyTopPadding: CGFloat {
