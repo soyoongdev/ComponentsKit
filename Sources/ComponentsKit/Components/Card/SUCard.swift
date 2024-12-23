@@ -10,6 +10,7 @@ import SwiftUI
 ///     Text("This is the content of the card.")
 ///   }
 /// )
+/// ```
 public struct SUCard<Content: View>: View {
   // MARK: - Properties
 

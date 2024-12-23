@@ -14,6 +14,7 @@ import UIKit
 ///     return label
 ///   }
 /// )
+/// ```
 open class UKCard: UIView, UKComponent {
   // MARK: - Typealiases
 
