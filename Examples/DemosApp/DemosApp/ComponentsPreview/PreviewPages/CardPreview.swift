@@ -16,6 +16,13 @@ struct CardPreview: View {
           .preview
       }
       Form {
+        Picker("Background Color", selection: self.$model.backgroundColor) {
+          Text("Default").tag(Optional<UniversalColor>.none)
+          Text("Accent Background").tag(ComponentColor.accent.background)
+          Text("Success Background").tag(ComponentColor.success.background)
+          Text("Warning Background").tag(ComponentColor.warning.background)
+          Text("Danger Background").tag(ComponentColor.danger.background)
+        }
         Picker("Content Paddings", selection: self.$model.contentPaddings) {
           Text("12px").tag(Paddings(padding: 12))
           Text("16px").tag(Paddings(padding: 16))

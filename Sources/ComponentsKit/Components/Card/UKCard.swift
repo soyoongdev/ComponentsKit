@@ -5,6 +5,7 @@ open class UKCard: UIView, UKComponent {
   public typealias Content = () -> UIView
 
   public let content: UIView
+  public let contentView = UIView()
 
   private var contentConstraints = LayoutConstraints()
 
@@ -30,20 +31,30 @@ open class UKCard: UIView, UKComponent {
   }
 
   open func setup() {
-    self.addSubview(self.content)
+    self.addSubview(self.contentView)
+    self.contentView.addSubview(self.content)
   }
 
   open func style() {
     Self.Style.mainView(self, model: self.model)
+    Self.Style.contentView(self.contentView, model: self.model)
   }
 
   open func layout() {
+    self.contentView.allEdges()
+
     self.contentConstraints = LayoutConstraints.merged {
       self.content.top(self.model.contentPaddings.top)
       self.content.bottom(self.model.contentPaddings.bottom)
       self.content.leading(self.model.contentPaddings.leading)
       self.content.trailing(self.model.contentPaddings.trailing)
     }
+  }
+
+  open override func layoutSubviews() {
+    super.layoutSubviews()
+
+    self.layer.shadowPath = UIBezierPath(rect: self.bounds).cgPath
   }
 
   open func update(_ oldValue: CardVM) {
@@ -65,8 +76,18 @@ open class UKCard: UIView, UKComponent {
 extension UKCard {
   fileprivate enum Style {
     static func mainView(_ view: UIView, model: Model) {
+      view.backgroundColor = UniversalColor.background.uiColor
+      view.layer.cornerRadius = model.cornerRadius.value
       view.layer.borderWidth = 1
       view.layer.borderColor = UniversalColor.divider.uiColor.cgColor
+      view.layer.shadowColor = UIColor.black.cgColor
+      view.layer.shadowRadius = 16
+      view.layer.shadowOpacity = 0.1
+      view.layer.shadowOffset = .init(width: 0, height: 10)
+    }
+
+    static func contentView(_ view: UIView, model: Model) {
+      view.backgroundColor = model.preferredBackgroundColor.uiColor
       view.layer.cornerRadius = model.cornerRadius.value
     }
   }

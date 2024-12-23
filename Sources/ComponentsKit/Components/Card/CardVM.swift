@@ -1,6 +1,9 @@
 import Foundation
 
 public struct CardVM: ComponentVM {
+  /// The background color of the card's content area.
+  public var backgroundColor: UniversalColor?
+
   /// The padding applied to the card's content area.
   ///
   /// Defaults to a padding value of `16` for all sides.
@@ -12,4 +15,12 @@ public struct CardVM: ComponentVM {
   public var cornerRadius: ContainerRadius = .medium
 
   public init() {}
+}
+
+// MARK: - Helpers
+
+extension CardVM {
+  var preferredBackgroundColor: UniversalColor {
+    return self.backgroundColor ?? .background
+  }
 }
