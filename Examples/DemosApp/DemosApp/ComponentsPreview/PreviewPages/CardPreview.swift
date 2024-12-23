@@ -4,7 +4,7 @@ import UIKit
 
 struct CardPreview: View {
   @State private var model = CardVM()
-  
+
   var body: some View {
     VStack {
       PreviewWrapper(title: "UIKit") {
@@ -52,17 +52,16 @@ private func cardContent() -> UIView {
   titleLabel.font = UniversalFont.mdHeadline.uiFont
   titleLabel.textColor = UniversalColor.foreground.uiColor
   titleLabel.numberOfLines = 0
-  
+
   let subtitleLabel = UILabel()
-  subtitleLabel.text = "Card is a container for text, photos, and other content."
+  subtitleLabel.text = "Card is a container for text, images, and other content."
   subtitleLabel.font = UniversalFont.mdBody.uiFont
   subtitleLabel.textColor = UniversalColor.secondaryForeground.uiColor
   subtitleLabel.numberOfLines = 0
-  
-  
+
   let stackView = UIStackView(arrangedSubviews: [titleLabel, subtitleLabel])
   stackView.axis = .vertical
   stackView.spacing = 8
-  
+
   return stackView
 }
