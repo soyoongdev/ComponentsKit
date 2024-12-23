@@ -1,4 +1,4 @@
-import Foundation
+import SwiftUI
 
 /// Defines shadow options for components.
 public enum Shadow: Hashable {
@@ -48,5 +48,18 @@ extension Shadow {
     case .large: ComponentsKitConfig.shared.layout.shadow.large.color
     case .custom(_, _, let color): color
     }
+  }
+}
+
+// MARK: - SwiftUI + Shadow
+
+extension View {
+  func shadow(_ shadow: Shadow) -> some View {
+    self.shadow(
+      color: shadow.color.color,
+      radius: shadow.radius,
+      x: shadow.offset.width,
+      y: shadow.offset.height
+    )
   }
 }

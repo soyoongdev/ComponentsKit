@@ -1,14 +1,39 @@
 import SwiftUI
 
+/// A SwiftUI component that serves as a container for provided content.
+///
+/// - Example:
+/// ```swift
+/// SUCard(
+///   model: .init(),
+///   content: {
+///     Text("This is the content of the card.")
+///   }
+/// )
 public struct SUCard<Content: View>: View {
-  let model: CardVM
+  // MARK: - Properties
+
+  /// A model that defines the appearance properties.
+  public let model: CardVM
 
   @ViewBuilder private let content: () -> Content
 
-  public init(model: CardVM, content: @escaping () -> Content) {
+  // MARK: - Initialization
+
+  /// Initializer.
+  ///
+  /// - Parameters:
+  ///   - model: A model that defines the appearance properties.
+  ///   - content: The content that is displayed in the card.
+  public init(
+    model: CardVM,
+    content: @escaping () -> Content
+  ) {
     self.model = model
     self.content = content
   }
+
+  // MARK: - Body
 
   public var body: some View {
     self.content()
@@ -21,16 +46,5 @@ public struct SUCard<Content: View>: View {
           .stroke(UniversalColor.divider.color, lineWidth: 1.0)
       )
       .shadow(self.model.shadow)
-  }
-}
-
-extension View {
-  func shadow(_ shadow: Shadow) -> some View {
-    self.shadow(
-      color: shadow.color.color,
-      radius: shadow.radius,
-      x: shadow.offset.width,
-      y: shadow.offset.height
-    )
   }
 }

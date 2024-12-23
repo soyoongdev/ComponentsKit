@@ -7,7 +7,7 @@ import UIKit
 /// ```swift
 /// let banner = UKCard(
 ///   model: .init(),
-///   content: { _ in
+///   content: {
 ///     let label = UILabel()
 ///     label.text = "This is the content of the card."
 ///     label.numberOfLines = 0
