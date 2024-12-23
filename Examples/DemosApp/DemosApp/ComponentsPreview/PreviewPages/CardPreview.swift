@@ -31,6 +31,13 @@ struct CardPreview: View {
         ContainerRadiusPicker(selection: self.$model.cornerRadius) {
           Text("Custom 4px").tag(ContainerRadius.custom(4))
         }
+        Picker("Shadow", selection: self.$model.shadow) {
+          Text("None").tag(Shadow.none)
+          Text("Small").tag(Shadow.small)
+          Text("Medium").tag(Shadow.medium)
+          Text("Large").tag(Shadow.large)
+          Text("Custom").tag(Shadow.custom(20.0, .zero, ComponentColor.accent.background))
+        }
       }
     }
   }

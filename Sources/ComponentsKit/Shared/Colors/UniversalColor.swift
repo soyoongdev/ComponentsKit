@@ -162,4 +162,9 @@ public struct UniversalColor: Hashable {
   public var color: Color {
     return Color(self.uiColor)
   }
+
+  /// Returns the `CGColor` representation of the color.
+  public var cgColor: CGColor {
+    return self.uiColor.cgColor
+  }
 }

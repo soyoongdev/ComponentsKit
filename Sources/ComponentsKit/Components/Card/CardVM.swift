@@ -14,6 +14,8 @@ public struct CardVM: ComponentVM {
   /// Defaults to `.medium`.
   public var cornerRadius: ContainerRadius = .medium
 
+  public var shadow: Shadow = .medium
+
   public init() {}
 }
 
