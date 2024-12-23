@@ -21,7 +21,7 @@ public struct BottomModalVM: ModalVM {
   /// The corner radius of the modal.
   ///
   /// Defaults to `.medium`.
-  public var cornerRadius: ModalRadius = .medium
+  public var cornerRadius: ContainerRadius = .medium
 
   /// A Boolean value indicating whether the modal should hide when it is swiped down.
   ///

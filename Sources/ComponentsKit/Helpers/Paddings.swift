@@ -1,4 +1,4 @@
-import Foundation
+import UIKit
 
 /// Defines padding values for each edge.
 public struct Paddings: Hashable {

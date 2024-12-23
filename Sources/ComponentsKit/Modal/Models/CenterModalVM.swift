@@ -21,7 +21,7 @@ public struct CenterModalVM: ModalVM {
   /// The corner radius of the modal.
   ///
   /// Defaults to `.medium`.
-  public var cornerRadius: ModalRadius = .medium
+  public var cornerRadius: ContainerRadius = .medium
 
   /// The style of the overlay displayed behind the modal.
   ///

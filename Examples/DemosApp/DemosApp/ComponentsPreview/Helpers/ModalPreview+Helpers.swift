@@ -82,12 +82,8 @@ struct ModalPreviewHelpers {
           Text("16px").tag(Paddings(padding: 16))
           Text("20px").tag(Paddings(padding: 20))
         }
-        Picker("Corner Radius", selection: self.$model.cornerRadius) {
-          Text("None").tag(ModalRadius.none)
-          Text("Small").tag(ModalRadius.small)
-          Text("Medium").tag(ModalRadius.medium)
-          Text("Large").tag(ModalRadius.large)
-          Text("Custom 30px").tag(ModalRadius.custom(30))
+        ContainerRadiusPicker(selection: self.$model.cornerRadius) {
+          Text("Custom 30px").tag(ContainerRadius.custom(30))
         }
         Picker("Overlay Style", selection: self.$model.overlayStyle) {
           Text("Blurred").tag(ModalOverlayStyle.blurred)

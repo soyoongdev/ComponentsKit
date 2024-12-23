@@ -15,7 +15,7 @@ public protocol ModalVM: ComponentVM {
   var contentSpacing: CGFloat { get set }
 
   /// The corner radius of the modal.
-  var cornerRadius: ModalRadius { get set }
+  var cornerRadius: ContainerRadius { get set }
 
   /// The style of the overlay displayed behind the modal.
   var overlayStyle: ModalOverlayStyle { get set }

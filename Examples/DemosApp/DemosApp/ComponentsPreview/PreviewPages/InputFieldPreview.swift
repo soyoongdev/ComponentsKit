@@ -35,7 +35,7 @@ struct InputFieldPreview: View {
         AutocapitalizationPicker(selection: self.$model.autocapitalization)
         Toggle("Autocorrection Enabled", isOn: self.$model.isAutocorrectionEnabled)
         ComponentOptionalColorPicker(selection: self.$model.color)
-        CornerRadiusPicker(selection: self.$model.cornerRadius) {
+        ComponentRadiusPicker(selection: self.$model.cornerRadius) {
           Text("Custom: 20px").tag(ComponentRadius.custom(20))
         }
         Toggle("Enabled", isOn: self.$model.isEnabled)
