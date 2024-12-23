@@ -2,7 +2,7 @@ import Foundation
 
 /// A model that defines generic appearance properties that can be in any modal component.
 public protocol ModalVM: ComponentVM {
-  /// The background color of the modal's content area.
+  /// The background color of the modal.
   var backgroundColor: UniversalColor? { get set }
 
   /// A Boolean value indicating whether the modal should close when tapping on the overlay.

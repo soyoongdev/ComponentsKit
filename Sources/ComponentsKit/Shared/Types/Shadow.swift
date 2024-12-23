@@ -4,11 +4,11 @@ import Foundation
 public enum Shadow: Hashable {
   /// No shadow is applied.
   case none
-  /// A small shadow, using a predefined configuration.
+  /// A small shadow.
   case small
-  /// A medium shadow, using a predefined configuration.
+  /// A medium shadow.
   case medium
-  /// A large shadow, using a predefined configuration.
+  /// A large shadow.
   case large
   /// A custom shadow with specific parameters.
   ///

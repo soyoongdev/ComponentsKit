@@ -102,6 +102,7 @@ open class UKCard: UIView, UKComponent {
     self.layer.shadowPath = UIBezierPath(rect: self.bounds).cgPath
   }
 
+  /// Updates appearance when the model changes.
   open func update(_ oldValue: CardVM) {
     guard self.model != oldValue else { return }
 
@@ -112,9 +113,9 @@ open class UKCard: UIView, UKComponent {
       self.contentConstraints.bottom?.constant = -self.model.contentPaddings.bottom
       self.contentConstraints.leading?.constant = self.model.contentPaddings.leading
       self.contentConstraints.trailing?.constant = -self.model.contentPaddings.trailing
-    }
 
-    self.layoutIfNeeded()
+      self.layoutIfNeeded()
+    }
   }
 
   // MARK: - UIView Methods

@@ -2,7 +2,7 @@ import Foundation
 
 /// A model that defines the appearance properties for a card component.
 public struct CardVM: ComponentVM {
-  /// The background color of the card's content area.
+  /// The background color of the card.
   public var backgroundColor: UniversalColor?
 
   /// The padding applied to the card's content area.
