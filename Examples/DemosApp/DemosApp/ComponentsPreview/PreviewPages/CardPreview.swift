@@ -8,16 +8,13 @@ struct CardPreview: View {
   var body: some View {
     VStack {
       PreviewWrapper(title: "UIKit") {
-        UKCard(model: self.model, content: {
-          let label = UILabel()
-          label.text = "Hello World!"
-          return label
-        })
+        UKCard(model: self.model, content: cardContent)
           .preview
       }
       Form {
         Picker("Background Color", selection: self.$model.backgroundColor) {
           Text("Default").tag(Optional<UniversalColor>.none)
+          Text("Secondary Background").tag(UniversalColor.secondaryBackground)
           Text("Accent Background").tag(ComponentColor.accent.background)
           Text("Success Background").tag(ComponentColor.success.background)
           Text("Warning Background").tag(ComponentColor.warning.background)
@@ -45,4 +42,27 @@ struct CardPreview: View {
 
 #Preview {
   CardPreview()
+}
+
+// MARK: - Helpers
+
+private func cardContent() -> UIView {
+  let titleLabel = UILabel()
+  titleLabel.text = "Card"
+  titleLabel.font = UniversalFont.mdHeadline.uiFont
+  titleLabel.textColor = UniversalColor.foreground.uiColor
+  titleLabel.numberOfLines = 0
+  
+  let subtitleLabel = UILabel()
+  subtitleLabel.text = "Card is a container for text, photos, and other content."
+  subtitleLabel.font = UniversalFont.mdBody.uiFont
+  subtitleLabel.textColor = UniversalColor.secondaryForeground.uiColor
+  subtitleLabel.numberOfLines = 0
+  
+  
+  let stackView = UIStackView(arrangedSubviews: [titleLabel, subtitleLabel])
+  stackView.axis = .vertical
+  stackView.spacing = 8
+  
+  return stackView
 }

@@ -1,20 +1,37 @@
 import AutoLayout
 import UIKit
 
+/// A UIKit component that serves as a container for provided content.
+///
+/// - Example:
+/// ```swift
+/// let banner = UKCard(
+///   model: .init(),
+///   content: { _ in
+///     let label = UILabel()
+///     label.text = "This is the content of the card."
+///     label.numberOfLines = 0
+///     return label
+///   }
+/// )
 open class UKCard: UIView, UKComponent {
   // MARK: - Typealiases
 
+  /// A closure that returns the content view to be displayed inside the card.
   public typealias Content = () -> UIView
 
   // MARK: - Subviews
 
+  /// The primary content of the card, provided as a custom view.
   public let content: UIView
+  /// The container view that holds the card's content.
   public let contentView = UIView()
 
   // MARK: - Properties
 
   private var contentConstraints = LayoutConstraints()
 
+  /// A model that defines the appearance properties.
   public var model: CardVM {
     didSet {
       self.update(oldValue)
@@ -23,6 +40,11 @@ open class UKCard: UIView, UKComponent {
 
   // MARK: - Initialization
 
+  /// Initializer.
+  ///
+  /// - Parameters:
+  ///   - model: A model that defines the appearance properties.
+  ///   - content: The content that is displayed in the card.
   public init(model: CardVM, content: @escaping Content) {
     self.model = model
     self.content = content()
@@ -40,6 +62,7 @@ open class UKCard: UIView, UKComponent {
 
   // MARK: - Setup
 
+  /// Sets up the card's subviews.
   open func setup() {
     self.addSubview(self.contentView)
     self.contentView.addSubview(self.content)
@@ -53,6 +76,7 @@ open class UKCard: UIView, UKComponent {
 
   // MARK: - Style
 
+  /// Applies styling to the card's subviews.
   open func style() {
     Self.Style.mainView(self, model: self.model)
     Self.Style.contentView(self.contentView, model: self.model)
@@ -60,6 +84,7 @@ open class UKCard: UIView, UKComponent {
 
   // MARK: - Layout
 
+  /// Configures the layout.
   open func layout() {
     self.contentView.allEdges()
 

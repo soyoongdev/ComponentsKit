@@ -1,5 +1,6 @@
 import Foundation
 
+/// A model that defines the appearance properties for a card component.
 public struct CardVM: ComponentVM {
   /// The background color of the card's content area.
   public var backgroundColor: UniversalColor?
@@ -14,8 +15,12 @@ public struct CardVM: ComponentVM {
   /// Defaults to `.medium`.
   public var cornerRadius: ContainerRadius = .medium
 
+  /// The shadow of the card.
+  ///
+  /// Defaults to `.medium`.
   public var shadow: Shadow = .medium
 
+  /// Initializes a new instance of `CardVM` with default values.
   public init() {}
 }
 
