@@ -22,9 +22,9 @@ struct ProgressBarPreview: View {
         }
         SizePicker(selection: self.$model.size)
         Picker("Style", selection: $model.style) {
-          Text("Light").tag(ProgressBarStyle.light)
-          Text("Filled").tag(ProgressBarStyle.filled)
-          Text("Striped").tag(ProgressBarStyle.striped)
+          Text("Light").tag(ProgressBarVM.ProgressBarStyle.light)
+          Text("Filled").tag(ProgressBarVM.ProgressBarStyle.filled)
+          Text("Striped").tag(ProgressBarVM.ProgressBarStyle.striped)
         }
       }
     }

@@ -1,13 +1,29 @@
 import SwiftUI
 
+/// A SwiftUI component that displays a progress bar.
 public struct SUProgressBar: View {
-  var model: ProgressBarVM
+  // MARK: - Properties
+
+  /// A model that defines the appearance properties.
+  public var model: ProgressBarVM
+
   @Binding private var currentValue: CGFloat
 
-  public init(currentValue: Binding<CGFloat>, model: ProgressBarVM) {
+  // MARK: - Initializer
+
+  /// Initializer.
+  /// - Parameters:
+  ///   - currentValue: A binding to the current value.
+  ///   - model: A model that defines the appearance properties.
+  public init(
+    currentValue: Binding<CGFloat>,
+    model: ProgressBarVM
+  ) {
     self._currentValue = currentValue
     self.model = model
   }
+
+  // MARK: - Body
 
   public var body: some View {
     GeometryReader { geometry in
@@ -22,21 +38,23 @@ public struct SUProgressBar: View {
             .foregroundColor(model.backgroundColor.color)
             .frame(width: geometry.size.width * (1 - fraction), height: model.barHeight)
             .cornerRadius(model.computedCornerRadius)
+            .scaleEffect(fraction == 0 ? 0 : 1, anchor: .leading)
         }
-        .animation(.default, value: fraction)
+        .animation(.spring, value: fraction)
 
       case .filled:
         ZStack(alignment: .leading) {
           RoundedRectangle(cornerRadius: model.computedCornerRadius)
             .foregroundColor(model.color.main.color)
             .frame(width: geometry.size.width, height: model.barHeight)
-          
+
           RoundedRectangle(cornerRadius: model.computedCornerRadius)
             .foregroundColor((model.color.contrast ?? .foreground).color)
             .frame(width: (geometry.size.width - 6) * fraction, height: model.barHeight - 6)
             .padding(3)
+            .scaleEffect(fraction == 0 ? 0 : 1, anchor: .leading)
         }
-        .animation(.default, value: fraction)
+        .animation(.spring, value: fraction)
 
       case .striped:
         ZStack(alignment: .leading) {
@@ -44,24 +62,25 @@ public struct SUProgressBar: View {
             .foregroundColor(model.color.main.color)
             .frame(width: geometry.size.width, height: model.barHeight)
 
-            RoundedRectangle(cornerRadius: model.computedCornerRadius)
-              .foregroundColor(model.color.contrast.color)
-              .frame(width: (geometry.size.width - 6) * fraction, height: model.barHeight - 6)
-              .padding(3)
+          RoundedRectangle(cornerRadius: model.computedCornerRadius)
+            .foregroundColor(model.color.contrast.color)
+            .frame(width: (geometry.size.width - 6) * fraction, height: model.barHeight - 6)
+            .padding(3)
+            .scaleEffect(fraction == 0 ? 0 : 1, anchor: .leading)
 
-            StripesShape(model: model)
-              .foregroundColor(model.color.main.color)
-              .scaleEffect(1.3)
-              .cornerRadius(model.computedCornerRadius)
-              .frame(width: (geometry.size.width - 6) * fraction, height: model.barHeight - 6)
-              .clipped()
-              .padding(3)
+          StripesShape(model: model)
+            .foregroundColor(model.color.main.color)
+            .scaleEffect(1.2)
+            .cornerRadius(model.computedCornerRadius)
+            .clipped()
         }
-        .animation(.default, value: fraction)
+        .animation(.spring, value: fraction)
       }
     }
     .frame(height: model.barHeight)
   }
+
+  // MARK: - Properties
 
   private var fraction: CGFloat {
     let range = model.maxValue - model.minValue
@@ -70,6 +89,7 @@ public struct SUProgressBar: View {
     return max(0, min(1, fraction))
   }
 }
+
 
 struct StripesShape: Shape {
   var model: ProgressBarVM
