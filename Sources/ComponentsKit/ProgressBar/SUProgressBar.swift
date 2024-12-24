@@ -90,7 +90,6 @@ public struct SUProgressBar: View {
   }
 }
 
-
 struct StripesShape: Shape {
   var model: ProgressBarVM
 

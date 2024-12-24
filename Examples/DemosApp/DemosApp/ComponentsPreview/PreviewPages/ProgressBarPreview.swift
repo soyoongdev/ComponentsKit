@@ -5,7 +5,7 @@ import UIKit
 struct ProgressBarPreview: View {
   @State private var model = ProgressBarVM()
   @State private var currentValue: CGFloat = 50
-
+  
   var body: some View {
     VStack {
       PreviewWrapper(title: "SwiftUI") {
