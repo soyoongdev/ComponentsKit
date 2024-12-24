@@ -2,9 +2,9 @@ import Foundation
 
 /// A model that defines the appearance properties for an alert.
 public struct AlertVM: ComponentVM {
-  public var title: String = ""
+  public var title: String?
 
-  public var message: String = ""
+  public var message: String?
 
   public var primaryButton: AlertButtonVM?
 
