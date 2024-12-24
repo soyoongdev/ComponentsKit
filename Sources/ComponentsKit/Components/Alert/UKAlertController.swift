@@ -23,8 +23,15 @@ public class UKAlertController: UKCenterModalController {
       body: { _ in UILabel() }
     )
 
-    self.header = self.titleLabel
-    self.body = self.subtitleLabel
+    if model.title.isNotNilAndEmpty && model.message.isNotNilAndEmpty {
+      self.header = self.titleLabel
+      self.body = self.subtitleLabel
+    } else if model.title.isNotNilAndEmpty {
+      self.body = self.titleLabel
+    } else {
+      self.body = self.subtitleLabel
+    }
+
     if model.primaryButton.isNotNil || model.secondaryButton.isNotNil {
       self.footer = self.buttonsStackView
     }
@@ -82,8 +89,10 @@ public class UKAlertController: UKCenterModalController {
       - AlertVM.buttonsSpacing
       - self.model.contentPaddings.leading
       - self.model.contentPaddings.trailing
+      let availableButtonWidth = availableButtonsWidth / 2
 
-      if primaryButtonWidth + secondaryButtonWidth <= availableButtonsWidth {
+      if primaryButtonWidth <= availableButtonWidth,
+         secondaryButtonWidth <= availableButtonWidth {
         self.buttonsStackView.removeArrangedSubview(self.secondaryButton)
         self.buttonsStackView.insertArrangedSubview(self.secondaryButton, at: 0)
 
