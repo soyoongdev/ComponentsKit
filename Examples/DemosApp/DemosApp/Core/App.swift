@@ -24,6 +24,9 @@ struct App: View {
           NavigationLinkWithTitle("Loading") {
             LoadingPreview()
           }
+          NavigationLinkWithTitle("Progress Bar") {
+            ProgressBarPreview()
+          }
           NavigationLinkWithTitle("Radio Group") {
             RadioGroupPreview()
           }
