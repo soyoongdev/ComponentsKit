@@ -2,6 +2,8 @@ import UIKit
 
 /// A controller that presents an alert with a title, message, and up to two action buttons.
 ///
+/// All actions in an alert dismiss the alert after the action runs. If no actions are present, a standard “OK” action is included.
+///
 /// - Example:
 /// ```swift
 /// let alert = UKAlertController(
@@ -87,15 +89,16 @@ public class UKAlertController: UKCenterModalController {
     } else {
       self.body = self.subtitleLabel
     }
-    if self.alertVM.primaryButton.isNotNil || self.alertVM.secondaryButton.isNotNil {
-      self.footer = self.buttonsStackView
-    }
+    self.footer = self.buttonsStackView
 
-    if self.alertVM.primaryButton.isNotNil {
+    switch (self.alertVM.primaryButton.isNotNil, self.alertVM.secondaryButton.isNotNil) {
+    case (true, true):
       self.buttonsStackView.addArrangedSubview(self.primaryButton)
-    }
-    if self.alertVM.secondaryButton.isNotNil {
       self.buttonsStackView.addArrangedSubview(self.secondaryButton)
+    case (false, true):
+      self.buttonsStackView.addArrangedSubview(self.secondaryButton)
+    case (_, false):
+      self.buttonsStackView.addArrangedSubview(self.primaryButton)
     }
 
     self.primaryButton.action = { [weak self] in
@@ -125,6 +128,7 @@ public class UKAlertController: UKCenterModalController {
     if let primaryButtonVM = self.alertVM.primaryButtonVM {
       self.primaryButton.model = primaryButtonVM
     }
+    self.primaryButton.model = self.alertVM.primaryButtonVM ?? AlertVM.defaultButtonVM
     if let secondaryButtonVM = self.alertVM.secondaryButtonVM {
       self.secondaryButton.model = secondaryButtonVM
     }

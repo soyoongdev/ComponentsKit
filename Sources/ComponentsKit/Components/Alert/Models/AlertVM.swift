@@ -86,4 +86,10 @@ extension AlertVM {
 
 extension AlertVM {
   static let buttonsSpacing: CGFloat = 12
+
+  static let defaultButtonVM = ButtonVM {
+    $0.title = "OK"
+    $0.color = .primary
+    $0.style = .filled
+  }
 }

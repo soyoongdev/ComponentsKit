@@ -44,10 +44,6 @@ struct AlertPreview: View {
             get: { return self.model.primaryButton != nil },
             set: { newValue in
               self.model.primaryButton = newValue ? Self.initialPrimaryButton : nil
-
-              if !self.hasButtons {
-                self.model.closesOnOverlayTap = true
-              }
             }
           ))
           if self.model.primaryButton != nil {
@@ -64,10 +60,6 @@ struct AlertPreview: View {
             get: { return self.model.secondaryButton != nil },
             set: { newValue in
               self.model.secondaryButton = newValue ? Self.initialSecondaryButton : nil
-
-              if !self.hasButtons {
-                self.model.closesOnOverlayTap = true
-              }
             }
           ))
           if self.model.secondaryButton != nil {
@@ -88,7 +80,6 @@ struct AlertPreview: View {
             Text("Danger Background").tag(ComponentColor.danger.background)
           }
           Toggle("Closes On Overlay Tap", isOn: self.$model.closesOnOverlayTap)
-            .disabled(!self.hasButtons)
           Picker("Content Paddings", selection: self.$model.contentPaddings) {
             Text("12px").tag(Paddings(padding: 12))
             Text("16px").tag(Paddings(padding: 16))
@@ -166,9 +157,6 @@ Enim habitant laoreet inceptos scelerisque senectus, tellus molestie ut. Eros ri
       get: { self.model.secondaryButton ?? Self.initialSecondaryButton },
       set: { self.model.secondaryButton = $0 }
     )
-  }
-  var hasButtons: Bool {
-    return self.model.primaryButton != nil || self.model.secondaryButton != nil
   }
 }
 
