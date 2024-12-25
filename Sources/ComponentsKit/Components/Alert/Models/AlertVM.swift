@@ -2,12 +2,20 @@ import Foundation
 
 /// A model that defines the appearance properties for an alert.
 public struct AlertVM: ComponentVM {
+  /// The title of the alert.
   public var title: String?
 
+  /// The message of the alert.
   public var message: String?
 
+  /// The modal that defines the appearance properties for a primary button in the alert.
+  ///
+  /// If it is `nil`, the primary button will not be displayed.
   public var primaryButton: AlertButtonVM?
 
+  /// The modal that defines the appearance properties for a secondary button in the alert.
+  ///
+  /// If it is `nil`, the secondary button will not be displayed.
   public var secondaryButton: AlertButtonVM?
 
   /// The background color of the modal.
@@ -15,7 +23,7 @@ public struct AlertVM: ComponentVM {
 
   /// A Boolean value indicating whether the modal should close when tapping on the overlay.
   ///
-  /// Defaults to `true`.
+  /// Defaults to `false`.
   public var closesOnOverlayTap: Bool = false
 
   /// The padding applied to the modal's content area.

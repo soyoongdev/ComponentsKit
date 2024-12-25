@@ -1,17 +1,63 @@
 import UIKit
 
+/// A controller that presents an alert with a title, message, and up to two action buttons.
+///
+/// - Example:
+/// ```swift
+/// let alert = UKAlertController(
+///   model: .init { alertVM in
+///     alertVM.title = "My Alert"
+///     alertVM.message = "This is an alert."
+///     alertVM.primaryButton = .init { buttonVM in
+///       buttonVM.title = "OK"
+///       buttonVM.color = .primary
+///       buttonVM.style = .filled
+///     }
+///     alertVM.secondaryButton = .init { buttonVM in
+///       buttonVM.title = "Cancel"
+///       buttonVM.style = .light
+///     }
+///   }, primaryAction: {
+///     NSLog("Primary button tapped")
+///   }, secondaryAction: {
+///     NSLog("Secondary button tapped")
+///   }
+/// )
+///
+/// vc.present(alert, animated: true)
+/// ```
 public class UKAlertController: UKCenterModalController {
+  // MARK: - Properties
+
+  /// The model that defines the appearance of the alert.
   public let alertVM: AlertVM
 
-  public let titleLabel = UILabel()
-  public let subtitleLabel = UILabel()
-  public let primaryButton = UKButton()
-  public let secondaryButton = UKButton()
-  public let buttonsStackView = UIStackView()
-
+  /// The primary action to be executed when the primary button is tapped.
   public var primaryAction: (() -> Void)?
+  /// The secondary action to be executed when the secondary button is tapped.
   public var secondaryAction: (() -> Void)?
 
+  // MARK: - Subviews
+
+  /// The label used to display the title of the alert.
+  public let titleLabel = UILabel()
+  /// The label used to display the subtitle or message of the alert.
+  public let subtitleLabel = UILabel()
+  /// The button representing the primary action in the alert.
+  public let primaryButton = UKButton()
+  /// The button representing the secondary action in the alert.
+  public let secondaryButton = UKButton()
+  /// A stack view that arranges the primary and secondary buttons.
+  public let buttonsStackView = UIStackView()
+
+  // MARK: - Initialization
+
+  /// Initializer.
+  ///
+  /// - Parameters:
+  ///   - model: The `AlertVM` model that defines the appearance and behavior of the alert.
+  ///   - primaryAction: An optional closure executed when the primary button is tapped.
+  ///   - secondaryAction: An optional closure executed when the secondary button is tapped.
   public init(
     model: AlertVM,
     primaryAction: (() -> Void)? = nil,
@@ -28,6 +74,8 @@ public class UKAlertController: UKCenterModalController {
   required public init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
+
+  // MARK: - Setup
 
   public override func setup() {
     if self.alertVM.title.isNotNilAndEmpty,
@@ -65,6 +113,8 @@ public class UKAlertController: UKCenterModalController {
     super.setup()
   }
 
+  // MARK: - Style
+
   public override func style() {
     super.style()
 
@@ -79,6 +129,8 @@ public class UKAlertController: UKCenterModalController {
       self.secondaryButton.model = secondaryButtonVM
     }
   }
+
+  // MARK: - Layout
 
   public override func updateViewConstraints() {
     super.updateViewConstraints()
@@ -115,6 +167,8 @@ public class UKAlertController: UKCenterModalController {
     }
   }
 }
+
+// MARK: - Style Helpers
 
 extension UKAlertController {
   fileprivate enum Style {
