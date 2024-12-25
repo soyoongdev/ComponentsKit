@@ -91,14 +91,11 @@ public class UKAlertController: UKCenterModalController {
     }
     self.footer = self.buttonsStackView
 
-    switch (self.alertVM.primaryButton.isNotNil, self.alertVM.secondaryButton.isNotNil) {
-    case (true, true):
+    if self.alertVM.primaryButtonVM.isNotNil {
       self.buttonsStackView.addArrangedSubview(self.primaryButton)
+    }
+    if self.alertVM.secondaryButtonVM.isNotNil {
       self.buttonsStackView.addArrangedSubview(self.secondaryButton)
-    case (false, true):
-      self.buttonsStackView.addArrangedSubview(self.secondaryButton)
-    case (_, false):
-      self.buttonsStackView.addArrangedSubview(self.primaryButton)
     }
 
     self.primaryButton.action = { [weak self] in
@@ -128,7 +125,6 @@ public class UKAlertController: UKCenterModalController {
     if let primaryButtonVM = self.alertVM.primaryButtonVM {
       self.primaryButton.model = primaryButtonVM
     }
-    self.primaryButton.model = self.alertVM.primaryButtonVM ?? AlertVM.defaultButtonVM
     if let secondaryButtonVM = self.alertVM.secondaryButtonVM {
       self.secondaryButton.model = secondaryButtonVM
     }

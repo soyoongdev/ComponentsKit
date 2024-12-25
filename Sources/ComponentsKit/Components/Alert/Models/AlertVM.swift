@@ -66,7 +66,12 @@ extension AlertVM {
   }
 
   var primaryButtonVM: ButtonVM? {
-    return self.primaryButton.map(self.mapAlertButtonVM)
+    let buttonVM = self.primaryButton.map(self.mapAlertButtonVM)
+    if self.secondaryButton.isNotNil {
+      return buttonVM
+    } else {
+      return buttonVM ?? Self.defaultButtonVM
+    }
   }
 
   var secondaryButtonVM: ButtonVM? {
