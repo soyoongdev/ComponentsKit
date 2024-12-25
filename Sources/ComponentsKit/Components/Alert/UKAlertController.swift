@@ -31,7 +31,7 @@ import UIKit
 public class UKAlertController: UKCenterModalController {
   // MARK: - Properties
 
-  /// The model that defines the appearance of the alert.
+  /// A model that defines the appearance properties for an alert.
   public let alertVM: AlertVM
 
   /// The primary action to be executed when the primary button is tapped.
@@ -57,7 +57,7 @@ public class UKAlertController: UKCenterModalController {
   /// Initializer.
   ///
   /// - Parameters:
-  ///   - model: The `AlertVM` model that defines the appearance and behavior of the alert.
+  ///   - model: A model that defines the appearance properties for an alert.
   ///   - primaryAction: An optional closure executed when the primary button is tapped.
   ///   - secondaryAction: An optional closure executed when the secondary button is tapped.
   public init(
