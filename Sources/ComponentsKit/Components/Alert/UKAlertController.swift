@@ -1,6 +1,8 @@
 import UIKit
 
 public class UKAlertController: UKCenterModalController {
+  public let alertVM: AlertVM
+
   public let titleLabel = UILabel()
   public let subtitleLabel = UILabel()
   public let primaryButton = UKButton()
@@ -15,37 +17,12 @@ public class UKAlertController: UKCenterModalController {
     primaryAction: (() -> Void)? = nil,
     secondaryAction: (() -> Void)? = nil
   ) {
+    self.alertVM = model
+
     self.primaryAction = primaryAction
     self.secondaryAction = secondaryAction
 
-    super.init(
-      model: model.modalVM,
-      body: { _ in UILabel() }
-    )
-
-    if model.title.isNotNilAndEmpty && model.message.isNotNilAndEmpty {
-      self.header = self.titleLabel
-      self.body = self.subtitleLabel
-    } else if model.title.isNotNilAndEmpty {
-      self.body = self.titleLabel
-    } else {
-      self.body = self.subtitleLabel
-    }
-
-    if model.primaryButton.isNotNil || model.secondaryButton.isNotNil {
-      self.footer = self.buttonsStackView
-    }
-
-    self.titleLabel.text = model.title
-    self.subtitleLabel.text = model.message
-    if let primaryButtonVM = model.primaryButtonVM {
-      self.buttonsStackView.addArrangedSubview(self.primaryButton)
-      self.primaryButton.model = primaryButtonVM
-    }
-    if let secondaryButtonVM = model.secondaryButtonVM {
-      self.buttonsStackView.addArrangedSubview(self.secondaryButton)
-      self.secondaryButton.model = secondaryButtonVM
-    }
+    super.init(model: model.modalVM)
   }
 
   required public init?(coder: NSCoder) {
@@ -53,7 +30,25 @@ public class UKAlertController: UKCenterModalController {
   }
 
   public override func setup() {
-    super.setup()
+    if self.alertVM.title.isNotNilAndEmpty,
+       self.alertVM.message.isNotNilAndEmpty {
+      self.header = self.titleLabel
+      self.body = self.subtitleLabel
+    } else if self.alertVM.title.isNotNilAndEmpty {
+      self.body = self.titleLabel
+    } else {
+      self.body = self.subtitleLabel
+    }
+    if self.alertVM.primaryButton.isNotNil || self.alertVM.secondaryButton.isNotNil {
+      self.footer = self.buttonsStackView
+    }
+
+    if self.alertVM.primaryButton.isNotNil {
+      self.buttonsStackView.addArrangedSubview(self.primaryButton)
+    }
+    if self.alertVM.secondaryButton.isNotNil {
+      self.buttonsStackView.addArrangedSubview(self.secondaryButton)
+    }
 
     self.primaryButton.action = { [weak self] in
       self?.primaryAction?()
@@ -63,14 +58,26 @@ public class UKAlertController: UKCenterModalController {
       self?.secondaryAction?()
       self?.dismiss(animated: true)
     }
+
+    // NOTE: Labels and stack view should be assigned to `header`, `body`
+    // and `footer` before calling the superview's method, otherwise they
+    // won't be added to the list of subviews.
+    super.setup()
   }
 
   public override func style() {
     super.style()
 
-    Self.Style.titleLabel(self.titleLabel)
-    Self.Style.subtitleLabel(self.subtitleLabel)
+    Self.Style.titleLabel(self.titleLabel, text: self.alertVM.title)
+    Self.Style.subtitleLabel(self.subtitleLabel, text: self.alertVM.message)
     Self.Style.buttonsStackView(self.buttonsStackView)
+
+    if let primaryButtonVM = self.alertVM.primaryButtonVM {
+      self.primaryButton.model = primaryButtonVM
+    }
+    if let secondaryButtonVM = self.alertVM.secondaryButtonVM {
+      self.secondaryButton.model = secondaryButtonVM
+    }
   }
 
   public override func updateViewConstraints() {
@@ -111,14 +118,16 @@ public class UKAlertController: UKCenterModalController {
 
 extension UKAlertController {
   fileprivate enum Style {
-    static func titleLabel(_ label: UILabel) {
+    static func titleLabel(_ label: UILabel, text: String?) {
+      label.text = text
       label.font = UniversalFont.mdHeadline.uiFont
       label.textColor = UniversalColor.foreground.uiColor
       label.textAlignment = .center
       label.numberOfLines = 0
     }
 
-    static func subtitleLabel(_ label: UILabel) {
+    static func subtitleLabel(_ label: UILabel, text: String?) {
+      label.text = text
       label.font = UniversalFont.mdBody.uiFont
       label.textColor = UniversalColor.secondaryForeground.uiColor
       label.textAlignment = .center

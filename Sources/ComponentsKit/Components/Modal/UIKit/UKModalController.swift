@@ -31,12 +31,7 @@ open class UKModalController<VM: ModalVM>: UIViewController {
 
   // MARK: - Initialization
 
-  init(
-    model: VM = .init(),
-    header: Content? = nil,
-    body: Content,
-    footer: Content? = nil
-  ) {
+  init(model: VM) {
     self.model = model
 
     switch model.overlayStyle {
@@ -47,16 +42,6 @@ open class UKModalController<VM: ModalVM>: UIViewController {
     }
 
     super.init(nibName: nil, bundle: nil)
-
-    self.header = header?({ [weak self] animated in
-      self?.dismiss(animated: animated)
-    })
-    self.body = body({ [weak self] animated in
-      self?.dismiss(animated: animated)
-    })
-    self.footer = footer?({ [weak self] animated in
-      self?.dismiss(animated: animated)
-    })
 
     self.modalPresentationStyle = .overFullScreen
     self.modalTransitionStyle = .crossDissolve

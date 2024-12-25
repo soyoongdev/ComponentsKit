@@ -38,13 +38,23 @@ public class UKBottomModalController: UKModalController<BottomModalVM> {
   ///   - header: An optional content block for the modal's header.
   ///   - body: The main content block for the modal.
   ///   - footer: An optional content block for the modal's footer.
-  public override init(
+  public init(
     model: BottomModalVM = .init(),
     header: Content? = nil,
     body: Content,
     footer: Content? = nil
   ) {
-    super.init(model: model, header: header, body: body, footer: footer)
+    super.init(model: model)
+
+    self.header = header?({ [weak self] animated in
+      self?.dismiss(animated: animated)
+    })
+    self.body = body({ [weak self] animated in
+      self?.dismiss(animated: animated)
+    })
+    self.footer = footer?({ [weak self] animated in
+      self?.dismiss(animated: animated)
+    })
   }
 
   required public init?(coder: NSCoder) {
