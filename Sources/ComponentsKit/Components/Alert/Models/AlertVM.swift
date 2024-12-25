@@ -85,6 +85,7 @@ extension AlertVM {
       $0.color = model.color
       $0.cornerRadius = model.cornerRadius
       $0.style = model.style
+      $0.isFullWidth = true
     }
   }
 }

@@ -3,6 +3,7 @@ import SwiftUI
 import UIKit
 
 struct AlertPreview: View {
+  @State var isAlertPresented: Bool = false
   @State private var model = AlertVM {
     $0.title = Self.alertTitle
     $0.message = AlertMessage.short.rawValue
@@ -20,6 +21,15 @@ struct AlertPreview: View {
           )
         }
         .preview
+      }
+      PreviewWrapper(title: "SwiftUI") {
+        SUButton(model: .init { $0.title = "Show Alert" }) {
+          self.isAlertPresented = true
+        }
+        .suAlert(
+          isPresented: self.$isAlertPresented,
+          model: self.model
+        )
       }
       Form {
         Section("Title") {
