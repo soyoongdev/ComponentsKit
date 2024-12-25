@@ -19,9 +19,11 @@ import UIKit
 ///       buttonVM.title = "Cancel"
 ///       buttonVM.style = .light
 ///     }
-///   }, primaryAction: {
+///   },
+///   primaryAction: {
 ///     NSLog("Primary button tapped")
-///   }, secondaryAction: {
+///   },
+///   secondaryAction: {
 ///     NSLog("Secondary button tapped")
 ///   }
 /// )
