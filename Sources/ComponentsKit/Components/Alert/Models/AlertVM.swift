@@ -97,5 +97,6 @@ extension AlertVM {
     $0.title = "OK"
     $0.color = .primary
     $0.style = .filled
+    $0.isFullWidth = true
   }
 }

@@ -70,13 +70,34 @@ extension View {
             }
           },
           footer: {
-            SUButton(
-              model: AlertVM.defaultButtonVM,
-              action: {
-                primaryAction?()
-                isPresented.wrappedValue = false
+            switch AlertButtonsOrientationCalculator.preferredOrientation(model: model) {
+              case .horizontal:
+              HStack {
+                AlertButton(
+                  isAlertPresented: isPresented,
+                  model: model.secondaryButtonVM,
+                  action: secondaryAction
+                )
+                AlertButton(
+                  isAlertPresented: isPresented,
+                  model: model.primaryButtonVM,
+                  action: primaryAction
+                )
               }
-            )
+            case .vertical:
+              VStack {
+                AlertButton(
+                  isAlertPresented: isPresented,
+                  model: model.primaryButtonVM,
+                  action: primaryAction
+                )
+                AlertButton(
+                  isAlertPresented: isPresented,
+                  model: model.secondaryButtonVM,
+                  action: secondaryAction
+                )
+              }
+            }
           }
         )
       }
@@ -107,5 +128,20 @@ private struct AlertMessage: View {
       .foregroundStyle(UniversalColor.secondaryForeground.color)
       .multilineTextAlignment(.center)
       .frame(maxWidth: .infinity)
+  }
+}
+
+private struct AlertButton: View {
+  @Binding var isAlertPresented: Bool
+  let model: ButtonVM?
+  let action: (() -> Void)?
+
+  var body: some View {
+    if let model {
+      SUButton(model: model) {
+        self.action?()
+        self.isAlertPresented = false
+      }
+    }
   }
 }
