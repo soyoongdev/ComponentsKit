@@ -21,6 +21,11 @@ public struct AlertVM: ComponentVM {
   /// The background color of the modal.
   public var backgroundColor: UniversalColor?
 
+  /// The border thickness of the alert.
+  ///
+  /// Defaults to `.small`.
+  public var borderWidth: BorderWidth = .small
+
   /// A Boolean value indicating whether the modal should close when tapping on the overlay.
   ///
   /// Defaults to `false`.
@@ -56,6 +61,7 @@ extension AlertVM {
   var modalVM: CenterModalVM {
     return CenterModalVM {
       $0.backgroundColor = self.backgroundColor
+      $0.borderWidth = self.borderWidth
       $0.closesOnOverlayTap = self.closesOnOverlayTap
       $0.contentPaddings = self.contentPaddings
       $0.cornerRadius = self.cornerRadius

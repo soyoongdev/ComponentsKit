@@ -212,6 +212,8 @@ extension UKModalController {
       view.backgroundColor = model.preferredBackgroundColor.uiColor
       view.layer.cornerRadius = model.cornerRadius.value
       view.clipsToBounds = true
+      view.layer.borderColor = UniversalColor.divider.cgColor
+      view.layer.borderWidth = model.borderWidth.value
     }
     static func bodyWrapper(_ scrollView: UIScrollView) {
       scrollView.delaysContentTouches = false

@@ -89,6 +89,7 @@ struct AlertPreview: View {
             Text("Warning Background").tag(ComponentColor.warning.background)
             Text("Danger Background").tag(ComponentColor.danger.background)
           }
+          BorderWidthPicker(selection: self.$model.borderWidth)
           Toggle("Closes On Overlay Tap", isOn: self.$model.closesOnOverlayTap)
           Picker("Content Paddings", selection: self.$model.contentPaddings) {
             Text("12px").tag(Paddings(padding: 12))

@@ -5,6 +5,11 @@ public struct CenterModalVM: ModalVM {
   /// The background color of the modal.
   public var backgroundColor: UniversalColor?
 
+  /// The border thickness of the modal.
+  ///
+  /// Defaults to `.small`.
+  public var borderWidth: BorderWidth = .small
+
   /// A Boolean value indicating whether the modal should close when tapping on the overlay.
   ///
   /// Defaults to `true`.
