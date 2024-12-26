@@ -243,9 +243,9 @@ extension ComponentsKitConfig {
 
     /// The border width configuration for components.
     public var borderWidth: BorderWidth = .init(
-      small: 1.0,
-      medium: 2.0,
-      large: 3.0
+      small: 0.5,
+      medium: 1.0,
+      large: 2.0
     )
 
     /// The animation scale configuration for components.
