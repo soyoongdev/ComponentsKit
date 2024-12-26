@@ -14,6 +14,10 @@ open class UKModalController<VM: ModalVM>: UIViewController {
   /// A model that defines the appearance properties.
   public let model: VM
 
+  private var containerWidthConstraint: NSLayoutConstraint?
+
+  // MARK: - Subviews
+
   /// The optional header view of the modal.
   public var header: UIView?
   /// The main body view of the modal.
@@ -154,13 +158,35 @@ open class UKModalController<VM: ModalVM>: UIViewController {
       greaterThanOrEqualToConstant: 80
     ).isActive = true
 
-    let containerWidthConstraint = self.container.width(self.model.size.maxWidth).width
-    containerWidthConstraint?.priority = .defaultHigh
+    self.containerWidthConstraint = self.container.width(self.model.size.maxWidth).width
+    self.containerWidthConstraint?.priority = .defaultHigh
 
-    let bodyWrapperWidthConstraint = self.bodyWrapper.width(self.model.size.maxWidth).width
-    bodyWrapperWidthConstraint?.priority = .defaultHigh
+    self.bodyWrapper.widthAnchor.constraint(equalTo: self.container.widthAnchor).isActive = true
 
     self.container.centerHorizontally()
+  }
+
+  open override func viewWillTransition(
+    to size: CGSize,
+    with coordinator: any UIViewControllerTransitionCoordinator
+  ) {
+    self.containerWidthConstraint?.isActive = false
+    super.viewWillTransition(to: size, with: coordinator)
+  }
+
+  open override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+
+    let availableWidth = self.view.bounds.width
+    let requiredWidth = self.model.size.maxWidth
+    + self.model.outerPaddings.leading
+    + self.model.outerPaddings.trailing
+    if availableWidth > requiredWidth {
+      self.containerWidthConstraint?.priority = .required
+    } else {
+      self.containerWidthConstraint?.priority = .defaultHigh
+    }
+    self.containerWidthConstraint?.isActive = true
   }
 }
 
