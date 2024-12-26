@@ -28,15 +28,6 @@ public struct ProgressBarVM: ComponentVM {
   /// Defaults to `.medium`.
   public var cornerRadius: ComponentRadius = .medium
 
-  /// The width of the stripes in the `.striped` progress bar style.
-  public var stripeWidth: CGFloat = 2
-
-  /// The spacing between the stripes in the `.striped` progress bar style.
-  public var stripeSpacing: CGFloat = 4
-
-  /// The angle of the stripes in the `.striped` progress bar style..
-  public var stripeAngle: Angle = .degrees(135)
-
   /// The padding applied to the modal's content area.
   ///
   /// Defaults to a padding value of `3` for all sides.
