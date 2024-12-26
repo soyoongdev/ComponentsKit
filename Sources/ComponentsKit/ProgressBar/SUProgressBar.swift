@@ -57,7 +57,7 @@ public struct SUProgressBar: View {
             .frame(width: geometry.size.width, height: self.model.barHeight)
 
           RoundedRectangle(cornerRadius: self.model.innerCornerRadius)
-            .foregroundStyle((self.model.color.contrast ?? .foreground).color)
+            .foregroundStyle(self.model.color.contrast.color)
             .frame(width: (geometry.size.width - 6) * self.progress, height: self.model.barHeight - 6)
             .padding(.vertical, self.model.contentPaddings.top)
             .padding(.horizontal, self.model.contentPaddings.trailing)
