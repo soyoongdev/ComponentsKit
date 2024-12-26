@@ -13,12 +13,9 @@ struct ProgressBarPreview: View {
       }
       Form {
         ComponentColorPicker(selection: self.$model.color)
-        Picker("Current Value", selection: $currentValue) {
-          Text("0").tag(CGFloat(0))
-          Text("25").tag(CGFloat(25))
-          Text("50").tag(CGFloat(50))
-          Text("75").tag(CGFloat(75))
-          Text("100").tag(CGFloat(100))
+        Stepper("Current Value", value: $currentValue, in: self.model.minValue...self.model.maxValue, step: 10)
+        CornerRadiusPicker(selection: self.$model.cornerRadius) {
+          Text("Custom: 2px").tag(ComponentRadius.custom(2))
         }
         SizePicker(selection: self.$model.size)
         Picker("Style", selection: $model.style) {
