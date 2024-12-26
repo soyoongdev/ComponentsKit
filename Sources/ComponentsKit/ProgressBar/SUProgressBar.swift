@@ -49,8 +49,8 @@ public struct SUProgressBar: View {
           RoundedRectangle(cornerRadius: self.model.computedCornerRadius)
             .foregroundStyle((self.model.color.contrast ?? .foreground).color)
             .frame(width: (geometry.size.width - 6) * self.fraction, height: self.model.barHeight - 6)
-            .padding(3)
-            .scaleEffect(self.fraction == 0 ? 0 : 1, anchor: .leading)
+            .padding(.vertical, self.model.contentPaddings.top)
+            .padding(.horizontal, self.model.contentPaddings.trailing)
         }
         .animation(.spring, value: self.fraction)
 
@@ -63,7 +63,8 @@ public struct SUProgressBar: View {
           RoundedRectangle(cornerRadius: self.model.computedCornerRadius)
             .foregroundStyle(self.model.color.contrast.color)
             .frame(width: (geometry.size.width - 6) * self.fraction, height: self.model.barHeight - 6)
-            .padding(3)
+            .padding(.vertical, self.model.contentPaddings.top)
+            .padding(.horizontal, self.model.contentPaddings.trailing)
 
           StripesShape(model: self.model)
             .foregroundStyle(self.model.color.main.color)

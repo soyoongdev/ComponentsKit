@@ -37,6 +37,11 @@ public struct ProgressBarVM: ComponentVM {
   /// The angle of the stripes in the `.striped` progress bar style..
   public var stripeAngle: Angle = .degrees(135)
 
+  /// The padding applied to the modal's content area.
+  ///
+  /// Defaults to a padding value of `3` for all sides.
+  public var contentPaddings: Paddings = .init(padding: 3)
+
   /// Initializes a new instance of `ProgressBarVM` with default values.
   public init() {}
 }
