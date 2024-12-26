@@ -140,7 +140,7 @@ extension UKCard {
     static func mainView(_ view: UIView, model: Model) {
       view.backgroundColor = UniversalColor.background.uiColor
       view.layer.cornerRadius = model.cornerRadius.value
-      view.layer.borderWidth = 1
+      view.layer.borderWidth = model.borderWidth.value
       view.layer.borderColor = UniversalColor.divider.cgColor
       view.layer.shadowRadius = model.shadow.radius
       view.layer.shadowOffset = model.shadow.offset
