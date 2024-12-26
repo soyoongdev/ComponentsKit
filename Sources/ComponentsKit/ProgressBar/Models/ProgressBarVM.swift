@@ -80,6 +80,11 @@ extension ProgressBarVM {
     }
   }
 
+  var innerCornerRadius: CGFloat {
+    let distance: CGFloat = 3
+    return max(0, self.computedCornerRadius - distance)
+  }
+
   var backgroundColor: UniversalColor {
     switch style {
     case .light:
@@ -106,7 +111,7 @@ extension ProgressBarVM {
     let stripeWidth: CGFloat = 2
     let stripeSpacing: CGFloat = 4
     let stripeAngle: Angle = .degrees(135)
-    
+
     let path = CGMutablePath()
     let step = stripeWidth + stripeSpacing
     let radians = stripeAngle.radians

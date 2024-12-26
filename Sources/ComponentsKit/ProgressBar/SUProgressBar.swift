@@ -44,10 +44,9 @@ public struct SUProgressBar: View {
           RoundedRectangle(cornerRadius: self.model.computedCornerRadius)
             .foregroundStyle(self.model.barColor.color)
             .frame(width: geometry.size.width * self.progress, height: self.model.barHeight)
-          Rectangle()
+          RoundedRectangle(cornerRadius: self.model.computedCornerRadius)
             .foregroundStyle(self.model.backgroundColor.color)
             .frame(width: geometry.size.width * (1 - self.progress), height: self.model.barHeight)
-            .cornerRadius(self.model.computedCornerRadius)
         }
         .animation(.spring, value: self.progress)
 
@@ -57,7 +56,7 @@ public struct SUProgressBar: View {
             .foregroundStyle(self.model.color.main.color)
             .frame(width: geometry.size.width, height: self.model.barHeight)
 
-          RoundedRectangle(cornerRadius: self.model.computedCornerRadius)
+          RoundedRectangle(cornerRadius: self.model.innerCornerRadius)
             .foregroundStyle((self.model.color.contrast ?? .foreground).color)
             .frame(width: (geometry.size.width - 6) * self.progress, height: self.model.barHeight - 6)
             .padding(.vertical, self.model.contentPaddings.top)
@@ -71,7 +70,7 @@ public struct SUProgressBar: View {
             .foregroundStyle(self.model.color.main.color)
             .frame(width: geometry.size.width, height: self.model.barHeight)
 
-          RoundedRectangle(cornerRadius: self.model.computedCornerRadius)
+          RoundedRectangle(cornerRadius: self.model.innerCornerRadius)
             .foregroundStyle(self.model.color.contrast.color)
             .frame(width: (geometry.size.width - 6) * self.progress, height: self.model.barHeight - 6)
             .padding(.vertical, self.model.contentPaddings.top)
