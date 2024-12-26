@@ -111,31 +111,35 @@ extension ProgressBarVM {
     return self.size != oldModel.size
   }
 
-  public func stripesPath(in rect: CGRect) -> Path {
-    var path = Path()
+  private func stripesCGPath(in rect: CGRect) -> CGMutablePath {
+    let stripeWidth: CGFloat = 2
+    let stripeSpacing: CGFloat = 4
+    let stripeAngle: Angle = .degrees(135)
+    
+    let path = CGMutablePath()
     let step = stripeWidth + stripeSpacing
     let radians = stripeAngle.radians
     let dx = rect.height * tan(radians)
-
-    for x in stride(from: dx - step, through: rect.width + step, by: step) {
+    for x in stride(from: dx, through: rect.width + rect.height, by: step) {
       let topLeft = CGPoint(x: x, y: 0)
       let topRight = CGPoint(x: x + stripeWidth, y: 0)
       let bottomLeft = CGPoint(x: x + dx, y: rect.height)
       let bottomRight = CGPoint(x: x + stripeWidth + dx, y: rect.height)
-
       path.move(to: topLeft)
       path.addLine(to: topRight)
       path.addLine(to: bottomRight)
       path.addLine(to: bottomLeft)
       path.closeSubpath()
     }
-
     return path
   }
 
+  public func stripesPath(in rect: CGRect) -> Path {
+    return Path(self.stripesCGPath(in: rect))
+  }
+
   public func stripesBezierPath(in rect: CGRect) -> UIBezierPath {
-    let swiftUIPath = stripesPath(in: rect)
-    return UIBezierPath(cgPath: swiftUIPath.cgPath)
+    return UIBezierPath(cgPath: self.stripesCGPath(in: rect))
   }
 }
 

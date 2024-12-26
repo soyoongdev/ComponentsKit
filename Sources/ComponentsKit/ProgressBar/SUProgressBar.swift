@@ -79,7 +79,6 @@ public struct SUProgressBar: View {
 
           StripesShape(model: self.model)
             .foregroundStyle(self.model.color.main.color)
-            .scaleEffect(1.2)
             .cornerRadius(self.model.computedCornerRadius)
             .clipped()
         }
