@@ -4,7 +4,7 @@ import UIKit
 
 struct ProgressBarPreview: View {
   @State private var model = ProgressBarVM()
-  @State private var currentValue: CGFloat = 50
+  @State private var currentValue: CGFloat = 75
   
   var body: some View {
     VStack {
@@ -22,9 +22,9 @@ struct ProgressBarPreview: View {
         }
         SizePicker(selection: self.$model.size)
         Picker("Style", selection: $model.style) {
-          Text("Light").tag(ProgressBarVM.ProgressBarStyle.light)
-          Text("Filled").tag(ProgressBarVM.ProgressBarStyle.filled)
-          Text("Striped").tag(ProgressBarVM.ProgressBarStyle.striped)
+          Text("Light").tag(ProgressBarVM.Style.light)
+          Text("Filled").tag(ProgressBarVM.Style.filled)
+          Text("Striped").tag(ProgressBarVM.Style.striped)
         }
       }
     }

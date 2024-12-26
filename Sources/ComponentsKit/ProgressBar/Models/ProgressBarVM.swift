@@ -4,18 +4,18 @@ import SwiftUI
 public struct ProgressBarVM: ComponentVM {
   /// The color of the progress bar..
   ///
-  /// Defaults to `.primary`.
-  public var color: ComponentColor = .primary
+  /// Defaults to `.accent`.
+  public var color: ComponentColor = .accent
 
   /// The visual style of the progress bar component.
   ///
-  /// Defaults to `.light`.
-  public var style: ProgressBarStyle = .striped
+  /// Defaults to `.striped`.
+  public var style: Style = .striped
 
   /// The size of the progress bar.
   ///
   /// Defaults to `.medium`.
-  public var size: ComponentSize = .large
+  public var size: ComponentSize = .medium
 
   /// The minimum value of the progress bar.
   public var minValue: CGFloat = 0
@@ -45,7 +45,7 @@ public struct ProgressBarVM: ComponentVM {
 
 extension ProgressBarVM {
   var barHeight: CGFloat {
-    switch style {
+    switch self.style {
     case .light:
       switch size {
       case .small:
@@ -53,38 +53,41 @@ extension ProgressBarVM {
       case .medium:
         return 8
       case .large:
-        return 16
+        return 12
       }
     case .filled, .striped:
-      switch size {
+      switch self.size {
       case .small:
-        return 10
+        return 20
       case .medium:
-        return 25
+        return 32
       case .large:
-        return 45
+        return 42
       }
     }
   }
 
   var computedCornerRadius: CGFloat {
-    switch style {
-    case .light:
-      return barHeight / 2
-    case .filled, .striped:
-      switch size {
-      case .small, .medium:
-        return barHeight / 2
-      case .large:
-        return barHeight / 2.5
-      }
+    switch self.cornerRadius {
+    case .none:
+      return 0.0
+    case .small:
+      return self.barHeight / 3.5
+    case .medium:
+      return self.barHeight / 3.0
+    case .large:
+      return self.barHeight / 2.5
+    case .full:
+      return self.barHeight / 2.0
+    case .custom(let value):
+      return min(value, self.barHeight / 2)
     }
   }
 
   var backgroundColor: UniversalColor {
     switch style {
     case .light:
-      return self.color.main.withOpacity(0.15)
+      return self.color.background
     case .filled, .striped:
       return self.color.main
     }
@@ -134,7 +137,9 @@ extension ProgressBarVM {
 // MARK: - Validation
 
 extension ProgressBarVM {
-  public func isValid() -> Bool {
-    return minValue < maxValue
+  func validateMinMaxValues() {
+    if self.minValue > self.maxValue {
+      assertionFailure("Min value must be less than max value")
+    }
   }
 }

@@ -17,7 +17,7 @@ public struct SUProgressBar: View {
   ///   - model: A model that defines the appearance properties.
   public init(
     currentValue: Binding<CGFloat>,
-    model: ProgressBarVM
+    model: ProgressBarVM = .init()
   ) {
     self._currentValue = currentValue
     self.model = model
@@ -30,26 +30,24 @@ public struct SUProgressBar: View {
       switch self.model.style {
       case .light:
         HStack(spacing: 4) {
-          Rectangle()
-            .foregroundColor(self.model.barColor.color)
+          RoundedRectangle(cornerRadius: self.model.computedCornerRadius)
+            .foregroundStyle(self.model.barColor.color)
             .frame(width: geometry.size.width * self.fraction, height: self.model.barHeight)
-            .cornerRadius(self.model.computedCornerRadius)
           Rectangle()
-            .foregroundColor(self.model.backgroundColor.color)
+            .foregroundStyle(self.model.backgroundColor.color)
             .frame(width: geometry.size.width * (1 - self.fraction), height: self.model.barHeight)
             .cornerRadius(self.model.computedCornerRadius)
-            .scaleEffect(self.fraction == 0 ? 0 : 1, anchor: .leading)
         }
         .animation(.spring, value: self.fraction)
 
       case .filled:
         ZStack(alignment: .leading) {
           RoundedRectangle(cornerRadius: self.model.computedCornerRadius)
-            .foregroundColor(self.model.color.main.color)
+            .foregroundStyle(self.model.color.main.color)
             .frame(width: geometry.size.width, height: self.model.barHeight)
 
           RoundedRectangle(cornerRadius: self.model.computedCornerRadius)
-            .foregroundColor((self.model.color.contrast ?? .foreground).color)
+            .foregroundStyle((self.model.color.contrast ?? .foreground).color)
             .frame(width: (geometry.size.width - 6) * self.fraction, height: self.model.barHeight - 6)
             .padding(3)
             .scaleEffect(self.fraction == 0 ? 0 : 1, anchor: .leading)
@@ -59,17 +57,16 @@ public struct SUProgressBar: View {
       case .striped:
         ZStack(alignment: .leading) {
           RoundedRectangle(cornerRadius: self.model.computedCornerRadius)
-            .foregroundColor(self.model.color.main.color)
+            .foregroundStyle(self.model.color.main.color)
             .frame(width: geometry.size.width, height: self.model.barHeight)
 
           RoundedRectangle(cornerRadius: self.model.computedCornerRadius)
-            .foregroundColor(self.model.color.contrast.color)
+            .foregroundStyle(self.model.color.contrast.color)
             .frame(width: (geometry.size.width - 6) * self.fraction, height: self.model.barHeight - 6)
             .padding(3)
-            .scaleEffect(self.fraction == 0 ? 0 : 1, anchor: .leading)
 
           StripesShape(model: self.model)
-            .foregroundColor(self.model.color.main.color)
+            .foregroundStyle(self.model.color.main.color)
             .scaleEffect(1.2)
             .cornerRadius(self.model.computedCornerRadius)
             .clipped()
@@ -78,6 +75,9 @@ public struct SUProgressBar: View {
       }
     }
     .frame(height: self.model.barHeight)
+    .onAppear {
+      self.model.validateMinMaxValues()
+    }
   }
 
   // MARK: - Properties
