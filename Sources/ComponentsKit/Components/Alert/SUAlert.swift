@@ -71,7 +71,7 @@ extension View {
           },
           footer: {
             switch AlertButtonsOrientationCalculator.preferredOrientation(model: model) {
-              case .horizontal:
+            case .horizontal:
               HStack(spacing: AlertVM.buttonsSpacing) {
                 AlertButton(
                   isAlertPresented: isPresented,
