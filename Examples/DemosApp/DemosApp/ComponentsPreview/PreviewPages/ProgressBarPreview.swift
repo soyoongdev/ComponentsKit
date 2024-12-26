@@ -4,16 +4,18 @@ import UIKit
 
 struct ProgressBarPreview: View {
   @State private var model = ProgressBarVM()
-  @State private var currentValue: CGFloat = 75
+  @State private var currentValue: CGFloat = 0
+  private let timer = Timer
+    .publish(every: 0.1, on: .main, in: .common)
+    .autoconnect()
   
   var body: some View {
     VStack {
       PreviewWrapper(title: "SwiftUI") {
-        SUProgressBar(currentValue: $currentValue, model: model)
+        SUProgressBar(currentValue: $currentValue, model: self.model)
       }
       Form {
         ComponentColorPicker(selection: self.$model.color)
-        Stepper("Current Value", value: $currentValue, in: self.model.minValue...self.model.maxValue, step: 10)
         CornerRadiusPicker(selection: self.$model.cornerRadius) {
           Text("Custom: 2px").tag(ComponentRadius.custom(2))
         }
@@ -23,6 +25,13 @@ struct ProgressBarPreview: View {
           Text("Filled").tag(ProgressBarVM.Style.filled)
           Text("Striped").tag(ProgressBarVM.Style.striped)
         }
+      }
+    }
+    .onReceive(timer) { _ in
+      if self.currentValue < self.model.maxValue {
+        self.currentValue += 1
+      } else {
+        self.currentValue = 0
       }
     }
   }
