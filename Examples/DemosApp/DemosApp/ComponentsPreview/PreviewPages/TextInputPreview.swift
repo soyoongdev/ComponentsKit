@@ -42,13 +42,14 @@ struct TextInputPreviewPreview: View {
         BodyFontPicker(selection: self.$model.font)
         KeyboardTypePicker(selection: self.$model.keyboardType)
         Picker("Max Rows", selection: self.$model.maxRows) {
-          Text("2 Rows").tag(2)
           Text("3 Rows").tag(3)
+          Text("4 Rows").tag(4)
           Text("No Limit").tag(Optional<Int>.none)
         }
         Picker("Min Rows", selection: self.$model.minRows) {
           Text("1 Row").tag(1)
           Text("2 Rows").tag(2)
+          Text("3 Rows").tag(3)
         }
         Toggle("Placeholder", isOn: .init(
           get: {
@@ -81,7 +82,7 @@ struct TextInputPreviewPreview: View {
   private static var initialModel: TextInputVM {
     return .init {
       $0.placeholder = "Placeholder"
-      $0.minRows = 1
+      $0.minRows = 2
       $0.maxRows = nil
     }
   }

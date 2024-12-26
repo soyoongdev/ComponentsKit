@@ -41,7 +41,7 @@ struct App: View {
         NavigationLinkWithTitle("Segmented Control") {
           SegmentedControlPreview()
         }
-        NavigationLinkWithTitle("Text Field") {
+        NavigationLinkWithTitle("Text Input") {
           TextInputPreviewPreview()
         }
       }
