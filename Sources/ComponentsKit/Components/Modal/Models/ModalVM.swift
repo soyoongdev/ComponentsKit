@@ -37,7 +37,7 @@ public protocol ModalVM: ComponentVM {
 
 extension ModalVM {
   var preferredBackgroundColor: UniversalColor {
-    return self.backgroundColor ?? .themed(
+    return self.backgroundColor?.blended(with: .background) ?? .themed(
       light: UniversalColor.background.light,
       dark: UniversalColor.secondaryBackground.dark
     )
