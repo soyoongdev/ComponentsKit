@@ -24,7 +24,7 @@ struct ModalOverlay<VM: ModalVM>: View {
         // Note: The tap gesture isn't recognized when a completely transparent
         // color is clicked. This can be fixed by calling contentShape, which
         // defines the interactive area of the underlying view.
-        Color.black.contentShape(.rect)
+        Color.clear.contentShape(.rect)
       }
     }
     .ignoresSafeArea(.all)
