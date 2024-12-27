@@ -40,7 +40,6 @@ public struct SUCard<Content: View>: View {
     self.content()
       .padding(self.model.contentPaddings.edgeInsets)
       .background(self.model.preferredBackgroundColor.color)
-      .background(UniversalColor.background.color)
       .cornerRadius(self.model.cornerRadius.value)
       .overlay(
         RoundedRectangle(cornerRadius: self.model.cornerRadius.value)
