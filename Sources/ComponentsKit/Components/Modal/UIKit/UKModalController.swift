@@ -195,7 +195,7 @@ open class UKModalController<VM: ModalVM>: UIViewController {
     self.containerWidthConstraint?.isActive = true
   }
 
-  // MARK: - UIView Methods
+  // MARK: - UIViewController Methods
 
   open override func traitCollectionDidChange(
     _ previousTraitCollection: UITraitCollection?
