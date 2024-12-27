@@ -86,6 +86,12 @@ open class UKModalController<VM: ModalVM>: UIViewController {
       target: self,
       action: #selector(self.handleOverlayTap)
     ))
+
+    if #available(iOS 17.0, *) {
+      self.registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (controller: Self, _: UITraitCollection) in
+        controller.handleTraitChanges()
+      }
+    }
   }
 
   @objc func handleOverlayTap() {
@@ -188,6 +194,21 @@ open class UKModalController<VM: ModalVM>: UIViewController {
     }
     self.containerWidthConstraint?.isActive = true
   }
+
+  // MARK: - UIViewController Methods
+
+  open override func traitCollectionDidChange(
+    _ previousTraitCollection: UITraitCollection?
+  ) {
+    super.traitCollectionDidChange(previousTraitCollection)
+    self.handleTraitChanges()
+  }
+
+  // MARK: - Helpers
+
+  @objc private func handleTraitChanges() {
+    Self.Style.content(self.content, model: self.model)
+  }
 }
 
 // MARK: - Style Helpers
@@ -211,7 +232,6 @@ extension UKModalController {
     static func content(_ view: UIView, model: VM) {
       view.backgroundColor = model.preferredBackgroundColor.uiColor
       view.layer.cornerRadius = model.cornerRadius.value
-      view.clipsToBounds = true
       view.layer.borderColor = UniversalColor.divider.cgColor
       view.layer.borderWidth = model.borderWidth.value
     }
