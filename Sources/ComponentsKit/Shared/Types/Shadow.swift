@@ -1,4 +1,4 @@
-import Foundation
+import UIKit
 
 /// Defines shadow options for components.
 public enum Shadow: Hashable {
@@ -48,5 +48,16 @@ extension Shadow {
     case .large: ComponentsKitConfig.shared.layout.shadow.large.color
     case .custom(_, _, let color): color
     }
+  }
+}
+
+// MARK: - UIKit + Shadow
+
+extension UIView {
+  func shadow(_ shadow: Shadow) {
+    self.layer.shadowRadius = shadow.radius
+    self.layer.shadowOffset = shadow.offset
+    self.layer.shadowColor = shadow.color.cgColor
+    self.layer.shadowOpacity = 1
   }
 }
