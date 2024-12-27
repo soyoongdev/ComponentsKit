@@ -106,7 +106,7 @@ open class UKModalController<VM: ModalVM>: UIViewController {
 
   // MARK: - Style
 
-  /// Applies styling to the modal's components based on the model.
+  /// Applies styling to the modal's subviews.
   open func style() {
     Self.Style.overlay(self.overlay, model: self.model)
     Self.Style.container(self.container, model: self.model)
@@ -116,7 +116,7 @@ open class UKModalController<VM: ModalVM>: UIViewController {
 
   // MARK: - Layout
 
-  /// Configures the layout of the modal's components.
+  /// Configures the layout of the modal's subviews.
   open func layout() {
     self.overlay.allEdges()
     self.content.allEdges()

@@ -9,6 +9,9 @@ struct App: View {
           NavigationLinkWithTitle("Button") {
             ButtonPreview()
           }
+          NavigationLinkWithTitle("Card") {
+            CardPreview()
+          }
           NavigationLinkWithTitle("Checkbox") {
             CheckboxPreview()
           }

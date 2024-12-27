@@ -151,6 +151,9 @@ extension UniversalColor {
   public static var white: Self {
     return .universal(.hex("#FFFFFF"))
   }
+  public static var clear: Self {
+    return .universal(.uiColor(.clear))
+  }
 }
 
 // MARK: - UniversalColor + Palette Colors

@@ -75,7 +75,7 @@ struct ComponentOptionalColorPicker: View {
 
 // MARK: - CornerRadiusPicker
 
-struct CornerRadiusPicker<Custom: View>: View {
+struct ComponentRadiusPicker<Custom: View>: View {
   @Binding var selection: ComponentRadius
   @ViewBuilder var custom: () -> Custom
 
@@ -86,6 +86,21 @@ struct CornerRadiusPicker<Custom: View>: View {
       Text("Medium").tag(ComponentRadius.medium)
       Text("Large").tag(ComponentRadius.large)
       Text("Full").tag(ComponentRadius.full)
+      self.custom()
+    }
+  }
+}
+
+struct ContainerRadiusPicker<Custom: View>: View {
+  @Binding var selection: ContainerRadius
+  @ViewBuilder var custom: () -> Custom
+
+  var body: some View {
+    Picker("Corner Radius", selection: self.$selection) {
+      Text("None").tag(ContainerRadius.none)
+      Text("Small").tag(ContainerRadius.small)
+      Text("Medium").tag(ContainerRadius.medium)
+      Text("Large").tag(ContainerRadius.large)
       self.custom()
     }
   }
