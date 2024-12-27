@@ -1,3 +1,4 @@
+import SwiftUI
 import UIKit
 
 /// Defines shadow options for components.
@@ -59,5 +60,18 @@ extension UIView {
     self.layer.shadowOffset = shadow.offset
     self.layer.shadowColor = shadow.color.cgColor
     self.layer.shadowOpacity = 1
+  }
+}
+
+// MARK: - SwiftUI + Shadow
+
+extension View {
+  func shadow(_ shadow: Shadow) -> some View {
+    self.shadow(
+      color: shadow.color.color,
+      radius: shadow.radius,
+      x: shadow.offset.width,
+      y: shadow.offset.height
+    )
   }
 }
