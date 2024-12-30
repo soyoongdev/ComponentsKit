@@ -211,6 +211,20 @@ struct KeyboardTypePicker: View {
   }
 }
 
+// MARK: - OverlayStylePicker
+
+struct OverlayStylePicker: View {
+  @Binding var selection: ModalOverlayStyle
+  
+  var body: some View {
+    Picker("Overlay Style", selection: self.$selection) {
+      Text("Blurred").tag(ModalOverlayStyle.blurred)
+      Text("Dimmed").tag(ModalOverlayStyle.dimmed)
+      Text("Transparent").tag(ModalOverlayStyle.transparent)
+    }
+  }
+}
+
 // MARK: - SizePicker
 
 struct SizePicker: View {
@@ -239,6 +253,21 @@ struct SubmitTypePicker: View {
       Text("return").tag(SubmitType.return)
       Text("next").tag(SubmitType.next)
       Text("continue").tag(SubmitType.continue)
+    }
+  }
+}
+
+// MARK: - TransitionPicker
+
+struct TransitionPicker: View {
+  @Binding var selection: ModalTransition
+  
+  var body: some View {
+    Picker("Transition", selection: self.$selection) {
+      Text("None").tag(ModalTransition.none)
+      Text("Fast").tag(ModalTransition.fast)
+      Text("Normal").tag(ModalTransition.normal)
+      Text("Slow").tag(ModalTransition.slow)
     }
   }
 }

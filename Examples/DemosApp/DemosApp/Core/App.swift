@@ -39,6 +39,9 @@ struct App: View {
         }
 
         Section("Modals") {
+          NavigationLinkWithTitle("Alert") {
+            AlertPreview()
+          }
           NavigationLinkWithTitle("Bottom Modal") {
             BottomModalPreview()
           }
