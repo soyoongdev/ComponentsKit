@@ -5,6 +5,11 @@ public struct CardVM: ComponentVM {
   /// The background color of the card.
   public var backgroundColor: UniversalColor?
 
+  /// The border thickness of the card.
+  ///
+  /// Defaults to `.medium`.
+  public var borderWidth: BorderWidth = .medium
+
   /// The padding applied to the card's content area.
   ///
   /// Defaults to a padding value of `16` for all sides.

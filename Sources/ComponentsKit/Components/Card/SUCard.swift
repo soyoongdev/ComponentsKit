@@ -44,7 +44,7 @@ public struct SUCard<Content: View>: View {
       .cornerRadius(self.model.cornerRadius.value)
       .overlay(
         RoundedRectangle(cornerRadius: self.model.cornerRadius.value)
-          .stroke(UniversalColor.divider.color, lineWidth: 1.0)
+          .stroke(UniversalColor.divider.color, lineWidth: self.model.borderWidth.value)
       )
       .shadow(self.model.shadow)
   }

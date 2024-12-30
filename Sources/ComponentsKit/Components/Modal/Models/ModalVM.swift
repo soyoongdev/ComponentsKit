@@ -5,6 +5,9 @@ public protocol ModalVM: ComponentVM {
   /// The background color of the modal.
   var backgroundColor: UniversalColor? { get set }
 
+  /// The border thickness of the modal.
+  var borderWidth: BorderWidth { get set }
+
   /// A Boolean value indicating whether the modal should close when tapping on the overlay.
   var closesOnOverlayTap: Bool { get set }
 

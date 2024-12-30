@@ -32,6 +32,21 @@ struct AutocapitalizationPicker: View {
   }
 }
 
+// MARK: - BorderWidthPicker
+
+struct BorderWidthPicker: View {
+  @Binding var selection: BorderWidth
+  
+  var body: some View {
+    Picker("Border Width", selection: self.$selection) {
+      Text("None").tag(BorderWidth.none)
+      Text("Small").tag(BorderWidth.small)
+      Text("Medium").tag(BorderWidth.medium)
+      Text("Large").tag(BorderWidth.large)
+    }
+  }
+}
+
 // MARK: - ComponentColorPicker
 
 struct ComponentColorPicker: View {

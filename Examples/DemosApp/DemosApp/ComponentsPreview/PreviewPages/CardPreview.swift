@@ -23,6 +23,7 @@ struct CardPreview: View {
           Text("Warning Background").tag(ComponentColor.warning.background)
           Text("Danger Background").tag(ComponentColor.danger.background)
         }
+        BorderWidthPicker(selection: self.$model.borderWidth)
         Picker("Content Paddings", selection: self.$model.contentPaddings) {
           Text("12px").tag(Paddings(padding: 12))
           Text("16px").tag(Paddings(padding: 16))
