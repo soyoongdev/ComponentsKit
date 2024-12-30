@@ -1,26 +1,42 @@
 import AutoLayout
 import UIKit
 
+/// A UIKit component that displays a Progress Bar.
 open class UKProgressBar: UIView, UKComponent {
+  // MARK: - Properties
+
+  /// A model that defines the appearance properties.
   public var model: ProgressBarVM {
     didSet {
       self.update(oldValue)
     }
   }
 
+  /// The current progress value for the progress bar.
   public var currentValue: CGFloat {
     didSet {
       self.updateBarWidth()
     }
   }
 
+  // MARK: - Subviews
+
+  /// A view representing the part of the progress bar that is not yet filled.
   private let remainingView = UIView()
+
+  /// A view representing the filled part of the bar.
   private let filledView = UIView()
+
+  /// A view used to display the striped pattern.
   private let stripedView = UIView()
+
+  // MARK: - Layout Constraints
 
   private var remainingViewConstraints: LayoutConstraints = .init()
   private var filledViewConstraints: LayoutConstraints = .init()
   private var stripedViewConstraints: LayoutConstraints = .init()
+
+  // MARK: - Private Properties
 
   private var progress: CGFloat {
     let range = self.model.maxValue - self.model.minValue
@@ -29,6 +45,12 @@ open class UKProgressBar: UIView, UKComponent {
     return max(0, min(1, normalized))
   }
 
+  // MARK: - Initialization
+
+  /// Initializer.
+  /// - Parameters:
+  ///   - currentValue: The initial progress value. Defaults to `0`.
+  ///   - model: A model that defines the appearance properties.
   public init(
     currentValue: CGFloat = 0,
     model: ProgressBarVM = .init()
@@ -36,6 +58,7 @@ open class UKProgressBar: UIView, UKComponent {
     self.currentValue = currentValue
     self.model = model
     super.init(frame: .zero)
+
     self.setup()
     self.style()
     self.layout()
@@ -45,11 +68,15 @@ open class UKProgressBar: UIView, UKComponent {
     fatalError("init(coder:) has not been implemented")
   }
 
+  // MARK: - Setup
+
   private func setup() {
     self.addSubview(self.remainingView)
     self.addSubview(self.filledView)
     self.addSubview(self.stripedView)
   }
+
+  // MARK: - Style
 
   private func style() {
     switch self.model.style {
@@ -69,6 +96,8 @@ open class UKProgressBar: UIView, UKComponent {
       self.stripedView.backgroundColor = self.model.color.main.uiColor
     }
   }
+
+  // MARK: - Layout
 
   private func layout() {
     self.remainingViewConstraints.deactivateAll()
@@ -117,8 +146,11 @@ open class UKProgressBar: UIView, UKComponent {
     self.setNeedsLayout()
   }
 
+  // MARK: - Update
+
   public func update(_ oldModel: ProgressBarVM) {
     guard self.model != oldModel else { return }
+
     self.style()
 
     if self.model.layoutNeedsUpdate(from: oldModel) {
@@ -154,6 +186,8 @@ open class UKProgressBar: UIView, UKComponent {
       self.layoutIfNeeded()
     }
   }
+
+  // MARK: - Style Helpers
 
   open override func layoutSubviews() {
     super.layoutSubviews()
