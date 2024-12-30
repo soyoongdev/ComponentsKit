@@ -127,9 +127,8 @@ open class UKProgressBar: UIView, UKComponent {
           self.remainingView.height(self.model.barHeight)
         }
         self.filledViewConstraints = .merged {
-          self.filledView.top(3, to: self.remainingView)
           self.filledView.leading(3, to: self.remainingView)
-          self.filledView.bottom(3, to: self.remainingView)
+          self.filledView.vertically(3, to: self.remainingView)
           self.filledView.width(0)
         }
 
