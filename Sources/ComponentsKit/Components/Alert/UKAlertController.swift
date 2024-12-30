@@ -138,30 +138,12 @@ public class UKAlertController: UKCenterModalController {
     super.updateViewConstraints()
 
     if self.buttonsStackView.arrangedSubviews.count == 2 {
-      self.buttonsStackView.axis = .vertical
-      let primaryButtonWidth = self.primaryButton.intrinsicContentSize.width
-      let secondaryButtonWidth = self.secondaryButton.intrinsicContentSize.width
-
-      // Since the `maxWidth` of the alert is always less than the width of the
-      // screen, we can assume that the width of the container is equal to this
-      // `maxWidth` value.
-      let containerWidth = self.model.size.maxWidth
-      let availableButtonsWidth = containerWidth
-      - AlertVM.buttonsSpacing
-      - self.model.contentPaddings.leading
-      - self.model.contentPaddings.trailing
-      let availableButtonWidth = availableButtonsWidth / 2
-
-      if primaryButtonWidth <= availableButtonWidth,
-         secondaryButtonWidth <= availableButtonWidth {
+      switch AlertButtonsOrientationCalculator.preferredOrientation(model: self.alertVM) {
+      case .horizontal:
         self.buttonsStackView.removeArrangedSubview(self.secondaryButton)
         self.buttonsStackView.insertArrangedSubview(self.secondaryButton, at: 0)
-
         self.buttonsStackView.axis = .horizontal
-      } else {
-        self.buttonsStackView.removeArrangedSubview(self.secondaryButton)
-        self.buttonsStackView.insertArrangedSubview(self.secondaryButton, at: 1)
-
+      case .vertical:
         self.buttonsStackView.axis = .vertical
       }
     } else {
