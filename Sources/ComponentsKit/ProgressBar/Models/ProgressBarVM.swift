@@ -103,8 +103,10 @@ extension ProgressBarVM {
     }
   }
 
-  func shouldUpdateLayout(_ oldModel: Self) -> Bool {
+  func layoutNeedsUpdate(from oldModel: Self) -> Bool {
     return self.size != oldModel.size
+    || self.cornerRadius != oldModel.cornerRadius
+    || self.style != oldModel.style
   }
 
   private func stripesCGPath(in rect: CGRect) -> CGMutablePath {
