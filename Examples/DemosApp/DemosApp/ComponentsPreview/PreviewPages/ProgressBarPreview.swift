@@ -41,22 +41,22 @@ struct ProgressBarPreview: View {
 }
 
 struct UKProgressBarRepresentable: UIViewRepresentable {
-    @Binding var currentValue: CGFloat
-    var model: ProgressBarVM
-    
-    func makeUIView(context: Context) -> UKProgressBar {
-        let progressBar = UKProgressBar(currentValue: currentValue, model: model)
-        return progressBar
-    }
-    
-    func updateUIView(_ uiView: UKProgressBar, context: Context) {
-        uiView.currentValue = currentValue
-        uiView.model = model
-        uiView.setNeedsLayout()
-    }
-    
-    static func dismantleUIView(_ uiView: UKProgressBar, coordinator: ()) {
-    }
+  @Binding var currentValue: CGFloat
+  var model: ProgressBarVM
+  
+  func makeUIView(context: Context) -> UKProgressBar {
+    let progressBar = UKProgressBar(currentValue: currentValue, model: model)
+    return progressBar
+  }
+  
+  func updateUIView(_ uiView: UKProgressBar, context: Context) {
+    uiView.currentValue = currentValue
+    uiView.model = model
+    uiView.setNeedsLayout()
+  }
+  
+  static func dismantleUIView(_ uiView: UKProgressBar, coordinator: ()) {
+  }
 }
 
 #Preview {
