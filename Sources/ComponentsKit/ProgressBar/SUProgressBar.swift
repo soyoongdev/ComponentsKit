@@ -43,7 +43,10 @@ public struct SUProgressBar: View {
         HStack(spacing: 4) {
           RoundedRectangle(cornerRadius: self.model.computedCornerRadius)
             .foregroundStyle(self.model.barColor.color)
-            .frame(width: geometry.size.width * self.progress, height: self.model.barHeight)
+            .frame(
+              width: geometry.size.width * self.progress,
+              height: self.model.barHeight
+            )
           RoundedRectangle(cornerRadius: self.model.computedCornerRadius)
             .foregroundStyle(self.model.backgroundColor.color)
             .frame(width: geometry.size.width * (1 - self.progress), height: self.model.barHeight)
@@ -58,7 +61,10 @@ public struct SUProgressBar: View {
 
           RoundedRectangle(cornerRadius: self.model.innerCornerRadius)
             .foregroundStyle(self.model.color.contrast.color)
-            .frame(width: (geometry.size.width - self.model.innerBarPadding * 2) * self.progress, height: self.model.barHeight - self.model.innerBarPadding * 2)
+            .frame(
+              width: (geometry.size.width - self.model.innerBarPadding * 2) * self.progress,
+              height: self.model.barHeight - self.model.innerBarPadding * 2
+            )
             .padding(.vertical, self.model.innerBarPadding)
             .padding(.horizontal, self.model.innerBarPadding)
         }
@@ -72,7 +78,10 @@ public struct SUProgressBar: View {
 
           RoundedRectangle(cornerRadius: self.model.innerCornerRadius)
             .foregroundStyle(self.model.color.contrast.color)
-            .frame(width: (geometry.size.width - self.model.innerBarPadding * 2) * self.progress, height: self.model.barHeight - self.model.innerBarPadding * 2)
+            .frame(
+              width: (geometry.size.width - self.model.innerBarPadding * 2) * self.progress,
+              height: self.model.barHeight - self.model.innerBarPadding * 2
+            )
             .padding(.vertical, self.model.innerBarPadding)
             .padding(.horizontal, self.model.innerBarPadding)
 
