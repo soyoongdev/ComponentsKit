@@ -12,7 +12,7 @@ struct ProgressBarPreview: View {
   var body: some View {
     VStack {
       PreviewWrapper(title: "SwiftUI") {
-        SUProgressBar(currentValue: $currentValue, model: self.model)
+        SUProgressBar(currentValue: self.$currentValue, model: self.model)
       }
       Form {
         ComponentColorPicker(selection: self.$model.color)
@@ -20,14 +20,14 @@ struct ProgressBarPreview: View {
           Text("Custom: 2px").tag(ComponentRadius.custom(2))
         }
         SizePicker(selection: self.$model.size)
-        Picker("Style", selection: $model.style) {
+        Picker("Style", selection: self.$model.style) {
           Text("Light").tag(ProgressBarVM.Style.light)
           Text("Filled").tag(ProgressBarVM.Style.filled)
           Text("Striped").tag(ProgressBarVM.Style.striped)
         }
       }
     }
-    .onReceive(timer) { _ in
+    .onReceive(self.timer) { _ in
       if self.currentValue < self.model.maxValue {
         self.currentValue += 1
       } else {
