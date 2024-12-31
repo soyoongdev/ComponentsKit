@@ -28,11 +28,6 @@ public struct ProgressBarVM: ComponentVM {
   /// Defaults to `.medium`.
   public var cornerRadius: ComponentRadius = .medium
 
-  /// The padding applied to the modal's content area.
-  ///
-  /// Defaults to a padding value of `3` for all sides.
-  public var contentPaddings: Paddings = .init(padding: 3)
-
   /// Initializes a new instance of `ProgressBarVM` with default values.
   public init() {}
 }
@@ -40,6 +35,10 @@ public struct ProgressBarVM: ComponentVM {
 // MARK: - Shared Helpers
 
 extension ProgressBarVM {
+  var innerBarPadding: CGFloat {
+    return 3
+  }
+
   var barHeight: CGFloat {
     switch self.style {
     case .light:
