@@ -58,7 +58,7 @@ public struct SUProgressBar: View {
 
           RoundedRectangle(cornerRadius: self.model.innerCornerRadius)
             .foregroundStyle(self.model.color.contrast.color)
-            .frame(width: (geometry.size.width - 6) * self.progress, height: self.model.barHeight - 6)
+            .frame(width: (geometry.size.width - self.model.innerBarPadding * 2) * self.progress, height: self.model.barHeight - self.model.innerBarPadding * 2)
             .padding(.vertical, self.model.innerBarPadding)
             .padding(.horizontal, self.model.innerBarPadding)
         }
@@ -72,7 +72,7 @@ public struct SUProgressBar: View {
 
           RoundedRectangle(cornerRadius: self.model.innerCornerRadius)
             .foregroundStyle(self.model.color.contrast.color)
-            .frame(width: (geometry.size.width - 6) * self.progress, height: self.model.barHeight - 6)
+            .frame(width: (geometry.size.width - self.model.innerBarPadding * 2) * self.progress, height: self.model.barHeight - self.model.innerBarPadding * 2)
             .padding(.vertical, self.model.innerBarPadding)
             .padding(.horizontal, self.model.innerBarPadding)
 

@@ -80,8 +80,7 @@ extension ProgressBarVM {
   }
 
   var innerCornerRadius: CGFloat {
-    let distance: CGFloat = 3
-    return max(0, self.computedCornerRadius - distance)
+    return max(0, self.computedCornerRadius - self.innerBarPadding)
   }
 
   var backgroundColor: UniversalColor {
