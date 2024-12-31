@@ -6,8 +6,8 @@ public struct SUProgressBar: View {
 
   /// A model that defines the appearance properties.
   public var model: ProgressBarVM
-
-  @Binding private var currentValue: CGFloat
+  /// A binding to control the current value.
+  @Binding public var currentValue: CGFloat
 
   private var progress: CGFloat {
     let range = self.model.maxValue - self.model.minValue
@@ -43,45 +43,34 @@ public struct SUProgressBar: View {
         HStack(spacing: 4) {
           RoundedRectangle(cornerRadius: self.model.computedCornerRadius)
             .foregroundStyle(self.model.barColor.color)
-            .frame(
-              width: geometry.size.width * self.progress,
-              height: self.model.barHeight
-            )
+            .frame(width: geometry.size.width * self.progress)
           RoundedRectangle(cornerRadius: self.model.computedCornerRadius)
             .foregroundStyle(self.model.backgroundColor.color)
-            .frame(width: geometry.size.width * (1 - self.progress), height: self.model.barHeight)
+            .frame(width: geometry.size.width * (1 - self.progress))
         }
-        .animation(.spring, value: self.progress)
 
       case .filled:
         ZStack(alignment: .leading) {
           RoundedRectangle(cornerRadius: self.model.computedCornerRadius)
             .foregroundStyle(self.model.color.main.color)
-            .frame(width: geometry.size.width, height: self.model.barHeight)
+            .frame(width: geometry.size.width)
 
           RoundedRectangle(cornerRadius: self.model.innerCornerRadius)
             .foregroundStyle(self.model.color.contrast.color)
-            .frame(
-              width: (geometry.size.width - self.model.innerBarPadding * 2) * self.progress,
-              height: self.model.barHeight - self.model.innerBarPadding * 2
-            )
+            .frame(width: (geometry.size.width - self.model.innerBarPadding * 2) * self.progress)
             .padding(.vertical, self.model.innerBarPadding)
             .padding(.horizontal, self.model.innerBarPadding)
         }
-        .animation(.spring, value: self.progress)
 
       case .striped:
         ZStack(alignment: .leading) {
           RoundedRectangle(cornerRadius: self.model.computedCornerRadius)
             .foregroundStyle(self.model.color.main.color)
-            .frame(width: geometry.size.width, height: self.model.barHeight)
+            .frame(width: geometry.size.width)
 
           RoundedRectangle(cornerRadius: self.model.innerCornerRadius)
             .foregroundStyle(self.model.color.contrast.color)
-            .frame(
-              width: (geometry.size.width - self.model.innerBarPadding * 2) * self.progress,
-              height: self.model.barHeight - self.model.innerBarPadding * 2
-            )
+            .frame(width: (geometry.size.width - self.model.innerBarPadding * 2) * self.progress)
             .padding(.vertical, self.model.innerBarPadding)
             .padding(.horizontal, self.model.innerBarPadding)
 
@@ -90,9 +79,9 @@ public struct SUProgressBar: View {
             .cornerRadius(self.model.computedCornerRadius)
             .clipped()
         }
-        .animation(.spring, value: self.progress)
       }
     }
+    .animation(.spring, value: self.progress)
     .frame(height: self.model.barHeight)
     .onAppear {
       self.model.validateMinMaxValues()
@@ -100,7 +89,7 @@ public struct SUProgressBar: View {
   }
 }
 
-// MARK: - Properties
+// MARK: - Helpers
 
 struct StripesShape: Shape {
   var model: ProgressBarVM

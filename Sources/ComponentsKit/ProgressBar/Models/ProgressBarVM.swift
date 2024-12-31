@@ -2,7 +2,7 @@ import SwiftUI
 
 /// A model that defines the appearance properties for a a progress bar component.
 public struct ProgressBarVM: ComponentVM {
-  /// The color of the progress bar..
+  /// The color of the progress bar.
   ///
   /// Defaults to `.accent`.
   public var color: ComponentColor = .accent
