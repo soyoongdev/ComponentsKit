@@ -29,9 +29,9 @@ struct ProgressBarPreview: View {
     }
     .onReceive(self.timer) { _ in
       if self.currentValue < self.model.maxValue {
-        self.currentValue += 1
+        self.currentValue += (self.model.maxValue - self.model.minValue) / 100
       } else {
-        self.currentValue = 0
+        self.currentValue = self.model.minValue
       }
     }
   }
