@@ -71,7 +71,7 @@ public class UKCenterModalController: UKModalController<CenterModalVM> {
     super.viewWillAppear(animated)
 
     self.overlay.alpha = 0
-    self.container.alpha = 0
+    self.contentView.alpha = 0
   }
 
   public override func viewDidAppear(_ animated: Bool) {
@@ -79,7 +79,7 @@ public class UKCenterModalController: UKModalController<CenterModalVM> {
 
     UIView.animate(withDuration: self.model.transition.value) {
       self.overlay.alpha = 1
-      self.container.alpha = 1
+      self.contentView.alpha = 1
     }
   }
 
@@ -88,11 +88,11 @@ public class UKCenterModalController: UKModalController<CenterModalVM> {
   public override func layout() {
     super.layout()
 
-    self.container.bottomAnchor.constraint(
+    self.contentView.bottomAnchor.constraint(
       lessThanOrEqualTo: self.view.safeAreaLayoutGuide.bottomAnchor,
       constant: -self.model.outerPaddings.bottom
     ).isActive = true
-    self.container.centerVertically()
+    self.contentView.centerVertically()
   }
 
   // MARK: - UIViewController Methods
@@ -103,7 +103,7 @@ public class UKCenterModalController: UKModalController<CenterModalVM> {
   ) {
     UIView.animate(withDuration: self.model.transition.value) {
       self.overlay.alpha = 0
-      self.container.alpha = 0
+      self.contentView.alpha = 0
     } completion: { _ in
       super.dismiss(animated: false)
     }

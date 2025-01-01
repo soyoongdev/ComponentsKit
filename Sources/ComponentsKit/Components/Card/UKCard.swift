@@ -25,8 +25,6 @@ open class UKCard: UIView, UKComponent {
 
   /// The primary content of the card, provided as a custom view.
   public let content: UIView
-  /// The container view that holds the card's content.
-  public let contentView = UIView()
 
   // MARK: - Properties
 
@@ -65,8 +63,7 @@ open class UKCard: UIView, UKComponent {
 
   /// Sets up the card's subviews.
   open func setup() {
-    self.addSubview(self.contentView)
-    self.contentView.addSubview(self.content)
+    self.addSubview(self.content)
 
     if #available(iOS 17.0, *) {
       self.registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (view: Self, _: UITraitCollection) in
@@ -80,15 +77,12 @@ open class UKCard: UIView, UKComponent {
   /// Applies styling to the card's subviews.
   open func style() {
     Self.Style.mainView(self, model: self.model)
-    Self.Style.contentView(self.contentView, model: self.model)
   }
 
   // MARK: - Layout
 
   /// Configures the layout.
   open func layout() {
-    self.contentView.allEdges()
-
     self.contentConstraints = LayoutConstraints.merged {
       self.content.top(self.model.contentPaddings.top)
       self.content.bottom(self.model.contentPaddings.bottom)
@@ -138,16 +132,11 @@ open class UKCard: UIView, UKComponent {
 extension UKCard {
   fileprivate enum Style {
     static func mainView(_ view: UIView, model: Model) {
-      view.backgroundColor = UniversalColor.background.uiColor
+      view.backgroundColor = model.preferredBackgroundColor.uiColor
       view.layer.cornerRadius = model.cornerRadius.value
       view.layer.borderWidth = model.borderWidth.value
       view.layer.borderColor = UniversalColor.divider.cgColor
       view.shadow(model.shadow)
-    }
-
-    static func contentView(_ view: UIView, model: Model) {
-      view.backgroundColor = model.preferredBackgroundColor.uiColor
-      view.layer.cornerRadius = model.cornerRadius.value
     }
   }
 }

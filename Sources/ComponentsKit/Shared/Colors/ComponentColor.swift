@@ -11,7 +11,11 @@ public struct ComponentColor: Hashable {
   public let contrast: UniversalColor
 
   /// The background color for the component.
-  public let background: UniversalColor
+  public var background: UniversalColor {
+    return self._background ?? self.main.withOpacity(0.15).blended(with: .background)
+  }
+
+  private let _background: UniversalColor?
 
   // MARK: - Initialization
 
@@ -28,6 +32,6 @@ public struct ComponentColor: Hashable {
   ) {
     self.main = main
     self.contrast = contrast
-    self.background = background ?? main.withOpacity(0.15)
+    self._background = background
   }
 }
