@@ -45,7 +45,7 @@ struct UKProgressBarRepresentable: UIViewRepresentable {
   var model: ProgressBarVM
   
   func makeUIView(context: Context) -> UKProgressBar {
-    let progressBar = UKProgressBar(currentValue: currentValue, model: model)
+    let progressBar = UKProgressBar(initialValue: currentValue, model: model)
     return progressBar
   }
   

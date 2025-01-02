@@ -57,10 +57,10 @@ open class UKProgressBar: UIView, UKComponent {
   ///   - currentValue: The initial progress value. Defaults to `0`.
   ///   - model: A model that defines the appearance properties.
   public init(
-    currentValue: CGFloat = 0,
+    initialValue: CGFloat = 0,
     model: ProgressBarVM = .init()
   ) {
-    self.currentValue = currentValue
+    self.currentValue = initialValue
     self.model = model
     super.init(frame: .zero)
 
