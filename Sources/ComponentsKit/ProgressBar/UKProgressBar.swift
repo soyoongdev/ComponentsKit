@@ -189,17 +189,17 @@ open class UKProgressBar: UIView, UKComponent {
 
     switch self.model.style {
     case .light:
-      self.backgroundView.layer.cornerRadius = self.model.cornerRadius(forHeight:  self.backgroundView.bounds.height)
-      self.progressView.layer.cornerRadius = self.model.cornerRadius(forHeight:  self.backgroundView.bounds.height)
+      self.backgroundView.layer.cornerRadius = self.model.cornerRadius(forHeight: self.backgroundView.bounds.height)
+      self.progressView.layer.cornerRadius = self.model.cornerRadius(forHeight: self.backgroundView.bounds.height)
 
     case .filled:
-      self.backgroundView.layer.cornerRadius = self.model.cornerRadius(forHeight:  self.backgroundView.bounds.height)
-      self.progressView.layer.cornerRadius = self.model.innerCornerRadius(forHeight:  self.backgroundView.bounds.height)
+      self.backgroundView.layer.cornerRadius = self.model.cornerRadius(forHeight: self.backgroundView.bounds.height)
+      self.progressView.layer.cornerRadius = self.model.innerCornerRadius(forHeight: self.backgroundView.bounds.height)
 
     case .striped:
-      self.backgroundView.layer.cornerRadius = self.model.cornerRadius(forHeight:  self.backgroundView.bounds.height)
-      self.progressView.layer.cornerRadius = self.model.innerCornerRadius(forHeight:  self.backgroundView.bounds.height)
-      self.stripedLayer.layer.cornerRadius = self.model.cornerRadius(forHeight:  self.backgroundView.bounds.height)
+      self.backgroundView.layer.cornerRadius = self.model.cornerRadius(forHeight: self.backgroundView.bounds.height)
+      self.progressView.layer.cornerRadius = self.model.innerCornerRadius(forHeight: self.backgroundView.bounds.height)
+      self.stripedLayer.layer.cornerRadius = self.model.cornerRadius(forHeight: self.backgroundView.bounds.height)
       self.stripedLayer.clipsToBounds = true
     }
 
@@ -210,7 +210,6 @@ open class UKProgressBar: UIView, UKComponent {
 
 extension UKProgressBar {
   fileprivate enum Style {
-    
     static func backgroundView(_ view: UIView, model: ProgressBarVM) {
       switch model.style {
       case .light:
@@ -219,7 +218,7 @@ extension UKProgressBar {
         view.backgroundColor = model.color.main.uiColor
       }
     }
-    
+
     static func progressView(_ view: UIView, model: ProgressBarVM) {
       switch model.style {
       case .light:
@@ -228,7 +227,7 @@ extension UKProgressBar {
         view.backgroundColor = model.color.contrast.uiColor
       }
     }
-    
+
     static func stripedLayer(_ view: UIView, model: ProgressBarVM) {
       switch model.style {
       case .light, .filled:
