@@ -72,26 +72,26 @@ extension ProgressBarVM {
     }
   }
 
-  var computedCornerRadius: CGFloat {
+  func cornerRadius(forHeight height: CGFloat) -> CGFloat {
     switch self.cornerRadius {
     case .none:
-      return 0.0
+      return 0
     case .small:
-      return self.barHeight / 3.5
+      return height / 3.5
     case .medium:
-      return self.barHeight / 3.0
+      return height / 3.0
     case .large:
-      return self.barHeight / 2.5
+      return height / 2.5
     case .full:
-      return self.barHeight / 2.0
+      return height / 2.0
     case .custom(let value):
-      return min(value, self.barHeight / 2)
+      return min(value, height / 2)
     }
   }
 
-  var innerCornerRadius: CGFloat {
+  func innerCornerRadius(forHeight height: CGFloat) -> CGFloat {
     let distance: CGFloat = 3
-    return max(0, self.computedCornerRadius - distance)
+    return max(0, self.cornerRadius(forHeight: height) - distance)
   }
 
   var backgroundColor: UniversalColor {

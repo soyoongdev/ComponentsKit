@@ -202,17 +202,17 @@ open class UKProgressBar: UIView, UKComponent {
 
     switch self.model.style {
     case .light:
-      self.backgroundView.layer.cornerRadius = self.model.computedCornerRadius
-      self.progressView.layer.cornerRadius = self.model.computedCornerRadius
+      self.backgroundView.layer.cornerRadius = self.model.cornerRadius(forHeight:  self.backgroundView.bounds.height)
+      self.progressView.layer.cornerRadius = self.model.cornerRadius(forHeight:  self.backgroundView.bounds.height)
 
     case .filled:
-      self.backgroundView.layer.cornerRadius = self.model.computedCornerRadius
-      self.progressView.layer.cornerRadius = self.model.innerCornerRadius
+      self.backgroundView.layer.cornerRadius = self.model.cornerRadius(forHeight:  self.backgroundView.bounds.height)
+      self.progressView.layer.cornerRadius = self.model.innerCornerRadius(forHeight:  self.backgroundView.bounds.height)
 
     case .striped:
-      self.backgroundView.layer.cornerRadius = self.model.computedCornerRadius
-      self.progressView.layer.cornerRadius = self.model.innerCornerRadius
-      self.stripedView.layer.cornerRadius = self.model.computedCornerRadius
+      self.backgroundView.layer.cornerRadius = self.model.cornerRadius(forHeight:  self.backgroundView.bounds.height)
+      self.progressView.layer.cornerRadius = self.model.innerCornerRadius(forHeight:  self.backgroundView.bounds.height)
+      self.stripedView.layer.cornerRadius = self.model.cornerRadius(forHeight:  self.backgroundView.bounds.height)
       self.stripedView.clipsToBounds = true
     }
 

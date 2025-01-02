@@ -34,10 +34,10 @@ public struct SUProgressBar: View {
       switch self.model.style {
       case .light:
         HStack(spacing: 4) {
-          RoundedRectangle(cornerRadius: self.model.computedCornerRadius)
+          RoundedRectangle(cornerRadius: self.model.cornerRadius(forHeight: self.model.barHeight))
             .foregroundStyle(self.model.barColor.color)
             .frame(width: geometry.size.width * self.progress, height: self.model.barHeight)
-          RoundedRectangle(cornerRadius: self.model.computedCornerRadius)
+          RoundedRectangle(cornerRadius: self.model.cornerRadius(forHeight: self.model.barHeight))
             .foregroundStyle(self.model.backgroundColor.color)
             .frame(width: geometry.size.width * (1 - self.progress), height: self.model.barHeight)
         }
@@ -47,11 +47,11 @@ public struct SUProgressBar: View {
         )
       case .filled:
         ZStack(alignment: .leading) {
-          RoundedRectangle(cornerRadius: self.model.computedCornerRadius)
+          RoundedRectangle(cornerRadius: self.model.cornerRadius(forHeight: self.model.barHeight))
             .foregroundStyle(self.model.color.main.color)
             .frame(width: geometry.size.width, height: self.model.barHeight)
 
-          RoundedRectangle(cornerRadius: self.model.innerCornerRadius)
+          RoundedRectangle(cornerRadius: self.model.innerCornerRadius(forHeight: self.model.barHeight))
             .foregroundStyle(self.model.color.contrast.color)
             .frame(width: (geometry.size.width - 6) * self.progress, height: self.model.barHeight - 6)
             .padding(.vertical, self.model.contentPaddings.top)
@@ -63,11 +63,11 @@ public struct SUProgressBar: View {
         )
       case .striped:
         ZStack(alignment: .leading) {
-          RoundedRectangle(cornerRadius: self.model.computedCornerRadius)
+          RoundedRectangle(cornerRadius: self.model.cornerRadius(forHeight: self.model.barHeight))
             .foregroundStyle(self.model.color.main.color)
             .frame(width: geometry.size.width, height: self.model.barHeight)
 
-          RoundedRectangle(cornerRadius: self.model.innerCornerRadius)
+          RoundedRectangle(cornerRadius: self.model.innerCornerRadius(forHeight: self.model.barHeight))
             .foregroundStyle(self.model.color.contrast.color)
             .frame(width: (geometry.size.width - 6) * self.progress, height: self.model.barHeight - 6)
             .padding(.vertical, self.model.contentPaddings.top)
@@ -75,7 +75,7 @@ public struct SUProgressBar: View {
 
           StripesShape(model: self.model)
             .foregroundStyle(self.model.color.main.color)
-            .cornerRadius(self.model.computedCornerRadius)
+            .cornerRadius(self.model.cornerRadius(forHeight: self.model.barHeight))
             .clipped()
         }
         .animation(
