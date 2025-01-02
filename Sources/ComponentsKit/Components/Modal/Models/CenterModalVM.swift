@@ -2,8 +2,13 @@ import Foundation
 
 /// A model that defines the appearance properties for a center modal component.
 public struct CenterModalVM: ModalVM {
-  /// The background color of the modal's content area.
+  /// The background color of the modal.
   public var backgroundColor: UniversalColor?
+
+  /// The border thickness of the modal.
+  ///
+  /// Defaults to `.small`.
+  public var borderWidth: BorderWidth = .small
 
   /// A Boolean value indicating whether the modal should close when tapping on the overlay.
   ///
@@ -21,7 +26,7 @@ public struct CenterModalVM: ModalVM {
   /// The corner radius of the modal.
   ///
   /// Defaults to `.medium`.
-  public var cornerRadius: ModalRadius = .medium
+  public var cornerRadius: ContainerRadius = .medium
 
   /// The style of the overlay displayed behind the modal.
   ///

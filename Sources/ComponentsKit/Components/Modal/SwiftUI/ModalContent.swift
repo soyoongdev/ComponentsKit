@@ -59,14 +59,12 @@ struct ModalContent<VM: ModalVM, Header: View, Body: View, Footer: View>: View {
     }
     .frame(maxWidth: self.model.size.maxWidth, alignment: .leading)
     .background(self.model.preferredBackgroundColor.color)
-    .background(UniversalColor.background.color)
-    .clipShape(RoundedRectangle(
-      cornerRadius: self.model.cornerRadius.value
-    ))
-    .padding(.top, self.model.outerPaddings.top)
-    .padding(.leading, self.model.outerPaddings.leading)
-    .padding(.bottom, self.model.outerPaddings.bottom)
-    .padding(.trailing, self.model.outerPaddings.trailing)
+    .clipShape(RoundedRectangle(cornerRadius: self.model.cornerRadius.value))
+    .overlay(
+      RoundedRectangle(cornerRadius: self.model.cornerRadius.value)
+        .stroke(UniversalColor.divider.color, lineWidth: self.model.borderWidth.value)
+    )
+    .padding(self.model.outerPaddings.edgeInsets)
   }
 
   private var bodyTopPadding: CGFloat {

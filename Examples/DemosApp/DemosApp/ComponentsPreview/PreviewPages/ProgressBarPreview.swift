@@ -16,7 +16,7 @@ struct ProgressBarPreview: View {
       }
       Form {
         ComponentColorPicker(selection: self.$model.color)
-        CornerRadiusPicker(selection: self.$model.cornerRadius) {
+        ComponentRadiusPicker(selection: self.$model.cornerRadius) {
           Text("Custom: 2px").tag(ComponentRadius.custom(2))
         }
         SizePicker(selection: self.$model.size)

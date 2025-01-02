@@ -38,13 +38,27 @@ public class UKCenterModalController: UKModalController<CenterModalVM> {
   ///   - header: An optional content block for the modal's header.
   ///   - body: The main content block for the modal.
   ///   - footer: An optional content block for the modal's footer.
-  public override init(
+  public init(
     model: CenterModalVM = .init(),
     header: Content? = nil,
     body: Content,
     footer: Content? = nil
   ) {
-    super.init(model: model, header: header, body: body, footer: footer)
+    super.init(model: model)
+
+    self.header = header?({ [weak self] animated in
+      self?.dismiss(animated: animated)
+    })
+    self.body = body({ [weak self] animated in
+      self?.dismiss(animated: animated)
+    })
+    self.footer = footer?({ [weak self] animated in
+      self?.dismiss(animated: animated)
+    })
+  }
+
+  override init(model: CenterModalVM) {
+    super.init(model: model)
   }
 
   required public init?(coder: NSCoder) {
@@ -57,7 +71,7 @@ public class UKCenterModalController: UKModalController<CenterModalVM> {
     super.viewWillAppear(animated)
 
     self.overlay.alpha = 0
-    self.container.alpha = 0
+    self.contentView.alpha = 0
   }
 
   public override func viewDidAppear(_ animated: Bool) {
@@ -65,7 +79,7 @@ public class UKCenterModalController: UKModalController<CenterModalVM> {
 
     UIView.animate(withDuration: self.model.transition.value) {
       self.overlay.alpha = 1
-      self.container.alpha = 1
+      self.contentView.alpha = 1
     }
   }
 
@@ -74,11 +88,11 @@ public class UKCenterModalController: UKModalController<CenterModalVM> {
   public override func layout() {
     super.layout()
 
-    self.container.bottomAnchor.constraint(
+    self.contentView.bottomAnchor.constraint(
       lessThanOrEqualTo: self.view.safeAreaLayoutGuide.bottomAnchor,
       constant: -self.model.outerPaddings.bottom
     ).isActive = true
-    self.container.centerVertically()
+    self.contentView.centerVertically()
   }
 
   // MARK: - UIViewController Methods
@@ -89,7 +103,7 @@ public class UKCenterModalController: UKModalController<CenterModalVM> {
   ) {
     UIView.animate(withDuration: self.model.transition.value) {
       self.overlay.alpha = 0
-      self.container.alpha = 0
+      self.contentView.alpha = 0
     } completion: { _ in
       super.dismiss(animated: false)
     }

@@ -19,7 +19,7 @@ struct ButtonPreview: View {
       Form {
         AnimationScalePicker(selection: self.$model.animationScale)
         ComponentOptionalColorPicker(selection: self.$model.color)
-        CornerRadiusPicker(selection: self.$model.cornerRadius) {
+        ComponentRadiusPicker(selection: self.$model.cornerRadius) {
           Text("Custom: 20px").tag(ComponentRadius.custom(20))
         }
         ButtonFontPicker(selection: self.$model.font)
@@ -27,12 +27,12 @@ struct ButtonPreview: View {
         Toggle("Full Width", isOn: self.$model.isFullWidth)
         SizePicker(selection: self.$model.size)
         Picker("Style", selection: self.$model.style) {
-          Text("Filled").tag(ButtonVM.Style.filled)
-          Text("Plain").tag(ButtonVM.Style.plain)
-          Text("Light").tag(ButtonVM.Style.light)
-          Text("Bordered with small border").tag(ButtonVM.Style.bordered(.small))
-          Text("Bordered with medium border").tag(ButtonVM.Style.bordered(.medium))
-          Text("Bordered with large border").tag(ButtonVM.Style.bordered(.large))
+          Text("Filled").tag(ButtonStyle.filled)
+          Text("Plain").tag(ButtonStyle.plain)
+          Text("Light").tag(ButtonStyle.light)
+          Text("Bordered with small border").tag(ButtonStyle.bordered(.small))
+          Text("Bordered with medium border").tag(ButtonStyle.bordered(.medium))
+          Text("Bordered with large border").tag(ButtonStyle.bordered(.large))
         }
       }
     }

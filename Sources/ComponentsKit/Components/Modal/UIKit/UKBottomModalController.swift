@@ -38,13 +38,23 @@ public class UKBottomModalController: UKModalController<BottomModalVM> {
   ///   - header: An optional content block for the modal's header.
   ///   - body: The main content block for the modal.
   ///   - footer: An optional content block for the modal's footer.
-  public override init(
+  public init(
     model: BottomModalVM = .init(),
     header: Content? = nil,
     body: Content,
     footer: Content? = nil
   ) {
-    super.init(model: model, header: header, body: body, footer: footer)
+    super.init(model: model)
+
+    self.header = header?({ [weak self] animated in
+      self?.dismiss(animated: animated)
+    })
+    self.body = body({ [weak self] animated in
+      self?.dismiss(animated: animated)
+    })
+    self.footer = footer?({ [weak self] animated in
+      self?.dismiss(animated: animated)
+    })
   }
 
   required public init?(coder: NSCoder) {
@@ -56,7 +66,7 @@ public class UKBottomModalController: UKModalController<BottomModalVM> {
   public override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
 
-    self.container.transform = .init(translationX: 0, y: self.view.screenBounds.height)
+    self.contentView.transform = .init(translationX: 0, y: self.view.screenBounds.height)
     self.overlay.alpha = 0
   }
 
@@ -64,7 +74,7 @@ public class UKBottomModalController: UKModalController<BottomModalVM> {
     super.viewDidAppear(animated)
 
     UIView.animate(withDuration: self.model.transition.value) {
-      self.container.transform = .identity
+      self.contentView.transform = .identity
       self.overlay.alpha = 1
     }
   }
@@ -74,7 +84,7 @@ public class UKBottomModalController: UKModalController<BottomModalVM> {
   public override func setup() {
     super.setup()
 
-    self.container.addGestureRecognizer(UIPanGestureRecognizer(
+    self.contentView.addGestureRecognizer(UIPanGestureRecognizer(
       target: self,
       action: #selector(self.handleDragGesture)
     ))
@@ -85,7 +95,7 @@ public class UKBottomModalController: UKModalController<BottomModalVM> {
   public override func layout() {
     super.layout()
 
-    self.container.bottom(self.model.outerPaddings.bottom, safeArea: true)
+    self.contentView.bottom(self.model.outerPaddings.bottom, safeArea: true)
   }
 
   // MARK: - UIViewController Methods
@@ -95,7 +105,7 @@ public class UKBottomModalController: UKModalController<BottomModalVM> {
     completion: (() -> Void)? = nil
   ) {
     UIView.animate(withDuration: self.model.transition.value) {
-      self.container.transform = .init(translationX: 0, y: self.view.screenBounds.height)
+      self.contentView.transform = .init(translationX: 0, y: self.view.screenBounds.height)
       self.overlay.alpha = 0
     } completion: { _ in
       super.dismiss(animated: false)
@@ -107,25 +117,25 @@ public class UKBottomModalController: UKModalController<BottomModalVM> {
 
 extension UKBottomModalController {
   @objc private func handleDragGesture(_ gesture: UIPanGestureRecognizer) {
-    let translation = gesture.translation(in: self.container).y
-    let velocity = gesture.velocity(in: self.container).y
+    let translation = gesture.translation(in: self.contentView).y
+    let velocity = gesture.velocity(in: self.contentView).y
     let offset = ModalAnimation.bottomModalOffset(translation, model: self.model)
 
     switch gesture.state {
     case .changed:
-      self.container.transform = .init(translationX: 0, y: offset)
+      self.contentView.transform = .init(translationX: 0, y: offset)
     case .ended:
-      let viewHeight = self.container.frame.height
+      let viewHeight = self.contentView.frame.height
       if ModalAnimation.shouldHideBottomModal(offset: offset, height: viewHeight, velocity: velocity, model: self.model) {
         self.dismiss(animated: true)
       } else {
         UIView.animate(withDuration: 0.2) {
-          self.container.transform = .identity
+          self.contentView.transform = .identity
         }
       }
     case .failed, .cancelled:
       UIView.animate(withDuration: 0.2) {
-        self.container.transform = .identity
+        self.contentView.transform = .identity
       }
     default:
       break
