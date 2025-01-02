@@ -12,7 +12,7 @@ struct ProgressBarPreview: View {
   var body: some View {
     VStack {
       PreviewWrapper(title: "UIKit") {
-        UKProgressBarRepresentable(currentValue: $currentValue, model: self.model)
+        UKProgressBarRepresentable(currentValue: self.$currentValue, model: self.model)
       }
       PreviewWrapper(title: "SwiftUI") {
         SUProgressBar(currentValue: $currentValue, model: self.model)
