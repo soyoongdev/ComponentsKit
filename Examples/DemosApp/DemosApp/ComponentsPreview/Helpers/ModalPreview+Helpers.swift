@@ -194,6 +194,7 @@ Enim habitant laoreet inceptos scelerisque senectus, tellus molestie ut. Eros ri
         HStack {
           Text(self.headerTitle)
             .font(self.headerFont.font)
+          Spacer()
         }
       } else {
         EmptyView()
@@ -211,6 +212,7 @@ Enim habitant laoreet inceptos scelerisque senectus, tellus molestie ut. Eros ri
       }
     }
     .font(self.bodyFont.font)
+    .multilineTextAlignment(.leading)
   }
 
   static func suFooter(

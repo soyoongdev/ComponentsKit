@@ -24,10 +24,7 @@ struct ModalContent<VM: ModalVM, Header: View, Body: View, Footer: View>: View {
   }
 
   var body: some View {
-    VStack(
-      alignment: .leading,
-      spacing: self.model.contentSpacing
-    ) {
+    VStack(spacing: self.model.contentSpacing) {
       self.contentHeader()
         .observeSize {
           self.headerSize = $0
