@@ -15,19 +15,14 @@ open class UKProgressBar: UIView, UKComponent {
   /// The current progress value for the progress bar.
   public var currentValue: CGFloat {
     didSet {
-      self.updateBarWidth()
+      self.updateProgressBar()
     }
   }
 
   // MARK: - Subviews
 
-  /// A view representing the part of the progress bar that is not yet filled.
-  private let remainingView = UIView()
-
-  /// A view representing the filled part of the bar.
-  private let filledView = UIView()
-
-  /// A view used to display the striped pattern.
+  private let backgroundView = UIView()
+  private let progressView = UIView()
   private let stripedView = UIView()
 
   // MARK: - Layout Constraints
@@ -39,7 +34,7 @@ open class UKProgressBar: UIView, UKComponent {
   // MARK: - Private Properties
 
   private var progress: CGFloat {
-    return self.model.progress(for: self.currentValue)
+    self.model.progress(for: self.currentValue)
   }
 
   // MARK: - Initialization
@@ -68,8 +63,8 @@ open class UKProgressBar: UIView, UKComponent {
   // MARK: - Setup
 
   private func setup() {
-    self.addSubview(self.remainingView)
-    self.addSubview(self.filledView)
+    self.addSubview(self.backgroundView)
+    self.addSubview(self.progressView)
     self.addSubview(self.stripedView)
   }
 
@@ -78,18 +73,18 @@ open class UKProgressBar: UIView, UKComponent {
   private func style() {
     switch self.model.style {
     case .light:
-      self.remainingView.backgroundColor = self.model.backgroundColor.uiColor
-      self.filledView.backgroundColor = self.model.barColor.uiColor
+      self.backgroundView.backgroundColor = self.model.backgroundColor.uiColor
+      self.progressView.backgroundColor = self.model.barColor.uiColor
       self.stripedView.backgroundColor = .clear
 
     case .filled:
-      self.remainingView.backgroundColor = self.model.color.main.uiColor
-      self.filledView.backgroundColor = self.model.color.contrast.uiColor
+      self.backgroundView.backgroundColor = self.model.color.main.uiColor
+      self.progressView.backgroundColor = self.model.color.contrast.uiColor
       self.stripedView.backgroundColor = .clear
 
     case .striped:
-      self.remainingView.backgroundColor = self.model.color.main.uiColor
-      self.filledView.backgroundColor = self.model.color.contrast.uiColor
+      self.backgroundView.backgroundColor = self.model.color.main.uiColor
+      self.progressView.backgroundColor = self.model.color.contrast.uiColor
       self.stripedView.backgroundColor = self.model.color.main.uiColor
     }
   }
@@ -105,28 +100,28 @@ open class UKProgressBar: UIView, UKComponent {
       switch self.model.style {
       case .light:
         self.remainingViewConstraints = .merged {
-          self.remainingView.after(self.filledView, padding: 4)
-          self.remainingView.centerVertically()
-          self.remainingView.height(self.model.barHeight)
-          self.remainingView.width(0)
+          self.backgroundView.after(self.progressView, padding: 4)
+          self.backgroundView.centerVertically()
+          self.backgroundView.height(self.model.barHeight)
+          self.backgroundView.width(0)
         }
         self.filledViewConstraints = .merged {
-          self.filledView.leading(0)
-          self.filledView.centerVertically()
-          self.filledView.height(self.model.barHeight)
-          self.filledView.width(0)
+          self.progressView.leading(0)
+          self.progressView.centerVertically()
+          self.progressView.height(self.model.barHeight)
+          self.progressView.width(0)
         }
 
       case .filled, .striped:
         self.remainingViewConstraints = .merged {
-          self.remainingView.horizontally(0)
-          self.remainingView.centerVertically()
-          self.remainingView.height(self.model.barHeight)
+          self.backgroundView.horizontally(0)
+          self.backgroundView.centerVertically()
+          self.backgroundView.height(self.model.barHeight)
         }
         self.filledViewConstraints = .merged {
-          self.filledView.leading(3, to: self.remainingView)
-          self.filledView.vertically(3, to: self.remainingView)
-          self.filledView.width(0)
+          self.progressView.leading(3, to: self.backgroundView)
+          self.progressView.vertically(3, to: self.backgroundView)
+          self.progressView.width(0)
         }
 
         if self.model.style == .striped {
@@ -155,10 +150,10 @@ open class UKProgressBar: UIView, UKComponent {
       self.setNeedsLayout()
     }
 
-    self.updateBarWidth()
+    self.updateProgressBar()
   }
 
-  private func updateBarWidth() {
+  private func updateProgressBar() {
     let duration: TimeInterval = 0.3
 
     UIView.performWithoutAnimation {
@@ -178,6 +173,12 @@ open class UKProgressBar: UIView, UKComponent {
       self.filledViewConstraints.width?.constant = max(0, filledWidth)
     }
 
+    if self.model.style == .striped {
+      let shapeLayer = CAShapeLayer()
+      shapeLayer.path = self.model.stripesBezierPath(in: self.stripedView.bounds).cgPath
+      self.stripedView.layer.mask = shapeLayer
+    }
+
     UIView.animate(withDuration: duration) {
       self.layoutIfNeeded()
     }
@@ -190,28 +191,22 @@ open class UKProgressBar: UIView, UKComponent {
 
     switch self.model.style {
     case .light:
-      self.remainingView.layer.cornerRadius = self.model.computedCornerRadius
-      self.filledView.layer.cornerRadius = self.model.computedCornerRadius
+      self.backgroundView.layer.cornerRadius = self.model.computedCornerRadius
+      self.progressView.layer.cornerRadius = self.model.computedCornerRadius
 
     case .filled:
-      self.remainingView.layer.cornerRadius = self.model.computedCornerRadius
-      self.filledView.layer.cornerRadius = self.model.innerCornerRadius
+      self.backgroundView.layer.cornerRadius = self.model.computedCornerRadius
+      self.progressView.layer.cornerRadius = self.model.innerCornerRadius
 
     case .striped:
-      self.remainingView.layer.cornerRadius = self.model.computedCornerRadius
-      self.filledView.layer.cornerRadius = self.model.innerCornerRadius
+      self.backgroundView.layer.cornerRadius = self.model.computedCornerRadius
+      self.progressView.layer.cornerRadius = self.model.innerCornerRadius
       self.stripedView.layer.cornerRadius = self.model.computedCornerRadius
       self.stripedView.clipsToBounds = true
     }
 
-    self.updateBarWidth()
+    self.updateProgressBar()
     self.layoutIfNeeded()
-
-    if self.model.style == .striped {
-      let shapeLayer = CAShapeLayer()
-      shapeLayer.path = self.model.stripesBezierPath(in: self.stripedView.bounds).cgPath
-      self.stripedView.layer.mask = shapeLayer
-    }
   }
 
   open override var intrinsicContentSize: CGSize {
