@@ -3,6 +3,19 @@ import UIKit
 
 /// A UIKit component that displays a Progress Bar.
 open class UKProgressBar: UIView, UKComponent {
+
+  open override func sizeThatFits(_ size: CGSize) -> CGSize {
+    let width = self.superview?.bounds.width ?? size.width
+    return CGSize(
+      width: min(size.width, width),
+      height: min(size.height, self.model.barHeight)
+    )
+  }
+
+  open override var intrinsicContentSize: CGSize {
+    return self.sizeThatFits(UIView.layoutFittingExpandedSize)
+  }
+
   // MARK: - Properties
 
   /// A model that defines the appearance properties.
@@ -207,9 +220,5 @@ open class UKProgressBar: UIView, UKComponent {
 
     self.updateProgressBar()
     self.layoutIfNeeded()
-  }
-
-  open override var intrinsicContentSize: CGSize {
-    CGSize(width: UIView.noIntrinsicMetric, height: self.model.barHeight)
   }
 }
