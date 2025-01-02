@@ -95,7 +95,7 @@ public class UKBottomModalController: UKModalController<BottomModalVM> {
   public override func layout() {
     super.layout()
 
-    self.contentView.bottom(self.model.outerPaddings.bottom, safeArea: true)
+    self.contentViewBottomConstraint = self.contentView.bottom(self.model.outerPaddings.bottom, safeArea: true).bottom
   }
 
   // MARK: - UIViewController Methods

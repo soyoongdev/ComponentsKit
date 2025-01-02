@@ -15,6 +15,7 @@ open class UKModalController<VM: ModalVM>: UIViewController {
   public let model: VM
 
   private var contentViewWidthConstraint: NSLayoutConstraint?
+  var contentViewBottomConstraint: NSLayoutConstraint?
 
   // MARK: - Subviews
 
@@ -53,6 +54,12 @@ open class UKModalController<VM: ModalVM>: UIViewController {
     fatalError("init(coder:) has not been implemented")
   }
 
+  // MARK: Deinitialization
+
+  deinit {
+    NotificationCenter.default.removeObserver(self)
+  }
+
   // MARK: - Lifecycle
 
   open override func viewDidLoad() {
@@ -65,7 +72,7 @@ open class UKModalController<VM: ModalVM>: UIViewController {
 
   // MARK: - Setup
 
-  /// Sets up the modal's subviews and gesture recognizers.
+  /// Sets up the modal's subviews, gesture recognizers and observers.
   open func setup() {
     self.view.addSubview(self.overlay)
     self.view.addSubview(self.contentView)
@@ -89,11 +96,43 @@ open class UKModalController<VM: ModalVM>: UIViewController {
         controller.handleTraitChanges()
       }
     }
+
+    NotificationCenter.default.addObserver(
+      self,
+      selector: #selector(self.handleKeyboardWillShow),
+      name: UIResponder.keyboardWillShowNotification,
+      object: nil
+    )
+
+    NotificationCenter.default.addObserver(
+      self,
+      selector: #selector(self.handleKeyboardWillHide),
+      name: UIResponder.keyboardWillHideNotification,
+      object: nil
+    )
   }
 
   @objc func handleOverlayTap() {
     guard self.model.closesOnOverlayTap else { return }
     self.dismiss(animated: true)
+  }
+
+  @objc func handleKeyboardWillShow(notification: NSNotification) {
+    if let keyboardHeight = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue.height {
+      let duration = notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? CGFloat ?? 0.25
+      UIView.animate(withDuration: duration) {
+        self.contentViewBottomConstraint?.constant = -keyboardHeight - self.model.contentPaddings.bottom + self.view.safeAreaInsets.bottom
+        self.view.layoutIfNeeded()
+      }
+    }
+  }
+
+  @objc func handleKeyboardWillHide(notification: NSNotification) {
+    let duration = notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? CGFloat ?? 0.25
+    UIView.animate(withDuration: duration) {
+      self.contentViewBottomConstraint?.constant = -self.model.contentPaddings.bottom
+      self.view.layoutIfNeeded()
+    }
   }
 
   // MARK: - Style

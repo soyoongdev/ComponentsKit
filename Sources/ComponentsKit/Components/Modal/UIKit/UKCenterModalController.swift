@@ -88,11 +88,15 @@ public class UKCenterModalController: UKModalController<CenterModalVM> {
   public override func layout() {
     super.layout()
 
-    self.contentView.bottomAnchor.constraint(
+    self.contentViewBottomConstraint = self.contentView.bottomAnchor.constraint(
       lessThanOrEqualTo: self.view.safeAreaLayoutGuide.bottomAnchor,
       constant: -self.model.outerPaddings.bottom
-    ).isActive = true
-    self.contentView.centerVertically()
+    )
+    self.contentViewBottomConstraint?.isActive = true
+
+    let verticalConstraint = self.contentView.centerYAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.centerYAnchor)
+    verticalConstraint.isActive = true
+    verticalConstraint.priority = .defaultLow
   }
 
   // MARK: - UIViewController Methods
