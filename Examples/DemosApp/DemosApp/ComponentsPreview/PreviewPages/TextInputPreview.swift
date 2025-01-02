@@ -4,23 +4,25 @@ import SwiftUI
 import UIKit
 
 struct TextInputPreviewPreview: View {
-  @State private var model = TextInputVM {
-    $0.placeholder = "Placeholder"
-    $0.minRows = 1
-    $0.maxRows = nil
-  }
+  @State private var model = Self.initialModel
 
   @State private var text: String = ""
   @FocusState private var isFocused: Bool
 
-  @ObservedObject private var textInput = PreviewTextInput()
+  @ObservedObject private var textInput = PreviewTextInput(model: Self.initialModel)
 
   var body: some View {
     VStack {
       PreviewWrapper(title: "UIKit") {
-        UKComponentPreview(model: self.model) {
-          self.textInput
-        }
+        self.textInput
+          .preview
+          .onAppear {
+            self.textInput.text = ""
+            self.textInput.model = Self.initialModel
+          }
+          .onChange(of: self.model) { newValue in
+            self.textInput.model = newValue
+          }
       }
       PreviewWrapper(title: "SwiftUI") {
         SUTextInput(
@@ -33,20 +35,21 @@ struct TextInputPreviewPreview: View {
         AutocapitalizationPicker(selection: self.$model.autocapitalization)
         Toggle("Autocorrection Enabled", isOn: self.$model.isAutocorrectionEnabled)
         ComponentOptionalColorPicker(selection: self.$model.color)
-        CornerRadiusPicker(selection: self.$model.cornerRadius) {
+        ComponentRadiusPicker(selection: self.$model.cornerRadius) {
           Text("Custom: 20px").tag(ComponentRadius.custom(20))
         }
         Toggle("Enabled", isOn: self.$model.isEnabled)
-        FontPicker(selection: self.$model.font)
+        BodyFontPicker(selection: self.$model.font)
         KeyboardTypePicker(selection: self.$model.keyboardType)
         Picker("Max Rows", selection: self.$model.maxRows) {
-          Text("2 Rows").tag(2)
           Text("3 Rows").tag(3)
+          Text("4 Rows").tag(4)
           Text("No Limit").tag(Optional<Int>.none)
         }
         Picker("Min Rows", selection: self.$model.minRows) {
           Text("1 Row").tag(1)
           Text("2 Rows").tag(2)
+          Text("3 Rows").tag(3)
         }
         Toggle("Placeholder", isOn: .init(
           get: {
@@ -73,6 +76,14 @@ struct TextInputPreviewPreview: View {
           }
         }
       }
+    }
+  }
+
+  private static var initialModel: TextInputVM {
+    return .init {
+      $0.placeholder = "Placeholder"
+      $0.minRows = 2
+      $0.maxRows = nil
     }
   }
 }

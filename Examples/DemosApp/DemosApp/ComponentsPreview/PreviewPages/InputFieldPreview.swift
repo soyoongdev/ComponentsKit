@@ -4,21 +4,25 @@ import SwiftUI
 import UIKit
 
 struct InputFieldPreview: View {
-  @State private var model = InputFieldVM {
-    $0.title = "Title"
-  }
+  @State private var model = Self.initialModel
 
   @State private var text: String = ""
   @FocusState private var isFocused: Bool
 
-  @ObservedObject private var inputField = PreviewInputField()
+  @ObservedObject private var inputField = PreviewInputField(model: Self.initialModel)
 
   var body: some View {
     VStack {
       PreviewWrapper(title: "UIKit") {
-        UKComponentPreview(model: self.model) {
-          self.inputField
-        }
+        self.inputField
+          .preview
+          .onAppear {
+            self.inputField.text = ""
+            self.inputField.model = Self.initialModel
+          }
+          .onChange(of: self.model) { newValue in
+            self.inputField.model = newValue
+          }
       }
       PreviewWrapper(title: "SwiftUI") {
         SUInputField(
@@ -31,11 +35,11 @@ struct InputFieldPreview: View {
         AutocapitalizationPicker(selection: self.$model.autocapitalization)
         Toggle("Autocorrection Enabled", isOn: self.$model.isAutocorrectionEnabled)
         ComponentOptionalColorPicker(selection: self.$model.color)
-        CornerRadiusPicker(selection: self.$model.cornerRadius) {
+        ComponentRadiusPicker(selection: self.$model.cornerRadius) {
           Text("Custom: 20px").tag(ComponentRadius.custom(20))
         }
         Toggle("Enabled", isOn: self.$model.isEnabled)
-        FontPicker(selection: self.$model.font)
+        BodyFontPicker(selection: self.$model.font)
         KeyboardTypePicker(selection: self.$model.keyboardType)
         Toggle("Placeholder", isOn: .init(
           get: {
@@ -72,6 +76,12 @@ struct InputFieldPreview: View {
           }
         }
       }
+    }
+  }
+
+  private static var initialModel: InputFieldVM {
+    return .init {
+      $0.title = "Title"
     }
   }
 }

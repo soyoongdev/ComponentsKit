@@ -38,9 +38,9 @@ struct UKComponentPreview<View, Model>: UIViewRepresentable where View: UKCompon
   let model: Model
   let view: View
 
-  init(model: Model, view: @escaping () -> View) {
-    self.view = view()
-    self.model = model
+  init(view: View) {
+    self.view = view
+    self.model = view.model
   }
 
   func makeUIView(context: Context) -> Container {
@@ -49,5 +49,11 @@ struct UKComponentPreview<View, Model>: UIViewRepresentable where View: UKCompon
 
   func updateUIView(_ container: Container, context: Context) {
     container.component.model = self.model
+  }
+}
+
+extension UKComponent {
+  var preview: some View {
+    UKComponentPreview(view: self)
   }
 }

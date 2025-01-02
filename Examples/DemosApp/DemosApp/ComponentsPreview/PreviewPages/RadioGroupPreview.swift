@@ -23,9 +23,8 @@ struct RadioGroupPreview: View {
   var body: some View {
     VStack {
       PreviewWrapper(title: "UIKit") {
-        UKComponentPreview(model: self.model) {
-          UKRadioGroup(model: self.model)
-        }
+        UKRadioGroup(model: self.model)
+          .preview
       }
       PreviewWrapper(title: "SwiftUI") {
         SURadioGroup(selectedId: $selectedId, model: self.model)
@@ -34,7 +33,7 @@ struct RadioGroupPreview: View {
         AnimationScalePicker(selection: self.$model.animationScale)
         UniversalColorPicker(title: "Color", selection: self.$model.color)
         Toggle("Enabled", isOn: self.$model.isEnabled)
-        FontPicker(selection: self.$model.font)
+        BodyFontPicker(selection: self.$model.font)
         SizePicker(selection: self.$model.size)
         Picker("Spacing", selection: self.$model.spacing) {
           Text("8px").tag(CGFloat(8))
