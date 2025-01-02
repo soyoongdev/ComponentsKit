@@ -152,7 +152,7 @@ open class UKProgressBar: UIView, UKComponent {
 
     self.style()
 
-    if self.model.shouldUpdateLayout(from: oldModel) {
+    if self.model.shouldUpdateLayout(oldModel) {
       self.layout()
       self.invalidateIntrinsicContentSize()
       self.setNeedsLayout()

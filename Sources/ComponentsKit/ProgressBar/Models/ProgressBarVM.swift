@@ -103,7 +103,7 @@ extension ProgressBarVM {
     }
   }
 
-  func shouldUpdateLayout(from oldModel: Self) -> Bool {
+  func shouldUpdateLayout(_ oldModel: Self) -> Bool {
     return self.size != oldModel.size
     || self.cornerRadius != oldModel.cornerRadius
     || self.style != oldModel.style
