@@ -10,14 +10,7 @@ public struct SUProgressBar: View {
   @Binding private var currentValue: CGFloat
 
   private var progress: CGFloat {
-    let range = self.model.maxValue - self.model.minValue
-
-    guard range > 0 else {
-      return 0
-    }
-
-    let progress = (self.currentValue - self.model.minValue) / range
-    return max(0, min(1, progress))
+    self.model.progress(for: self.currentValue)
   }
 
   // MARK: - Initializer

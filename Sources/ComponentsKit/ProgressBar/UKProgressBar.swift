@@ -39,10 +39,7 @@ open class UKProgressBar: UIView, UKComponent {
   // MARK: - Private Properties
 
   private var progress: CGFloat {
-    let range = self.model.maxValue - self.model.minValue
-    guard range > 0 else { return 0 }
-    let normalized = (self.currentValue - self.model.minValue) / range
-    return max(0, min(1, normalized))
+    return self.model.progress(for: self.currentValue)
   }
 
   // MARK: - Initialization
