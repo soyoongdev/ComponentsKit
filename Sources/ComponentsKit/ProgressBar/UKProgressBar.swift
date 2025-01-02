@@ -83,22 +83,9 @@ open class UKProgressBar: UIView, UKComponent {
   // MARK: - Style
 
   private func style() {
-    switch self.model.style {
-    case .light:
-      self.backgroundView.backgroundColor = self.model.backgroundColor.uiColor
-      self.progressView.backgroundColor = self.model.barColor.uiColor
-      self.stripedLayer.backgroundColor = .clear
-
-    case .filled:
-      self.backgroundView.backgroundColor = self.model.color.main.uiColor
-      self.progressView.backgroundColor = self.model.color.contrast.uiColor
-      self.stripedLayer.backgroundColor = .clear
-
-    case .striped:
-      self.backgroundView.backgroundColor = self.model.color.main.uiColor
-      self.progressView.backgroundColor = self.model.color.contrast.uiColor
-      self.stripedLayer.backgroundColor = self.model.color.main.uiColor
-    }
+    Self.Style.backgroundView(self.backgroundView, model: self.model)
+    Self.Style.progressView(self.progressView, model: self.model)
+    Self.Style.stripedLayer(self.stripedLayer, model: self.model)
   }
 
   // MARK: - Layout
@@ -218,5 +205,39 @@ open class UKProgressBar: UIView, UKComponent {
 
     self.updateProgressBar()
     self.layoutIfNeeded()
+  }
+}
+
+extension UKProgressBar {
+  fileprivate enum Style {
+    
+    static func backgroundView(_ view: UIView, model: ProgressBarVM) {
+      switch model.style {
+      case .light:
+        view.backgroundColor = model.backgroundColor.uiColor
+      case .filled, .striped:
+        view.backgroundColor = model.color.main.uiColor
+      }
+    }
+    
+    static func progressView(_ view: UIView, model: ProgressBarVM) {
+      switch model.style {
+      case .light:
+        view.backgroundColor = model.barColor.uiColor
+      case .filled, .striped:
+        view.backgroundColor = model.color.contrast.uiColor
+      }
+    }
+    
+    static func stripedLayer(_ view: UIView, model: ProgressBarVM) {
+      switch model.style {
+      case .light, .filled:
+        view.backgroundColor = .clear
+        view.isHidden = true
+      case .striped:
+        view.backgroundColor = model.color.main.uiColor
+        view.isHidden = false
+      }
+    }
   }
 }
