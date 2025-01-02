@@ -40,6 +40,15 @@ public struct ProgressBarVM: ComponentVM {
 // MARK: - Shared Helpers
 
 extension ProgressBarVM {
+  var horizontalPadding: CGFloat {
+    switch self.style {
+    case .light:
+      return 4
+    case .filled, .striped:
+      return 6
+    }
+  }
+
   var barHeight: CGFloat {
     switch self.style {
     case .light:

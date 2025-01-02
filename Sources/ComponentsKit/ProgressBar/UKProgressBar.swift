@@ -3,7 +3,6 @@ import UIKit
 
 /// A UIKit component that displays a Progress Bar.
 open class UKProgressBar: UIView, UKComponent {
-
   open override func sizeThatFits(_ size: CGSize) -> CGSize {
     let width = self.superview?.bounds.width ?? size.width
     return CGSize(
@@ -173,16 +172,15 @@ open class UKProgressBar: UIView, UKComponent {
       self.layoutIfNeeded()
     }
 
+    let totalWidth = self.bounds.width - self.model.horizontalPadding
+    let filledWidth = totalWidth * self.progress
+
     switch self.model.style {
     case .light:
-      let totalWidth = self.bounds.width - 4
-      let filledWidth = totalWidth * self.progress
       self.filledViewConstraints.width?.constant = max(0, filledWidth)
       self.remainingViewConstraints.width?.constant = max(0, totalWidth - filledWidth)
 
     case .filled, .striped:
-      let totalWidth = self.bounds.width - 6
-      let filledWidth = totalWidth * self.progress
       self.filledViewConstraints.width?.constant = max(0, filledWidth)
     }
 
