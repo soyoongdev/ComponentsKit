@@ -181,9 +181,15 @@ open class UKProgressBar: UIView, UKComponent {
         .cgPath
     }
 
-    UIView.animate(withDuration: duration) {
-      self.layoutIfNeeded()
-    }
+    UIView.animate(
+      withDuration: duration,
+      delay: 0,
+      options: .curveEaseInOut,
+      animations: {
+        self.layoutIfNeeded()
+      },
+      completion: nil
+    )
   }
 
   open override func layoutSubviews() {
