@@ -35,13 +35,13 @@ open class UKProgressBar: UIView, UKComponent {
 
   private let backgroundView = UIView()
   private let progressView = UIView()
-  private let stripedLayer = UIView()
+
+  private let stripedLayer = CAShapeLayer()
 
   // MARK: - Layout Constraints
 
   private var backgroundViewConstraints: LayoutConstraints = .init()
   private var progressViewConstraints: LayoutConstraints = .init()
-  private var stripedViewConstraints: LayoutConstraints = .init()
 
   // MARK: - Private Properties
 
@@ -77,7 +77,9 @@ open class UKProgressBar: UIView, UKComponent {
   private func setup() {
     self.addSubview(self.backgroundView)
     self.addSubview(self.progressView)
-    self.addSubview(self.stripedLayer)
+
+    self.progressView.layer.addSublayer(self.stripedLayer)
+    self.progressView.layer.masksToBounds = true
   }
 
   // MARK: - Style
@@ -93,7 +95,6 @@ open class UKProgressBar: UIView, UKComponent {
   private func layout() {
     self.backgroundViewConstraints.deactivateAll()
     self.progressViewConstraints.deactivateAll()
-    self.stripedViewConstraints.deactivateAll()
 
     UIView.performWithoutAnimation {
       switch self.model.style {
@@ -122,14 +123,6 @@ open class UKProgressBar: UIView, UKComponent {
           self.progressView.vertically(3, to: self.backgroundView)
           self.progressView.width(0)
         }
-
-        if self.model.style == .striped {
-          self.stripedViewConstraints = .merged {
-            self.stripedLayer.horizontally(0)
-            self.stripedLayer.centerVertically()
-            self.stripedLayer.height(self.model.barHeight)
-          }
-        }
       }
     }
 
@@ -146,8 +139,6 @@ open class UKProgressBar: UIView, UKComponent {
     if self.model.barHeight != oldModel.barHeight {
       self.backgroundViewConstraints.height?.constant = self.model.barHeight
       self.progressViewConstraints.height?.constant = self.model.barHeight
-      self.stripedViewConstraints.height?.constant = self.model.barHeight
-
       self.invalidateIntrinsicContentSize()
       self.setNeedsLayout()
     }
@@ -158,7 +149,6 @@ open class UKProgressBar: UIView, UKComponent {
       } else {
         self.stripedLayer.isHidden = true
       }
-
       self.setNeedsLayout()
     }
 
@@ -185,9 +175,10 @@ open class UKProgressBar: UIView, UKComponent {
     }
 
     if self.model.style == .striped {
-      let shapeLayer = CAShapeLayer()
-      shapeLayer.path = self.model.stripesBezierPath(in: self.stripedLayer.bounds).cgPath
-      self.stripedLayer.layer.mask = shapeLayer
+      self.stripedLayer.frame = self.bounds
+      self.stripedLayer.path = self.model
+        .stripesBezierPath(in: self.stripedLayer.bounds)
+        .cgPath
     }
 
     UIView.animate(withDuration: duration) {
@@ -210,8 +201,6 @@ open class UKProgressBar: UIView, UKComponent {
     case .striped:
       self.backgroundView.layer.cornerRadius = self.model.cornerRadius(forHeight: self.backgroundView.bounds.height)
       self.progressView.layer.cornerRadius = self.model.innerCornerRadius(forHeight: self.backgroundView.bounds.height)
-      self.stripedLayer.layer.cornerRadius = self.model.cornerRadius(forHeight: self.backgroundView.bounds.height)
-      self.stripedLayer.clipsToBounds = true
     }
     self.updateProgressBar()
   }
@@ -239,14 +228,14 @@ extension UKProgressBar {
       }
     }
 
-    static func stripedLayer(_ view: UIView, model: ProgressBarVM) {
+    static func stripedLayer(_ layer: CAShapeLayer, model: ProgressBarVM) {
       switch model.style {
       case .light, .filled:
-        view.backgroundColor = .clear
-        view.isHidden = true
+        layer.fillColor = UIColor.clear.cgColor
+        layer.isHidden = true
       case .striped:
-        view.backgroundColor = model.color.main.uiColor
-        view.isHidden = false
+        layer.fillColor = model.color.main.uiColor.cgColor
+        layer.isHidden = false
       }
     }
   }
