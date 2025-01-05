@@ -143,9 +143,22 @@ open class UKProgressBar: UIView, UKComponent {
 
     self.style()
 
-    if self.model.shouldUpdateLayout(oldModel) {
-      self.layout()
+    if self.model.barHeight != oldModel.barHeight {
+      self.backgroundViewConstraints.height?.constant = self.model.barHeight
+      self.progressViewConstraints.height?.constant = self.model.barHeight
+      self.stripedViewConstraints.height?.constant = self.model.barHeight
+
       self.invalidateIntrinsicContentSize()
+      self.setNeedsLayout()
+    }
+
+    if self.model.style != oldModel.style {
+      if self.model.style == .striped {
+        self.stripedLayer.isHidden = false
+      } else {
+        self.stripedLayer.isHidden = true
+      }
+
       self.setNeedsLayout()
     }
 
@@ -182,8 +195,6 @@ open class UKProgressBar: UIView, UKComponent {
     }
   }
 
-  // MARK: - Style Helpers
-
   open override func layoutSubviews() {
     super.layoutSubviews()
 
@@ -202,11 +213,11 @@ open class UKProgressBar: UIView, UKComponent {
       self.stripedLayer.layer.cornerRadius = self.model.cornerRadius(forHeight: self.backgroundView.bounds.height)
       self.stripedLayer.clipsToBounds = true
     }
-
     self.updateProgressBar()
-    self.layoutIfNeeded()
   }
 }
+
+// MARK: - Style Helpers
 
 extension UKProgressBar {
   fileprivate enum Style {
