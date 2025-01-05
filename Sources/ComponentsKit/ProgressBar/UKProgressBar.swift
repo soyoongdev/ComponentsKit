@@ -176,9 +176,7 @@ open class UKProgressBar: UIView, UKComponent {
 
     if self.model.style == .striped {
       self.stripedLayer.frame = self.bounds
-      self.stripedLayer.path = self.model
-        .stripesBezierPath(in: self.stripedLayer.bounds)
-        .cgPath
+      self.stripedLayer.path = self.model.stripesBezierPath(in: self.stripedLayer.bounds).cgPath
     }
 
     UIView.animate(
