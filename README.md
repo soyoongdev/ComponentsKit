@@ -2,16 +2,11 @@
 
 ## Installation
 
-Before proceeding with the installation, ensure that you are signed in to your GitHub account in Xcode, and that your account has access to the repository:
-
-1. From the **Xcode** menu, click on **Settings**, and access the **Account** section.
-2. If you are not authorized, click on **+**, choose **GitHub**, and input your credentials.
-
-Once you are signed in to your GitHub account, you can add ComponentsKit to an Xcode project as a package dependency:
+Add ComponentsKit to an Xcode project as a package dependency:
 
 1. From the **File** menu, select **Add Package Dependencies...**.
 2. Enter `https://github.com/componentskit/ComponentsKit` into the package repository URL text field.
-3. Add **ComponentsKit** to your application.
+3. Add **componentskit** to your application.
 
 ## Basic Usage
 
