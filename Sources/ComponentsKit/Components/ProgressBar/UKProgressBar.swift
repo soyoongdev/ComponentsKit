@@ -21,10 +21,10 @@ open class UKProgressBar: UIView, UKComponent {
 
   // MARK: - Subviews
 
-  /// The background layer of the progress bar.
+  /// The background view of the progress bar.
   public let backgroundView = UIView()
 
-  /// The fill layer that displays the current progress.
+  /// The view that displays the current progress.
   public let progressView = UIView()
 
   /// A shape layer used to render striped styling.
@@ -125,7 +125,7 @@ open class UKProgressBar: UIView, UKComponent {
 
     self.style()
 
-    if self.model.barHeight != oldModel.barHeight {
+    if self.model.shouldUpdateLayout(oldModel) {
       switch self.model.style {
       case .light:
         self.backgroundViewFilledLeadingConstraint?.isActive = false
@@ -157,7 +157,11 @@ open class UKProgressBar: UIView, UKComponent {
       self.stripedLayer.path = self.model.stripesBezierPath(in: self.stripedLayer.bounds).cgPath
     }
 
-    let totalWidth = self.bounds.width - self.model.horizontalPadding
+    let totalHorizontalPadding: CGFloat = switch self.model.style {
+    case .light: self.model.lightBarSpacing
+    case .filled, .striped: self.model.innerBarPadding * 2
+    }
+    let totalWidth = self.bounds.width - totalHorizontalPadding
     let progressWidth = totalWidth * self.progress
 
     self.progressViewConstraints.width?.constant = max(0, progressWidth)
@@ -178,14 +182,8 @@ open class UKProgressBar: UIView, UKComponent {
   open override func layoutSubviews() {
     super.layoutSubviews()
 
-    self.backgroundView.layer.cornerRadius = self.model.cornerRadius(forHeight: self.backgroundView.bounds.height)
-
-    switch self.model.style {
-    case .light:
-      self.progressView.layer.cornerRadius = self.model.cornerRadius(forHeight: self.backgroundView.bounds.height)
-    case .filled, .striped:
-      self.progressView.layer.cornerRadius = self.model.innerCornerRadius(forHeight: self.backgroundView.bounds.height)
-    }
+    self.backgroundView.layer.cornerRadius = self.model.cornerRadius(for: self.backgroundView.bounds.height)
+    self.progressView.layer.cornerRadius = self.model.cornerRadius(for: self.progressView.bounds.height)
 
     self.updateProgressBar()
   }
@@ -196,7 +194,7 @@ open class UKProgressBar: UIView, UKComponent {
     let width = self.superview?.bounds.width ?? size.width
     return CGSize(
       width: min(size.width, width),
-      height: min(size.height, self.model.barHeight)
+      height: min(size.height, self.model.backgroundHeight)
     )
   }
 }
@@ -207,10 +205,12 @@ extension UKProgressBar {
   fileprivate enum Style {
     static func backgroundView(_ view: UIView, model: ProgressBarVM) {
       view.backgroundColor = model.backgroundColor.uiColor
+      view.layer.cornerRadius = model.cornerRadius(for: view.bounds.height)
     }
 
     static func progressView(_ view: UIView, model: ProgressBarVM) {
       view.backgroundColor = model.barColor.uiColor
+      view.layer.cornerRadius = model.cornerRadius(for: view.bounds.height)
       view.layer.masksToBounds = true
     }
 

@@ -35,16 +35,7 @@ public struct ProgressBarVM: ComponentVM {
 // MARK: - Shared Helpers
 
 extension ProgressBarVM {
-  var horizontalPadding: CGFloat {
-    switch self.style {
-    case .light:
-      return self.lightBarSpacing
-    case .filled, .striped:
-      return self.innerBarPadding * 2
-    }
-  }
-
-  var barHeight: CGFloat {
+  var backgroundHeight: CGFloat {
     switch self.style {
     case .light:
       switch size {
@@ -67,7 +58,11 @@ extension ProgressBarVM {
     }
   }
 
-  func cornerRadius(forHeight height: CGFloat) -> CGFloat {
+  var progressHeight: CGFloat {
+    return self.backgroundHeight - self.innerBarPadding
+  }
+
+  func cornerRadius(for height: CGFloat) -> CGFloat {
     switch self.cornerRadius {
     case .none:
       return 0
@@ -89,16 +84,16 @@ extension ProgressBarVM {
   }
 
   var innerBarPadding: CGFloat {
-    return 3
+    switch self.style {
+    case .light:
+      return 0
+    case .filled, .striped:
+      return 3
+    }
   }
 
   var lightBarSpacing: CGFloat {
     return 4
-  }
-
-  func innerCornerRadius(forHeight height: CGFloat) -> CGFloat {
-    // TODO: Fix when full corner radius
-    return max(0, self.cornerRadius(forHeight: height) - self.innerBarPadding)
   }
 
   var backgroundColor: UniversalColor {
@@ -155,15 +150,19 @@ extension ProgressBarVM {
 // MARK: - UIKit Helpers
 
 extension ProgressBarVM {
-  public func stripesBezierPath(in rect: CGRect) -> UIBezierPath {
+  func stripesBezierPath(in rect: CGRect) -> UIBezierPath {
     return UIBezierPath(cgPath: self.stripesCGPath(in: rect))
+  }
+
+  func shouldUpdateLayout(_ oldModel: Self) -> Bool {
+    return self.style != oldModel.style || self.size != oldModel.size
   }
 }
 
 // MARK: - SwiftUI Helpers
 
 extension ProgressBarVM {
-  public func stripesPath(in rect: CGRect) -> Path {
+  func stripesPath(in rect: CGRect) -> Path {
     return Path(self.stripesCGPath(in: rect))
   }
 }
