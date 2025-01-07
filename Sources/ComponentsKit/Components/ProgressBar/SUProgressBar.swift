@@ -33,7 +33,7 @@ public struct SUProgressBar: View {
     GeometryReader { geometry in
       switch self.model.style {
       case .light:
-        HStack(spacing: 4) {
+        HStack(spacing: self.model.lightBarSpacing) {
           RoundedRectangle(cornerRadius: self.model.cornerRadius(forHeight: self.model.barHeight))
             .foregroundStyle(self.model.barColor.color)
             .frame(width: geometry.size.width * self.progress, height: self.model.barHeight)
@@ -41,10 +41,7 @@ public struct SUProgressBar: View {
             .foregroundStyle(self.model.backgroundColor.color)
             .frame(width: geometry.size.width * (1 - self.progress))
         }
-        .animation(
-          Animation.easeInOut(duration: 0.3),
-          value: self.progress
-        )
+
       case .filled:
         ZStack(alignment: .leading) {
           RoundedRectangle(cornerRadius: self.model.cornerRadius(forHeight: self.model.barHeight))
@@ -57,10 +54,7 @@ public struct SUProgressBar: View {
             .padding(.vertical, self.model.innerBarPadding)
             .padding(.horizontal, self.model.innerBarPadding)
         }
-        .animation(
-          Animation.easeInOut(duration: 0.3),
-          value: self.progress
-        )
+
       case .striped:
         ZStack(alignment: .leading) {
           RoundedRectangle(cornerRadius: self.model.cornerRadius(forHeight: self.model.barHeight))
@@ -78,13 +72,12 @@ public struct SUProgressBar: View {
             .cornerRadius(self.model.cornerRadius(forHeight: self.model.barHeight))
             .clipped()
         }
-        .animation(
-          Animation.easeInOut(duration: 0.3),
-          value: self.progress
-        )
       }
     }
-    .animation(.spring, value: self.progress)
+    .animation(
+      Animation.easeInOut(duration: self.model.animationDuration),
+      value: self.progress
+    )
     .frame(height: self.model.barHeight)
     .onAppear {
       self.model.validateMinMaxValues()

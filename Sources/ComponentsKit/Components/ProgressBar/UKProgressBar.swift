@@ -3,18 +3,6 @@ import UIKit
 
 /// A UIKit component that displays a Progress Bar.
 open class UKProgressBar: UIView, UKComponent {
-  open override func sizeThatFits(_ size: CGSize) -> CGSize {
-    let width = self.superview?.bounds.width ?? size.width
-    return CGSize(
-      width: min(size.width, width),
-      height: min(size.height, self.model.barHeight)
-    )
-  }
-
-  open override var intrinsicContentSize: CGSize {
-    return self.sizeThatFits(UIView.layoutFittingExpandedSize)
-  }
-
   // MARK: - Properties
 
   /// A model that defines the appearance properties.
@@ -44,13 +32,20 @@ open class UKProgressBar: UIView, UKComponent {
 
   // MARK: - Layout Constraints
 
-  private var backgroundViewConstraints: LayoutConstraints = .init()
+  private var backgroundViewLightLeadingConstraint: NSLayoutConstraint?
+  private var backgroundViewFilledLeadingConstraint: NSLayoutConstraint?
   private var progressViewConstraints: LayoutConstraints = .init()
 
   // MARK: - Private Properties
 
   private var progress: CGFloat {
     self.model.progress(for: self.currentValue)
+  }
+
+  // MARK: - UIView Properties
+
+  open override var intrinsicContentSize: CGSize {
+    return self.sizeThatFits(UIView.layoutFittingExpandedSize)
   }
 
   // MARK: - Initialization
@@ -96,35 +91,31 @@ open class UKProgressBar: UIView, UKComponent {
   // MARK: - Layout
 
   private func layout() {
-    UIView.performWithoutAnimation {
-      switch self.model.style {
-      case .light:
-        self.backgroundViewConstraints = .merged {
-          self.backgroundView.after(self.progressView, padding: 4)
-          self.backgroundView.centerVertically()
-          self.backgroundView.height(self.model.barHeight)
-          self.backgroundView.width(0)
-        }
-        self.progressViewConstraints = .merged {
-          self.progressView.leading(0)
-          self.progressView.centerVertically()
-          self.progressView.height(self.model.barHeight)
-          self.progressView.width(0)
-        }
+    self.backgroundView.vertically()
+    self.backgroundView.trailing()
+    self.backgroundViewLightLeadingConstraint = self.backgroundView.after(
+      self.progressView,
+      padding: self.model.lightBarSpacing
+    ).leading
+    self.backgroundViewFilledLeadingConstraint = self.backgroundView.leading().leading
 
-      case .filled, .striped:
-        self.backgroundViewConstraints = .merged {
-          self.backgroundView.horizontally(0)
-          self.backgroundView.centerVertically()
-          self.backgroundView.height(self.model.barHeight)
-        }
-        self.progressViewConstraints = .merged {
-          self.progressView.leading(3, to: self.backgroundView)
-          self.progressView.vertically(3, to: self.backgroundView)
-          self.progressView.width(0)
-        }
+    switch self.model.style {
+    case .light:
+      self.backgroundViewFilledLeadingConstraint?.isActive = false
+      self.progressViewConstraints = .merged {
+        self.progressView.leading()
+        self.progressView.vertically()
+      }
+
+    case .filled, .striped:
+      self.backgroundViewLightLeadingConstraint?.isActive = false
+      self.progressViewConstraints = .merged {
+        self.progressView.leading(self.model.innerBarPadding)
+        self.progressView.vertically(self.model.innerBarPadding)
       }
     }
+
+    self.progressViewConstraints.width = self.progressView.width(0).width
   }
 
   // MARK: - Update
@@ -135,40 +126,44 @@ open class UKProgressBar: UIView, UKComponent {
     self.style()
 
     if self.model.barHeight != oldModel.barHeight {
-      self.backgroundViewConstraints.height?.constant = self.model.barHeight
-      self.progressViewConstraints.height?.constant = self.model.barHeight
+      switch self.model.style {
+      case .light:
+        self.backgroundViewFilledLeadingConstraint?.isActive = false
+        self.backgroundViewLightLeadingConstraint?.isActive = true
+        self.progressViewConstraints.leading?.constant = 0
+        self.progressViewConstraints.top?.constant = 0
+        self.progressViewConstraints.bottom?.constant = 0
+
+      case .filled, .striped:
+        self.backgroundViewLightLeadingConstraint?.isActive = false
+        self.backgroundViewFilledLeadingConstraint?.isActive = true
+        self.progressViewConstraints.leading?.constant = self.model.innerBarPadding
+        self.progressViewConstraints.top?.constant = self.model.innerBarPadding
+        self.progressViewConstraints.bottom?.constant = -self.model.innerBarPadding
+      }
+
       self.invalidateIntrinsicContentSize()
       self.setNeedsLayout()
     }
-    self.updateProgressBar()
+
+    UIView.performWithoutAnimation {
+      self.updateProgressBar()
+    }
   }
 
   private func updateProgressBar() {
-    let duration: TimeInterval = 0.3
-
-    UIView.performWithoutAnimation {
-      self.layoutIfNeeded()
-    }
-
-    let totalWidth = self.bounds.width - self.model.horizontalPadding
-    let progressWidth = totalWidth * self.progress
-
-    switch self.model.style {
-    case .light:
-      self.progressViewConstraints.width?.constant = max(0, progressWidth)
-      self.backgroundViewConstraints.width?.constant = max(0, totalWidth - progressWidth)
-
-    case .filled, .striped:
-      self.progressViewConstraints.width?.constant = max(0, progressWidth)
-    }
-
     if self.model.style == .striped {
       self.stripedLayer.frame = self.bounds
       self.stripedLayer.path = self.model.stripesBezierPath(in: self.stripedLayer.bounds).cgPath
     }
 
+    let totalWidth = self.bounds.width - self.model.horizontalPadding
+    let progressWidth = totalWidth * self.progress
+
+    self.progressViewConstraints.width?.constant = max(0, progressWidth)
+
     UIView.animate(
-      withDuration: duration,
+      withDuration: self.model.animationDuration,
       delay: 0,
       options: .curveEaseInOut,
       animations: {
@@ -177,6 +172,8 @@ open class UKProgressBar: UIView, UKComponent {
       completion: nil
     )
   }
+
+  // MARK: - Layout
 
   open override func layoutSubviews() {
     super.layoutSubviews()
@@ -189,7 +186,18 @@ open class UKProgressBar: UIView, UKComponent {
     case .filled, .striped:
       self.progressView.layer.cornerRadius = self.model.innerCornerRadius(forHeight: self.backgroundView.bounds.height)
     }
+
     self.updateProgressBar()
+  }
+
+  // MARK: - UIView methods
+
+  open override func sizeThatFits(_ size: CGSize) -> CGSize {
+    let width = self.superview?.bounds.width ?? size.width
+    return CGSize(
+      width: min(size.width, width),
+      height: min(size.height, self.model.barHeight)
+    )
   }
 }
 

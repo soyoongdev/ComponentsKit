@@ -38,9 +38,9 @@ extension ProgressBarVM {
   var horizontalPadding: CGFloat {
     switch self.style {
     case .light:
-      return 4
+      return self.lightBarSpacing
     case .filled, .striped:
-      return 6
+      return self.innerBarPadding * 2
     }
   }
 
@@ -84,13 +84,21 @@ extension ProgressBarVM {
     }
   }
 
+  var animationDuration: TimeInterval {
+    return 0.2
+  }
+
   var innerBarPadding: CGFloat {
     return 3
   }
 
+  var lightBarSpacing: CGFloat {
+    return 4
+  }
+
   func innerCornerRadius(forHeight height: CGFloat) -> CGFloat {
-    let distance: CGFloat = 3
-    return max(0, self.cornerRadius(forHeight: height) - distance)
+    // TODO: Fix when full corner radius
+    return max(0, self.cornerRadius(forHeight: height) - self.innerBarPadding)
   }
 
   var backgroundColor: UniversalColor {
@@ -109,12 +117,6 @@ extension ProgressBarVM {
     case .filled, .striped:
       return self.color.contrast
     }
-  }
-
-  func shouldUpdateLayout(_ oldModel: Self) -> Bool {
-    return self.size != oldModel.size
-    || self.cornerRadius != oldModel.cornerRadius
-    || self.style != oldModel.style
   }
 
   private func stripesCGPath(in rect: CGRect) -> CGMutablePath {
@@ -139,14 +141,6 @@ extension ProgressBarVM {
     }
     return path
   }
-
-  public func stripesPath(in rect: CGRect) -> Path {
-    return Path(self.stripesCGPath(in: rect))
-  }
-
-  public func stripesBezierPath(in rect: CGRect) -> UIBezierPath {
-    return UIBezierPath(cgPath: self.stripesCGPath(in: rect))
-  }
 }
 
 extension ProgressBarVM {
@@ -155,6 +149,22 @@ extension ProgressBarVM {
     guard range > 0 else { return 0 }
     let normalized = (currentValue - self.minValue) / range
     return max(0, min(1, normalized))
+  }
+}
+
+// MARK: - UIKit Helpers
+
+extension ProgressBarVM {
+  public func stripesBezierPath(in rect: CGRect) -> UIBezierPath {
+    return UIBezierPath(cgPath: self.stripesCGPath(in: rect))
+  }
+}
+
+// MARK: - SwiftUI Helpers
+
+extension ProgressBarVM {
+  public func stripesPath(in rect: CGRect) -> Path {
+    return Path(self.stripesCGPath(in: rect))
   }
 }
 
