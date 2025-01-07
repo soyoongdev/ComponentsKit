@@ -84,6 +84,10 @@ extension ProgressBarVM {
     }
   }
 
+  var innerBarPadding: CGFloat {
+    return 3
+  }
+
   func innerCornerRadius(forHeight height: CGFloat) -> CGFloat {
     let distance: CGFloat = 3
     return max(0, self.cornerRadius(forHeight: height) - distance)
