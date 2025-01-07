@@ -14,16 +14,18 @@ open class UKModalController<VM: ModalVM>: UIViewController {
   /// A model that defines the appearance properties.
   public let model: VM
 
+  private var contentViewWidthConstraint: NSLayoutConstraint?
+
+  // MARK: - Subviews
+
   /// The optional header view of the modal.
   public var header: UIView?
   /// The main body view of the modal.
   public var body = UIView()
   /// The optional footer view of the modal.
   public var footer: UIView?
-  /// The container view that holds the modal's content.
-  public let container = UIView()
-  /// The content view inside the container, holding the header, body, and footer.
-  public let content = UIView()
+  /// The content view, holding the header, body, and footer.
+  public let contentView = UIView()
   /// A scrollable wrapper for the body content.
   public let bodyWrapper: UIScrollView = ContentSizedScrollView()
   /// The overlay view that appears behind the modal.
@@ -31,12 +33,7 @@ open class UKModalController<VM: ModalVM>: UIViewController {
 
   // MARK: - Initialization
 
-  init(
-    model: VM = .init(),
-    header: Content? = nil,
-    body: Content,
-    footer: Content? = nil
-  ) {
+  init(model: VM) {
     self.model = model
 
     switch model.overlayStyle {
@@ -47,16 +44,6 @@ open class UKModalController<VM: ModalVM>: UIViewController {
     }
 
     super.init(nibName: nil, bundle: nil)
-
-    self.header = header?({ [weak self] animated in
-      self?.dismiss(animated: animated)
-    })
-    self.body = body({ [weak self] animated in
-      self?.dismiss(animated: animated)
-    })
-    self.footer = footer?({ [weak self] animated in
-      self?.dismiss(animated: animated)
-    })
 
     self.modalPresentationStyle = .overFullScreen
     self.modalTransitionStyle = .crossDissolve
@@ -81,14 +68,13 @@ open class UKModalController<VM: ModalVM>: UIViewController {
   /// Sets up the modal's subviews and gesture recognizers.
   open func setup() {
     self.view.addSubview(self.overlay)
-    self.view.addSubview(self.container)
-    self.container.addSubview(self.content)
+    self.view.addSubview(self.contentView)
     if let header {
-      self.content.addSubview(header)
+      self.contentView.addSubview(header)
     }
-    self.content.addSubview(self.bodyWrapper)
+    self.contentView.addSubview(self.bodyWrapper)
     if let footer {
-      self.content.addSubview(footer)
+      self.contentView.addSubview(footer)
     }
 
     self.bodyWrapper.addSubview(self.body)
@@ -97,6 +83,12 @@ open class UKModalController<VM: ModalVM>: UIViewController {
       target: self,
       action: #selector(self.handleOverlayTap)
     ))
+
+    if #available(iOS 17.0, *) {
+      self.registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (controller: Self, _: UITraitCollection) in
+        controller.handleTraitChanges()
+      }
+    }
   }
 
   @objc func handleOverlayTap() {
@@ -106,20 +98,18 @@ open class UKModalController<VM: ModalVM>: UIViewController {
 
   // MARK: - Style
 
-  /// Applies styling to the modal's components based on the model.
+  /// Applies styling to the modal's subviews.
   open func style() {
     Self.Style.overlay(self.overlay, model: self.model)
-    Self.Style.container(self.container, model: self.model)
-    Self.Style.content(self.content, model: self.model)
+    Self.Style.contentView(self.contentView, model: self.model)
     Self.Style.bodyWrapper(self.bodyWrapper)
   }
 
   // MARK: - Layout
 
-  /// Configures the layout of the modal's components.
+  /// Configures the layout of the modal's subviews.
   open func layout() {
     self.overlay.allEdges()
-    self.content.allEdges()
 
     if let header {
       header.top(self.model.contentPaddings.top)
@@ -150,32 +140,69 @@ open class UKModalController<VM: ModalVM>: UIViewController {
     self.bodyWrapper.horizontally()
     self.bodyWrapper.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
 
-    self.body.leading(self.model.contentPaddings.leading, to: self.container)
-    self.body.trailing(self.model.contentPaddings.trailing, to: self.container)
+    self.body.leading(self.model.contentPaddings.leading, to: self.contentView)
+    self.body.trailing(self.model.contentPaddings.trailing, to: self.contentView)
 
-    self.container.topAnchor.constraint(
+    self.contentView.topAnchor.constraint(
       greaterThanOrEqualTo: self.view.safeAreaLayoutGuide.topAnchor,
       constant: self.model.outerPaddings.top
     ).isActive = true
-    self.container.leadingAnchor.constraint(
+    self.contentView.leadingAnchor.constraint(
       greaterThanOrEqualTo: self.view.safeAreaLayoutGuide.leadingAnchor,
       constant: self.model.outerPaddings.leading
     ).isActive = true
-    self.container.trailingAnchor.constraint(
+    self.contentView.trailingAnchor.constraint(
       lessThanOrEqualTo: self.view.safeAreaLayoutGuide.trailingAnchor,
       constant: -self.model.outerPaddings.trailing
     ).isActive = true
-    self.container.heightAnchor.constraint(
+    self.contentView.heightAnchor.constraint(
       greaterThanOrEqualToConstant: 80
     ).isActive = true
 
-    let containerWidthConstraint = self.container.width(self.model.size.maxWidth).width
-    containerWidthConstraint?.priority = .defaultHigh
+    self.contentViewWidthConstraint = self.contentView.width(self.model.size.maxWidth).width
+    self.contentViewWidthConstraint?.priority = .defaultHigh
 
-    let bodyWrapperWidthConstraint = self.bodyWrapper.width(self.model.size.maxWidth).width
-    bodyWrapperWidthConstraint?.priority = .defaultHigh
+    self.bodyWrapper.widthAnchor.constraint(equalTo: self.contentView.widthAnchor).isActive = true
 
-    self.container.centerHorizontally()
+    self.contentView.centerHorizontally()
+  }
+
+  open override func viewWillTransition(
+    to size: CGSize,
+    with coordinator: any UIViewControllerTransitionCoordinator
+  ) {
+    self.contentViewWidthConstraint?.isActive = false
+    super.viewWillTransition(to: size, with: coordinator)
+  }
+
+  open override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+
+    let availableWidth = self.view.bounds.width
+    let requiredWidth = self.model.size.maxWidth
+    + self.model.outerPaddings.leading
+    + self.model.outerPaddings.trailing
+    if availableWidth > requiredWidth {
+      self.contentViewWidthConstraint?.priority = .required
+    } else {
+      self.contentViewWidthConstraint?.priority = .defaultHigh
+    }
+    self.contentViewWidthConstraint?.isActive = true
+  }
+
+  // MARK: - UIViewController Methods
+
+  open override func traitCollectionDidChange(
+    _ previousTraitCollection: UITraitCollection?
+  ) {
+    super.traitCollectionDidChange(previousTraitCollection)
+    self.handleTraitChanges()
+  }
+
+  // MARK: - Helpers
+
+  @objc private func handleTraitChanges() {
+    Self.Style.contentView(self.contentView, model: self.model)
   }
 }
 
@@ -193,14 +220,11 @@ extension UKModalController {
         (view as? UIVisualEffectView)?.effect = UIBlurEffect(style: .systemUltraThinMaterial)
       }
     }
-    static func container(_ view: UIView, model: VM) {
-      view.backgroundColor = UniversalColor.background.uiColor
-      view.layer.cornerRadius = model.cornerRadius.value
-    }
-    static func content(_ view: UIView, model: VM) {
+    static func contentView(_ view: UIView, model: VM) {
       view.backgroundColor = model.preferredBackgroundColor.uiColor
       view.layer.cornerRadius = model.cornerRadius.value
-      view.clipsToBounds = true
+      view.layer.borderColor = UniversalColor.divider.cgColor
+      view.layer.borderWidth = model.borderWidth.value
     }
     static func bodyWrapper(_ scrollView: UIScrollView) {
       scrollView.delaysContentTouches = false

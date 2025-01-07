@@ -86,6 +86,47 @@ public struct UniversalColor: Hashable {
         return UIColor(color)
       }
     }
+
+    /// Returns a tuple containing the red, green, blue, and alpha components of the color.
+    private var rgba: (r: CGFloat, g: CGFloat, b: CGFloat, a: CGFloat) {
+      switch self {
+      case let .rgba(r, g, b, a):
+        return (r, g, b, a)
+      case .uiColor, .color:
+        var red: CGFloat = 0
+        var green: CGFloat = 0
+        var blue: CGFloat = 0
+        var alpha: CGFloat = 0
+
+        self.uiColor.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
+
+        return (red, green, blue, alpha)
+      }
+    }
+
+    /// Returns a new `ColorRepresentable` by blending the current color with another color.
+    ///
+    /// The blending is performed using the alpha value of the current color,
+    /// where the second color is treated as fully opaque (alpha = `1.0 - self.alpha`).
+    ///
+    /// The resulting color's RGBA components are calculated as:
+    /// - `red = self.red * self.alpha + other.red * (1.0 - self.alpha)`
+    /// - `green = self.green * self.alpha + other.green * (1.0 - self.alpha)`
+    /// - `blue = self.blue * self.alpha + other.blue * (1.0 - self.alpha)`
+    /// - The resulting color's alpha will always be `1.0`.
+    ///
+    /// - Parameter other: The `ColorRepresentable` to blend with the current color.
+    /// - Returns: A new `ColorRepresentable` instance representing the blended color.
+    fileprivate func blended(with other: Self) -> Self {
+      let rgba = self.rgba
+      let otherRgba = other.rgba
+
+      let red = rgba.r * rgba.a + otherRgba.r * (1.0 - rgba.a)
+      let green = rgba.g * rgba.a + otherRgba.g * (1.0 - rgba.a)
+      let blue = rgba.b * rgba.a + otherRgba.b * (1.0 - rgba.a)
+
+      return .rgba(r: red, g: green, b: blue, a: 1.0)
+    }
   }
 
   // MARK: - Properties
@@ -119,6 +160,32 @@ public struct UniversalColor: Hashable {
     return Self(light: universal, dark: universal)
   }
 
+  // MARK: - Colors
+
+  /// Returns the `UIColor` representation of the color.
+  public var uiColor: UIColor {
+    return UIColor { trait in
+      switch trait.userInterfaceStyle {
+      case.light:
+        return self.light.uiColor
+      case .dark:
+        return self.dark.uiColor
+      default:
+        return self.light.uiColor
+      }
+    }
+  }
+
+  /// Returns the `Color` representation of the color.
+  public var color: Color {
+    return Color(self.uiColor)
+  }
+
+  /// Returns the `CGColor` representation of the color.
+  public var cgColor: CGColor {
+    return self.uiColor.cgColor
+  }
+
   // MARK: - Methods
 
   /// Returns a new `UniversalColor` with the specified opacity.
@@ -142,24 +209,23 @@ public struct UniversalColor: Hashable {
     : self.withOpacity(ComponentsKitConfig.shared.layout.disabledOpacity)
   }
 
-  // MARK: - Colors
-
-  /// Returns the `UIColor` representation of the color.
-  public var uiColor: UIColor {
-    return UIColor { trait in
-      switch trait.userInterfaceStyle {
-      case.light:
-        return self.light.uiColor
-      case .dark:
-        return self.dark.uiColor
-      default:
-        return self.light.uiColor
-      }
-    }
-  }
-
-  /// Returns the `Color` representation of the color.
-  public var color: Color {
-    return Color(self.uiColor)
+  /// Returns a new `UniversalColor` by blending the current color with another color.
+  ///
+  /// The blending is performed using the alpha value of the current color,
+  /// where the second color is treated as fully opaque (alpha = `1.0 - self.alpha`).
+  ///
+  /// The resulting color's RGBA components are calculated as:
+  /// - `red = self.red * self.alpha + other.red * (1.0 - self.alpha)`
+  /// - `green = self.green * self.alpha + other.green * (1.0 - self.alpha)`
+  /// - `blue = self.blue * self.alpha + other.blue * (1.0 - self.alpha)`
+  /// - The resulting color's alpha will always be `1.0`.
+  ///
+  /// - Parameter other: The `UniversalColor` to blend with the current color.
+  /// - Returns: A new `UniversalColor` instance representing the blended color.
+  public func blended(with other: Self) -> Self {
+    return .init(
+      light: self.light.blended(with: other.light),
+      dark: self.dark.blended(with: other.dark)
+    )
   }
 }

@@ -54,7 +54,7 @@ struct SUCenterModal<Header: View, Body: View, Footer: View>: View {
 extension View {
   /// A SwiftUI view modifier that presents a center-aligned modal.
   ///
-  /// This modifier allows you to attach a cetner modal to any SwiftUI view, providing a structured way to display modals
+  /// This modifier allows you to attach a center modal to any SwiftUI view, providing a structured way to display modals
   /// with a header, body, and footer, all styled and laid out according to the provided `CenterModalVM` model.
   ///
   /// - Parameters:

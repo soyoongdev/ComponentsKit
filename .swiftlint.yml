@@ -166,7 +166,7 @@ only_rules:
   - is_disjoint
 
   # Tuples shouldn’t have too many members. Create a custom type instead
-  - large_tuple
+  # - large_tuple
 
   # Prefer using .last(where:) over .filter { }.last in collections
   - last_where

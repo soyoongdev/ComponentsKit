@@ -65,6 +65,7 @@ struct ModalPreviewHelpers {
           Text("Warning Background").tag(ComponentColor.warning.background)
           Text("Danger Background").tag(ComponentColor.danger.background)
         }
+        BorderWidthPicker(selection: self.$model.borderWidth)
         Toggle("Closes On Overlay Tap", isOn: self.$model.closesOnOverlayTap)
           .disabled(self.footer == nil)
         Picker("Outer Paddings", selection: self.$model.outerPaddings) {
@@ -82,30 +83,17 @@ struct ModalPreviewHelpers {
           Text("16px").tag(Paddings(padding: 16))
           Text("20px").tag(Paddings(padding: 20))
         }
-        Picker("Corner Radius", selection: self.$model.cornerRadius) {
-          Text("None").tag(ModalRadius.none)
-          Text("Small").tag(ModalRadius.small)
-          Text("Medium").tag(ModalRadius.medium)
-          Text("Large").tag(ModalRadius.large)
-          Text("Custom 30px").tag(ModalRadius.custom(30))
+        ContainerRadiusPicker(selection: self.$model.cornerRadius) {
+          Text("Custom 30px").tag(ContainerRadius.custom(30))
         }
-        Picker("Overlay Style", selection: self.$model.overlayStyle) {
-          Text("Blurred").tag(ModalOverlayStyle.blurred)
-          Text("Dimmed").tag(ModalOverlayStyle.dimmed)
-          Text("Transparent").tag(ModalOverlayStyle.transparent)
-        }
+        OverlayStylePicker(selection: self.$model.overlayStyle)
         Picker("Size", selection: self.$model.size) {
           Text("Small").tag(ModalSize.small)
           Text("Medium").tag(ModalSize.medium)
           Text("Large").tag(ModalSize.large)
           Text("Full").tag(ModalSize.full)
         }
-        Picker("Transition", selection: self.$model.transition) {
-          Text("None").tag(ModalTransition.none)
-          Text("Fast").tag(ModalTransition.fast)
-          Text("Normal").tag(ModalTransition.normal)
-          Text("Slow").tag(ModalTransition.slow)
-        }
+        TransitionPicker(selection: self.$model.transition)
         self.additionalPickers()
       }
     }

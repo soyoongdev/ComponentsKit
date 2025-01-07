@@ -1,7 +1,7 @@
 import Foundation
 
-/// Defines the corner radius options for a modal's content area.
-public enum ModalRadius: Hashable {
+/// Defines the corner radius options for a container's content area.
+public enum ContainerRadius: Hashable {
   /// No corner radius is applied, resulting in sharp edges.
   case none
   /// A small corner radius is applied.
@@ -16,7 +16,7 @@ public enum ModalRadius: Hashable {
   case custom(CGFloat)
 }
 
-extension ModalRadius {
+extension ContainerRadius {
   var value: CGFloat {
     return switch self {
     case .none: CGFloat(0)

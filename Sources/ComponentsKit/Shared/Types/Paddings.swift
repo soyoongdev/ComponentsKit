@@ -1,4 +1,4 @@
-import Foundation
+import SwiftUI
 
 /// Defines padding values for each edge.
 public struct Paddings: Hashable {
@@ -48,5 +48,18 @@ public struct Paddings: Hashable {
     self.leading = padding
     self.bottom = padding
     self.trailing = padding
+  }
+}
+
+// MARK: - SwiftUI Helpers
+
+extension Paddings {
+  var edgeInsets: EdgeInsets {
+    return EdgeInsets(
+      top: self.top,
+      leading: self.leading,
+      bottom: self.bottom,
+      trailing: self.trailing
+    )
   }
 }

@@ -2,8 +2,11 @@ import Foundation
 
 /// A model that defines generic appearance properties that can be in any modal component.
 public protocol ModalVM: ComponentVM {
-  /// The background color of the modal's content area.
+  /// The background color of the modal.
   var backgroundColor: UniversalColor? { get set }
+
+  /// The border thickness of the modal.
+  var borderWidth: BorderWidth { get set }
 
   /// A Boolean value indicating whether the modal should close when tapping on the overlay.
   var closesOnOverlayTap: Bool { get set }
@@ -15,7 +18,7 @@ public protocol ModalVM: ComponentVM {
   var contentSpacing: CGFloat { get set }
 
   /// The corner radius of the modal.
-  var cornerRadius: ModalRadius { get set }
+  var cornerRadius: ContainerRadius { get set }
 
   /// The style of the overlay displayed behind the modal.
   var overlayStyle: ModalOverlayStyle { get set }
