@@ -42,9 +42,10 @@ public struct SUProgressBar: View {
             .frame(width: geometry.size.width * (1 - self.progress), height: self.model.barHeight)
         }
         .animation(
-            Animation.easeInOut(duration: 0.3),
-            value: self.progress
+          Animation.easeInOut(duration: 0.3),
+          value: self.progress
         )
+
       case .filled:
         ZStack(alignment: .leading) {
           RoundedRectangle(cornerRadius: self.model.cornerRadius(forHeight: self.model.barHeight))
@@ -58,9 +59,10 @@ public struct SUProgressBar: View {
             .padding(.horizontal, self.model.contentPaddings.trailing)
         }
         .animation(
-            Animation.easeInOut(duration: 0.3),
-            value: self.progress
+          Animation.easeInOut(duration: 0.3),
+          value: self.progress
         )
+
       case .striped:
         ZStack(alignment: .leading) {
           RoundedRectangle(cornerRadius: self.model.cornerRadius(forHeight: self.model.barHeight))
@@ -79,8 +81,8 @@ public struct SUProgressBar: View {
             .clipped()
         }
         .animation(
-            Animation.easeInOut(duration: 0.3),
-            value: self.progress
+          Animation.easeInOut(duration: 0.3),
+          value: self.progress
         )
       }
     }
