@@ -1,7 +1,7 @@
 import AutoLayout
 import UIKit
 
-/// A UIKit component that displays a Progress Bar.
+/// A UIKit component that displays a progress bar.
 open class UKProgressBar: UIView, UKComponent {
   // MARK: - Properties
 
@@ -102,20 +102,15 @@ open class UKProgressBar: UIView, UKComponent {
     switch self.model.style {
     case .light:
       self.backgroundViewFilledLeadingConstraint?.isActive = false
-      self.progressViewConstraints = .merged {
-        self.progressView.leading()
-        self.progressView.vertically()
-      }
-
     case .filled, .striped:
       self.backgroundViewLightLeadingConstraint?.isActive = false
-      self.progressViewConstraints = .merged {
-        self.progressView.leading(self.model.innerBarPadding)
-        self.progressView.vertically(self.model.innerBarPadding)
-      }
     }
 
-    self.progressViewConstraints.width = self.progressView.width(0).width
+    self.progressViewConstraints = .merged {
+      self.progressView.leading(self.model.progressPadding)
+      self.progressView.vertically(self.model.progressPadding)
+      self.progressView.width(0)
+    }
   }
 
   // MARK: - Update
@@ -130,17 +125,14 @@ open class UKProgressBar: UIView, UKComponent {
       case .light:
         self.backgroundViewFilledLeadingConstraint?.isActive = false
         self.backgroundViewLightLeadingConstraint?.isActive = true
-        self.progressViewConstraints.leading?.constant = 0
-        self.progressViewConstraints.top?.constant = 0
-        self.progressViewConstraints.bottom?.constant = 0
-
       case .filled, .striped:
         self.backgroundViewLightLeadingConstraint?.isActive = false
         self.backgroundViewFilledLeadingConstraint?.isActive = true
-        self.progressViewConstraints.leading?.constant = self.model.innerBarPadding
-        self.progressViewConstraints.top?.constant = self.model.innerBarPadding
-        self.progressViewConstraints.bottom?.constant = -self.model.innerBarPadding
       }
+
+      self.progressViewConstraints.leading?.constant = self.model.progressPadding
+      self.progressViewConstraints.top?.constant = self.model.progressPadding
+      self.progressViewConstraints.bottom?.constant = -self.model.progressPadding
 
       self.invalidateIntrinsicContentSize()
       self.setNeedsLayout()
@@ -159,7 +151,7 @@ open class UKProgressBar: UIView, UKComponent {
 
     let totalHorizontalPadding: CGFloat = switch self.model.style {
     case .light: self.model.lightBarSpacing
-    case .filled, .striped: self.model.innerBarPadding * 2
+    case .filled, .striped: self.model.progressPadding * 2
     }
     let totalWidth = self.bounds.width - totalHorizontalPadding
     let progressWidth = totalWidth * self.progress

@@ -50,9 +50,9 @@ public struct SUProgressBar: View {
 
           RoundedRectangle(cornerRadius: self.model.cornerRadius(for: self.model.progressHeight))
             .foregroundStyle(self.model.color.contrast.color)
-            .frame(width: (geometry.size.width - self.model.innerBarPadding * 2) * self.progress)
-            .padding(.vertical, self.model.innerBarPadding)
-            .padding(.horizontal, self.model.innerBarPadding)
+            .frame(width: (geometry.size.width - self.model.progressPadding * 2) * self.progress)
+            .padding(.vertical, self.model.progressPadding)
+            .padding(.horizontal, self.model.progressPadding)
         }
 
       case .striped:
@@ -63,9 +63,9 @@ public struct SUProgressBar: View {
 
           RoundedRectangle(cornerRadius: self.model.cornerRadius(for: self.model.progressHeight))
             .foregroundStyle(self.model.color.contrast.color)
-            .frame(width: (geometry.size.width - self.model.innerBarPadding * 2) * self.progress)
-            .padding(.vertical, self.model.innerBarPadding)
-            .padding(.horizontal, self.model.innerBarPadding)
+            .frame(width: (geometry.size.width - self.model.progressPadding * 2) * self.progress)
+            .padding(.vertical, self.model.progressPadding)
+            .padding(.horizontal, self.model.progressPadding)
 
           StripesShape(model: self.model)
             .foregroundStyle(self.model.color.main.color)
