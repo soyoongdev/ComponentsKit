@@ -5,60 +5,50 @@ struct App: View {
   var body: some View {
     NavigationView {
       List {
-        Section("Components") {
-          NavigationLinkWithTitle("Button") {
-            ButtonPreview()
-          }
-          NavigationLinkWithTitle("Checkbox") {
-            CheckboxPreview()
-          }
-          NavigationLinkWithTitle("Countdown") {
-            CountdownPreview()
-          }
-          NavigationLinkWithTitle("Divider") {
-            DividerPreview()
-          }
-          NavigationLinkWithTitle("Input Field") {
-            InputFieldPreview()
-          }
-          NavigationLinkWithTitle("Loading") {
-            LoadingPreview()
-          }
-          NavigationLinkWithTitle("Progress Bar") {
-            ProgressBarPreview()
-          }
-          NavigationLinkWithTitle("Radio Group") {
-            RadioGroupPreview()
-          }
-          NavigationLinkWithTitle("Segmented Control") {
-            SegmentedControlPreview()
-          }
-          NavigationLinkWithTitle("Text Field") {
-            TextInputPreviewPreview()
-          }
+        NavigationLinkWithTitle("Alert") {
+          AlertPreview()
         }
-
-        Section("Modals") {
-          NavigationLinkWithTitle("Bottom Modal") {
-            BottomModalPreview()
-          }
-          NavigationLinkWithTitle("Center Modal") {
-            CenterModalPreview()
-          }
+        NavigationLinkWithTitle("Button") {
+          ButtonPreview()
         }
-
-        Section("Login Demo") {
-          NavigationLinkWithTitle("SwiftUI") {
-            SwiftUILogin()
-          }
-          NavigationLinkWithTitle("UIKit") {
-            UIViewControllerRepresenting {
-              UIKitLogin()
-            }
-          }
+        NavigationLinkWithTitle("Card") {
+          CardPreview()
+        }
+        NavigationLinkWithTitle("Checkbox") {
+          CheckboxPreview()
+        }
+        NavigationLinkWithTitle("Countdown") {
+          CountdownPreview()
+        }
+        NavigationLinkWithTitle("Divider") {
+          DividerPreview()
+        }
+        NavigationLinkWithTitle("Input Field") {
+          InputFieldPreview()
+        }
+        NavigationLinkWithTitle("Loading") {
+          LoadingPreview()
+        }
+        NavigationLinkWithTitle("Progress Bar") {
+          ProgressBarPreview()
+        }
+        NavigationLinkWithTitle("Modal (Bottom)") {
+          BottomModalPreview()
+        }
+        NavigationLinkWithTitle("Modal (Center)") {
+          CenterModalPreview()
+        }
+        NavigationLinkWithTitle("Radio Group") {
+          RadioGroupPreview()
+        }
+        NavigationLinkWithTitle("Segmented Control") {
+          SegmentedControlPreview()
+        }
+        NavigationLinkWithTitle("Text Input") {
+          TextInputPreviewPreview()
         }
       }
-      .navigationTitle("Examples")
+      .navigationTitle("Components")
       .navigationBarTitleDisplayMode(.inline)
     }
   }

@@ -85,6 +85,65 @@ extension ComponentsKitConfig {
       }
     }
 
+    // MARK: - Shadow
+
+    /// A structure that defines the parameters for a shadow effect.
+    public struct ShadowParams {
+      /// The blur radius of the shadow.
+      ///
+      /// A larger radius results in a more diffuse shadow.
+      public var radius: CGFloat
+
+      /// The offset of the shadow, defining its position relative to the component.
+      ///
+      /// - `width`: Moves the shadow horizontally.
+      /// - `height`: Moves the shadow vertically.
+      public var offset: CGSize
+
+      /// The color of the shadow.
+      public var color: UniversalColor
+
+      // MARK: - Initialization
+
+      /// Initializes a new `ShadowParams` instance with the specified radius, offset, and color.
+      ///
+      /// - Parameters:
+      ///   - radius: The blur radius of the shadow.
+      ///   - offset: The offset of the shadow as a `CGSize`.
+      ///   - color: The color of the shadow.
+      public init(radius: CGFloat, offset: CGSize, color: UniversalColor) {
+        self.radius = radius
+        self.offset = offset
+        self.color = color
+      }
+    }
+
+    /// A structure that defines shadow presets for small, medium, and large shadows.
+    public struct Shadow {
+      /// The shadow parameters for a small shadow.
+      public var small: ShadowParams
+
+      /// The shadow parameters for a medium shadow.
+      public var medium: ShadowParams
+
+      /// The shadow parameters for a large shadow.
+      public var large: ShadowParams
+
+      // MARK: - Initialization
+
+      /// Initializes a new `Shadow` instance with the specified small, medium, and large shadow parameters.
+      ///
+      /// - Parameters:
+      ///   - small: The parameters for a small shadow.
+      ///   - medium: The parameters for a medium shadow.
+      ///   - large: The parameters for a large shadow.
+      public init(small: ShadowParams, medium: ShadowParams, large: ShadowParams) {
+        self.small = small
+        self.medium = medium
+        self.large = large
+      }
+    }
+
     // MARK: - Typography
 
     /// A structure representing a set of fonts for different component sizes.
@@ -154,11 +213,39 @@ extension ComponentsKitConfig {
       large: 26.0
     )
 
+    /// The shadow configuration for components.
+    public var shadow: Shadow = .init(
+      small: .init(
+        radius: 10.0,
+        offset: .init(width: 0, height: 6),
+        color: .themed(
+          light: .rgba(r: 0, g: 0, b: 0, a: 0.1),
+          dark: .rgba(r: 255, g: 255, b: 255, a: 0.1)
+        )
+      ),
+      medium: .init(
+        radius: 16.0,
+        offset: .init(width: 0, height: 10),
+        color: .themed(
+          light: .rgba(r: 0, g: 0, b: 0, a: 0.15),
+          dark: .rgba(r: 255, g: 255, b: 255, a: 0.15)
+        )
+      ),
+      large: .init(
+        radius: 20.0,
+        offset: .init(width: 0, height: 12),
+        color: .themed(
+          light: .rgba(r: 0, g: 0, b: 0, a: 0.2),
+          dark: .rgba(r: 255, g: 255, b: 255, a: 0.2)
+        )
+      )
+    )
+
     /// The border width configuration for components.
     public var borderWidth: BorderWidth = .init(
-      small: 1.0,
-      medium: 2.0,
-      large: 3.0
+      small: 0.5,
+      medium: 1.0,
+      large: 2.0
     )
 
     /// The animation scale configuration for components.

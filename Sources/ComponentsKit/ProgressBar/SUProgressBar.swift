@@ -6,8 +6,8 @@ public struct SUProgressBar: View {
 
   /// A model that defines the appearance properties.
   public var model: ProgressBarVM
-
-  @Binding private var currentValue: CGFloat
+  /// A binding to control the current value.
+  @Binding public var currentValue: CGFloat
 
   private var progress: CGFloat {
     self.model.progress(for: self.currentValue)
@@ -39,7 +39,7 @@ public struct SUProgressBar: View {
             .frame(width: geometry.size.width * self.progress, height: self.model.barHeight)
           RoundedRectangle(cornerRadius: self.model.cornerRadius(forHeight: self.model.barHeight))
             .foregroundStyle(self.model.backgroundColor.color)
-            .frame(width: geometry.size.width * (1 - self.progress), height: self.model.barHeight)
+            .frame(width: geometry.size.width * (1 - self.progress))
         }
         .animation(
           Animation.easeInOut(duration: 0.3),
@@ -50,13 +50,13 @@ public struct SUProgressBar: View {
         ZStack(alignment: .leading) {
           RoundedRectangle(cornerRadius: self.model.cornerRadius(forHeight: self.model.barHeight))
             .foregroundStyle(self.model.color.main.color)
-            .frame(width: geometry.size.width, height: self.model.barHeight)
+            .frame(width: geometry.size.width)
 
           RoundedRectangle(cornerRadius: self.model.innerCornerRadius(forHeight: self.model.barHeight))
             .foregroundStyle(self.model.color.contrast.color)
-            .frame(width: (geometry.size.width - 6) * self.progress, height: self.model.barHeight - 6)
-            .padding(.vertical, self.model.contentPaddings.top)
-            .padding(.horizontal, self.model.contentPaddings.trailing)
+            .frame(width: (geometry.size.width - self.model.innerBarPadding * 2) * self.progress)
+            .padding(.vertical, self.model.innerBarPadding)
+            .padding(.horizontal, self.model.innerBarPadding)
         }
         .animation(
           Animation.easeInOut(duration: 0.3),
@@ -67,13 +67,13 @@ public struct SUProgressBar: View {
         ZStack(alignment: .leading) {
           RoundedRectangle(cornerRadius: self.model.cornerRadius(forHeight: self.model.barHeight))
             .foregroundStyle(self.model.color.main.color)
-            .frame(width: geometry.size.width, height: self.model.barHeight)
+            .frame(width: geometry.size.width)
 
           RoundedRectangle(cornerRadius: self.model.innerCornerRadius(forHeight: self.model.barHeight))
             .foregroundStyle(self.model.color.contrast.color)
-            .frame(width: (geometry.size.width - 6) * self.progress, height: self.model.barHeight - 6)
-            .padding(.vertical, self.model.contentPaddings.top)
-            .padding(.horizontal, self.model.contentPaddings.trailing)
+            .frame(width: (geometry.size.width - self.model.innerBarPadding * 2) * self.progress)
+            .padding(.vertical, self.model.innerBarPadding)
+            .padding(.horizontal, self.model.innerBarPadding)
 
           StripesShape(model: self.model)
             .foregroundStyle(self.model.color.main.color)
@@ -84,8 +84,10 @@ public struct SUProgressBar: View {
           Animation.easeInOut(duration: 0.3),
           value: self.progress
         )
+
       }
     }
+    .animation(.spring, value: self.progress)
     .frame(height: self.model.barHeight)
     .onAppear {
       self.model.validateMinMaxValues()
@@ -93,7 +95,7 @@ public struct SUProgressBar: View {
   }
 }
 
-// MARK: - Properties
+// MARK: - Helpers
 
 struct StripesShape: Shape {
   var model: ProgressBarVM

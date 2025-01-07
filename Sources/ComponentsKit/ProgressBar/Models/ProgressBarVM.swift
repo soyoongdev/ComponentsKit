@@ -2,7 +2,7 @@ import SwiftUI
 
 /// A model that defines the appearance properties for a a progress bar component.
 public struct ProgressBarVM: ComponentVM {
-  /// The color of the progress bar..
+  /// The color of the progress bar.
   ///
   /// Defaults to `.accent`.
   public var color: ComponentColor = .accent
@@ -27,11 +27,6 @@ public struct ProgressBarVM: ComponentVM {
   ///
   /// Defaults to `.medium`.
   public var cornerRadius: ComponentRadius = .medium
-
-  /// The padding applied to the modal's content area.
-  ///
-  /// Defaults to a padding value of `3` for all sides.
-  public var contentPaddings: Paddings = .init(padding: 3)
 
   /// Initializes a new instance of `ProgressBarVM` with default values.
   public init() {}

@@ -32,6 +32,21 @@ struct AutocapitalizationPicker: View {
   }
 }
 
+// MARK: - BorderWidthPicker
+
+struct BorderWidthPicker: View {
+  @Binding var selection: BorderWidth
+  
+  var body: some View {
+    Picker("Border Width", selection: self.$selection) {
+      Text("None").tag(BorderWidth.none)
+      Text("Small").tag(BorderWidth.small)
+      Text("Medium").tag(BorderWidth.medium)
+      Text("Large").tag(BorderWidth.large)
+    }
+  }
+}
+
 // MARK: - ComponentColorPicker
 
 struct ComponentColorPicker: View {
@@ -75,7 +90,7 @@ struct ComponentOptionalColorPicker: View {
 
 // MARK: - CornerRadiusPicker
 
-struct CornerRadiusPicker<Custom: View>: View {
+struct ComponentRadiusPicker<Custom: View>: View {
   @Binding var selection: ComponentRadius
   @ViewBuilder var custom: () -> Custom
 
@@ -86,6 +101,21 @@ struct CornerRadiusPicker<Custom: View>: View {
       Text("Medium").tag(ComponentRadius.medium)
       Text("Large").tag(ComponentRadius.large)
       Text("Full").tag(ComponentRadius.full)
+      self.custom()
+    }
+  }
+}
+
+struct ContainerRadiusPicker<Custom: View>: View {
+  @Binding var selection: ContainerRadius
+  @ViewBuilder var custom: () -> Custom
+
+  var body: some View {
+    Picker("Corner Radius", selection: self.$selection) {
+      Text("None").tag(ContainerRadius.none)
+      Text("Small").tag(ContainerRadius.small)
+      Text("Medium").tag(ContainerRadius.medium)
+      Text("Large").tag(ContainerRadius.large)
       self.custom()
     }
   }
@@ -196,6 +226,20 @@ struct KeyboardTypePicker: View {
   }
 }
 
+// MARK: - OverlayStylePicker
+
+struct OverlayStylePicker: View {
+  @Binding var selection: ModalOverlayStyle
+  
+  var body: some View {
+    Picker("Overlay Style", selection: self.$selection) {
+      Text("Blurred").tag(ModalOverlayStyle.blurred)
+      Text("Dimmed").tag(ModalOverlayStyle.dimmed)
+      Text("Transparent").tag(ModalOverlayStyle.transparent)
+    }
+  }
+}
+
 // MARK: - SizePicker
 
 struct SizePicker: View {
@@ -224,6 +268,21 @@ struct SubmitTypePicker: View {
       Text("return").tag(SubmitType.return)
       Text("next").tag(SubmitType.next)
       Text("continue").tag(SubmitType.continue)
+    }
+  }
+}
+
+// MARK: - TransitionPicker
+
+struct TransitionPicker: View {
+  @Binding var selection: ModalTransition
+  
+  var body: some View {
+    Picker("Transition", selection: self.$selection) {
+      Text("None").tag(ModalTransition.none)
+      Text("Fast").tag(ModalTransition.fast)
+      Text("Normal").tag(ModalTransition.normal)
+      Text("Slow").tag(ModalTransition.slow)
     }
   }
 }
