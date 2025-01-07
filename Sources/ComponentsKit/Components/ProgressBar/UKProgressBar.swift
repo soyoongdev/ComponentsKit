@@ -15,7 +15,7 @@ open class UKProgressBar: UIView, UKComponent {
   /// The current progress value for the progress bar.
   public var currentValue: CGFloat {
     didSet {
-      self.updateProgressBar()
+      self.updateProgressWidthAndAppearance()
     }
   }
 
@@ -139,11 +139,11 @@ open class UKProgressBar: UIView, UKComponent {
     }
 
     UIView.performWithoutAnimation {
-      self.updateProgressBar()
+      self.updateProgressWidthAndAppearance()
     }
   }
 
-  private func updateProgressBar() {
+  private func updateProgressWidthAndAppearance() {
     if self.model.style == .striped {
       self.stripedLayer.frame = self.bounds
       self.stripedLayer.path = self.model.stripesBezierPath(in: self.stripedLayer.bounds).cgPath
@@ -177,7 +177,7 @@ open class UKProgressBar: UIView, UKComponent {
     self.backgroundView.layer.cornerRadius = self.model.cornerRadius(for: self.backgroundView.bounds.height)
     self.progressView.layer.cornerRadius = self.model.cornerRadius(for: self.progressView.bounds.height)
 
-    self.updateProgressBar()
+    self.updateProgressWidthAndAppearance()
   }
 
   // MARK: - UIView methods
