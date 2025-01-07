@@ -3,8 +3,11 @@ import SwiftUI
 import UIKit
 
 struct ProgressBarPreview: View {
-  @State private var model = ProgressBarVM()
-  @State private var currentValue: CGFloat = 0
+  @State private var model = Self.initialModel
+  @State private var currentValue: CGFloat = Self.initialValue
+
+  private let progressBar = UKProgressBar(initialValue: Self.initialValue, model: Self.initialModel)
+
   private let timer = Timer
     .publish(every: 0.1, on: .main, in: .common)
     .autoconnect()
@@ -12,7 +15,15 @@ struct ProgressBarPreview: View {
   var body: some View {
     VStack {
       PreviewWrapper(title: "UIKit") {
-        UKProgressBarRepresentable(currentValue: self.$currentValue, model: self.model)
+        self.progressBar
+          .preview
+          .onAppear {
+            self.progressBar.currentValue = self.currentValue
+            self.progressBar.model = Self.initialModel
+          }
+          .onChange(of: self.model) { newValue in
+            self.progressBar.model = newValue
+          }
       }
       PreviewWrapper(title: "SwiftUI") {
         SUProgressBar(currentValue: self.$currentValue, model: self.model)
@@ -36,26 +47,18 @@ struct ProgressBarPreview: View {
       } else {
         self.currentValue = self.model.minValue
       }
+      
+      self.progressBar.currentValue = self.currentValue
     }
   }
-}
-
-struct UKProgressBarRepresentable: UIViewRepresentable {
-  @Binding var currentValue: CGFloat
-  var model: ProgressBarVM
   
-  func makeUIView(context: Context) -> UKProgressBar {
-    let progressBar = UKProgressBar(initialValue: currentValue, model: model)
-    return progressBar
+  // MARK: - Helpers
+  
+  private static var initialValue: Double {
+    return 0.0
   }
-  
-  func updateUIView(_ uiView: UKProgressBar, context: Context) {
-    uiView.currentValue = currentValue
-    uiView.model = model
-    uiView.setNeedsLayout()
-  }
-  
-  static func dismantleUIView(_ uiView: UKProgressBar, coordinator: ()) {
+  private static var initialModel: ProgressBarVM {
+    return .init()
   }
 }
 
