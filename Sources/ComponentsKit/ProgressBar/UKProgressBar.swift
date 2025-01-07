@@ -33,10 +33,14 @@ open class UKProgressBar: UIView, UKComponent {
 
   // MARK: - Subviews
 
-  private let backgroundView = UIView()
-  private let progressView = UIView()
+  /// The background layer of the progress bar.
+  public let backgroundView = UIView()
 
-  private let stripedLayer = CAShapeLayer()
+  /// The fill layer that displays the current progress.
+  public let progressView = UIView()
+
+  /// A shape layer used to render striped styling.
+  public let stripedLayer = CAShapeLayer()
 
   // MARK: - Layout Constraints
 
@@ -53,7 +57,7 @@ open class UKProgressBar: UIView, UKComponent {
 
   /// Initializer.
   /// - Parameters:
-  ///   - currentValue: The initial progress value. Defaults to `0`.
+  ///   - initialValue: The initial progress value. Defaults to `0`.
   ///   - model: A model that defines the appearance properties.
   public init(
     initialValue: CGFloat = 0,
@@ -79,7 +83,6 @@ open class UKProgressBar: UIView, UKComponent {
     self.addSubview(self.progressView)
 
     self.progressView.layer.addSublayer(self.stripedLayer)
-    self.progressView.layer.masksToBounds = true
   }
 
   // MARK: - Style
@@ -93,9 +96,6 @@ open class UKProgressBar: UIView, UKComponent {
   // MARK: - Layout
 
   private func layout() {
-    self.backgroundViewConstraints.deactivateAll()
-    self.progressViewConstraints.deactivateAll()
-
     UIView.performWithoutAnimation {
       switch self.model.style {
       case .light:
@@ -125,8 +125,6 @@ open class UKProgressBar: UIView, UKComponent {
         }
       }
     }
-
-    self.setNeedsLayout()
   }
 
   // MARK: - Update
@@ -142,16 +140,6 @@ open class UKProgressBar: UIView, UKComponent {
       self.invalidateIntrinsicContentSize()
       self.setNeedsLayout()
     }
-
-    if self.model.style != oldModel.style {
-      if self.model.style == .striped {
-        self.stripedLayer.isHidden = false
-      } else {
-        self.stripedLayer.isHidden = true
-      }
-      self.setNeedsLayout()
-    }
-
     self.updateProgressBar()
   }
 
@@ -193,17 +181,12 @@ open class UKProgressBar: UIView, UKComponent {
   open override func layoutSubviews() {
     super.layoutSubviews()
 
+    self.backgroundView.layer.cornerRadius = self.model.cornerRadius(forHeight: self.backgroundView.bounds.height)
+
     switch self.model.style {
     case .light:
-      self.backgroundView.layer.cornerRadius = self.model.cornerRadius(forHeight: self.backgroundView.bounds.height)
       self.progressView.layer.cornerRadius = self.model.cornerRadius(forHeight: self.backgroundView.bounds.height)
-
-    case .filled:
-      self.backgroundView.layer.cornerRadius = self.model.cornerRadius(forHeight: self.backgroundView.bounds.height)
-      self.progressView.layer.cornerRadius = self.model.innerCornerRadius(forHeight: self.backgroundView.bounds.height)
-
-    case .striped:
-      self.backgroundView.layer.cornerRadius = self.model.cornerRadius(forHeight: self.backgroundView.bounds.height)
+    case .filled, .striped:
       self.progressView.layer.cornerRadius = self.model.innerCornerRadius(forHeight: self.backgroundView.bounds.height)
     }
     self.updateProgressBar()
@@ -215,30 +198,20 @@ open class UKProgressBar: UIView, UKComponent {
 extension UKProgressBar {
   fileprivate enum Style {
     static func backgroundView(_ view: UIView, model: ProgressBarVM) {
-      switch model.style {
-      case .light:
-        view.backgroundColor = model.backgroundColor.uiColor
-      case .filled, .striped:
-        view.backgroundColor = model.color.main.uiColor
-      }
+      view.backgroundColor = model.backgroundColor.uiColor
     }
 
     static func progressView(_ view: UIView, model: ProgressBarVM) {
-      switch model.style {
-      case .light:
-        view.backgroundColor = model.barColor.uiColor
-      case .filled, .striped:
-        view.backgroundColor = model.color.contrast.uiColor
-      }
+      view.backgroundColor = model.barColor.uiColor
+      view.layer.masksToBounds = true
     }
 
     static func stripedLayer(_ layer: CAShapeLayer, model: ProgressBarVM) {
+      layer.fillColor = model.color.main.uiColor.cgColor
       switch model.style {
       case .light, .filled:
-        layer.fillColor = UIColor.clear.cgColor
         layer.isHidden = true
       case .striped:
-        layer.fillColor = model.color.main.uiColor.cgColor
         layer.isHidden = false
       }
     }
