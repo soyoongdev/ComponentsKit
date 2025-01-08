@@ -35,11 +35,7 @@ public struct ProgressBarVM: ComponentVM {
 // MARK: - Shared Helpers
 
 extension ProgressBarVM {
-  var innerBarPadding: CGFloat {
-    return 3
-  }
-
-  var barHeight: CGFloat {
+  var backgroundHeight: CGFloat {
     switch self.style {
     case .light:
       switch size {
@@ -62,25 +58,42 @@ extension ProgressBarVM {
     }
   }
 
-  var computedCornerRadius: CGFloat {
+  var progressHeight: CGFloat {
+    return self.backgroundHeight - self.progressPadding
+  }
+
+  func cornerRadius(for height: CGFloat) -> CGFloat {
     switch self.cornerRadius {
     case .none:
-      return 0.0
+      return 0
     case .small:
-      return self.barHeight / 3.5
+      return height / 3.5
     case .medium:
-      return self.barHeight / 3.0
+      return height / 3.0
     case .large:
-      return self.barHeight / 2.5
+      return height / 2.5
     case .full:
-      return self.barHeight / 2.0
+      return height / 2.0
     case .custom(let value):
-      return min(value, self.barHeight / 2)
+      return min(value, height / 2)
     }
   }
 
-  var innerCornerRadius: CGFloat {
-    return max(0, self.computedCornerRadius - self.innerBarPadding)
+  var animationDuration: TimeInterval {
+    return 0.2
+  }
+
+  var progressPadding: CGFloat {
+    switch self.style {
+    case .light:
+      return 0
+    case .filled, .striped:
+      return 3
+    }
+  }
+
+  var lightBarSpacing: CGFloat {
+    return 4
   }
 
   var backgroundColor: UniversalColor {
@@ -99,10 +112,6 @@ extension ProgressBarVM {
     case .filled, .striped:
       return self.color.contrast
     }
-  }
-
-  func shouldUpdateLayout(_ oldModel: Self) -> Bool {
-    return self.size != oldModel.size
   }
 
   private func stripesCGPath(in rect: CGRect) -> CGMutablePath {
@@ -127,13 +136,34 @@ extension ProgressBarVM {
     }
     return path
   }
+}
 
-  public func stripesPath(in rect: CGRect) -> Path {
-    return Path(self.stripesCGPath(in: rect))
+extension ProgressBarVM {
+  func progress(for currentValue: CGFloat) -> CGFloat {
+    let range = self.maxValue - self.minValue
+    guard range > 0 else { return 0 }
+    let normalized = (currentValue - self.minValue) / range
+    return max(0, min(1, normalized))
+  }
+}
+
+// MARK: - UIKit Helpers
+
+extension ProgressBarVM {
+  func stripesBezierPath(in rect: CGRect) -> UIBezierPath {
+    return UIBezierPath(cgPath: self.stripesCGPath(in: rect))
   }
 
-  public func stripesBezierPath(in rect: CGRect) -> UIBezierPath {
-    return UIBezierPath(cgPath: self.stripesCGPath(in: rect))
+  func shouldUpdateLayout(_ oldModel: Self) -> Bool {
+    return self.style != oldModel.style || self.size != oldModel.size
+  }
+}
+
+// MARK: - SwiftUI Helpers
+
+extension ProgressBarVM {
+  func stripesPath(in rect: CGRect) -> Path {
+    return Path(self.stripesCGPath(in: rect))
   }
 }
 
