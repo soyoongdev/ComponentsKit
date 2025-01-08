@@ -75,7 +75,7 @@ public struct SUProgressBar: View {
       }
     }
     .animation(
-      Animation.easeInOut(duration: self.model.animationDuration),
+      Animation.linear(duration: self.model.animationDuration),
       value: self.progress
     )
     .frame(height: self.model.backgroundHeight)

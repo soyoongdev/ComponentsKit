@@ -160,12 +160,9 @@ open class UKProgressBar: UIView, UKComponent {
 
     UIView.animate(
       withDuration: self.model.animationDuration,
-      delay: 0,
-      options: .curveEaseInOut,
       animations: {
         self.layoutIfNeeded()
-      },
-      completion: nil
+      }
     )
   }
 
