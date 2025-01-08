@@ -29,6 +29,9 @@ struct App: View {
         NavigationLinkWithTitle("Loading") {
           LoadingPreview()
         }
+        NavigationLinkWithTitle("Progress Bar") {
+          ProgressBarPreview()
+        }
         NavigationLinkWithTitle("Modal (Bottom)") {
           BottomModalPreview()
         }
