@@ -70,7 +70,9 @@ public struct SUProgressBar: View {
           StripesShape(model: self.model)
             .foregroundStyle(self.model.color.main.color)
             .cornerRadius(self.model.cornerRadius(for: self.model.progressHeight))
-            .clipped()
+            .frame(width: (geometry.size.width - self.model.progressPadding * 2) * self.progress)
+            .padding(.vertical, self.model.progressPadding)
+            .padding(.horizontal, self.model.progressPadding)
         }
       }
     }
