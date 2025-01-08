@@ -178,6 +178,8 @@ open class UKProgressBar: UIView, UKComponent {
     self.progressView.layer.cornerRadius = self.model.cornerRadius(for: self.progressView.bounds.height)
 
     self.updateProgressWidthAndAppearance()
+
+    self.model.validateMinMaxValues()
   }
 
   // MARK: - UIView methods
