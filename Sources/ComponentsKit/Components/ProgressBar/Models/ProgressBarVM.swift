@@ -59,7 +59,7 @@ extension ProgressBarVM {
   }
 
   var progressHeight: CGFloat {
-    return self.backgroundHeight - self.progressPadding
+    return self.backgroundHeight - self.progressPadding * 2
   }
 
   func cornerRadius(for height: CGFloat) -> CGFloat {
