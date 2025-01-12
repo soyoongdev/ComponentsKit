@@ -123,6 +123,26 @@ struct ContainerRadiusPicker<Custom: View>: View {
 
 // MARK: - FontPickers
 
+struct BadgeFontPicker: View {
+  let title: String
+  @Binding var selection: UniversalFont?
+  
+  init(title: String = "Font", selection: Binding<UniversalFont?>) {
+    self.title = title
+    self._selection = selection
+  }
+  
+  var body: some View {
+    Picker(self.title, selection: self.$selection) {
+      Text("Default").tag(Optional<UniversalFont>.none)
+      Text("Small").tag(UniversalFont.smButton)
+      Text("Medium").tag(UniversalFont.mdButton)
+      Text("Large").tag(UniversalFont.lgButton)
+      Text("Custom: system bold of size 16").tag(UniversalFont.system(size: 16, weight: .bold))
+    }
+  }
+}
+
 struct BodyFontPicker: View {
   let title: String
   @Binding var selection: UniversalFont?
