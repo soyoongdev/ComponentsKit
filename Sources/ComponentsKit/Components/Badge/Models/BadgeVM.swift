@@ -23,7 +23,7 @@ public struct BadgeVM: ComponentVM {
   ///
   /// Defaults to `.medium`.
   public var cornerRadius: ComponentRadius = .medium
-  
+
   /// Vertical padding for the badge.
   ///
   /// Defaults to `8`.
@@ -33,7 +33,7 @@ public struct BadgeVM: ComponentVM {
   ///
   /// Defaults to `10`.
   public var horizontalPadding: CGFloat = 10
-  
+
   /// Initializes a new instance of `BadgeVM` with default values.
   public init() {}
 }
