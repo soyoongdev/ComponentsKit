@@ -9,6 +9,10 @@ struct BadgePreview: View {
 
   var body: some View {
     VStack {
+      PreviewWrapper(title: "UIKit") {
+        UKBadge(model: self.model)
+          .preview
+      }
       PreviewWrapper(title: "SwiftUI") {
         SUBadge(model: self.model)
       }
