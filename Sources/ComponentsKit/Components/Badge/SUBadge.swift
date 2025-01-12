@@ -1,7 +1,5 @@
 import SwiftUI
 
-// MARK: - SUBadge
-
 /// A SwiftUI component that displays a badge.
 public struct SUBadge: View {
   // MARK: Properties
