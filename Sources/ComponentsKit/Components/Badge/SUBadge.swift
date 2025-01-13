@@ -19,11 +19,10 @@ public struct SUBadge: View {
 
   public var body: some View {
     Text(self.model.title)
-      .font(self.model.preferredFont.font)
-      .padding(.vertical, self.model.verticalPadding)
-      .padding(.horizontal, self.model.horizontalPadding)
+      .font(self.model.font.font)
+      .padding(self.model.paddings.edgeInsets)
       .foregroundStyle(self.model.foregroundColor.color)
-      .background(self.model.backgroundColor?.color ?? .clear)
+      .background(self.model.backgroundColor.color)
       .clipShape(
         RoundedRectangle(cornerRadius: self.model.cornerRadius.value())
       )

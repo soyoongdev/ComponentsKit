@@ -13,7 +13,13 @@ struct BadgePreview: View {
         SUBadge(model: self.model)
       }
       Form {
-        BadgeFontPicker(selection: self.$model.font)
+        Picker("Font", selection: self.$model.font) {
+          Text("Default").tag(Optional<UniversalFont>.none)
+          Text("Small").tag(UniversalFont.smButton)
+          Text("Medium").tag(UniversalFont.mdButton)
+          Text("Large").tag(UniversalFont.lgButton)
+          Text("Custom: system bold of size 16").tag(UniversalFont.system(size: 16, weight: .bold))
+        }
         ComponentOptionalColorPicker(selection: self.$model.color)
         ComponentRadiusPicker(selection: self.$model.cornerRadius) {
           Text("Custom: 20px").tag(ComponentRadius.custom(20))
