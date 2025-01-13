@@ -9,15 +9,16 @@ struct CountdownWidthCalculator {
     for attributedText: NSAttributedString,
     model: CountdownVM
   ) -> CGFloat {
-    self.style(label, with: model)
+    self.style(self.label, with: model)
     self.label.attributedText = attributedText
 
     let estimatedSize = self.label.sizeThatFits(UIView.layoutFittingExpandedSize)
 
-    return estimatedSize.width
+    return estimatedSize.width + 2
   }
 
   private static func style(_ label: UILabel, with model: CountdownVM) {
+    label.textAlignment = .center
     label.numberOfLines = 0
   }
 }
