@@ -119,7 +119,7 @@ extension CheckboxVM {
   func shouldUpdateSize(_ oldModel: Self) -> Bool {
     return self.size != oldModel.size
   }
-  func shouldUpadateLayout(_ oldModel: Self) -> Bool {
+  func shouldUpdateLayout(_ oldModel: Self) -> Bool {
     return self.size != oldModel.size
     || self.title.isNotNilAndEmpty && oldModel.title.isNilOrEmpty
     || self.title.isNilOrEmpty && oldModel.title.isNotNilAndEmpty

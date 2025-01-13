@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 77;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -15,11 +15,7 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		740D22292CD3BECA006731A5 /* DemosApp */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = DemosApp;
-			sourceTree = "<group>";
-		};
+		740D22292CD3BECA006731A5 /* DemosApp */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = DemosApp; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -92,6 +88,7 @@
 				};
 			};
 			buildConfigurationList = 740D22222CD3BECA006731A5 /* Build configuration list for PBXProject "DemosApp" */;
+			compatibilityVersion = "Xcode 15.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -103,7 +100,6 @@
 			packageReferences = (
 				740D22502CD3BF50006731A5 /* XCLocalSwiftPackageReference "../../../ComponentsKit" */,
 			);
-			preferredProjectObjectVersion = 77;
 			productRefGroup = 740D22282CD3BECA006731A5 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";

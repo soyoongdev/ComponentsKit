@@ -1,17 +1,26 @@
-# ComponentsKit
+<p align="center">
+  <a href="https://componentskit.io" target="_blank">
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/componentskit/ComponentsKit/HEAD/.github/logo-dark.svg">
+      <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/componentskit/ComponentsKit/HEAD/.github/logo-light.svg">
+      <img alt="ComponentsKit" src="https://raw.githubusercontent.com/componentskit/ComponentsKit/HEAD/.github/logo-light.svg" width="350" height="70" style="max-width: 100%;">
+    </picture>
+  </a>
+</p>
+
+<p align="center">
+  A library with beautiful UI components to build SwiftUI and UIKit apps faster.
+</p>
+
+---
 
 ## Installation
 
-Before proceeding with the installation, ensure that you are signed in to your GitHub account in Xcode, and that your account has access to the repository:
-
-1. From the **Xcode** menu, click on **Settings**, and access the **Account** section.
-2. If you are not authorized, click on **+**, choose **GitHub**, and input your credentials.
-
-Once you are signed in to your GitHub account, you can add ComponentsKit to an Xcode project as a package dependency:
+Add ComponentsKit to an Xcode project as a package dependency:
 
 1. From the **File** menu, select **Add Package Dependencies...**.
 2. Enter `https://github.com/componentskit/ComponentsKit` into the package repository URL text field.
-3. Add **ComponentsKit** to your application.
+3. Add **componentskit** to your application.
 
 ## Basic Usage
 

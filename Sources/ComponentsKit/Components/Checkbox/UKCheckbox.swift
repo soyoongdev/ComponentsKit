@@ -155,7 +155,7 @@ open class UKCheckbox: UIView, UKComponent {
       self.checkboxContainerConstraints.width?.constant = self.model.checkboxSide
       self.setupCheckmarkLayer()
     }
-    if self.model.shouldUpadateLayout(oldModel) {
+    if self.model.shouldUpdateLayout(oldModel) {
       self.setNeedsLayout()
       self.invalidateIntrinsicContentSize()
     }

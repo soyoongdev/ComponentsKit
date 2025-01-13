@@ -28,11 +28,11 @@ public struct SUCountdown: View {
       switch (self.model.style, self.model.unitsStyle) {
       case (.plain, .bottom):
         self.styledTime(value: self.manager.days, unit: .days)
-        colonView
+        self.colonView
         self.styledTime(value: self.manager.hours, unit: .hours)
-        colonView
+        self.colonView
         self.styledTime(value: self.manager.minutes, unit: .minutes)
-        colonView
+        self.colonView
         self.styledTime(value: self.manager.seconds, unit: .seconds)
 
       case (.plain, .hidden), (.plain, .trailing):
