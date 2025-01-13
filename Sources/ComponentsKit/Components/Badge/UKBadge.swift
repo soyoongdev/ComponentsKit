@@ -48,7 +48,7 @@ open class UKBadge: UIView, UKComponent {
     self.addSubview(self.titleLabel)
 
     if #available(iOS 17.0, *) {
-      self.registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (view: Self, _: UITraitCollection) in
+      self.registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (_: Self, _: UITraitCollection) in
       }
     }
   }
@@ -69,7 +69,7 @@ open class UKBadge: UIView, UKComponent {
       self.titleLabel.bottom(self.model.paddings.bottom)
       self.titleLabel.trailing(self.model.paddings.trailing)
     }
-    
+
     self.titleLabelConstraints.allConstraints.forEach { $0?.priority = .defaultHigh }
   }
 
@@ -90,7 +90,7 @@ open class UKBadge: UIView, UKComponent {
       self.titleLabelConstraints.top?.constant = self.model.paddings.top
       self.titleLabelConstraints.bottom?.constant = -self.model.paddings.bottom
       self.titleLabelConstraints.trailing?.constant = -self.model.paddings.trailing
-      
+
       self.invalidateIntrinsicContentSize()
       self.setNeedsLayout()
     }
@@ -103,7 +103,7 @@ open class UKBadge: UIView, UKComponent {
 
     let totalWidthPadding = self.model.paddings.leading + self.model.paddings.trailing
     let totalHeightPadding = self.model.paddings.top + self.model.paddings.bottom
-    
+
     let width = contentSize.width + totalWidthPadding
     let height = contentSize.height + totalHeightPadding
 
