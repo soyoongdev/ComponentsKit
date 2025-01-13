@@ -14,7 +14,7 @@ open class UKBadge: UIView, UKComponent {
 
   private var titleLabelConstraints: LayoutConstraints = .init()
 
-  // MARK: Subviews
+  // MARK: - Subviews
 
   /// A label that displays the title from the model.
   public var titleLabel = UILabel()
@@ -49,7 +49,6 @@ open class UKBadge: UIView, UKComponent {
 
     if #available(iOS 17.0, *) {
       self.registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (view: Self, _: UITraitCollection) in
-        view.handleTraitChanges()
       }
     }
   }
@@ -64,17 +63,20 @@ open class UKBadge: UIView, UKComponent {
   // MARK: - Layout
 
   private func layout() {
-    self.titleLabelConstraints = self.titleLabel.horizontally(self.model.horizontalPadding)
-    self.titleLabel.center()
-
-    self.titleLabelConstraints.leading?.priority = .defaultHigh
-    self.titleLabelConstraints.trailing?.priority = .defaultHigh
+    self.titleLabelConstraints = .merged {
+      self.titleLabel.top(self.model.paddings.top)
+      self.titleLabel.leading(self.model.paddings.leading)
+      self.titleLabel.bottom(self.model.paddings.bottom)
+      self.titleLabel.trailing(self.model.paddings.trailing)
+    }
+    
+    self.titleLabelConstraints.allConstraints.forEach { $0?.priority = .defaultHigh }
   }
 
   open override func layoutSubviews() {
     super.layoutSubviews()
 
-    self.layer.cornerRadius = self.model.cornerRadius.value()
+    self.layer.cornerRadius = self.model.cornerRadius.value(for: self.bounds.height)
   }
 
   // MARK: - Update
@@ -83,11 +85,15 @@ open class UKBadge: UIView, UKComponent {
     guard self.model != oldModel else { return }
 
     self.style()
-    self.titleLabelConstraints.leading?.constant = self.model.horizontalPadding
-    self.titleLabelConstraints.trailing?.constant = -self.model.horizontalPadding
-
-    self.invalidateIntrinsicContentSize()
-    self.setNeedsLayout()
+    if self.model.shouldUpdateLayout(oldModel) {
+      self.titleLabelConstraints.leading?.constant = self.model.paddings.leading
+      self.titleLabelConstraints.top?.constant = self.model.paddings.top
+      self.titleLabelConstraints.bottom?.constant = -self.model.paddings.bottom
+      self.titleLabelConstraints.trailing?.constant = -self.model.paddings.trailing
+      
+      self.invalidateIntrinsicContentSize()
+      self.setNeedsLayout()
+    }
   }
 
   // MARK: - UIView Methods
@@ -95,8 +101,11 @@ open class UKBadge: UIView, UKComponent {
   open override func sizeThatFits(_ size: CGSize) -> CGSize {
     let contentSize = self.titleLabel.sizeThatFits(size)
 
-    let width = contentSize.width + self.model.horizontalPadding * 2
-    let height = contentSize.height + self.model.verticalPadding * 2
+    let totalWidthPadding = self.model.paddings.leading + self.model.paddings.trailing
+    let totalHeightPadding = self.model.paddings.top + self.model.paddings.bottom
+    
+    let width = contentSize.width + totalWidthPadding
+    let height = contentSize.height + totalHeightPadding
 
     return CGSize(
       width: min(width, size.width),
@@ -106,13 +115,6 @@ open class UKBadge: UIView, UKComponent {
 
   open override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
     super.traitCollectionDidChange(previousTraitCollection)
-    self.handleTraitChanges()
-  }
-
-  // MARK: - Helpers
-
-  @objc private func handleTraitChanges() {
-    self.backgroundColor = self.model.backgroundColor?.uiColor
   }
 }
 
@@ -121,13 +123,13 @@ open class UKBadge: UIView, UKComponent {
 extension UKBadge {
   fileprivate enum Style {
     static func mainView(_ view: UIView, model: BadgeVM) {
-      view.backgroundColor = model.backgroundColor?.uiColor
-      view.layer.cornerRadius = model.cornerRadius.value()
+      view.backgroundColor = model.backgroundColor.uiColor
+      view.layer.cornerRadius = model.cornerRadius.value(for: view.bounds.height)
     }
     static func titleLabel(_ label: UILabel, model: BadgeVM) {
       label.textAlignment = .center
       label.text = model.title
-      label.font = model.preferredFont.uiFont
+      label.font = model.font.uiFont
       label.textColor = model.foregroundColor.uiColor
     }
   }
