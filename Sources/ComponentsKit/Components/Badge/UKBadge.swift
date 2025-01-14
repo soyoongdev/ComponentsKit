@@ -46,11 +46,6 @@ open class UKBadge: UIView, UKComponent {
 
   private func setup() {
     self.addSubview(self.titleLabel)
-
-    if #available(iOS 17.0, *) {
-      self.registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (_: Self, _: UITraitCollection) in
-      }
-    }
   }
 
   // MARK: - Style
@@ -111,10 +106,6 @@ open class UKBadge: UIView, UKComponent {
       width: min(width, size.width),
       height: min(height, size.height)
     )
-  }
-
-  open override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-    super.traitCollectionDidChange(previousTraitCollection)
   }
 }
 
