@@ -22,7 +22,7 @@ struct BadgePreview: View {
         }
         ComponentOptionalColorPicker(selection: self.$model.color)
         ComponentRadiusPicker(selection: self.$model.cornerRadius) {
-          Text("Custom: 20px").tag(ComponentRadius.custom(20))
+          Text("Custom: 4px").tag(ComponentRadius.custom(4))
         }
         Picker("Style", selection: self.$model.style) {
           Text("Filled").tag(BadgeVM.Style.filled)
