@@ -9,6 +9,10 @@ struct BadgePreview: View {
 
   var body: some View {
     VStack {
+      PreviewWrapper(title: "UIKit") {
+        UKBadge(model: self.model)
+          .preview
+      }
       PreviewWrapper(title: "SwiftUI") {
         SUBadge(model: self.model)
       }
@@ -27,6 +31,14 @@ struct BadgePreview: View {
         Picker("Style", selection: self.$model.style) {
           Text("Filled").tag(BadgeVM.Style.filled)
           Text("Light").tag(BadgeVM.Style.light)
+        }
+        Picker("Paddings", selection: self.$model.paddings) {
+          Text("8px; 6px")
+            .tag(Paddings(top: 6, leading: 8, bottom: 6, trailing: 8))
+          Text("10px; 8px")
+            .tag(Paddings(top: 8, leading: 10, bottom: 8, trailing: 10))
+          Text("12px; 10px")
+            .tag(Paddings(top: 10, leading: 12, bottom: 10, trailing: 12))
         }
       }
     }

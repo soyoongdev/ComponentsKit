@@ -53,3 +53,12 @@ extension BadgeVM {
     }
   }
 }
+
+// MARK: UIKit Helpers
+
+extension BadgeVM {
+  func shouldUpdateLayout(_ oldModel: Self?) -> Bool {
+    return self.font != oldModel?.font
+    || self.paddings != oldModel?.paddings
+  }
+}
