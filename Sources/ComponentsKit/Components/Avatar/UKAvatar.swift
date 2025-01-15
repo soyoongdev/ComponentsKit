@@ -1,3 +1,4 @@
+import Combine
 import UIKit
 
 /// A UIKit component that displays a profile picture, initials or fallback icon for a user.
@@ -11,7 +12,8 @@ open class UKAvatar: UIImageView, UKComponent {
     }
   }
 
-  private var loadedImage: (url: URL, image: UIImage)?
+  private let imageManager: AvatarImageManager
+  private var cancellable: AnyCancellable?
 
   // MARK: - UIView Properties
 
@@ -26,14 +28,24 @@ open class UKAvatar: UIImageView, UKComponent {
   ///   - model: A model that defines the appearance properties.
   public init(model: AvatarVM = .init()) {
     self.model = model
+    self.imageManager = AvatarImageManager(model: model)
 
     super.init(frame: .zero)
 
+    self.setup()
     self.style()
   }
 
   public required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
+  }
+
+  // MARK: - Setup
+
+  private func setup() {
+    self.cancellable = self.imageManager.$avatarImage
+      .receive(on: DispatchQueue.main)
+      .sink { self.image = $0 }
   }
 
   // MARK: - Style
@@ -48,9 +60,8 @@ open class UKAvatar: UIImageView, UKComponent {
   public func update(_ oldModel: AvatarVM) {
     guard self.model != oldModel else { return }
 
-    if self.model.shouldUpdateImage(oldModel) {
-      self.updateImage()
-    }
+    self.imageManager.update(model: self.model, size: self.bounds.size)
+
     if self.model.cornerRadius != oldModel.cornerRadius {
       self.layer.cornerRadius = self.model.cornerRadius.value(for: self.bounds.height)
     }
@@ -67,7 +78,7 @@ open class UKAvatar: UIImageView, UKComponent {
 
     self.layer.cornerRadius = self.model.cornerRadius.value(for: self.bounds.height)
 
-    self.updateImage()
+    self.imageManager.update(model: self.model, size: self.bounds.size)
   }
 
   // MARK: - UIView Methods
@@ -77,43 +88,5 @@ open class UKAvatar: UIImageView, UKComponent {
     let minPreferredSide = min(self.model.preferredSize.width, self.model.preferredSize.height)
     let side = min(minProvidedSide, minPreferredSide)
     return CGSize(width: side, height: side)
-  }
-
-  // MARK: - Helpers
-
-  private func downloadImage(url: URL) {
-    self.loadedImage = nil
-    Task { @MainActor in
-      guard let image = await ImageLoader.download(url: url),
-            url == self.model.imageURL
-      else { return }
-
-      self.loadedImage = (url, image)
-      UIView.transition(
-        with: self,
-        duration: 0.2,
-        options: .transitionCrossDissolve,
-        animations: {
-          self.image = image
-        }
-      )
-    }
-  }
-
-  private func updateImage() {
-    let size = self.bounds.size
-    switch self.model.imageSrc {
-    case .remote(let url):
-      if let loadedImage, loadedImage.url == url {
-        self.image = loadedImage.image
-      } else {
-        self.image = self.model.placeholderImage(for: size)
-        self.downloadImage(url: url)
-      }
-    case let .local(name, bundle):
-      self.image = UIImage(named: name, in: bundle, compatibleWith: nil) ?? self.model.placeholderImage(for: size)
-    case .none:
-      self.image = self.model.placeholderImage(for: size)
-    }
   }
 }
