@@ -7,7 +7,7 @@ public struct SUAvatar: View {
   /// A model that defines the appearance properties.
   public var model: AvatarVM
 
-  @State private var loadedImage: UIImage?
+  @State private var loadedImage: (url: URL, image: UIImage)?
 
   // MARK: - Initialization
 
@@ -26,7 +26,7 @@ public struct SUAvatar: View {
         switch source {
         case .remote:
           if let loadedImage {
-            Image(uiImage: loadedImage)
+            Image(uiImage: loadedImage.image)
               .resizable()
               .transition(.opacity)
           } else {
@@ -75,10 +75,13 @@ public struct SUAvatar: View {
   // MARK: - Helpers
 
   private func downloadImage(url: URL) {
+    guard self.loadedImage?.url != url else { return }
+
+    self.loadedImage = nil
     Task { @MainActor in
-      let image = await ImageLoader.download(url: url)
+      guard let image = await ImageLoader.download(url: url) else { return }
       withAnimation {
-        self.loadedImage = image
+        self.loadedImage = (url, image)
       }
     }
   }
