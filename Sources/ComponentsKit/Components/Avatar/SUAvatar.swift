@@ -22,21 +22,19 @@ public struct SUAvatar: View {
 
   public var body: some View {
     Group {
-      if let source = self.model.imageSrc {
-        switch source {
-        case .remote:
-          if let loadedImage {
-            Image(uiImage: loadedImage.image)
-              .resizable()
-              .transition(.opacity)
-          } else {
-            self.placeholder
-          }
-        case let .local(name, bundle):
-          Image(name, bundle: bundle)
+      switch self.model.imageSrc {
+      case .remote:
+        if let loadedImage {
+          Image(uiImage: loadedImage.image)
             .resizable()
+            .transition(.opacity)
+        } else {
+          self.placeholder
         }
-      } else {
+      case let .local(name, bundle):
+        Image(name, bundle: bundle)
+          .resizable()
+      case .none:
         self.placeholder
       }
     }
