@@ -41,12 +41,12 @@ public struct SUAvatar: View {
       }
     }
     .aspectRatio(contentMode: .fill)
-    .clipShape(
-      RoundedRectangle(cornerRadius: self.model.cornerRadius.value())
-    )
     .frame(
       width: self.model.preferredSize.width,
       height: self.model.preferredSize.height
+    )
+    .clipShape(
+      RoundedRectangle(cornerRadius: self.model.cornerRadius.value())
     )
     .onAppear {
       if let imageURL = self.model.imageURL {
