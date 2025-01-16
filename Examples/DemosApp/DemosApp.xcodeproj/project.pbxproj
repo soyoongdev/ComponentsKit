@@ -12,6 +12,7 @@
 
 /* Begin PBXFileReference section */
 		740D22272CD3BECA006731A5 /* DemosApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DemosApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		74DBFD612D393C5B007FE962 /* ComponentsKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = ComponentsKit; path = ../..; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -33,6 +34,7 @@
 		740D221E2CD3BECA006731A5 = {
 			isa = PBXGroup;
 			children = (
+				74DBFD612D393C5B007FE962 /* ComponentsKit */,
 				740D22292CD3BECA006731A5 /* DemosApp */,
 				740D22282CD3BECA006731A5 /* Products */,
 			);
@@ -98,7 +100,6 @@
 			mainGroup = 740D221E2CD3BECA006731A5;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				740D22502CD3BF50006731A5 /* XCLocalSwiftPackageReference "../../../ComponentsKit" */,
 			);
 			productRefGroup = 740D22282CD3BECA006731A5 /* Products */;
 			projectDirPath = "";
@@ -327,13 +328,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCLocalSwiftPackageReference section */
-		740D22502CD3BF50006731A5 /* XCLocalSwiftPackageReference "../../../ComponentsKit" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = ../../../ComponentsKit;
-		};
-/* End XCLocalSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
 		740D22512CD3BF50006731A5 /* ComponentsKit */ = {

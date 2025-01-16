@@ -21,6 +21,9 @@ let package = Package(
       name: "ComponentsKit",
       dependencies: [
         .product(name: "AutoLayout", package: "AutoLayout")
+      ],
+      resources: [
+        .process("Resources/PrivacyInfo.xcprivacy")
       ]
     )
   ]
