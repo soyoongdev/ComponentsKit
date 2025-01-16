@@ -12,7 +12,7 @@
 
 /* Begin PBXFileReference section */
 		740D22272CD3BECA006731A5 /* DemosApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DemosApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		74DBFD612D393C5B007FE962 /* ComponentsKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = ComponentsKit; path = /Users/mikhail/componentskit/ComponentsKit; sourceTree = "<absolute>"; };
+		74DBFD612D393C5B007FE962 /* ComponentsKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = ComponentsKit; path = ../..; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
