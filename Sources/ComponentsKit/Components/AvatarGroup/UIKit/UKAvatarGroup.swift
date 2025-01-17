@@ -82,11 +82,6 @@ open class UKAvatarGroup: UIView, UKComponent {
       )
     }
     self.style()
-
-    if self.model.size != oldModel.size {
-      self.setNeedsLayout()
-      self.invalidateIntrinsicContentSize()
-    }
   }
 
   private func addOrRemoveArrangedSubviews(newNumber: Int) {
