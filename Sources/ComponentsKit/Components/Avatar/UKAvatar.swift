@@ -18,7 +18,7 @@ open class UKAvatar: UIImageView, UKComponent {
   // MARK: - UIView Properties
 
   open override var intrinsicContentSize: CGSize {
-    return self.sizeThatFits(UIView.layoutFittingExpandedSize)
+    return self.model.preferredSize
   }
 
   // MARK: - Initializers
