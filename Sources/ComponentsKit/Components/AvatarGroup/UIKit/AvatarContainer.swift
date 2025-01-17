@@ -47,6 +47,7 @@ final class AvatarContainer: UIView {
     }
 
     self.avatarConstraints.height?.priority = .defaultHigh
+    self.avatarConstraints.width?.priority = .defaultHigh
   }
 
   override func layoutSubviews() {
