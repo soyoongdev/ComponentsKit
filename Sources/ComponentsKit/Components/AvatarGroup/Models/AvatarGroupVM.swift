@@ -5,10 +5,10 @@ public struct AvatarGroupVM: ComponentVM {
   /// The border color of avatars.
   public var borderColor: UniversalColor = .background
 
-  /// The color of the placeholder.
+  /// The color of the placeholders.
   public var color: ComponentColor?
 
-  /// The corner radius of the avatar.
+  /// The corner radius of the avatars.
   ///
   /// Defaults to `.full`.
   public var cornerRadius: ComponentRadius = .full
@@ -22,12 +22,12 @@ public struct AvatarGroupVM: ComponentVM {
     }
   }
 
-  /// The maximum number of visible avatars
+  /// The maximum number of visible avatars.
   ///
   /// Defaults to `5`.
   public var maxVisibleAvatars: Int = 5
 
-  /// The predefined size of the avatar.
+  /// The predefined size of the component.
   ///
   /// Defaults to `.medium`.
   public var size: ComponentSize = .medium
@@ -35,7 +35,7 @@ public struct AvatarGroupVM: ComponentVM {
   /// The array of avatar items with an associated id value to properly display content in SwiftUI.
   private var _identifiedItems: [IdentifiedAvatarItem] = []
 
-  /// Initializes a new instance of `AvatarVM` with default values.
+  /// Initializes a new instance of `AvatarGroupVM` with default values.
   public init() {}
 }
 
