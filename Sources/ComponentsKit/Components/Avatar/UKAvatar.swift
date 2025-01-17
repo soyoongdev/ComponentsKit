@@ -46,6 +46,12 @@ open class UKAvatar: UIImageView, UKComponent {
     self.cancellable = self.imageManager.$avatarImage
       .receive(on: DispatchQueue.main)
       .sink { self.image = $0 }
+
+    if #available(iOS 17.0, *) {
+      self.registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (view: Self, _: UITraitCollection) in
+        view.handleTraitChanges()
+      }
+    }
   }
 
   // MARK: - Style
@@ -88,5 +94,18 @@ open class UKAvatar: UIImageView, UKComponent {
     let minPreferredSide = min(self.model.preferredSize.width, self.model.preferredSize.height)
     let side = min(minProvidedSide, minPreferredSide)
     return CGSize(width: side, height: side)
+  }
+
+  open override func traitCollectionDidChange(
+    _ previousTraitCollection: UITraitCollection?
+  ) {
+    super.traitCollectionDidChange(previousTraitCollection)
+    self.handleTraitChanges()
+  }
+
+  // MARK: Helpers
+
+  @objc private func handleTraitChanges() {
+    self.imageManager.update(model: self.model, size: self.bounds.size)
   }
 }

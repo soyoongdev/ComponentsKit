@@ -8,6 +8,7 @@ public struct SUAvatar: View {
   public var model: AvatarVM
 
   @StateObject private var imageManager: AvatarImageManager
+  @Environment(\.colorScheme) private var colorScheme
 
   // MARK: - Initialization
 
@@ -36,6 +37,9 @@ public struct SUAvatar: View {
       )
       .onChange(of: self.model) { newValue in
         self.imageManager.update(model: newValue, size: newValue.preferredSize)
+      }
+      .onChange(of: self.colorScheme) { _ in
+        self.imageManager.update(model: self.model, size: self.model.preferredSize)
       }
   }
 }

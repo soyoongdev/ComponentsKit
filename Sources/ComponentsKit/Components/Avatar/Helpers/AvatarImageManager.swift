@@ -5,7 +5,7 @@ final class AvatarImageManager: ObservableObject {
   @Published var avatarImage: UIImage
 
   private var model: AvatarVM
-  private var remoteImagesCache = NSCache<NSString, UIImage>()
+  private static var remoteImagesCache = NSCache<NSString, UIImage>()
 
   init(model: AvatarVM) {
     self.model = model
@@ -27,7 +27,7 @@ final class AvatarImageManager: ObservableObject {
 
     switch model.imageSrc {
     case .remote(let url):
-      if let image = self.remoteImagesCache.object(forKey: url.absoluteString as NSString) {
+      if let image = Self.remoteImagesCache.object(forKey: url.absoluteString as NSString) {
         self.avatarImage = image
       } else {
         self.avatarImage = model.placeholderImage(for: size)
@@ -47,7 +47,7 @@ final class AvatarImageManager: ObservableObject {
             let image = UIImage(data: data)
       else { return }
 
-      self.remoteImagesCache.setObject(image, forKey: url.absoluteString as NSString)
+      Self.remoteImagesCache.setObject(image, forKey: url.absoluteString as NSString)
 
       if url == self.model.imageURL {
         self.avatarImage = image
