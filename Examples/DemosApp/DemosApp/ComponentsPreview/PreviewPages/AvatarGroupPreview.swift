@@ -27,6 +27,10 @@ struct AvatarGroupPreview: View {
   
   var body: some View {
     VStack {
+      PreviewWrapper(title: "UIKit") {
+        UKAvatarGroup(model: self.model)
+          .preview
+      }
       PreviewWrapper(title: "SwiftUI") {
         SUAvatarGroup(model: self.model)
       }

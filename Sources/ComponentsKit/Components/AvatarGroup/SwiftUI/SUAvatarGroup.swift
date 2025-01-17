@@ -19,7 +19,7 @@ public struct SUAvatarGroup: View {
   // MARK: - Body
 
   public var body: some View {
-    HStack(spacing: -self.model.avatarSize.width / 3) {
+    HStack(spacing: self.model.spacing) {
       ForEach(self.model.identifiedAvatarVMs, id: \.0) { _, avatarVM in
         AvatarContent(model: avatarVM)
           .padding(self.model.padding)
@@ -28,8 +28,8 @@ public struct SUAvatarGroup: View {
             RoundedRectangle(cornerRadius: self.model.cornerRadius.value())
           )
           .frame(
-            width: self.model.avatarSize.width,
-            height: self.model.avatarSize.height
+            width: self.model.itemSize.width,
+            height: self.model.itemSize.height
           )
       }
     }
