@@ -1,7 +1,7 @@
 import UIKit
 
 /// A model that defines the appearance properties for an avatar component.
-public struct AvatarVM: ComponentVM {
+public struct AvatarVM: ComponentVM, Hashable {
   /// The color of the placeholder.
   public var color: ComponentColor?
 

@@ -2,6 +2,9 @@ import UIKit
 
 /// A model that defines the appearance properties for an avatar group component.
 public struct AvatarGroupVM: ComponentVM {
+  /// The border color of avatars.
+  public var borderColor: UniversalColor = .background
+
   /// The color of the placeholder.
   public var color: ComponentColor?
 
@@ -11,7 +14,13 @@ public struct AvatarGroupVM: ComponentVM {
   public var cornerRadius: ComponentRadius = .full
 
   /// The array of avatars in the group.
-  public var items: [AvatarItemVM] = []
+  public var items: [AvatarItemVM] = [] {
+    didSet {
+      self._identifiedItems = self.items.map({
+        return .init(id: UUID(), item: $0)
+      })
+    }
+  }
 
   /// The maximum number of visible avatars
   ///
@@ -23,6 +32,67 @@ public struct AvatarGroupVM: ComponentVM {
   /// Defaults to `.medium`.
   public var size: ComponentSize = .medium
 
+  /// The array of avatar items with an associated id value to properly display content in SwiftUI.
+  private var _identifiedItems: [IdentifiedAvatarItem] = []
+
   /// Initializes a new instance of `AvatarVM` with default values.
   public init() {}
+}
+
+// MARK: - Helpers
+
+fileprivate struct IdentifiedAvatarItem: Equatable {
+  var id: UUID
+  var item: AvatarItemVM
+}
+
+extension AvatarGroupVM {
+  var identifiedAvatarVMs: [(UUID, AvatarVM)] {
+    var avatars = self._identifiedItems.prefix(self.maxVisibleAvatars).map { data in
+      return (data.id, AvatarVM {
+        $0.color = self.color
+        $0.cornerRadius = self.cornerRadius
+        $0.imageSrc = data.item.imageSrc
+        $0.placeholder = data.item.placeholder
+        $0.size = self.size
+      })
+    }
+
+    if self.numberOfHiddenAvatars > 0 {
+      avatars.append((UUID(), AvatarVM {
+        $0.color = self.color
+        $0.cornerRadius = self.cornerRadius
+        $0.placeholder = .text("+\(self.numberOfHiddenAvatars)")
+        $0.size = self.size
+      }))
+    }
+
+    return avatars
+  }
+
+  var avatarSize: CGSize {
+    switch self.size {
+    case .small:
+      return .init(width: 36, height: 36)
+    case .medium:
+      return .init(width: 48, height: 48)
+    case .large:
+      return .init(width: 64, height: 64)
+    }
+  }
+
+  var padding: CGFloat {
+    switch self.size {
+    case .small:
+      return 3
+    case .medium:
+      return 4
+    case .large:
+      return 5
+    }
+  }
+
+  var numberOfHiddenAvatars: Int {
+    return self.items.count - self.maxVisibleAvatars
+  }
 }

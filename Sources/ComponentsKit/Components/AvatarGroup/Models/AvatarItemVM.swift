@@ -2,6 +2,9 @@ import UIKit
 
 /// A model that defines the appearance properties for an avatar in the group.
 public struct AvatarItemVM: ComponentVM {
+  /// The unique identifier for the item.
+  public var id = UUID()
+
   /// The source of the image to be displayed.
   public var imageSrc: AvatarVM.ImageSource?
 
