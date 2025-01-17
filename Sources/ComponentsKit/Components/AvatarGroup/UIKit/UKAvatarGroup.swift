@@ -106,16 +106,6 @@ open class UKAvatarGroup: UIView, UKComponent {
       }
     }
   }
-
-  // MARK: - Layout
-
-  open override func layoutSubviews() {
-    super.layoutSubviews()
-
-    self.stackView.arrangedSubviews.forEach { view in
-      view.layer.cornerRadius = self.model.cornerRadius.value(for: view.bounds.height)
-    }
-  }
 }
 
 // MARK: - Style Helpers
