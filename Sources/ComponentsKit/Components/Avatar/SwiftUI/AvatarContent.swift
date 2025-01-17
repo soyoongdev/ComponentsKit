@@ -6,6 +6,7 @@ struct AvatarContent: View {
   var model: AvatarVM
 
   @StateObject private var imageManager: AvatarImageManager
+  @Environment(\.colorScheme) private var colorScheme
 
   // MARK: - Initialization
 
@@ -28,6 +29,9 @@ struct AvatarContent: View {
         )
         .onChange(of: self.model) { newValue in
           self.imageManager.update(model: newValue, size: geometry.size)
+        }
+        .onChange(of: self.colorScheme) { _ in
+          self.imageManager.update(model: self.model, size: geometry.size)
         }
     }
   }
