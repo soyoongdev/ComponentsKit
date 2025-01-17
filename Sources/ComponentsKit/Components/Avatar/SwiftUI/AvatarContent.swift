@@ -27,6 +27,9 @@ struct AvatarContent: View {
         .clipShape(
           RoundedRectangle(cornerRadius: self.model.cornerRadius.value())
         )
+        .onAppear {
+          self.imageManager.update(model: self.model, size: geometry.size)
+        }
         .onChange(of: self.model) { newValue in
           self.imageManager.update(model: newValue, size: geometry.size)
         }
