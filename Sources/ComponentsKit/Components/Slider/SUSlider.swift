@@ -35,19 +35,19 @@ public struct SUSlider: View {
       let handleWidth = self.model.handleSize.width
       let handleHeight = self.model.handleSize.height
 
-      let sliderHeight = self.model.backgroundHeight
+      let sliderHeight = self.model.trackHeight
 
       let containerHeight = max(sliderHeight, handleHeight)
 
       // Calculate the width available for the track, excluding handle width + spacing
-      let sliderWidth = max(0, geometry.size.width - handleWidth - (2 * self.model.barSpacing))
+      let sliderWidth = max(0, geometry.size.width - handleWidth - (2 * self.model.trackSpacing))
 
       // The track width based on the progress
       let leftWidth = progress * sliderWidth
       let rightWidth = sliderWidth - leftWidth
 
       ZStack(alignment: .center) {
-        HStack(spacing: self.model.barSpacing) {
+        HStack(spacing: self.model.trackSpacing) {
           // Progress segment
           RoundedRectangle(cornerRadius: self.model.cornerRadius(for: sliderHeight))
             .foregroundStyle(self.model.color.main.color)
@@ -60,9 +60,9 @@ public struct SUSlider: View {
             .overlay(
               Group {
                 if self.model.size == .large {
-                  RoundedRectangle(cornerRadius: self.model.cornerRadius(for: self.model.handleOverlaySize))
+                  RoundedRectangle(cornerRadius: self.model.cornerRadius(for: self.model.handleOverlaySide))
                     .foregroundStyle(self.model.color.contrast.color)
-                    .frame(width: self.model.handleOverlaySize, height: self.model.handleOverlaySize)
+                    .frame(width: self.model.handleOverlaySide, height: self.model.handleOverlaySide)
                 }
               }
             )

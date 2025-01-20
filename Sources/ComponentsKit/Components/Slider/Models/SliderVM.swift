@@ -40,26 +40,14 @@ public struct SliderVM: ComponentVM {
 // MARK: - Shared Helpers
 
 extension SliderVM {
-  var backgroundHeight: CGFloat {
-    switch self.style {
-    case .light:
-      switch self.size {
-      case .small:
-        return 6
-      case .medium:
-        return 12
-      case .large:
-        return 32
-      }
-    case .striped:
-      switch self.size {
-      case .small:
-        return 6
-      case .medium:
-        return 12
-      case .large:
-        return 32
-      }
+  var trackHeight: CGFloat {
+    switch self.size {
+    case .small:
+      return 6
+    case .medium:
+      return 12
+    case .large:
+      return 32
     }
   }
   var handleSize: CGSize {
@@ -86,10 +74,10 @@ extension SliderVM {
       return min(value, height / 2)
     }
   }
-  var barSpacing: CGFloat {
+  var trackSpacing: CGFloat {
     return 4
   }
-  var handleOverlaySize: CGFloat {
+  var handleOverlaySide: CGFloat {
     12
   }
   var backgroundColor: UniversalColor {
@@ -118,7 +106,7 @@ extension SliderVM {
     let radians = stripeAngle.radians
     let dx = rect.height * tan(radians)
 
-    for x in stride(from: dx, through: rect.width + rect.height, by: step) {
+    for x in stride(from: rect.width + rect.height, through: dx, by: -step) {
       let topLeft = CGPoint(x: x, y: 0)
       let topRight = CGPoint(x: x + stripeWidth, y: 0)
       let bottomLeft = CGPoint(x: x + dx, y: rect.height)
