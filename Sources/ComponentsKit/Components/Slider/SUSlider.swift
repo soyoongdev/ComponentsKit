@@ -109,7 +109,7 @@ public struct SUSlider: View {
 
 // MARK: - Helpers
 
-struct StripesShapeSlider: Shape {
+struct StripesShapeSlider: Shape, @unchecked Sendable {
   var model: SliderVM
 
   func path(in rect: CGRect) -> Path {
