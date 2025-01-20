@@ -8,6 +8,8 @@ struct App: View {
         NavigationLinkWithTitle("Alert") {
           AlertPreview()
         }
+        NavigationLinkWithTitle("Avatar") {
+          AvatarPreview()
         NavigationLinkWithTitle("Badge") {
           BadgePreview()
         }
