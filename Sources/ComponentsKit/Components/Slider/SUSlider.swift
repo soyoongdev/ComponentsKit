@@ -32,56 +32,52 @@ public struct SUSlider: View {
 
   public var body: some View {
     GeometryReader { geometry in
-      let handleWidth = self.model.handleSize.width
-      let handleHeight = self.model.handleSize.height
+      let containerHeight = self.model.containerHeight
+      let sliderHeight = self.model.sliderHeight
 
-      let sliderHeight = self.model.trackHeight
+      let barWidth = self.model.barWidth(for: geometry.size.width, progress: self.progress)
+      let backgroundWidth = self.model.backgroundWidth(for: geometry.size.width, progress: self.progress)
 
-      let containerHeight = max(sliderHeight, handleHeight)
+      HStack(spacing: self.model.trackSpacing) {
+        // Progress segment
+        RoundedRectangle(cornerRadius: self.model.cornerRadius(for: sliderHeight))
+          .foregroundStyle(self.model.color.main.color)
+          .frame(width: barWidth, height: sliderHeight)
 
-      // Calculate the width available for the track, excluding handle width + spacing
-      let sliderWidth = max(0, geometry.size.width - handleWidth - (2 * self.model.trackSpacing))
-
-      // The track width based on the progress
-      let leftWidth = progress * sliderWidth
-      let rightWidth = sliderWidth - leftWidth
-
-      ZStack(alignment: .center) {
-        HStack(spacing: self.model.trackSpacing) {
-          // Progress segment
-          RoundedRectangle(cornerRadius: self.model.cornerRadius(for: sliderHeight))
-            .foregroundStyle(self.model.color.main.color)
-            .frame(width: max(leftWidth, 0))
-
-          // Handle
-          RoundedRectangle(cornerRadius: self.model.cornerRadius(for: handleHeight))
-            .foregroundStyle(self.model.color.main.color)
-            .frame(width: handleWidth, height: handleHeight)
-            .overlay(
-              Group {
-                if self.model.size == .large {
-                  RoundedRectangle(cornerRadius: self.model.cornerRadius(for: self.model.handleOverlaySide))
-                    .foregroundStyle(self.model.color.contrast.color)
-                    .frame(width: self.model.handleOverlaySide, height: self.model.handleOverlaySide)
-                }
+        // Handle
+        RoundedRectangle(cornerRadius: self.model.cornerRadius(for: self.model.handleSize.height))
+          .foregroundStyle(self.model.color.main.color)
+          .frame(width: self.model.handleSize.width, height: self.model.handleSize.height)
+          .overlay(
+            Group {
+              if self.model.size == .large {
+                RoundedRectangle(cornerRadius: self.model.cornerRadius(for: self.model.handleOverlaySide))
+                  .foregroundStyle(self.model.color.contrast.color)
+                  .frame(width: self.model.handleOverlaySide, height: self.model.handleOverlaySide)
               }
-            )
-            .gesture(
-              DragGesture(minimumDistance: 0)
-                .onChanged { value in
-                  let newOffset = leftWidth + value.translation.width
-                  let clampedOffset = min(max(newOffset, 0), sliderWidth)
+            }
+          )
+          .gesture(
+            DragGesture(minimumDistance: 0)
+              .onChanged { value in
+                let totalWidth = geometry.size.width
+                let sliderWidth = max(0, totalWidth - self.model.handleSize.width - 2 * self.model.trackSpacing)
 
-                  self.currentValue = self.model.steppedValue(for: clampedOffset, trackWidth: sliderWidth)
-                }
-            )
+                let currentLeft = barWidth
+                let newOffset = currentLeft + value.translation.width
 
-          // Remaining segment
+                let clampedOffset = min(max(newOffset, 0), sliderWidth)
+                self.currentValue = self.model.steppedValue(for: clampedOffset, trackWidth: sliderWidth)
+              }
+          )
+
+        // Remaining segment
+        Group {
           switch self.model.style {
           case .light:
             RoundedRectangle(cornerRadius: self.model.cornerRadius(for: sliderHeight))
               .foregroundStyle(self.model.backgroundColor.color)
-              .frame(width: max(rightWidth, 0))
+              .frame(width: backgroundWidth)
 
           case .striped:
             ZStack {
@@ -92,21 +88,18 @@ public struct SUSlider: View {
                 .foregroundStyle(self.model.color.main.color)
                 .cornerRadius(self.model.cornerRadius(for: sliderHeight))
             }
-            .frame(width: max(rightWidth, 0))
+            .frame(width: backgroundWidth)
           }
         }
         .frame(height: sliderHeight)
       }
-      .frame(width: geometry.size.width, height: containerHeight)
-      // Center the slider vertically within the available space
-      .frame(maxHeight: .infinity, alignment: .center)
     }
+    .frame(height: self.model.containerHeight)
     .onAppear {
       self.model.validateMinMaxValues()
     }
   }
 }
-
 // MARK: - Helpers
 
 struct StripesShapeSlider: Shape, @unchecked Sendable {

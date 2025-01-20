@@ -148,6 +148,34 @@ extension SliderVM {
   }
 }
 
+public extension SliderVM {
+  var sliderHeight: CGFloat {
+    self.trackHeight
+  }
+
+  var containerHeight: CGFloat {
+    max(self.handleSize.height, self.trackHeight)
+  }
+
+  func leftWidth(for totalWidth: CGFloat, progress: CGFloat) -> CGFloat {
+    let sliderWidth = max(0, totalWidth - self.handleSize.width - 2 * self.trackSpacing)
+    return sliderWidth * progress
+  }
+
+  func rightWidth(for totalWidth: CGFloat, progress: CGFloat) -> CGFloat {
+    let sliderWidth = max(0, totalWidth - self.handleSize.width - 2 * self.trackSpacing)
+    return sliderWidth - self.leftWidth(for: totalWidth, progress: progress)
+  }
+
+  func barWidth(for totalWidth: CGFloat, progress: CGFloat) -> CGFloat {
+    self.leftWidth(for: totalWidth, progress: progress)
+  }
+
+  func backgroundWidth(for totalWidth: CGFloat, progress: CGFloat) -> CGFloat {
+    self.rightWidth(for: totalWidth, progress: progress)
+  }
+}
+
 // MARK: - UIKit Helpers
 
 extension SliderVM {
