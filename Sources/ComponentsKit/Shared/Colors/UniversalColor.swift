@@ -100,7 +100,7 @@ public struct UniversalColor: Hashable {
 
         self.uiColor.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
 
-        return (red, green, blue, alpha)
+        return (red * 255, green * 255, blue * 255, alpha)
       }
     }
 
