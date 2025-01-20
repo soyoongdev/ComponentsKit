@@ -23,7 +23,7 @@ public struct SliderVM: ComponentVM {
   /// The maximum value of the slider.
   public var maxValue: CGFloat = 100
 
-  /// The corner radius of the slider track.
+  /// The corner radius of the slider track and handle.
   ///
   /// Defaults to `.full`.
   public var cornerRadius: ComponentRadius = .full

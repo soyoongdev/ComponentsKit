@@ -46,3 +46,7 @@ struct SliderPreview: View {
     return model
   }
 }
+
+#Preview {
+  SliderPreview()
+}
