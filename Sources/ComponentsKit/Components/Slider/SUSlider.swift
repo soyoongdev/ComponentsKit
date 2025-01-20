@@ -70,19 +70,9 @@ public struct SUSlider: View {
               DragGesture(minimumDistance: 0)
                 .onChanged { value in
                   let newOffset = leftWidth + value.translation.width
-                  let fixedOffset = min(max(newOffset, 0), sliderWidth)
-                  let newProgress = sliderWidth > 0 ? (fixedOffset / sliderWidth) : 0
+                  let clampedOffset = min(max(newOffset, 0), sliderWidth)
 
-                  let newValue = self.model.minValue + newProgress * (self.model.maxValue - self.model.minValue)
-
-                  let steppedValue: CGFloat
-                  if self.model.step > 0 {
-                    let stepsCount = (newValue / self.model.step).rounded()
-                    steppedValue = stepsCount * self.model.step
-                  } else {
-                    steppedValue = newValue
-                  }
-                  self.currentValue = steppedValue
+                  self.currentValue = self.model.steppedValue(for: clampedOffset, trackWidth: sliderWidth)
                 }
             )
 

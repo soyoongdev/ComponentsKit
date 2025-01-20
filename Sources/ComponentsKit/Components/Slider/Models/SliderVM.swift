@@ -135,6 +135,23 @@ extension SliderVM {
 }
 
 extension SliderVM {
+  func steppedValue(for offset: CGFloat, trackWidth: CGFloat) -> CGFloat {
+    guard trackWidth > 0 else { return self.minValue }
+
+    let newProgress = offset / trackWidth
+
+    let newValue = self.minValue + newProgress * (self.maxValue - self.minValue)
+
+    if self.step > 0 {
+      let stepsCount = (newValue / self.step).rounded()
+      return stepsCount * self.step
+    } else {
+      return newValue
+    }
+  }
+}
+
+extension SliderVM {
   func progress(for currentValue: CGFloat) -> CGFloat {
     let range = self.maxValue - self.minValue
     guard range > 0 else { return 0 }
