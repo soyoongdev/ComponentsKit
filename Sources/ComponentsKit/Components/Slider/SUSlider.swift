@@ -32,17 +32,14 @@ public struct SUSlider: View {
 
   public var body: some View {
     GeometryReader { geometry in
-      let containerHeight = self.model.containerHeight
-      let sliderHeight = self.model.sliderHeight
-
       let barWidth = self.model.barWidth(for: geometry.size.width, progress: self.progress)
       let backgroundWidth = self.model.backgroundWidth(for: geometry.size.width, progress: self.progress)
 
       HStack(spacing: self.model.trackSpacing) {
         // Progress segment
-        RoundedRectangle(cornerRadius: self.model.cornerRadius(for: sliderHeight))
+        RoundedRectangle(cornerRadius: self.model.cornerRadius(for: self.model.trackHeight))
           .foregroundStyle(self.model.color.main.color)
-          .frame(width: barWidth, height: sliderHeight)
+          .frame(width: barWidth, height: self.model.trackHeight)
 
         // Handle
         RoundedRectangle(cornerRadius: self.model.cornerRadius(for: self.model.handleSize.height))
@@ -75,23 +72,22 @@ public struct SUSlider: View {
         Group {
           switch self.model.style {
           case .light:
-            RoundedRectangle(cornerRadius: self.model.cornerRadius(for: sliderHeight))
-              .foregroundStyle(self.model.backgroundColor.color)
+            RoundedRectangle(cornerRadius: self.model.cornerRadius(for: self.model.trackHeight))
+              .foregroundStyle(self.model.color.background.color)
               .frame(width: backgroundWidth)
-
           case .striped:
             ZStack {
-              RoundedRectangle(cornerRadius: self.model.cornerRadius(for: sliderHeight))
+              RoundedRectangle(cornerRadius: self.model.cornerRadius(for: self.model.trackHeight))
                 .foregroundStyle(self.model.color.contrast.color)
 
               StripesShapeSlider(model: self.model)
                 .foregroundStyle(self.model.color.main.color)
-                .cornerRadius(self.model.cornerRadius(for: sliderHeight))
+                .cornerRadius(self.model.cornerRadius(for: self.model.trackHeight))
             }
             .frame(width: backgroundWidth)
           }
         }
-        .frame(height: sliderHeight)
+        .frame(height: self.model.trackHeight)
       }
     }
     .frame(height: self.model.containerHeight)

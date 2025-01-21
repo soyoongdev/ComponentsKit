@@ -78,23 +78,7 @@ extension SliderVM {
     return 4
   }
   var handleOverlaySide: CGFloat {
-    12
-  }
-  var backgroundColor: UniversalColor {
-    switch style {
-    case .light:
-      return self.color.background
-    case .striped:
-      return self.color.main
-    }
-  }
-  var barColor: UniversalColor {
-    switch style {
-    case .light:
-      return self.color.main
-    case .striped:
-      return self.color.contrast
-    }
+    return 12
   }
   private func stripesCGPath(in rect: CGRect) -> CGMutablePath {
     let stripeWidth: CGFloat = 2
@@ -148,31 +132,24 @@ extension SliderVM {
   }
 }
 
-public extension SliderVM {
-  var sliderHeight: CGFloat {
-    self.trackHeight
-  }
-
+extension SliderVM {
   var containerHeight: CGFloat {
     max(self.handleSize.height, self.trackHeight)
   }
 
-  func leftWidth(for totalWidth: CGFloat, progress: CGFloat) -> CGFloat {
-    let sliderWidth = max(0, totalWidth - self.handleSize.width - 2 * self.trackSpacing)
-    return sliderWidth * progress
-  }
-
-  func rightWidth(for totalWidth: CGFloat, progress: CGFloat) -> CGFloat {
-    let sliderWidth = max(0, totalWidth - self.handleSize.width - 2 * self.trackSpacing)
-    return sliderWidth - self.leftWidth(for: totalWidth, progress: progress)
+  private func sliderWidth(for totalWidth: CGFloat) -> CGFloat {
+    max(0, totalWidth - self.handleSize.width - 2 * self.trackSpacing)
   }
 
   func barWidth(for totalWidth: CGFloat, progress: CGFloat) -> CGFloat {
-    self.leftWidth(for: totalWidth, progress: progress)
+    let width = self.sliderWidth(for: totalWidth)
+    return width * progress
   }
 
   func backgroundWidth(for totalWidth: CGFloat, progress: CGFloat) -> CGFloat {
-    self.rightWidth(for: totalWidth, progress: progress)
+    let width = self.sliderWidth(for: totalWidth)
+    let filled = width * progress
+    return width - filled
   }
 }
 
