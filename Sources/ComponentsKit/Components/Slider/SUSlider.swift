@@ -78,7 +78,7 @@ public struct SUSlider: View {
           case .striped:
             ZStack {
               RoundedRectangle(cornerRadius: self.model.cornerRadius(for: self.model.trackHeight))
-                .foregroundStyle(self.model.color.contrast.color)
+                .foregroundStyle(.clear)
 
               StripesShapeSlider(model: self.model)
                 .foregroundStyle(self.model.color.main.color)
