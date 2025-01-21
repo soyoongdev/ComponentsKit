@@ -115,6 +115,7 @@ extension UKAvatarGroup {
     static func stackView(_ view: UIStackView, model: Model) {
       view.axis = .horizontal
       view.spacing = model.spacing
+      view.distribution = .equalCentering
     }
   }
 }
