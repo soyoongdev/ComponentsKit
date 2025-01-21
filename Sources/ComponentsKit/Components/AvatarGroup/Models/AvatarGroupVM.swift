@@ -70,7 +70,7 @@ extension AvatarGroupVM {
     return avatars
   }
 
-  var avatarSize: CGSize {
+  var itemSize: CGSize {
     switch self.size {
     case .small:
       return .init(width: 36, height: 36)
@@ -92,7 +92,22 @@ extension AvatarGroupVM {
     }
   }
 
+  var spacing: CGFloat {
+    return -self.itemSize.width / 3
+  }
+
   var numberOfHiddenAvatars: Int {
-    return self.items.count - self.maxVisibleAvatars
+    return max(0, self.items.count - self.maxVisibleAvatars)
+  }
+}
+
+// MARK: - UIKit Helpers
+
+extension AvatarGroupVM {
+  var avatarHeight: CGFloat {
+    return self.itemSize.height - self.padding * 2
+  }
+  var avatarWidth: CGFloat {
+    return self.itemSize.width - self.padding * 2
   }
 }
