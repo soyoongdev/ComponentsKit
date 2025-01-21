@@ -11,6 +11,9 @@ struct App: View {
         NavigationLinkWithTitle("Avatar") {
           AvatarPreview()
         }
+        NavigationLinkWithTitle("Avatar Group") {
+          AvatarGroupPreview()
+        }
         NavigationLinkWithTitle("Badge") {
           BadgePreview()
         }
