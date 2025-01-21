@@ -18,10 +18,10 @@ open class UKAvatar: UIImageView, UKComponent {
   // MARK: - UIView Properties
 
   open override var intrinsicContentSize: CGSize {
-    return self.sizeThatFits(UIView.layoutFittingExpandedSize)
+    return self.model.preferredSize
   }
 
-  // MARK: - Initializers
+  // MARK: - Initialization
 
   /// Initializer.
   /// - Parameters:
@@ -38,6 +38,13 @@ open class UKAvatar: UIImageView, UKComponent {
 
   public required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
+  }
+
+  // MARK: - Deinitialization
+
+  deinit {
+    self.cancellable?.cancel()
+    self.cancellable = nil
   }
 
   // MARK: - Setup
