@@ -137,7 +137,7 @@ extension SliderVM {
     max(self.handleSize.height, self.trackHeight)
   }
 
-  private func sliderWidth(for totalWidth: CGFloat) -> CGFloat {
+  func sliderWidth(for totalWidth: CGFloat) -> CGFloat {
     max(0, totalWidth - self.handleSize.width - 2 * self.trackSpacing)
   }
 
@@ -163,7 +163,7 @@ extension SliderVM {
   func shouldUpdateLayout(_ oldModel: Self) -> Bool {
     return self.style != oldModel.style ||
     self.size != oldModel.size ||
-    self.step != oldModel.step
+    self.step != oldModel.step ||
   }
 }
 

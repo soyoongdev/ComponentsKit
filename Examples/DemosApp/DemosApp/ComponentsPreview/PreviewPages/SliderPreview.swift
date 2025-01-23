@@ -7,6 +7,10 @@ struct SliderPreview: View {
   
   var body: some View {
     VStack {
+      PreviewWrapper(title: "UIKit") {
+        UKSlider(model: self.model)
+          .preview
+      }
       PreviewWrapper(title: "SwiftUI") {
         SUSlider(currentValue: self.$currentValue, model: self.model)
       }
