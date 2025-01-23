@@ -161,9 +161,7 @@ extension SliderVM {
   }
 
   func shouldUpdateLayout(_ oldModel: Self) -> Bool {
-    return self.style != oldModel.style ||
-    self.size != oldModel.size ||
-    self.step != oldModel.step ||
+    return self.size != oldModel.size
   }
 }
 

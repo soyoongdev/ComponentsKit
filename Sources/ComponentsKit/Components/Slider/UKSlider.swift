@@ -13,28 +13,29 @@ open class UKSlider: UIView, UKComponent {
 
   public var currentValue: CGFloat {
     didSet {
-      self.updateProgressWidthAndAppearance()
+      guard self.currentValue != oldValue else { return }
+
+      // TODO: Trigger `onValueChange` when value changes
+      self.updateSliderAppearance()
     }
   }
-
-  private var initialProgressWidthOnDragBegan: CGFloat = 0
 
   // MARK: - Subviews
 
   public let backgroundView = UIView()
-  public let progressView = UIView()
+  public let barView = UIView()
   public let stripedLayer = CAShapeLayer()
-
   public let handleView = UIView()
 
   // MARK: - Layout Constraints
 
-  private var backgroundViewLightLeadingConstraint: NSLayoutConstraint?
-  private var backgroundViewFilledLeadingConstraint: NSLayoutConstraint?
-  private var progressViewConstraints: LayoutConstraints = .init()
-  private var handleConstraints: LayoutConstraints = .init()
+  private var barViewConstraints = LayoutConstraints()
+  private var backgroundViewConstraints = LayoutConstraints()
+  private var handleViewConstraints = LayoutConstraints()
 
   // MARK: - Private Properties
+
+  private var isDragging = false
 
   private var progress: CGFloat {
     self.model.progress(for: self.currentValue)
@@ -49,8 +50,9 @@ open class UKSlider: UIView, UKComponent {
   // MARK: - Initialization
 
   public init(
-    initialValue: CGFloat = 50,
-    model: SliderVM = .init()
+    initialValue: CGFloat = 0,
+    model: SliderVM = .init(),
+    onValueChange: @escaping (CGFloat) -> Void = { _ in }
   ) {
     self.currentValue = initialValue
     self.model = model
@@ -69,49 +71,18 @@ open class UKSlider: UIView, UKComponent {
 
   private func setup() {
     self.addSubview(self.backgroundView)
-    self.addSubview(self.progressView)
+    self.addSubview(self.barView)
     self.addSubview(self.handleView)
-    self.progressView.layer.addSublayer(self.stripedLayer)
-
-    let panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePan(_:)))
-    self.handleView.addGestureRecognizer(panGesture)
+    self.barView.layer.addSublayer(self.stripedLayer)
   }
 
   // MARK: - Style
 
   private func style() {
     Self.Style.backgroundView(self.backgroundView, model: self.model)
-    Self.Style.progressView(self.progressView, model: self.model)
+    Self.Style.barView(self.barView, model: self.model)
     Self.Style.stripedLayer(self.stripedLayer, model: self.model)
     Self.Style.handleView(self.handleView, model: self.model)
-  }
-
-  // MARK: - Layout
-
-  private func layout() {
-    self.backgroundView.vertically()
-    self.backgroundView.trailing()
-
-    self.backgroundViewLightLeadingConstraint = self.backgroundView.after(
-      self.handleView,
-      padding: self.model.trackSpacing
-    ).leading
-
-    self.backgroundViewFilledLeadingConstraint = self.backgroundView.leading().leading
-
-    self.backgroundViewFilledLeadingConstraint?.isActive = false
-
-    self.progressViewConstraints = .merged {
-      self.progressView.leading(self.model.trackSpacing)
-      self.progressView.vertically()
-      self.progressView.width(0)
-    }
-
-    self.handleConstraints = .merged {
-      self.handleView.after(self.progressView, padding: self.model.trackSpacing)
-      self.handleView.size(width: self.model.handleSize.width, height: self.model.handleSize.height)
-      self.handleView.centerVertically()
-    }
   }
 
   // MARK: - Update
@@ -122,36 +93,55 @@ open class UKSlider: UIView, UKComponent {
     self.style()
 
     if self.model.shouldUpdateLayout(oldModel) {
-      switch self.model.style {
-      case .light, .striped:
-        self.backgroundViewFilledLeadingConstraint?.isActive = false
-        self.backgroundViewLightLeadingConstraint?.isActive = true
+      self.barViewConstraints.height?.constant = self.model.trackHeight
+      self.backgroundViewConstraints.height?.constant = self.model.trackHeight
+      self.handleViewConstraints.height?.constant = self.model.handleSize.height
+      self.handleViewConstraints.width?.constant = self.model.handleSize.width
+
+      UIView.performWithoutAnimation {
+        self.layoutIfNeeded()
       }
-
-      self.progressViewConstraints.leading?.constant = self.model.trackSpacing
-
-      self.invalidateIntrinsicContentSize()
-      self.setNeedsLayout()
     }
 
-    self.updateProgressWidthAndAppearance()
+    self.updateSliderAppearance()
   }
 
-  private func updateProgressWidthAndAppearance() {
+  private func updateSliderAppearance() {
     if self.model.style == .striped {
       self.stripedLayer.frame = self.bounds
       self.stripedLayer.path = self.model.stripesBezierPath(in: self.stripedLayer.bounds).cgPath
     }
 
-    let totalHorizontalPadding: CGFloat = self.model.trackSpacing
-
-    let totalWidth = self.bounds.width - totalHorizontalPadding
-    let progressWidth = totalWidth * self.progress
-
-    self.progressViewConstraints.width?.constant = max(0, progressWidth)
+    let barWidth = self.model.barWidth(for: self.bounds.width, progress: self.progress)
+    self.barViewConstraints.width?.constant = barWidth
   }
 
   // MARK: - Layout
+
+  private func layout() {
+    self.barViewConstraints = .merged {
+      self.barView.leading()
+      self.barView.centerVertically()
+      self.barView.height(self.model.trackHeight)
+      self.barView.width(0)
+    }
+
+    self.backgroundViewConstraints = .merged {
+      self.backgroundView.trailing()
+      self.backgroundView.centerVertically()
+      self.backgroundView.height(self.model.trackHeight)
+    }
+
+    self.handleViewConstraints = .merged {
+      self.handleView.after(self.barView, padding: self.model.trackSpacing)
+      self.handleView.before(self.backgroundView, padding: self.model.trackSpacing)
+      self.handleView.size(
+        width: self.model.handleSize.width,
+        height: self.model.handleSize.height
+      )
+      self.handleView.centerVertically()
+    }
+  }
 
   open override func layoutSubviews() {
     super.layoutSubviews()
@@ -159,47 +149,68 @@ open class UKSlider: UIView, UKComponent {
     self.backgroundView.layer.cornerRadius =
     self.model.cornerRadius(for: self.backgroundView.bounds.height)
 
-    self.progressView.layer.cornerRadius =
-    self.model.cornerRadius(for: self.progressView.bounds.height)
+    self.barView.layer.cornerRadius =
+    self.model.cornerRadius(for: self.barView.bounds.height)
 
+    // TODO: Calculate corner radius in SwiftUI component according to handler's width
     self.handleView.layer.cornerRadius =
-    self.model.cornerRadius(for: self.handleView.bounds.height)
+    self.model.cornerRadius(for: self.handleView.bounds.width)
 
-    self.updateProgressWidthAndAppearance()
+    self.updateSliderAppearance()
 
     self.model.validateMinMaxValues()
   }
 
-  // MARK: - UIView
+  // MARK: - UIView Methods
 
   open override func sizeThatFits(_ size: CGSize) -> CGSize {
     let width = self.superview?.bounds.width ?? size.width
     return CGSize(
       width: min(size.width, width),
-      height: min(size.height, self.model.trackHeight)
+      height: min(size.height, self.model.handleSize.height)
     )
   }
 
-  @objc private func handlePan(_ gesture: UIPanGestureRecognizer) {
-    switch gesture.state {
-    case .began:
-      self.initialProgressWidthOnDragBegan = self.progressView.frame.width
+  open override func touchesBegan(
+    _ touches: Set<UITouch>,
+    with event: UIEvent?
+  ) {
+    guard let point = touches.first?.location(in: self),
+          self.hitTest(point, with: nil) == self.handleView
+    else { return }
 
-    case .changed:
-      let translation = gesture.translation(in: self)
+    self.isDragging = true
+  }
 
-      let totalWidth = self.bounds.width
-      let sliderWidth = max(0, totalWidth - self.model.handleSize.width - 2 * self.model.trackSpacing)
+  open override func touchesMoved(
+    _ touches: Set<UITouch>,
+    with event: UIEvent?
+  ) {
+    guard self.isDragging,
+          let translation = touches.first?.location(in: self)
+    else { return }
 
-      let currentLeft = self.initialProgressWidthOnDragBegan
-      let newOffset = currentLeft + translation.x
-      let clampedOffset = min(max(newOffset, 0), sliderWidth)
+    let totalWidth = self.bounds.width
+    let sliderWidth = max(0, totalWidth - self.model.handleSize.width - 2 * self.model.trackSpacing)
 
-      self.currentValue = self.model.steppedValue(for: clampedOffset, trackWidth: sliderWidth)
+    let newOffset = translation.x - self.model.trackSpacing - self.model.handleSize.width / 2
+    let clampedOffset = min(max(newOffset, 0), sliderWidth)
 
-    default:
-      break
-    }
+    self.currentValue = self.model.steppedValue(for: clampedOffset, trackWidth: sliderWidth)
+  }
+
+  open override func touchesEnded(
+    _ touches: Set<UITouch>,
+    with event: UIEvent?
+  ) {
+    self.isDragging = false
+  }
+
+  open override func touchesCancelled(
+    _ touches: Set<UITouch>,
+    with event: UIEvent?
+  ) {
+    self.isDragging = false
   }
 }
 
@@ -208,12 +219,12 @@ open class UKSlider: UIView, UKComponent {
 extension UKSlider {
   fileprivate enum Style {
     static func backgroundView(_ view: UIView, model: SliderVM) {
-      view.backgroundColor = UIColor.red
+      view.backgroundColor = model.color.background.uiColor
       view.layer.cornerRadius = model.cornerRadius(for: view.bounds.height)
     }
 
-    static func progressView(_ view: UIView, model: SliderVM) {
-      view.backgroundColor = UIColor.blue
+    static func barView(_ view: UIView, model: SliderVM) {
+      view.backgroundColor = model.color.main.uiColor
       view.layer.cornerRadius = model.cornerRadius(for: view.bounds.height)
       view.layer.masksToBounds = true
     }
@@ -225,9 +236,10 @@ extension UKSlider {
         layer.isHidden = true
       }
     }
+
     static func handleView(_ view: UIView, model: SliderVM) {
-      view.backgroundColor = .black
-      view.layer.cornerRadius = model.cornerRadius(for: model.handleSize.height)
+      view.backgroundColor = model.color.main.uiColor
+      view.layer.cornerRadius = model.cornerRadius(for: model.handleSize.width)
       view.layer.masksToBounds = true
     }
   }

@@ -2,13 +2,18 @@ import SwiftUI
 import ComponentsKit
 
 struct SliderPreview: View {
-  @State private var model = Self.initialModel
-  @State private var currentValue: CGFloat = Self.initialValue
+  @State private var model = SliderVM {
+    $0.style = .light
+    $0.minValue = 0
+    $0.maxValue = 100
+    $0.cornerRadius = .full
+  }
+  @State private var currentValue: CGFloat = 30
   
   var body: some View {
     VStack {
       PreviewWrapper(title: "UIKit") {
-        UKSlider(model: self.model)
+        UKSlider(initialValue: self.currentValue, model: self.model)
           .preview
       }
       PreviewWrapper(title: "SwiftUI") {
@@ -33,21 +38,6 @@ struct SliderPreview: View {
         }
       }
     }
-  }
-  
-  // MARK: - Helpers
-  
-  private static var initialValue: CGFloat {
-    50
-  }
-  
-  private static var initialModel: SliderVM {
-    var model = SliderVM()
-    model.style = .light
-    model.minValue = 0
-    model.maxValue = 100
-    model.cornerRadius = .full
-    return model
   }
 }
 
