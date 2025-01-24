@@ -5,6 +5,8 @@ import UIKit
 open class UKSlider: UIView, UKComponent {
   // MARK: - Properties
 
+  public var onValueChange: (CGFloat) -> Void
+
   public var model: SliderVM {
     didSet {
       self.update(oldValue)
@@ -15,8 +17,9 @@ open class UKSlider: UIView, UKComponent {
     didSet {
       guard self.currentValue != oldValue else { return }
 
-      // TODO: Trigger `onValueChange` when value changes
       self.updateSliderAppearance()
+
+      self.onValueChange(self.currentValue)
     }
   }
 
@@ -56,6 +59,7 @@ open class UKSlider: UIView, UKComponent {
   ) {
     self.currentValue = initialValue
     self.model = model
+    self.onValueChange = onValueChange
     super.init(frame: .zero)
 
     self.setup()
