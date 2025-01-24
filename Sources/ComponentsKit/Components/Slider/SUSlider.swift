@@ -42,7 +42,7 @@ public struct SUSlider: View {
           .frame(width: barWidth, height: self.model.trackHeight)
 
         // Handle
-        RoundedRectangle(cornerRadius: self.model.cornerRadius(for: self.model.handleSize.height))
+        RoundedRectangle(cornerRadius: self.model.cornerRadius(for: self.model.handleSize.width))
           .foregroundStyle(self.model.color.main.color)
           .frame(width: self.model.handleSize.width, height: self.model.handleSize.height)
           .overlay(
