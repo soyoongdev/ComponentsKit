@@ -79,7 +79,7 @@ open class UKSlider: UIView, UKComponent {
     self.addSubview(self.backgroundView)
     self.addSubview(self.barView)
     self.addSubview(self.handleView)
-    self.barView.layer.addSublayer(self.stripedLayer)
+    self.backgroundView.layer.addSublayer(self.stripedLayer)
     self.handleView.addSubview(self.handleOverlayView)
   }
 
@@ -119,7 +119,7 @@ open class UKSlider: UIView, UKComponent {
 
   private func updateSliderAppearance() {
     if self.model.style == .striped {
-      self.stripedLayer.frame = self.bounds
+      self.stripedLayer.frame = self.backgroundView.bounds
       self.stripedLayer.path = self.model.stripesBezierPath(in: self.stripedLayer.bounds).cgPath
     }
 
@@ -237,7 +237,11 @@ extension UKSlider {
   fileprivate enum Style {
     static func backgroundView(_ view: UIView, model: SliderVM) {
       view.backgroundColor = model.color.background.uiColor
+      if model.style == .striped {
+        view.backgroundColor = .clear
+      }
       view.layer.cornerRadius = model.cornerRadius(for: view.bounds.height)
+      view.layer.masksToBounds = true
     }
 
     static func barView(_ view: UIView, model: SliderVM) {
@@ -249,8 +253,10 @@ extension UKSlider {
     static func stripedLayer(_ layer: CAShapeLayer, model: SliderVM) {
       layer.fillColor = model.color.main.uiColor.cgColor
       switch model.style {
-      case .light, .striped:
+      case .light:
         layer.isHidden = true
+      case .striped:
+        layer.isHidden = false
       }
     }
 
