@@ -5,30 +5,40 @@ import UIKit
 open class UKSlider: UIView, UKComponent {
   // MARK: - Properties
 
+  /// A closure that is triggered when the `currentValue` changes.
   public var onValueChange: (CGFloat) -> Void
 
+  /// A model that defines the appearance properties.
   public var model: SliderVM {
     didSet {
       self.update(oldValue)
     }
   }
 
+  /// The current value of the slider.
   public var currentValue: CGFloat {
     didSet {
       guard self.currentValue != oldValue else { return }
-
       self.updateSliderAppearance()
-
       self.onValueChange(self.currentValue)
     }
   }
 
   // MARK: - Subviews
 
+  /// The background view of the slider track.
   public let backgroundView = UIView()
+
+  /// The filled portion of the slider track.
   public let barView = UIView()
+
+  /// A shape layer used to render striped styling.
   public let stripedLayer = CAShapeLayer()
+
+  /// The draggable handle representing the current value.
   public let handleView = UIView()
+
+  /// An  overlay view for handle for the `large` style.
   private let handleOverlayView = UIView()
 
   // MARK: - Layout Constraints
@@ -46,7 +56,7 @@ open class UKSlider: UIView, UKComponent {
     self.model.progress(for: self.currentValue)
   }
 
-  // MARK: - UIView
+  // MARK: - UIView Properties
 
   open override var intrinsicContentSize: CGSize {
     return self.sizeThatFits(UIView.layoutFittingExpandedSize)
@@ -54,6 +64,11 @@ open class UKSlider: UIView, UKComponent {
 
   // MARK: - Initialization
 
+  /// Initializer.
+  /// - Parameters:
+  ///   - initialValue: The initial slider value. Defaults to `0`.
+  ///   - model: A model that defines the appearance properties.
+  ///   - onValueChange: A closure triggered whenever `currentValue` changes.
   public init(
     initialValue: CGFloat = 0,
     model: SliderVM = .init(),
