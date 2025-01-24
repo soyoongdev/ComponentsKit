@@ -29,12 +29,14 @@ open class UKSlider: UIView, UKComponent {
   public let barView = UIView()
   public let stripedLayer = CAShapeLayer()
   public let handleView = UIView()
+  private let handleOverlayView = UIView()
 
   // MARK: - Layout Constraints
 
   private var barViewConstraints = LayoutConstraints()
   private var backgroundViewConstraints = LayoutConstraints()
   private var handleViewConstraints = LayoutConstraints()
+  private var handleOverlayViewConstraints = LayoutConstraints()
 
   // MARK: - Private Properties
 
@@ -78,6 +80,7 @@ open class UKSlider: UIView, UKComponent {
     self.addSubview(self.barView)
     self.addSubview(self.handleView)
     self.barView.layer.addSublayer(self.stripedLayer)
+    self.handleView.addSubview(self.handleOverlayView)
   }
 
   // MARK: - Style
@@ -87,6 +90,7 @@ open class UKSlider: UIView, UKComponent {
     Self.Style.barView(self.barView, model: self.model)
     Self.Style.stripedLayer(self.stripedLayer, model: self.model)
     Self.Style.handleView(self.handleView, model: self.model)
+    Self.Style.handleOverlayView(self.handleOverlayView, model: self.model)
   }
 
   // MARK: - Update
@@ -101,6 +105,9 @@ open class UKSlider: UIView, UKComponent {
       self.backgroundViewConstraints.height?.constant = self.model.trackHeight
       self.handleViewConstraints.height?.constant = self.model.handleSize.height
       self.handleViewConstraints.width?.constant = self.model.handleSize.width
+
+      self.handleOverlayViewConstraints.height?.constant = self.model.handleOverlaySide
+      self.handleOverlayViewConstraints.width?.constant = self.model.handleOverlaySide
 
       UIView.performWithoutAnimation {
         self.layoutIfNeeded()
@@ -145,6 +152,14 @@ open class UKSlider: UIView, UKComponent {
       )
       self.handleView.centerVertically()
     }
+
+    self.handleOverlayViewConstraints = .merged {
+      self.handleOverlayView.center()
+      self.handleOverlayView.size(
+        width: self.model.handleOverlaySide,
+        height: self.model.handleOverlaySide
+      )
+    }
   }
 
   open override func layoutSubviews() {
@@ -156,12 +171,10 @@ open class UKSlider: UIView, UKComponent {
     self.barView.layer.cornerRadius =
     self.model.cornerRadius(for: self.barView.bounds.height)
 
-    // TODO: Calculate corner radius in SwiftUI component according to handler's width
     self.handleView.layer.cornerRadius =
     self.model.cornerRadius(for: self.handleView.bounds.width)
 
     self.updateSliderAppearance()
-
     self.model.validateMinMaxValues()
   }
 
@@ -245,6 +258,16 @@ extension UKSlider {
       view.backgroundColor = model.color.main.uiColor
       view.layer.cornerRadius = model.cornerRadius(for: model.handleSize.width)
       view.layer.masksToBounds = true
+    }
+
+    static func handleOverlayView(_ view: UIView, model: SliderVM) {
+      if model.size == .large {
+        view.isHidden = false
+        view.backgroundColor = model.color.contrast.uiColor
+        view.layer.cornerRadius = model.cornerRadius(for: model.handleOverlaySide)
+      } else {
+        view.isHidden = true
+      }
     }
   }
 }
