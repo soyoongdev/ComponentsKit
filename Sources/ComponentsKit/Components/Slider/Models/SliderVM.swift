@@ -137,7 +137,7 @@ extension SliderVM {
     max(self.handleSize.height, self.trackHeight)
   }
 
-  private func sliderWidth(for totalWidth: CGFloat) -> CGFloat {
+  func sliderWidth(for totalWidth: CGFloat) -> CGFloat {
     max(0, totalWidth - self.handleSize.width - 2 * self.trackSpacing)
   }
 
@@ -156,14 +156,21 @@ extension SliderVM {
 // MARK: - UIKit Helpers
 
 extension SliderVM {
+  var isHandleOverlayVisible: Bool {
+    switch self.size {
+    case .small, .medium:
+      return false
+    case .large:
+      return true
+    }
+  }
+
   func stripesBezierPath(in rect: CGRect) -> UIBezierPath {
     return UIBezierPath(cgPath: self.stripesCGPath(in: rect))
   }
 
   func shouldUpdateLayout(_ oldModel: Self) -> Bool {
-    return self.style != oldModel.style ||
-    self.size != oldModel.size ||
-    self.step != oldModel.step
+    return self.size != oldModel.size
   }
 }
 
