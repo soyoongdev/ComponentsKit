@@ -46,7 +46,6 @@ open class UKSlider: UIView, UKComponent {
   private var barViewConstraints = LayoutConstraints()
   private var backgroundViewConstraints = LayoutConstraints()
   private var handleViewConstraints = LayoutConstraints()
-  private var handleOverlayViewConstraints = LayoutConstraints()
 
   // MARK: - Private Properties
 
@@ -121,9 +120,6 @@ open class UKSlider: UIView, UKComponent {
       self.handleViewConstraints.height?.constant = self.model.handleSize.height
       self.handleViewConstraints.width?.constant = self.model.handleSize.width
 
-      self.handleOverlayViewConstraints.height?.constant = self.model.handleOverlaySide
-      self.handleOverlayViewConstraints.width?.constant = self.model.handleOverlaySide
-
       UIView.performWithoutAnimation {
         self.layoutIfNeeded()
       }
@@ -168,13 +164,11 @@ open class UKSlider: UIView, UKComponent {
       self.handleView.centerVertically()
     }
 
-    self.handleOverlayViewConstraints = .merged {
-      self.handleOverlayView.center()
-      self.handleOverlayView.size(
-        width: self.model.handleOverlaySide,
-        height: self.model.handleOverlaySide
-      )
-    }
+    self.handleOverlayView.center()
+    self.handleOverlayView.size(
+      width: self.model.handleOverlaySide,
+      height: self.model.handleOverlaySide
+    )
   }
 
   open override func layoutSubviews() {
@@ -188,6 +182,9 @@ open class UKSlider: UIView, UKComponent {
 
     self.handleView.layer.cornerRadius =
     self.model.cornerRadius(for: self.handleView.bounds.width)
+
+    self.handleOverlayView.layer.cornerRadius =
+    self.model.cornerRadius(for: self.handleOverlayView.bounds.width)
 
     self.updateSliderAppearance()
     self.model.validateMinMaxValues()
@@ -282,13 +279,9 @@ extension UKSlider {
     }
 
     static func handleOverlayView(_ view: UIView, model: SliderVM) {
-      if model.size == .large {
-        view.isHidden = false
-        view.backgroundColor = model.color.contrast.uiColor
-        view.layer.cornerRadius = model.cornerRadius(for: model.handleOverlaySide)
-      } else {
-        view.isHidden = true
-      }
+      view.isVisible = model.isHandleOverlayVisible
+      view.backgroundColor = model.color.contrast.uiColor
+      view.layer.cornerRadius = model.cornerRadius(for: model.handleOverlaySide)
     }
   }
 }

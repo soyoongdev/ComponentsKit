@@ -156,6 +156,15 @@ extension SliderVM {
 // MARK: - UIKit Helpers
 
 extension SliderVM {
+  var isHandleOverlayVisible: Bool {
+    switch self.size {
+    case .small, .medium:
+      return false
+    case .large:
+      return true
+    }
+  }
+
   func stripesBezierPath(in rect: CGRect) -> UIBezierPath {
     return UIBezierPath(cgPath: self.stripesCGPath(in: rect))
   }
