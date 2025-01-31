@@ -2,7 +2,7 @@ import SwiftUI
 
 /// A model that defines the appearance properties for a circular progress component.
 public struct CircularProgressVM: ComponentVM {
-  /// The color of the circular progress indicator.
+  /// The color of the circular progress.
   ///
   /// Defaults to `.accent`.
   public var color: ComponentColor = .accent
@@ -12,32 +12,28 @@ public struct CircularProgressVM: ComponentVM {
   /// Defaults to `.light`.
   public var style: Style = .light
 
-  /// The predefined size of the circular progress indicator.
+  /// The  size of the circular progress.
   ///
   /// Defaults to `.medium`.
   public var size: ComponentSize = .medium
 
-  /// The minimum value for the progress range.
+  /// The minimum value of the circular progress.
   ///
   /// Defaults to `0`.
   public var minValue: CGFloat = 0
 
-  /// The maximum value for the progress range.
+  /// The maximum value of the circular progress.
   ///
   /// Defaults to `100`.
   public var maxValue: CGFloat = 100
 
   /// The width of the circular progress stroke.
-  ///
-  /// If not provided, the line width is automatically adjusted based on the size.
   public var lineWidth: CGFloat?
 
   /// An optional label to display inside the circular progress.
   public var label: String?
 
-  /// A custom font to display the label with.
-  ///
-  /// If not provided, the font is automatically adjusted based on the size.
+  /// The font used for the circular progress label text.
   public var font: UniversalFont?
 
   /// Initializes a new instance of `CircularProgressVM` with default values.

@@ -5,7 +5,7 @@ import UIKit
 struct CircularProgress: View {
   @State private var model = CircularProgressVM {
     $0.label = "0"
-    $0.style = .striped
+    $0.style = .light
     $0.minValue = 0
     $0.maxValue = 100
   }
@@ -15,7 +15,7 @@ struct CircularProgress: View {
   var body: some View {
     VStack {
       PreviewWrapper(title: "SwiftUI") {
-        SUCircularProgress(model: self.model, currentValue: self.progress)
+        SUCircularProgress(currentValue: self.progress, model: self.model)
       }
       Form {
         ComponentColorPicker(selection: self.$model.color)
