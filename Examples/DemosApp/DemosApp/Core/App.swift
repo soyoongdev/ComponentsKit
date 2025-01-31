@@ -27,7 +27,7 @@ struct App: View {
           CheckboxPreview()
         }
         NavigationLinkWithTitle("Circular Progress") {
-          CircularProgress()
+          CircularProgressPreview()
         }
         NavigationLinkWithTitle("Countdown") {
           CountdownPreview()

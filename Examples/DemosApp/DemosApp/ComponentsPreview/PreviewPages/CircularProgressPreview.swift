@@ -2,7 +2,7 @@ import ComponentsKit
 import SwiftUI
 import UIKit
 
-struct CircularProgress: View {
+struct CircularProgressPreview: View {
   @State private var model = CircularProgressVM {
     $0.label = "0"
     $0.style = .light
@@ -52,5 +52,5 @@ struct CircularProgress: View {
 }
 
 #Preview {
-  CircularProgress()
+  CircularProgressPreview()
 }
