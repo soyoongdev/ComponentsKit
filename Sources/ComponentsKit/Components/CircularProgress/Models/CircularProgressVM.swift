@@ -44,7 +44,7 @@ public struct CircularProgressVM: ComponentVM {
   public init() {}
 }
 
-// MARK: - Helpers
+// MARK: Shared Helpers
 
 extension CircularProgressVM {
   var circularLineWidth: CGFloat {
@@ -57,7 +57,7 @@ extension CircularProgressVM {
     case .medium:
       return CGSize(width: 48, height: 48)
     case .large:
-      return CGSize(width: 50, height: 50)
+      return CGSize(width: 60, height: 60)
     }
   }
   var radius: CGFloat {
@@ -82,10 +82,67 @@ extension CircularProgressVM {
       return .lgBody
     }
   }
+  private func stripesCGPath(in rect: CGRect) -> CGMutablePath {
+    let stripeWidth: CGFloat = 0.5
+    let stripeSpacing: CGFloat = 3
+    let stripeAngle: Angle = .degrees(135)
+
+    let path = CGMutablePath()
+    let step = stripeWidth + stripeSpacing
+    let radians = stripeAngle.radians
+    let dx = rect.height * tan(radians)
+    for x in stride(from: dx, through: rect.width + rect.height, by: step) {
+      let topLeft = CGPoint(x: x, y: 0)
+      let topRight = CGPoint(x: x + stripeWidth, y: 0)
+      let bottomLeft = CGPoint(x: x + dx, y: rect.height)
+      let bottomRight = CGPoint(x: x + stripeWidth + dx, y: rect.height)
+      path.move(to: topLeft)
+      path.addLine(to: topRight)
+      path.addLine(to: bottomRight)
+      path.addLine(to: bottomLeft)
+      path.closeSubpath()
+    }
+    return path
+  }
+}
+
+extension CircularProgressVM {
+  func gap(for normalized: CGFloat) -> CGFloat {
+    normalized > 0 ? 0.05 : 0
+  }
+
+  func progressArcStart(for normalized: CGFloat) -> CGFloat {
+    return 0
+  }
+
+  func progressArcEnd(for normalized: CGFloat) -> CGFloat {
+    return max(0, min(1, normalized))
+  }
+
+  func backgroundArcStart(for normalized: CGFloat) -> CGFloat {
+    let gapValue = self.gap(for: normalized)
+    return max(0, min(1, normalized + gapValue))
+  }
+
+  func backgroundArcEnd(for normalized: CGFloat) -> CGFloat {
+    let gapValue = self.gap(for: normalized)
+    return 1 - gapValue
+  }
+}
+
+extension CircularProgressVM {
   public func progress(for currentValue: CGFloat) -> CGFloat {
     let range = self.maxValue - self.minValue
     guard range > 0 else { return 0 }
     let normalized = (currentValue - self.minValue) / range
     return max(0, min(1, normalized))
+  }
+}
+
+// MARK: - SwiftUI Helpers
+
+extension CircularProgressVM {
+  func stripesPath(in rect: CGRect) -> Path {
+    Path(self.stripesCGPath(in: rect))
   }
 }

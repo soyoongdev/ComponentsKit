@@ -18,25 +18,40 @@ public struct SUCircularProgress: View {
     switch self.model.style {
     case .light:
       ZStack {
-        Circle()
-          .stroke(
-            self.model.color.main.color.opacity(0.3),
-            lineWidth: self.model.circularLineWidth
+        Path { path in
+          path.addArc(
+            center: self.model.center,
+            radius: self.model.radius,
+            startAngle: .radians(0),
+            endAngle: .radians(2 * .pi),
+            clockwise: false
           )
-          .frame(width: self.model.preferredSize.width, height: self.model.preferredSize.height)
+        }
+        .stroke(
+          self.model.color.main.color.opacity(0.3),
+          lineWidth: self.model.circularLineWidth
+        )
+        .frame(width: self.model.preferredSize.width, height: self.model.preferredSize.height)
 
-        Circle()
-          .trim(from: 0, to: normalized)
-          .stroke(
-            self.model.color.main.color,
-            style: StrokeStyle(
-              lineWidth: self.model.circularLineWidth,
-              lineCap: .round
-            )
+        Path { path in
+          path.addArc(
+            center: self.model.center,
+            radius: self.model.radius,
+            startAngle: .radians(0),
+            endAngle: .radians(2 * .pi),
+            clockwise: false
           )
-          .rotationEffect(.degrees(-90))
-          .frame(width: self.model.preferredSize.width, height: self.model.preferredSize.height)
-          .animation(.easeOut, value: normalized)
+        }
+        .trim(from: 0, to: normalized)
+        .stroke(
+          self.model.color.main.color,
+          style: StrokeStyle(
+            lineWidth: self.model.circularLineWidth,
+            lineCap: .round
+          )
+        )
+        .rotationEffect(.degrees(-90))
+        .frame(width: self.model.preferredSize.width, height: self.model.preferredSize.height)
 
         if let label = self.model.label {
           Text(label)
@@ -46,15 +61,6 @@ public struct SUCircularProgress: View {
       }
 
     case .striped:
-      let gap: CGFloat = 0.07
-      let gapHalf = gap / 2
-
-      let progressArcStart: CGFloat = 0
-      let progressArcEnd: CGFloat = max(0, min(1, normalized - gapHalf))
-
-      let backgroundArcStart: CGFloat = max(0, min(1, normalized + gapHalf))
-      let backgroundArcEnd: CGFloat = 1
-
       ZStack {
         Path { path in
           path.addArc(
@@ -65,16 +71,39 @@ public struct SUCircularProgress: View {
             clockwise: false
           )
         }
-        .trim(from: backgroundArcStart, to: backgroundArcEnd)
+        .trim(from: self.model.backgroundArcStart(for: normalized), to: self.model.backgroundArcEnd(for: normalized))
         .stroke(
-          self.model.color.main.color.opacity(0.3),
+          .clear,
           style: StrokeStyle(
             lineWidth: self.model.circularLineWidth,
             lineCap: .round
           )
         )
+        .overlay {
+          StripesShapeCircularProgress(model: self.model)
+            .foregroundColor(self.model.color.main.color)
+            .mask {
+              Path { maskPath in
+                maskPath.addArc(
+                  center: self.model.center,
+                  radius: self.model.radius,
+                  startAngle: .radians(0),
+                  endAngle: .radians(2 * .pi),
+                  clockwise: false
+                )
+              }
+              .trim(from: self.model.backgroundArcStart(for: normalized), to: self.model.backgroundArcEnd(for: normalized))
+              .stroke(
+                style: StrokeStyle(
+                  lineWidth: self.model.circularLineWidth,
+                  lineCap: .round
+                )
+              )
+            }
+        }
         .rotationEffect(.degrees(-90))
-        .frame(width: self.model.preferredSize.width, height: self.model.preferredSize.height)
+        .frame(width: self.model.preferredSize.width,
+               height: self.model.preferredSize.height)
 
         Path { path in
           path.addArc(
@@ -85,7 +114,7 @@ public struct SUCircularProgress: View {
             clockwise: false
           )
         }
-        .trim(from: progressArcStart, to: progressArcEnd)
+        .trim(from: self.model.progressArcStart(for: normalized), to: self.model.progressArcEnd(for: normalized))
         .stroke(
           self.model.color.main.color,
           style: StrokeStyle(
@@ -94,8 +123,8 @@ public struct SUCircularProgress: View {
           )
         )
         .rotationEffect(.degrees(-90))
-        .frame(width: self.model.preferredSize.width, height: self.model.preferredSize.height)
-        .animation(.easeOut, value: normalized)
+        .frame(width: self.model.preferredSize.width,
+               height: self.model.preferredSize.height)
 
         if let label = self.model.label {
           Text(label)
@@ -104,5 +133,13 @@ public struct SUCircularProgress: View {
         }
       }
     }
+  }
+}
+
+struct StripesShapeCircularProgress: Shape, @unchecked Sendable {
+  var model: CircularProgressVM
+
+  func path(in rect: CGRect) -> Path {
+    self.model.stripesPath(in: rect)
   }
 }
