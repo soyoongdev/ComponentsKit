@@ -6,8 +6,8 @@ struct AlertButtonsOrientationCalculator {
     case horizontal
   }
 
-  private static let primaryButton = UKButton()
-  private static let secondaryButton = UKButton()
+  private static let primaryButton = UKButton(model: .init())
+  private static let secondaryButton = UKButton(model: .init())
 
   private init() {}
 

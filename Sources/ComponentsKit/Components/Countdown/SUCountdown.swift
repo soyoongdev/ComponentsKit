@@ -17,7 +17,7 @@ public struct SUCountdown: View {
   /// Initializer.
   /// - Parameters:
   ///   - model: A model that defines the appearance properties.
-  public init(model: CountdownVM = .init()) {
+  public init(model: CountdownVM) {
     self.model = model
   }
 
