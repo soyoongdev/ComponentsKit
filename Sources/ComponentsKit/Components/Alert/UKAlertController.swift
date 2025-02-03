@@ -48,9 +48,9 @@ public class UKAlertController: UKCenterModalController {
   /// The label used to display the subtitle or message of the alert.
   public let subtitleLabel = UILabel()
   /// The button representing the primary action in the alert.
-  public let primaryButton = UKButton()
+  public let primaryButton = UKButton(model: .init())
   /// The button representing the secondary action in the alert.
-  public let secondaryButton = UKButton()
+  public let secondaryButton = UKButton(model: .init())
   /// A stack view that arranges the primary and secondary buttons.
   public let buttonsStackView = UIStackView()
 

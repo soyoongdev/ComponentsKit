@@ -44,7 +44,10 @@ open class UKCard: UIView, UKComponent {
   /// - Parameters:
   ///   - model: A model that defines the appearance properties.
   ///   - content: The content that is displayed in the card.
-  public init(model: CardVM, content: @escaping Content) {
+  public init(
+    model: CardVM = .init(),
+    content: @escaping Content
+  ) {
     self.model = model
     self.content = content()
 

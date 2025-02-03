@@ -27,7 +27,7 @@ public struct SUCard<Content: View>: View {
   ///   - model: A model that defines the appearance properties.
   ///   - content: The content that is displayed in the card.
   public init(
-    model: CardVM,
+    model: CardVM = .init(),
     content: @escaping () -> Content
   ) {
     self.model = model

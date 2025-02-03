@@ -29,7 +29,7 @@ open class UKBadge: UIView, UKComponent {
 
   /// Initializes a new instance of `UKBadge`.
   /// - Parameter model: A model that defines the appearance properties for the badge.
-  public init(model: BadgeVM = .init()) {
+  public init(model: BadgeVM) {
     self.model = model
     super.init(frame: .zero)
 

@@ -26,7 +26,7 @@ open class UKAvatar: UIImageView, UKComponent {
   /// Initializer.
   /// - Parameters:
   ///   - model: A model that defines the appearance properties.
-  public init(model: AvatarVM = .init()) {
+  public init(model: AvatarVM) {
     self.model = model
     self.imageManager = AvatarImageManager(model: model)
 
