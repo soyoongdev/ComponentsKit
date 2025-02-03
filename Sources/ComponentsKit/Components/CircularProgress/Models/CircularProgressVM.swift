@@ -71,11 +71,11 @@ extension CircularProgressVM {
     }
     switch self.size {
     case .small:
-      return .smBody
+      return .smCaption
     case .medium:
-      return .mdBody
+      return .mdCaption
     case .large:
-      return .lgBody
+      return .lgCaption
     }
   }
   private func stripesCGPath(in rect: CGRect) -> CGMutablePath {
