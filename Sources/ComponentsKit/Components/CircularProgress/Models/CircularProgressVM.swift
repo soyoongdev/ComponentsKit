@@ -52,11 +52,11 @@ extension CircularProgressVM {
   var preferredSize: CGSize {
     switch self.size {
     case .small:
-      return CGSize(width: 36, height: 36)
-    case .medium:
       return CGSize(width: 48, height: 48)
+    case .medium:
+      return CGSize(width: 64, height: 64)
     case .large:
-      return CGSize(width: 60, height: 60)
+      return CGSize(width: 80, height: 80)
     }
   }
   var radius: CGFloat {
