@@ -10,6 +10,10 @@ public struct SUCircularProgress: View {
   /// The current progress value.
   public var currentValue: CGFloat
 
+  private var progress: CGFloat {
+    self.model.progress(for: self.currentValue)
+  }
+
   // MARK: - Initializer
 
   /// Initializer.
@@ -27,151 +31,119 @@ public struct SUCircularProgress: View {
   // MARK: - Body
 
   public var body: some View {
-    let normalized = self.model.progress(for: currentValue)
-
-    switch self.model.style {
-    case .light:
-      ZStack {
-        // Background part
-        Path { path in
-          path.addArc(
-            center: self.model.center,
-            radius: self.model.radius,
-            startAngle: .radians(0),
-            endAngle: .radians(2 * .pi),
-            clockwise: false
-          )
-        }
-        .stroke(
-          self.model.color.main.color.opacity(0.3),
-          lineWidth: self.model.circularLineWidth
-        )
-        .frame(
-          width: self.model.preferredSize.width,
-          height: self.model.preferredSize.height
-        )
-
-        // Foreground part
-        Path { path in
-          path.addArc(
-            center: self.model.center,
-            radius: self.model.radius,
-            startAngle: .radians(0),
-            endAngle: .radians(2 * .pi),
-            clockwise: false
-          )
-        }
-        .trim(from: 0, to: normalized)
-        .stroke(
-          self.model.color.main.color,
-          style: StrokeStyle(
-            lineWidth: self.model.circularLineWidth,
-            lineCap: .round
-          )
-        )
-        .rotationEffect(.degrees(-90))
-        .frame(
-          width: self.model.preferredSize.width,
-          height: self.model.preferredSize.height
-        )
-
-        // Optional label
-        if let label = self.model.label {
-          Text(label)
-            .font(self.model.titleFont.font)
-            .foregroundColor(self.model.color.main.color)
+    ZStack {
+      // Background part
+      Group {
+        switch self.model.style {
+        case .light:
+          self.lightBackground
+        case .striped:
+          self.stripedBackground
         }
       }
+      .frame(
+        width: self.model.preferredSize.width,
+        height: self.model.preferredSize.height
+      )
 
-    case .striped:
-      ZStack {
-        // Striped background part
-        Path { path in
-          path.addArc(
-            center: self.model.center,
-            radius: self.model.radius,
-            startAngle: .radians(0),
-            endAngle: .radians(2 * .pi),
-            clockwise: false
-          )
-        }
-        .trim(
-          from: self.model.backgroundArcStart(for: normalized),
-          to: self.model.backgroundArcEnd(for: normalized)
+      // Foreground part
+      Path { path in
+        path.addArc(
+          center: self.model.center,
+          radius: self.model.radius,
+          startAngle: .radians(0),
+          endAngle: .radians(2 * .pi),
+          clockwise: false
         )
-        .stroke(
-          .clear,
-          style: StrokeStyle(
-            lineWidth: self.model.circularLineWidth,
-            lineCap: .round
-          )
+      }
+      .trim(from: 0, to: self.progress)
+      .stroke(
+        self.model.color.main.color,
+        style: StrokeStyle(
+          lineWidth: self.model.circularLineWidth,
+          lineCap: .round
         )
-        .overlay {
-          StripesShapeCircularProgress(model: self.model)
-            .foregroundColor(self.model.color.main.color)
-            .mask {
-              Path { maskPath in
-                maskPath.addArc(
-                  center: self.model.center,
-                  radius: self.model.radius,
-                  startAngle: .radians(0),
-                  endAngle: .radians(2 * .pi),
-                  clockwise: false
-                )
-              }
-              .trim(
-                from: self.model.backgroundArcStart(for: normalized),
-                to: self.model.backgroundArcEnd(for: normalized)
-              )
-              .stroke(
-                style: StrokeStyle(
-                  lineWidth: self.model.circularLineWidth,
-                  lineCap: .round
-                )
-              )
-            }
-        }
-        .rotationEffect(.degrees(-90))
-        .frame(
-          width: self.model.preferredSize.width,
-          height: self.model.preferredSize.height
-        )
+      )
+      .rotationEffect(.degrees(-90))
+      .frame(
+        width: self.model.preferredSize.width,
+        height: self.model.preferredSize.height
+      )
 
-        // Foreground part
-        Path { path in
-          path.addArc(
-            center: self.model.center,
-            radius: self.model.radius,
-            startAngle: .radians(0),
-            endAngle: .radians(2 * .pi),
-            clockwise: false
-          )
-        }
-        .trim(
-          from: self.model.progressArcStart(for: normalized),
-          to: self.model.progressArcEnd(for: normalized)
-        )
-        .stroke(
-          self.model.color.main.color,
-          style: StrokeStyle(
-            lineWidth: self.model.circularLineWidth,
-            lineCap: .round
-          )
-        )
-        .rotationEffect(.degrees(-90))
-        .frame(
-          width: self.model.preferredSize.width,
-          height: self.model.preferredSize.height
-        )
-
-        // Optional label
-        if let label = self.model.label {
-          Text(label)
-            .font(self.model.titleFont.font)
-            .foregroundColor(self.model.color.main.color)
-        }
+      // Optional label
+      if let label = self.model.label {
+        Text(label)
+          .font(self.model.titleFont.font)
+          .foregroundColor(self.model.color.main.color)
       }
     }
+  }
+
+  // MARK: - Subviews
+
+  var lightBackground: some View {
+    Path { path in
+      path.addArc(
+        center: self.model.center,
+        radius: self.model.radius,
+        startAngle: .radians(0),
+        endAngle: .radians(2 * .pi),
+        clockwise: false
+      )
+    }
+    .stroke(
+      self.model.color.background.color,
+      lineWidth: self.model.circularLineWidth
+    )
+  }
+
+  var stripedBackground: some View {
+    Path { path in
+      path.addArc(
+        center: self.model.center,
+        radius: self.model.radius,
+        startAngle: .radians(0),
+        endAngle: .radians(2 * .pi),
+        clockwise: false
+      )
+    }
+    .trim(
+      from: self.model.backgroundArcStart(for: self.progress),
+      to: self.model.backgroundArcEnd(for: self.progress)
+    )
+    .stroke(
+      .clear,
+      style: StrokeStyle(
+        lineWidth: self.model.circularLineWidth,
+        lineCap: .round
+      )
+    )
+    .overlay {
+      StripesShapeCircularProgress(model: self.model)
+        .foregroundColor(self.model.color.main.color)
+        .mask {
+          Path { maskPath in
+            maskPath.addArc(
+              center: self.model.center,
+              radius: self.model.radius,
+              startAngle: .radians(0),
+              endAngle: .radians(2 * .pi),
+              clockwise: false
+            )
+          }
+          .trim(
+            from: self.model.backgroundArcStart(for: self.progress),
+            to: self.model.backgroundArcEnd(for: self.progress)
+          )
+          .stroke(
+            style: StrokeStyle(
+              lineWidth: self.model.circularLineWidth,
+              lineCap: .round
+            )
+          )
+        }
+    }
+    .rotationEffect(.degrees(-90))
   }
 }
 
