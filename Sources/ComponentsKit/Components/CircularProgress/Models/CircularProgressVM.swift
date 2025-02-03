@@ -43,6 +43,9 @@ public struct CircularProgressVM: ComponentVM {
 // MARK: Shared Helpers
 
 extension CircularProgressVM {
+  var animationDuration: TimeInterval {
+    return 0.2
+  }
   var circularLineWidth: CGFloat {
     return self.lineWidth ?? max(self.preferredSize.width / 8, 2)
   }

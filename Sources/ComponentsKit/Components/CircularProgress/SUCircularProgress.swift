@@ -77,6 +77,10 @@ public struct SUCircularProgress: View {
           .foregroundColor(self.model.color.main.color)
       }
     }
+    .animation(
+      Animation.linear(duration: self.model.animationDuration),
+      value: self.progress
+    )
   }
 
   // MARK: - Subviews
