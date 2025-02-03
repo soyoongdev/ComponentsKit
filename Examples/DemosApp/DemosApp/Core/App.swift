@@ -8,6 +8,15 @@ struct App: View {
         NavigationLinkWithTitle("Alert") {
           AlertPreview()
         }
+        NavigationLinkWithTitle("Avatar") {
+          AvatarPreview()
+        }
+        NavigationLinkWithTitle("Avatar Group") {
+          AvatarGroupPreview()
+        }
+        NavigationLinkWithTitle("Badge") {
+          BadgePreview()
+        }
         NavigationLinkWithTitle("Button") {
           ButtonPreview()
         }
@@ -29,6 +38,9 @@ struct App: View {
         NavigationLinkWithTitle("Loading") {
           LoadingPreview()
         }
+        NavigationLinkWithTitle("Progress Bar") {
+          ProgressBarPreview()
+        }
         NavigationLinkWithTitle("Modal (Bottom)") {
           BottomModalPreview()
         }
@@ -40,6 +52,9 @@ struct App: View {
         }
         NavigationLinkWithTitle("Segmented Control") {
           SegmentedControlPreview()
+        }
+        NavigationLinkWithTitle("Slider") {
+          SliderPreview()
         }
         NavigationLinkWithTitle("Text Input") {
           TextInputPreviewPreview()

@@ -53,7 +53,7 @@ open class UKSegmentedControl<ID: Hashable>: UIView, UKComponent {
   ///   - onSelectionChange: A closure that is triggered when a selected segment changes.
   public init(
     selectedId: ID,
-    model: SegmentedControlVM<ID> = .init(),
+    model: SegmentedControlVM<ID>,
     onSelectionChange: @escaping (ID) -> Void = { _ in }
   ) {
     self.selectedId = selectedId

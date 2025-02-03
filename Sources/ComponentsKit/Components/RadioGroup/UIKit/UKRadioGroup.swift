@@ -41,7 +41,7 @@ open class UKRadioGroup<ID: Hashable>: UIView, UKComponent, UIGestureRecognizerD
   ///   - onSelectionChange: A closure that is triggered when the selected radio button changes.
   public init(
     initialSelectedId: ID? = nil,
-    model: RadioGroupVM<ID> = .init(),
+    model: RadioGroupVM<ID>,
     onSelectionChange: ((ID?) -> Void)? = nil
   ) {
     self.selectedId = initialSelectedId

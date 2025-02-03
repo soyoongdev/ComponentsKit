@@ -47,7 +47,7 @@ open class UKButton: UIView, UKComponent {
   ///   - model: A model that defines the appearance properties.
   ///   - action: A closure that is triggered when the button is tapped.
   public init(
-    model: ButtonVM = .init(),
+    model: ButtonVM,
     action: @escaping () -> Void = {}
   ) {
     self.model = model

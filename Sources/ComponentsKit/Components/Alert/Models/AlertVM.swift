@@ -8,17 +8,17 @@ public struct AlertVM: ComponentVM {
   /// The message of the alert.
   public var message: String?
 
-  /// The modal that defines the appearance properties for a primary button in the alert.
+  /// The model that defines the appearance properties for a primary button in the alert.
   ///
   /// If it is `nil`, the primary button will not be displayed.
   public var primaryButton: AlertButtonVM?
 
-  /// The modal that defines the appearance properties for a secondary button in the alert.
+  /// The model that defines the appearance properties for a secondary button in the alert.
   ///
   /// If it is `nil`, the secondary button will not be displayed.
   public var secondaryButton: AlertButtonVM?
 
-  /// The background color of the modal.
+  /// The background color of the alert.
   public var backgroundColor: UniversalColor?
 
   /// The border thickness of the alert.
@@ -26,27 +26,27 @@ public struct AlertVM: ComponentVM {
   /// Defaults to `.small`.
   public var borderWidth: BorderWidth = .small
 
-  /// A Boolean value indicating whether the modal should close when tapping on the overlay.
+  /// A Boolean value indicating whether the alert should close when tapping on the overlay.
   ///
   /// Defaults to `false`.
   public var closesOnOverlayTap: Bool = false
 
-  /// The padding applied to the modal's content area.
+  /// The padding applied to the alert's content area.
   ///
   /// Defaults to a padding value of `16` for all sides.
   public var contentPaddings: Paddings = .init(padding: 16)
 
-  /// The corner radius of the modal.
+  /// The corner radius of the alert.
   ///
   /// Defaults to `.medium`.
   public var cornerRadius: ContainerRadius = .medium
 
-  /// The style of the overlay displayed behind the modal.
+  /// The style of the overlay displayed behind the alert.
   ///
   /// Defaults to `.dimmed`.
   public var overlayStyle: ModalOverlayStyle = .dimmed
 
-  /// The transition duration of the modal's appearance and dismissal animations.
+  /// The transition duration of the alert's appearance and dismissal animations.
   ///
   /// Defaults to `.fast`.
   public var transition: ModalTransition = .fast
