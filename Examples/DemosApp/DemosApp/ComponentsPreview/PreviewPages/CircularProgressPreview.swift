@@ -3,19 +3,17 @@ import SwiftUI
 import UIKit
 
 struct CircularProgressPreview: View {
-  @State private var model = CircularProgressVM {
-    $0.label = "0"
-    $0.style = .light
-    $0.minValue = 0
-    $0.maxValue = 100
-  }
-
-  @State private var progress: CGFloat = 0
+  @State private var model = Self.initialModel
+  @State private var currentValue: CGFloat = Self.initialValue
+  
+  private let timer = Timer
+    .publish(every: 0.5, on: .main, in: .common)
+    .autoconnect()
 
   var body: some View {
     VStack {
       PreviewWrapper(title: "SwiftUI") {
-        SUCircularProgress(currentValue: self.progress, model: self.model)
+        SUCircularProgress(currentValue: self.currentValue, model: self.model)
       }
       Form {
         ComponentColorPicker(selection: self.$model.color)
@@ -37,17 +35,30 @@ struct CircularProgressPreview: View {
           Text("Light").tag(CircularProgressVM.Style.light)
           Text("Striped").tag(CircularProgressVM.Style.striped)
         }
-        HStack {
-          Text("Min")
-          Slider(value: self.$progress, in: self.model.minValue...self.model.maxValue, step: 1) {
-          }
-          Text("Max")
-            .onChange(of: self.progress) { newValue in
-            self.model.label = "\(Int(newValue))"
-          }
+      }
+      .onReceive(self.timer) { _ in
+        if self.currentValue < self.model.maxValue {
+          let step = (self.model.maxValue - self.model.minValue) / 100
+          self.currentValue = min(
+            self.model.maxValue,
+            self.currentValue + CGFloat(Int.random(in: 1...20)) * step
+          )
+        } else {
+          self.currentValue = self.model.minValue
         }
+        self.model.label = "\(Int(self.currentValue))%"
       }
     }
+  }
+  
+  // MARK: - Helpers
+  
+  private static var initialValue: Double {
+    return 0.0
+  }
+  private static var initialModel = CircularProgressVM {
+    $0.label = "0"
+    $0.style = .light
   }
 }
 
