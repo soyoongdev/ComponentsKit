@@ -56,11 +56,12 @@ open class UKCircularProgress: UIView, UKComponent {
   }
 
   // MARK: - Initialization
-  /// Initializes a new UKCircularProgress with a given model and initial progress value.
-  ///
+
+  /// Initializer.
   /// - Parameters:
   ///   - model: The model that defines the appearance properties.
-  ///   - currentValue: The initial progress value. Defaults to 0.
+  ///   - currentValue: The initial progress value. Defaults to `0`.
+  ///   - onValueChange: A closure triggered whenever `currentValue` changes.
   public init(
     model: CircularProgressVM = .init(),
     currentValue: CGFloat = 0,
