@@ -138,6 +138,14 @@ extension CircularProgressVM {
   }
 }
 
+// MARK: - UIKit Helpers
+
+extension CircularProgressVM {
+  func stripesBezierPath(in rect: CGRect) -> UIBezierPath {
+    return UIBezierPath(cgPath: self.stripesCGPath(in: rect))
+  }
+}
+
 // MARK: - SwiftUI Helpers
 
 extension CircularProgressVM {
