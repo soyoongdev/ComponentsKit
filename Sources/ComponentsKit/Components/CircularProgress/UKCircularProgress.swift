@@ -21,9 +21,14 @@ open class UKCircularProgress: UIView, UKComponent {
 
   // MARK: - Subviews
 
-  private let backgroundLayer = CAShapeLayer()
-  private let progressLayer = CAShapeLayer()
-  private let stripesLayer = CAShapeLayer()
+  /// The Shape Layer used to render the background of the circular progress indicator.
+  public let backgroundLayer = CAShapeLayer()
+  
+  /// The Shape Layer used to render the progress arc of the circular progress indicator.
+  public let progressLayer = CAShapeLayer()
+  
+  /// The Shape Layer used to render the stripes effect in the circular progress indicator.
+  public let stripesLayer = CAShapeLayer()
 
   private let progressLabel: UILabel = {
     let label = UILabel()
