@@ -5,9 +5,6 @@ import UIKit
 open class UKCircularProgress: UIView, UKComponent {
   // MARK: - Properties
 
-  /// A closure that is triggered when the `currentValue` changes.
-  public var onValueChange: (CGFloat) -> Void
-
   /// A model that defines the appearance properties for the circular progress.
   public var model: CircularProgressVM {
     didSet {
@@ -19,7 +16,6 @@ open class UKCircularProgress: UIView, UKComponent {
   public var currentValue: CGFloat {
     didSet {
       self.updateProgress()
-      self.onValueChange(self.currentValue)
     }
   }
 
@@ -36,10 +32,6 @@ open class UKCircularProgress: UIView, UKComponent {
     label.minimumScaleFactor = 0.5
     return label
   }()
-
-  // MARK: - Layout Constraints
-
-  private var labelConstraints = LayoutConstraints()
 
   // MARK: - UIView Properties
 
@@ -59,17 +51,14 @@ open class UKCircularProgress: UIView, UKComponent {
 
   /// Initializer.
   /// - Parameters:
+  ///   - initialValue: The initial progress value. Defaults to `0`.
   ///   - model: The model that defines the appearance properties.
-  ///   - currentValue: The initial progress value. Defaults to `0`.
-  ///   - onValueChange: A closure triggered whenever `currentValue` changes.
   public init(
-    model: CircularProgressVM = .init(),
-    currentValue: CGFloat = 0,
-    onValueChange: @escaping (CGFloat) -> Void = { _ in }
+    initialValue: CGFloat = 0,
+    model: CircularProgressVM = .init()
   ) {
     self.model = model
-    self.currentValue = currentValue
-    self.onValueChange = onValueChange
+    self.currentValue = initialValue
     super.init(frame: .zero)
 
     self.setup()
@@ -109,9 +98,6 @@ open class UKCircularProgress: UIView, UKComponent {
     self.style()
     self.updateShapePaths()
     self.updateProgress()
-
-    self.invalidateIntrinsicContentSize()
-    self.setNeedsLayout()
   }
 
   private func updateShapePaths() {
@@ -170,9 +156,7 @@ open class UKCircularProgress: UIView, UKComponent {
   // MARK: - Layout
 
   private func layout() {
-    self.labelConstraints = .merged {
-      self.progressLabel.center()
-    }
+    self.progressLabel.center()
   }
 
   open override func layoutSubviews() {
