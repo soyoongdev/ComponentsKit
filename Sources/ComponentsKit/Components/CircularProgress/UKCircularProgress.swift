@@ -30,13 +30,8 @@ open class UKCircularProgress: UIView, UKComponent {
   /// The Shape Layer used to render the stripes effect in the circular progress indicator.
   public let stripesLayer = CAShapeLayer()
 
-  private let progressLabel: UILabel = {
-    let label = UILabel()
-    label.textAlignment = .center
-    label.adjustsFontSizeToFitWidth = true
-    label.minimumScaleFactor = 0.5
-    return label
-  }()
+  /// The Label used to display progress text.
+  public let label = UILabel()
 
   // MARK: - UIView Properties
 
@@ -76,7 +71,7 @@ open class UKCircularProgress: UIView, UKComponent {
     self.layer.addSublayer(self.stripesLayer)
     self.layer.addSublayer(self.progressLayer)
 
-    self.addSubview(self.progressLabel)
+    self.addSubview(self.label)
   }
 
   // MARK: - Style
@@ -84,7 +79,7 @@ open class UKCircularProgress: UIView, UKComponent {
   private func style() {
     Self.Style.backgroundLayer(self.backgroundLayer, model: self.model)
     Self.Style.progressLayer(self.progressLayer, model: self.model)
-    Self.Style.progressLabel(self.progressLabel, model: self.model)
+    Self.Style.label(self.label, model: self.model)
     Self.Style.stripesLayer(self.stripesLayer, backgroundLayer: self.backgroundLayer, model: self.model)
   }
 
@@ -137,23 +132,23 @@ open class UKCircularProgress: UIView, UKComponent {
 
     if let labelText = self.model.label {
       UIView.transition(
-        with: self.progressLabel,
+        with: self.label,
         duration: self.model.animationDuration,
         options: .transitionCrossDissolve,
         animations: {
-          self.progressLabel.text = labelText
+          self.label.text = labelText
         },
         completion: nil
       )
     } else {
-      self.progressLabel.text = nil
+      self.label.text = nil
     }
   }
 
   // MARK: - Layout
 
   private func layout() {
-    self.progressLabel.center()
+    self.label.center()
   }
 
   open override func layoutSubviews() {
@@ -207,7 +202,10 @@ extension UKCircularProgress {
       layer.lineWidth = model.circularLineWidth
     }
 
-    static func progressLabel(_ label: UILabel, model: CircularProgressVM) {
+    static func label(_ label: UILabel, model: CircularProgressVM) {
+      label.textAlignment = .center
+      label.adjustsFontSizeToFitWidth = true
+      label.minimumScaleFactor = 0.5
       label.font = model.titleFont.uiFont
       label.textColor = model.color.main.uiColor
     }
