@@ -97,8 +97,9 @@ open class UKCircularProgress: UIView, UKComponent {
   }
 
   private func updateShapePaths() {
+    let center = CGPoint(x: self.bounds.midX, y: self.bounds.midY)
     let circlePath = UIBezierPath(
-      arcCenter: self.model.center,
+      arcCenter: center,
       radius: self.model.radius,
       startAngle: -CGFloat.pi / 2,
       endAngle: -CGFloat.pi / 2 + 2 * .pi,
