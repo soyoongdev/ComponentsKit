@@ -17,18 +17,17 @@ struct CircularProgressPreview: View {
   var body: some View {
     VStack {
       PreviewWrapper(title: "UIKit") {
-        circularProgress
+        self.circularProgress
           .preview
           .onAppear {
-            circularProgress.currentValue = currentValue
-            circularProgress.model = model
+            self.circularProgress.currentValue = Self.initialValue
+            self.circularProgress.model = Self.initialModel
           }
           .onChange(of: model) { newModel in
-            circularProgress.model = newModel
+            self.circularProgress.model = newModel
           }
-          .onChange(of: currentValue) { newValue in
-            circularProgress.currentValue = newValue
-            model.label = "\(Int(newValue))%"
+          .onChange(of: self.currentValue) { newValue in
+            self.circularProgress.currentValue = newValue
           }
       }
       PreviewWrapper(title: "SwiftUI") {
