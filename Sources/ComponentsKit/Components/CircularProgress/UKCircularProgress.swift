@@ -108,23 +108,23 @@ open class UKCircularProgress: UIView, UKComponent {
   private func updateProgress() {
     let progress = self.model.progress(for: self.currentValue)
 
+    let backgroundLayerStart: CGFloat
+    let backgroundLayerEnd: CGFloat
+    switch self.model.style {
+    case .light:
+      backgroundLayerStart = 0
+      backgroundLayerEnd = 1
+    case .striped:
+      backgroundLayerStart = self.model.stripedArcStart(for: progress)
+      backgroundLayerEnd = self.model.stripedArcEnd(for: progress)
+    }
+
     CATransaction.begin()
     CATransaction.setAnimationDuration(self.model.animationDuration)
     CATransaction.setAnimationTimingFunction(CAMediaTimingFunction(name: .linear))
-
     self.progressLayer.strokeEnd = progress
-
-    switch self.model.style {
-    case .light:
-      self.backgroundLayer.strokeStart = 0
-      self.backgroundLayer.strokeEnd = 1
-    case .striped:
-      let bgStart = self.model.backgroundArcStart(for: progress)
-      let bgEnd = self.model.backgroundArcEnd(for: progress)
-      self.backgroundLayer.strokeStart = bgStart
-      self.backgroundLayer.strokeEnd = bgEnd
-    }
-
+    self.backgroundLayer.strokeStart = backgroundLayerStart
+    self.backgroundLayer.strokeEnd = backgroundLayerEnd
     CATransaction.commit()
 
     if let labelText = self.model.label {

@@ -77,7 +77,7 @@ struct CircularProgressPreview: View {
   }
   
   private static var initialModel = CircularProgressVM {
-    $0.label = "0"
+    $0.label = "0%"
     $0.style = .light
   }
 }

@@ -118,12 +118,12 @@ extension CircularProgressVM {
     return max(0, min(1, normalized))
   }
 
-  func backgroundArcStart(for normalized: CGFloat) -> CGFloat {
+  func stripedArcStart(for normalized: CGFloat) -> CGFloat {
     let gapValue = self.gap(for: normalized)
     return max(0, min(1, normalized + gapValue))
   }
 
-  func backgroundArcEnd(for normalized: CGFloat) -> CGFloat {
+  func stripedArcEnd(for normalized: CGFloat) -> CGFloat {
     let gapValue = self.gap(for: normalized)
     return 1 - gapValue
   }
