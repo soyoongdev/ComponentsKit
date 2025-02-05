@@ -70,8 +70,13 @@ open class UKCircularProgress: UIView, UKComponent {
     self.layer.addSublayer(self.backgroundLayer)
     self.layer.addSublayer(self.stripesLayer)
     self.layer.addSublayer(self.progressLayer)
-
     self.addSubview(self.label)
+
+    if #available(iOS 17.0, *) {
+      self.registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (view: Self, _: UITraitCollection) in
+        view.handleTraitChanges()
+      }
+    }
   }
 
   // MARK: - Style
@@ -176,6 +181,11 @@ open class UKCircularProgress: UIView, UKComponent {
       height: min(size.height, preferred.height)
     )
   }
+
+  open override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+    super.traitCollectionDidChange(previousTraitCollection)
+    self.handleTraitChanges()
+  }
 }
 
 // MARK: - Style Helpers
@@ -248,5 +258,12 @@ extension UKCircularProgress {
 
       layer.path = stripesPath.cgPath
     }
+  }
+
+  private func handleTraitChanges() {
+    Self.Style.backgroundLayer(self.backgroundLayer, model: self.model)
+    Self.Style.progressLayer(self.progressLayer, model: self.model)
+    Self.Style.label(self.label, model: self.model)
+    Self.Style.stripesLayer(self.stripesLayer, backgroundLayer: self.backgroundLayer, model: self.model)
   }
 }
