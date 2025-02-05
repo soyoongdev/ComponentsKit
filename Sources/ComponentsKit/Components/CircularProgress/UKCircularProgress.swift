@@ -23,10 +23,10 @@ open class UKCircularProgress: UIView, UKComponent {
 
   /// The Shape Layer used to render the background of the circular progress indicator.
   public let backgroundLayer = CAShapeLayer()
-  
+
   /// The Shape Layer used to render the progress arc of the circular progress indicator.
   public let progressLayer = CAShapeLayer()
-  
+
   /// The Shape Layer used to render the stripes effect in the circular progress indicator.
   public let stripesLayer = CAShapeLayer()
 
@@ -161,9 +161,9 @@ open class UKCircularProgress: UIView, UKComponent {
       Self.Style.updateStripesPath(in: self.stripesLayer, model: self.model, bounds: self.bounds)
     }
   }
-  
+
   // MARK: - UIView Methods
-  
+
   open override func sizeThatFits(_ size: CGSize) -> CGSize {
     let preferred = self.model.preferredSize
     return CGSize(
