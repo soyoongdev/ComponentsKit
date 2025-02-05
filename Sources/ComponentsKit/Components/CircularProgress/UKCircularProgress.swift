@@ -90,6 +90,10 @@ open class UKCircularProgress: UIView, UKComponent {
     self.style()
     self.updateShapePaths()
     self.updateProgress()
+
+    if self.model.shouldInvalidateIntrinsicContentSize(oldModel) {
+      self.invalidateIntrinsicContentSize()
+    }
   }
 
   private func updateShapePaths() {

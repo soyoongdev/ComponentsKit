@@ -130,7 +130,7 @@ extension CircularProgressVM {
 }
 
 extension CircularProgressVM {
-  public func progress(for currentValue: CGFloat) -> CGFloat {
+  func progress(for currentValue: CGFloat) -> CGFloat {
     let range = self.maxValue - self.minValue
     guard range > 0 else { return 0 }
     let normalized = (currentValue - self.minValue) / range
@@ -143,6 +143,9 @@ extension CircularProgressVM {
 extension CircularProgressVM {
   func stripesBezierPath(in rect: CGRect) -> UIBezierPath {
     return UIBezierPath(cgPath: self.stripesCGPath(in: rect))
+  }
+  func shouldInvalidateIntrinsicContentSize(_ oldValue: Self) -> Bool {
+    return self.preferredSize != oldValue.preferredSize
   }
 }
 
