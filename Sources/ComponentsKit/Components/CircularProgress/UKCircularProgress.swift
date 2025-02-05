@@ -44,14 +44,6 @@ open class UKCircularProgress: UIView, UKComponent {
     return self.model.preferredSize
   }
 
-  open override func sizeThatFits(_ size: CGSize) -> CGSize {
-    let preferred = self.model.preferredSize
-    return CGSize(
-      width: min(size.width, preferred.width),
-      height: min(size.height, preferred.height)
-    )
-  }
-
   // MARK: - Initialization
 
   /// Initializer.
@@ -176,6 +168,16 @@ open class UKCircularProgress: UIView, UKComponent {
     if case .striped = self.model.style {
       Self.Style.updateStripesPath(in: self.stripesLayer, model: self.model, bounds: self.bounds)
     }
+  }
+  
+  // MARK: - UIView Methods
+  
+  open override func sizeThatFits(_ size: CGSize) -> CGSize {
+    let preferred = self.model.preferredSize
+    return CGSize(
+      width: min(size.width, preferred.width),
+      height: min(size.height, preferred.height)
+    )
   }
 }
 
