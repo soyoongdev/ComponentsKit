@@ -30,6 +30,9 @@ open class UKCircularProgress: UIView, UKComponent {
   /// The Shape Layer used to render the stripes effect in the circular progress indicator.
   public let stripesLayer = CAShapeLayer()
 
+  /// The Mask Layer used for the stripesLayer.
+  public let stripesMaskLayer = CAShapeLayer()
+
   /// The Label used to display progress text.
   public let label = UILabel()
 
@@ -85,7 +88,7 @@ open class UKCircularProgress: UIView, UKComponent {
     Self.Style.backgroundLayer(self.backgroundLayer, model: self.model)
     Self.Style.progressLayer(self.progressLayer, model: self.model)
     Self.Style.label(self.label, model: self.model)
-    Self.Style.stripesLayer(self.stripesLayer, backgroundLayer: self.backgroundLayer, model: self.model)
+    Self.Style.stripesLayer(self.stripesLayer, backgroundLayer: self.backgroundLayer, maskLayer: self.stripesMaskLayer, model: self.model)
   }
 
   // MARK: - Update
@@ -113,6 +116,28 @@ open class UKCircularProgress: UIView, UKComponent {
 
     self.backgroundLayer.path = circlePath.cgPath
     self.progressLayer.path = circlePath.cgPath
+    self.stripesMaskLayer.path = circlePath.cgPath
+
+    if case .striped = self.model.style {
+      let stripesPath = self.model.stripesBezierPath(in: self.bounds)
+
+      var transform = CGAffineTransform.identity
+      transform = transform
+        .translatedBy(x: center.x, y: center.y)
+        .rotated(by: -CGFloat.pi / 2)
+        .translatedBy(x: -center.x, y: -center.y)
+
+      stripesPath.apply(transform)
+
+      self.stripesLayer.path = stripesPath.cgPath
+    } else {
+      CATransaction.begin()
+      CATransaction.setDisableActions(true)
+      self.stripesLayer.path = nil
+      self.stripesLayer.removeAllAnimations()
+      self.stripesMaskLayer.removeAllAnimations()
+      CATransaction.commit()
+    }
   }
 
   private func updateProgress() {
@@ -123,18 +148,30 @@ open class UKCircularProgress: UIView, UKComponent {
     switch self.model.style {
     case .light:
       backgroundLayerStart = 0
-      backgroundLayerEnd = 1
+      backgroundLayerEnd   = 1
+
     case .striped:
       backgroundLayerStart = self.model.stripedArcStart(for: progress)
-      backgroundLayerEnd = self.model.stripedArcEnd(for: progress)
+      backgroundLayerEnd   = self.model.stripedArcEnd(for: progress)
     }
 
     CATransaction.begin()
     CATransaction.setAnimationDuration(self.model.animationDuration)
     CATransaction.setAnimationTimingFunction(CAMediaTimingFunction(name: .linear))
+
     self.progressLayer.strokeEnd = progress
+
     self.backgroundLayer.strokeStart = backgroundLayerStart
     self.backgroundLayer.strokeEnd = backgroundLayerEnd
+
+    if case .striped = self.model.style {
+      self.stripesMaskLayer.strokeStart = backgroundLayerStart
+      self.stripesMaskLayer.strokeEnd = backgroundLayerEnd
+    } else {
+      self.stripesMaskLayer.strokeStart = 0
+      self.stripesMaskLayer.strokeEnd = 1
+    }
+
     CATransaction.commit()
 
     if let labelText = self.model.label {
@@ -165,11 +202,9 @@ open class UKCircularProgress: UIView, UKComponent {
     self.progressLayer.frame = self.bounds
     self.stripesLayer.frame = self.bounds
 
-    self.updateShapePaths()
+    self.stripesMaskLayer.frame = self.bounds
 
-    if case .striped = self.model.style {
-      Self.Style.updateStripesPath(in: self.stripesLayer, model: self.model, bounds: self.bounds)
-    }
+    self.updateShapePaths()
   }
 
   // MARK: - UIView Methods
@@ -186,6 +221,18 @@ open class UKCircularProgress: UIView, UKComponent {
     super.traitCollectionDidChange(previousTraitCollection)
     self.handleTraitChanges()
   }
+
+  private func handleTraitChanges() {
+    Self.Style.backgroundLayer(self.backgroundLayer, model: self.model)
+    Self.Style.progressLayer(self.progressLayer, model: self.model)
+    Self.Style.label(self.label, model: self.model)
+    Self.Style.stripesLayer(
+      self.stripesLayer,
+      backgroundLayer: self.backgroundLayer,
+      maskLayer: self.stripesMaskLayer,
+      model: self.model
+    )
+  }
 }
 
 // MARK: - Style Helpers
@@ -198,9 +245,8 @@ extension UKCircularProgress {
       switch model.style {
       case .light:
         layer.strokeColor = model.color.background.uiColor.cgColor
-
       case .striped:
-        layer.strokeColor = UIColor.white.cgColor
+        layer.strokeColor = UIColor.clear.cgColor
       }
 
       layer.lineCap = .round
@@ -225,13 +271,16 @@ extension UKCircularProgress {
     static func stripesLayer(
       _ stripesLayer: CAShapeLayer,
       backgroundLayer: CAShapeLayer,
+      maskLayer: CAShapeLayer,
       model: CircularProgressVM
     ) {
       switch model.style {
       case .light:
         stripesLayer.isHidden = true
         stripesLayer.mask = nil
-        if backgroundLayer.superlayer == nil, let parentLayer = stripesLayer.superlayer {
+
+        if backgroundLayer.superlayer == nil,
+           let parentLayer = stripesLayer.superlayer {
           parentLayer.insertSublayer(backgroundLayer, below: stripesLayer)
         }
 
@@ -239,31 +288,13 @@ extension UKCircularProgress {
         stripesLayer.isHidden = false
         stripesLayer.fillColor = model.color.main.uiColor.cgColor
 
-        stripesLayer.mask = backgroundLayer
+        maskLayer.fillColor = UIColor.clear.cgColor
+        maskLayer.strokeColor = UIColor.white.cgColor
+        maskLayer.lineCap = .round
+        maskLayer.lineWidth = model.circularLineWidth
+
+        stripesLayer.mask = maskLayer
       }
     }
-
-    // Stripes Angle
-    static func updateStripesPath(in layer: CAShapeLayer, model: CircularProgressVM, bounds: CGRect) {
-      let stripesPath = model.stripesBezierPath(in: bounds)
-
-      let center = CGPoint(x: bounds.midX, y: bounds.midY)
-
-      var transform = CGAffineTransform.identity
-      transform = transform.translatedBy(x: center.x, y: center.y)
-      transform = transform.rotated(by: -CGFloat.pi / 2)
-      transform = transform.translatedBy(x: -center.x, y: -center.y)
-
-      stripesPath.apply(transform)
-
-      layer.path = stripesPath.cgPath
-    }
-  }
-
-  private func handleTraitChanges() {
-    Self.Style.backgroundLayer(self.backgroundLayer, model: self.model)
-    Self.Style.progressLayer(self.progressLayer, model: self.model)
-    Self.Style.label(self.label, model: self.model)
-    Self.Style.stripesLayer(self.stripesLayer, backgroundLayer: self.backgroundLayer, model: self.model)
   }
 }
