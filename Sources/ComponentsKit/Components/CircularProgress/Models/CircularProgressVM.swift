@@ -90,15 +90,12 @@ extension CircularProgressVM {
     let step = stripeWidth + stripeSpacing
     let radians = stripeAngle.radians
 
-    let startY = -rect.width
-    let endY = rect.height + rect.width
-
-    for y in stride(from: startY, through: endY, by: step) {
-      let topLeft = CGPoint(x: 0, y: y)
-      let topRight = CGPoint(x: 0, y: y + stripeWidth)
-
-      let bottomLeft  = CGPoint(x: rect.width, y: y + tan(radians) * rect.width)
-      let bottomRight = CGPoint(x: rect.width, y: (y + stripeWidth) + tan(radians) * rect.width)
+    let dx: CGFloat = rect.height * tan(radians)
+    for x in stride(from: 0, through: rect.width + rect.height, by: step) {
+      let topLeft = CGPoint(x: x, y: 0)
+      let topRight = CGPoint(x: x + stripeWidth, y: 0)
+      let bottomLeft = CGPoint(x: x + dx, y: rect.height)
+      let bottomRight = CGPoint(x: x + stripeWidth + dx, y: rect.height)
 
       path.move(to: topLeft)
       path.addLine(to: topRight)
