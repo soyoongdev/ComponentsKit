@@ -59,8 +59,6 @@ open class UKCircularProgress: UIView, UKComponent {
     self.setup()
     self.style()
     self.layout()
-
-    self.updateProgress()
   }
 
   public required init?(coder: NSCoder) {
@@ -82,6 +80,19 @@ open class UKCircularProgress: UIView, UKComponent {
         view.handleTraitChanges()
       }
     }
+    
+    CATransaction.begin()
+    CATransaction.setDisableActions(true)
+
+    let progress = self.model.progress(for: self.currentValue)
+    self.progressLayer.strokeEnd = progress
+    if !self.model.isStripesLayerHidden {
+      self.stripesMaskLayer.strokeStart = self.model.stripedArcStart(for: progress)
+      self.stripesMaskLayer.strokeEnd = self.model.stripedArcEnd(for: progress)
+    }
+    self.label.text = self.model.label
+
+    CATransaction.commit()
   }
 
   // MARK: - Style
