@@ -75,6 +75,8 @@ open class UKCircularProgress: UIView, UKComponent {
     self.layer.addSublayer(self.progressLayer)
     self.addSubview(self.label)
 
+    self.stripesLayer.mask = self.stripesMaskLayer
+
     if #available(iOS 17.0, *) {
       self.registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (view: Self, _: UITraitCollection) in
         view.handleTraitChanges()
@@ -88,7 +90,7 @@ open class UKCircularProgress: UIView, UKComponent {
     Self.Style.backgroundLayer(self.backgroundLayer, model: self.model)
     Self.Style.progressLayer(self.progressLayer, model: self.model)
     Self.Style.label(self.label, model: self.model)
-    Self.Style.stripesLayer(self.stripesLayer, backgroundLayer: self.backgroundLayer, maskLayer: self.stripesMaskLayer, model: self.model)
+    Self.Style.stripesLayer(self.stripesLayer, model: self.model)
   }
 
   // MARK: - Update
@@ -192,12 +194,10 @@ open class UKCircularProgress: UIView, UKComponent {
     Self.Style.backgroundLayer(self.backgroundLayer, model: self.model)
     Self.Style.progressLayer(self.progressLayer, model: self.model)
     Self.Style.label(self.label, model: self.model)
-    Self.Style.stripesLayer(
-      self.stripesLayer,
-      backgroundLayer: self.backgroundLayer,
-      maskLayer: self.stripesMaskLayer,
-      model: self.model
-    )
+    Self.Style.backgroundLayer(self.backgroundLayer, model: self.model)
+    Self.Style.progressLayer(self.progressLayer, model: self.model)
+    Self.Style.stripesLayer(self.stripesLayer, model: self.model)
+    Self.Style.stripesMaskLayer(self.stripesMaskLayer, model: self.model)
   }
 }
 
@@ -232,32 +232,21 @@ extension UKCircularProgress {
     }
 
     static func stripesLayer(
-      _ stripesLayer: CAShapeLayer,
-      backgroundLayer: CAShapeLayer,
-      maskLayer: CAShapeLayer,
+      _ layer: CAShapeLayer,
       model: CircularProgressVM
     ) {
-      switch model.style {
-      case .light:
-        stripesLayer.isHidden = true
-        stripesLayer.mask = nil
-
-        if backgroundLayer.superlayer == nil,
-           let parentLayer = stripesLayer.superlayer {
-          parentLayer.insertSublayer(backgroundLayer, below: stripesLayer)
-        }
-
-      case .striped:
-        stripesLayer.isHidden = false
-        stripesLayer.fillColor = model.color.main.uiColor.cgColor
-
-        maskLayer.fillColor = UIColor.clear.cgColor
-        maskLayer.strokeColor = UIColor.white.cgColor
-        maskLayer.lineCap = .round
-        maskLayer.lineWidth = model.circularLineWidth
-
-        stripesLayer.mask = maskLayer
-      }
+      layer.isHidden = model.isStripesLayerHidden
+      layer.fillColor = model.color.main.uiColor.cgColor
+    }
+    
+    static func stripesMaskLayer(
+      _ layer: CAShapeLayer,
+      model: CircularProgressVM
+    ) {
+      layer.fillColor = UIColor.clear.cgColor
+      layer.strokeColor = model.color.background.uiColor.cgColor
+      layer.lineCap = .round
+      layer.lineWidth = model.circularLineWidth
     }
   }
 }
