@@ -80,7 +80,7 @@ open class UKCircularProgress: UIView, UKComponent {
         view.handleTraitChanges()
       }
     }
-    
+
     CATransaction.begin()
     CATransaction.setDisableActions(true)
 
@@ -249,7 +249,7 @@ extension UKCircularProgress {
       layer.isHidden = model.isStripesLayerHidden
       layer.fillColor = model.color.main.uiColor.cgColor
     }
-    
+
     static func stripesMaskLayer(
       _ layer: CAShapeLayer,
       model: CircularProgressVM
