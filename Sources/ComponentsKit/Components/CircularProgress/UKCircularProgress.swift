@@ -118,26 +118,14 @@ open class UKCircularProgress: UIView, UKComponent {
     self.progressLayer.path = circlePath.cgPath
     self.stripesMaskLayer.path = circlePath.cgPath
 
-    if case .striped = self.model.style {
-      let stripesPath = self.model.stripesBezierPath(in: self.bounds)
-
-      var transform = CGAffineTransform.identity
-      transform = transform
-        .translatedBy(x: center.x, y: center.y)
-        .rotated(by: -CGFloat.pi / 2)
-        .translatedBy(x: -center.x, y: -center.y)
-
-      stripesPath.apply(transform)
-
-      self.stripesLayer.path = stripesPath.cgPath
-    } else {
-      CATransaction.begin()
-      CATransaction.setDisableActions(true)
-      self.stripesLayer.path = nil
-      self.stripesLayer.removeAllAnimations()
-      self.stripesMaskLayer.removeAllAnimations()
-      CATransaction.commit()
-    }
+    let stripesPath = self.model.stripesBezierPath(in: self.bounds)
+    var transform = CGAffineTransform.identity
+    transform = transform
+      .translatedBy(x: center.x, y: center.y)
+      .rotated(by: -CGFloat.pi / 2)
+      .translatedBy(x: -center.x, y: -center.y)
+    stripesPath.apply(transform)
+    self.stripesLayer.path = stripesPath.cgPath
   }
 
   private func updateProgress() {
