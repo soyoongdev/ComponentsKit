@@ -143,6 +143,14 @@ extension CircularProgressVM {
 // MARK: - UIKit Helpers
 
 extension CircularProgressVM {
+  var isStripesLayerHidden: Bool {
+    switch self.style {
+    case .light:
+      return true
+    case .striped:
+      return false
+    }
+  }
   func stripesBezierPath(in rect: CGRect) -> UIBezierPath {
     return UIBezierPath(cgPath: self.stripesCGPath(in: rect))
   }
