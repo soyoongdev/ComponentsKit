@@ -151,6 +151,14 @@ extension CircularProgressVM {
       return false
     }
   }
+  var isBackgroundLayerHidden: Bool {
+    switch self.style {
+    case .light:
+      return false
+    case .striped:
+      return true
+    }
+  }
   func stripesBezierPath(in rect: CGRect) -> UIBezierPath {
     return UIBezierPath(cgPath: self.stripesCGPath(in: rect))
   }

@@ -168,7 +168,6 @@ open class UKCircularProgress: UIView, UKComponent {
     self.backgroundLayer.frame = self.bounds
     self.progressLayer.frame = self.bounds
     self.stripesLayer.frame = self.bounds
-
     self.stripesMaskLayer.frame = self.bounds
 
     self.updateShapePaths()
@@ -206,18 +205,15 @@ open class UKCircularProgress: UIView, UKComponent {
 
 extension UKCircularProgress {
   fileprivate enum Style {
-    static func backgroundLayer(_ layer: CAShapeLayer, model: CircularProgressVM) {
+    static func backgroundLayer(
+      _ layer: CAShapeLayer,
+      model: CircularProgressVM
+    ) {
       layer.fillColor = UIColor.clear.cgColor
-
-      switch model.style {
-      case .light:
-        layer.strokeColor = model.color.background.uiColor.cgColor
-      case .striped:
-        layer.strokeColor = UIColor.clear.cgColor
-      }
-
+      layer.strokeColor = model.color.background.uiColor.cgColor
       layer.lineCap = .round
       layer.lineWidth = model.circularLineWidth
+      layer.isHidden = model.isBackgroundLayerHidden
     }
 
     static func progressLayer(_ layer: CAShapeLayer, model: CircularProgressVM) {
