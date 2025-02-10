@@ -160,10 +160,25 @@ extension CircularProgressVM {
     }
   }
   func stripesBezierPath(in rect: CGRect) -> UIBezierPath {
-    return UIBezierPath(cgPath: self.stripesCGPath(in: rect))
+    let center = CGPoint(x: rect.midX, y: rect.midY)
+    let path = UIBezierPath(cgPath: self.stripesCGPath(in: rect))
+    var transform = CGAffineTransform.identity
+    transform = transform
+      .translatedBy(x: center.x, y: center.y)
+      .rotated(by: -CGFloat.pi / 2)
+      .translatedBy(x: -center.x, y: -center.y)
+    path.apply(transform)
+    return path
   }
-  func shouldInvalidateIntrinsicContentSize(_ oldValue: Self) -> Bool {
-    return self.preferredSize != oldValue.preferredSize
+  func shouldInvalidateIntrinsicContentSize(_ oldModel: Self) -> Bool {
+    return self.preferredSize != oldModel.preferredSize
+  }
+  func shouldUpdateText(_ oldModel: Self) -> Bool {
+    return self.label != oldModel.label
+  }
+  func shouldRecalculateProgress(_ oldModel: Self) -> Bool {
+    return self.minValue != oldModel.minValue
+    || self.maxValue != oldModel.maxValue
   }
 }
 

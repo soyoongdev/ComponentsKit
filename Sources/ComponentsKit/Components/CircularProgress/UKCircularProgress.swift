@@ -81,9 +81,6 @@ open class UKCircularProgress: UIView, UKComponent {
       }
     }
 
-    CATransaction.begin()
-    CATransaction.setDisableActions(true)
-
     let progress = self.model.progress(for: self.currentValue)
     self.progressLayer.strokeEnd = progress
     if !self.model.isStripesLayerHidden {
@@ -91,8 +88,6 @@ open class UKCircularProgress: UIView, UKComponent {
       self.stripesMaskLayer.strokeEnd = self.model.stripedArcEnd(for: progress)
     }
     self.label.text = self.model.label
-
-    CATransaction.commit()
   }
 
   // MARK: - Style
@@ -102,6 +97,7 @@ open class UKCircularProgress: UIView, UKComponent {
     Self.Style.progressLayer(self.progressLayer, model: self.model)
     Self.Style.label(self.label, model: self.model)
     Self.Style.stripesLayer(self.stripesLayer, model: self.model)
+    Self.Style.stripesMaskLayer(self.stripesMaskLayer, model: self.model)
   }
 
   // MARK: - Update
@@ -110,8 +106,21 @@ open class UKCircularProgress: UIView, UKComponent {
     guard self.model != oldModel else { return }
     self.style()
     self.updateShapePaths()
-    self.updateProgress()
 
+    if self.model.shouldUpdateText(oldModel) {
+      UIView.transition(
+        with: self.label,
+        duration: self.model.animationDuration,
+        options: .transitionCrossDissolve,
+        animations: {
+          self.label.text = self.model.label
+        },
+        completion: nil
+      )
+    }
+    if self.model.shouldRecalculateProgress(oldModel) {
+      self.updateProgress()
+    }
     if self.model.shouldInvalidateIntrinsicContentSize(oldModel) {
       self.invalidateIntrinsicContentSize()
     }
@@ -130,15 +139,7 @@ open class UKCircularProgress: UIView, UKComponent {
     self.backgroundLayer.path = circlePath.cgPath
     self.progressLayer.path = circlePath.cgPath
     self.stripesMaskLayer.path = circlePath.cgPath
-
-    let stripesPath = self.model.stripesBezierPath(in: self.bounds)
-    var transform = CGAffineTransform.identity
-    transform = transform
-      .translatedBy(x: center.x, y: center.y)
-      .rotated(by: -CGFloat.pi / 2)
-      .translatedBy(x: -center.x, y: -center.y)
-    stripesPath.apply(transform)
-    self.stripesLayer.path = stripesPath.cgPath
+    self.stripesLayer.path = self.model.stripesBezierPath(in: self.bounds).cgPath
   }
 
   private func updateProgress() {
@@ -153,20 +154,6 @@ open class UKCircularProgress: UIView, UKComponent {
       self.stripesMaskLayer.strokeEnd = self.model.stripedArcEnd(for: progress)
     }
     CATransaction.commit()
-
-    if let labelText = self.model.label {
-      UIView.transition(
-        with: self.label,
-        duration: self.model.animationDuration,
-        options: .transitionCrossDissolve,
-        animations: {
-          self.label.text = labelText
-        },
-        completion: nil
-      )
-    } else {
-      self.label.text = nil
-    }
   }
 
   // MARK: - Layout
@@ -204,9 +191,6 @@ open class UKCircularProgress: UIView, UKComponent {
   private func handleTraitChanges() {
     Self.Style.backgroundLayer(self.backgroundLayer, model: self.model)
     Self.Style.progressLayer(self.progressLayer, model: self.model)
-    Self.Style.label(self.label, model: self.model)
-    Self.Style.backgroundLayer(self.backgroundLayer, model: self.model)
-    Self.Style.progressLayer(self.progressLayer, model: self.model)
     Self.Style.stripesLayer(self.stripesLayer, model: self.model)
     Self.Style.stripesMaskLayer(self.stripesMaskLayer, model: self.model)
   }
@@ -227,14 +211,20 @@ extension UKCircularProgress {
       layer.isHidden = model.isBackgroundLayerHidden
     }
 
-    static func progressLayer(_ layer: CAShapeLayer, model: CircularProgressVM) {
+    static func progressLayer(
+      _ layer: CAShapeLayer,
+      model: CircularProgressVM
+    ) {
       layer.fillColor = UIColor.clear.cgColor
       layer.strokeColor = model.color.main.uiColor.cgColor
       layer.lineCap = .round
       layer.lineWidth = model.circularLineWidth
     }
 
-    static func label(_ label: UILabel, model: CircularProgressVM) {
+    static func label(
+      _ label: UILabel,
+      model: CircularProgressVM
+    ) {
       label.textAlignment = .center
       label.adjustsFontSizeToFitWidth = true
       label.minimumScaleFactor = 0.5
