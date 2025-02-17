@@ -203,16 +203,32 @@ extension UniversalColor {
   public static var accent: Self {
     return ComponentsKitConfig.shared.colors.accent.main
   }
+  /// The accent background color.
+  public static var accentBackground: Self {
+    return ComponentsKitConfig.shared.colors.accent.background
+  }
   /// The success state color, used for indicating positive actions or statuses.
   public static var success: Self {
     return ComponentsKitConfig.shared.colors.success.main
+  }
+  /// The success background color.
+  public static var successBackground: Self {
+    return ComponentsKitConfig.shared.colors.success.background
   }
   /// The warning state color, used for indicating caution or non-critical alerts.
   public static var warning: Self {
     return ComponentsKitConfig.shared.colors.warning.main
   }
+  /// The warning background color.
+  public static var warningBackground: Self {
+    return ComponentsKitConfig.shared.colors.warning.background
+  }
   /// The danger state color, used for indicating errors, destructive actions, or critical alerts.
   public static var danger: Self {
     return ComponentsKitConfig.shared.colors.danger.main
+  }
+  /// The danger background color.
+  public static var dangerBackground: Self {
+    return ComponentsKitConfig.shared.colors.danger.background
   }
 }
