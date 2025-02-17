@@ -55,10 +55,7 @@ extension SegmentedControlVM {
     return .content1
   }
   var selectedSegmentColor: UniversalColor {
-    let color = self.color?.main ?? .themed(
-      light: UniversalColor.white.light,
-      dark: UniversalColor.content2.dark
-    )
+    let color = self.color?.main ?? .background
     return color.enabled(self.isEnabled)
   }
   func item(for id: ID) -> SegmentedControlItemVM<ID>? {
