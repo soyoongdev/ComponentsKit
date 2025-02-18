@@ -1,7 +1,7 @@
 import Foundation
 
 /// A configuration structure for customizing colors and layout attributes of the components.
-public struct ComponentsKitConfig: Initializable, Updatable {
+public struct ComponentsKitConfig: Initializable, Updatable, Equatable {
   // MARK: - Properties
 
   /// The palette of colors.

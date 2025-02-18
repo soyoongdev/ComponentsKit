@@ -2,7 +2,7 @@ import Foundation
 
 extension ComponentsKitConfig {
   /// Defines a set of colors that are used for styling components and interfaces.
-  public struct Palette: Initializable, Updatable {
+  public struct Palette: Initializable, Updatable, Equatable {
     /// The color for the main background of the interface.
     public var background: UniversalColor = .themed(
       light: .hex("#FFFFFF"),
