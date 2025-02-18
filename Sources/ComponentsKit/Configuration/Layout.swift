@@ -260,7 +260,7 @@ extension ComponentsKitConfig {
       headline: .init(
         small: .system(size: 14, weight: .semibold),
         medium: .system(size: 20, weight: .semibold),
-        large: .system(size: 28, weight: .semibold)
+        large: .system(size: 24, weight: .semibold)
       ),
       body: .init(
         small: .system(size: 14, weight: .regular),
