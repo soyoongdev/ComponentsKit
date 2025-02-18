@@ -1,6 +1,6 @@
 import Foundation
 
-extension ComponentsKitConfig {
+extension Theme {
   /// A structure that defines the layout-related configurations for components in the framework.
   public struct Layout: Initializable, Updatable, Equatable {
     // MARK: - Radius

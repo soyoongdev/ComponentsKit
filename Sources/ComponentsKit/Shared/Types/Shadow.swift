@@ -24,9 +24,9 @@ extension Shadow {
   var radius: CGFloat {
     return switch self {
     case .none: CGFloat(0)
-    case .small: ComponentsKitConfig.shared.layout.shadow.small.radius
-    case .medium: ComponentsKitConfig.shared.layout.shadow.medium.radius
-    case .large: ComponentsKitConfig.shared.layout.shadow.large.radius
+    case .small: Theme.current.layout.shadow.small.radius
+    case .medium: Theme.current.layout.shadow.medium.radius
+    case .large: Theme.current.layout.shadow.large.radius
     case .custom(let radius, _, _): radius
     }
   }
@@ -34,9 +34,9 @@ extension Shadow {
   var offset: CGSize {
     return switch self {
     case .none: .zero
-    case .small: ComponentsKitConfig.shared.layout.shadow.small.offset
-    case .medium: ComponentsKitConfig.shared.layout.shadow.medium.offset
-    case .large: ComponentsKitConfig.shared.layout.shadow.large.offset
+    case .small: Theme.current.layout.shadow.small.offset
+    case .medium: Theme.current.layout.shadow.medium.offset
+    case .large: Theme.current.layout.shadow.large.offset
     case .custom(_, let offset, _): offset
     }
   }
@@ -44,9 +44,9 @@ extension Shadow {
   var color: UniversalColor {
     return switch self {
     case .none: .clear
-    case .small: ComponentsKitConfig.shared.layout.shadow.small.color
-    case .medium: ComponentsKitConfig.shared.layout.shadow.medium.color
-    case .large: ComponentsKitConfig.shared.layout.shadow.large.color
+    case .small: Theme.current.layout.shadow.small.color
+    case .medium: Theme.current.layout.shadow.medium.color
+    case .large: Theme.current.layout.shadow.large.color
     case .custom(_, _, let color): color
     }
   }
