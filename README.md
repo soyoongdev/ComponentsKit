@@ -88,12 +88,12 @@ inputField.resignFirstResponder()
 
 ### Styling
 
-**Config**
+**Theme**
 
-The library comes with predefined fonts, sizes and colors, but you can change these values to customize the appearance of your app. To do this, alter the config:
+The library comes with predefined fonts, sizes and colors, but you can change these values to customize the appearance of your app. To do this, alter the current theme:
 
 ```swift
-ComponentsKitConfig.shared.update {
+Theme.current.update {
   // Update colors
   $0.colors.primary = ...
   
@@ -103,12 +103,12 @@ ComponentsKitConfig.shared.update {
 ```
 
 > [!Note] 
-> The best place to set up the initial config is in the `func application(_:, didFinishLaunchingWithOptions:) -> Bool` method in your `AppDelegate` or a similar method in `SceneDelegate`.
+> The best place to set up the initial theme is in the `func application(_:, didFinishLaunchingWithOptions:) -> Bool` method in your `AppDelegate` or a similar method in `SceneDelegate`.
 
-By altering the config, you can also create *custom themes* for your app. To do this, first create a new instance of a config:
+By altering the theme, you can also create *custom themes* for your app. To do this, first create a new instance of a `Theme`:
 
 ```swift
-let halloweenTheme = ComponentsKitConfig {
+let halloweenTheme = Theme {
   $0.colors.background = .themed(
     light: .hex("#e38f36"),
     dark: .hex("#ba5421")
@@ -117,25 +117,26 @@ let halloweenTheme = ComponentsKitConfig {
 }
 ```
 
-When the user switches the theme, apply it by assigning it to the `shared` instance: 
+When the user switches the theme, apply it by assigning it to the `current` instance: 
 
 ```swift
-ComponentsKitConfig.shared = halloweenTheme
+Theme.current = halloweenTheme
 ```
 
 **Extend Colors**
 
-All colors from the config can be used within the app. For example:
+All colors from the theme can be used within the app. For example:
 
 ```swift
 // in UIKit
 view.backgroundColor = UniversalColor.background.uiColor
 
 // in SwiftUI
-UniversalColor.background.color
+SomeView()
+  .background(UniversalColor.background.color)
 ```
 
-If you want to use additional colors that are not included in the config, you can extend `UniversalColor`:
+If you want to use additional colors that are not included in the theme, you can extend `UniversalColor`:
 
 ```swift
 extension UniversalColor {
@@ -155,7 +156,7 @@ view.backgroundColor = UniversalColor.special.uiColor
 
 **Extend Fonts**
 
-If you want to use additional fonts that are not included in the config, you can extend `UniversalFont`:
+If you want to use additional fonts that are not included in the theme, you can extend `UniversalFont`:
 
 ```swift
 extension UniversalFont {
