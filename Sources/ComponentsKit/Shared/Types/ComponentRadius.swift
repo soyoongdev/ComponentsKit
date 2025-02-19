@@ -24,7 +24,7 @@ extension ComponentRadius {
   ///
   /// - Parameter height: The height of the component. Defaults to a large number (10,000) for unrestricted calculations.
   /// - Returns: The calculated corner radius as a `CGFloat`, capped at half of the height for `full` rounding or custom values.
-  func value(for height: CGFloat = 10_000) -> CGFloat {
+  public func value(for height: CGFloat = 10_000) -> CGFloat {
     let maxValue = height / 2
     let value = switch self {
     case .none: CGFloat(0)

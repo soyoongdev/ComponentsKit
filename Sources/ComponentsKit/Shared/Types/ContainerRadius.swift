@@ -17,7 +17,7 @@ public enum ContainerRadius: Hashable {
 }
 
 extension ContainerRadius {
-  var value: CGFloat {
+  public var value: CGFloat {
     return switch self {
     case .none: CGFloat(0)
     case .small: Theme.current.layout.containerRadius.small
