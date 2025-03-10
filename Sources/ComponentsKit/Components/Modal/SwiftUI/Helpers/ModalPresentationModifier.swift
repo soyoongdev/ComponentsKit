@@ -28,8 +28,8 @@ struct ModalPresentationModifier<Modal: View>: ViewModifier {
           self.isPresented = true
         }
       }
-      .onChange(of: self.isContentVisible) { newValue in
-        if newValue {
+      .onChange(of: self.isContentVisible) { isVisible in
+        if isVisible {
           self.isPresented = true
         } else {
           DispatchQueue.main.asyncAfter(deadline: .now() + self.transitionDuration) {
