@@ -23,6 +23,11 @@ struct ModalPresentationModifier<Modal: View>: ViewModifier {
 
   func body(content: Content) -> some View {
     content
+      .onAppear {
+        if self.isContentVisible {
+          self.isPresented = true
+        }
+      }
       .onChange(of: self.isContentVisible) { newValue in
         if newValue {
           self.isPresented = true
