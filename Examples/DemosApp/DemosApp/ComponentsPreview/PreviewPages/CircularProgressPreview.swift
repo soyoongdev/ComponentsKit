@@ -35,14 +35,7 @@ struct CircularProgressPreview: View {
       }
       Form {
         ComponentColorPicker(selection: self.$model.color)
-        
-        Picker("Font", selection: self.$model.font) {
-          Text("Default").tag(Optional<UniversalFont>.none)
-          Text("Small").tag(UniversalFont.smButton)
-          Text("Medium").tag(UniversalFont.mdButton)
-          Text("Large").tag(UniversalFont.lgButton)
-          Text("Custom: system bold of size 16").tag(UniversalFont.system(size: 16, weight: .bold))
-        }
+        CaptionFontPicker(selection: self.$model.font)
         Picker("Line Width", selection: self.$model.lineWidth) {
           Text("Default").tag(Optional<CGFloat>.none)
           Text("2").tag(Optional<CGFloat>.some(2))
