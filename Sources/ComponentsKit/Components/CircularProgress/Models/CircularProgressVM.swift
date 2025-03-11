@@ -81,8 +81,10 @@ extension CircularProgressVM {
       return .lgCaption
     }
   }
+  var stripeWidth: CGFloat {
+    return 0.5
+  }
   private func stripesCGPath(in rect: CGRect) -> CGMutablePath {
-    let stripeWidth: CGFloat = 0.5
     let stripeSpacing: CGFloat = 3
     let stripeAngle: Angle = .degrees(135)
 
@@ -93,14 +95,10 @@ extension CircularProgressVM {
     let dx: CGFloat = rect.height * tan(radians)
     for x in stride(from: 0, through: rect.width + rect.height, by: step) {
       let topLeft = CGPoint(x: x, y: 0)
-      let topRight = CGPoint(x: x + stripeWidth, y: 0)
-      let bottomLeft = CGPoint(x: x + dx, y: rect.height)
-      let bottomRight = CGPoint(x: x + stripeWidth + dx, y: rect.height)
+      let bottomRight = CGPoint(x: x + dx, y: rect.height)
 
       path.move(to: topLeft)
-      path.addLine(to: topRight)
       path.addLine(to: bottomRight)
-      path.addLine(to: bottomLeft)
       path.closeSubpath()
     }
     return path
@@ -109,15 +107,7 @@ extension CircularProgressVM {
 
 extension CircularProgressVM {
   func gap(for normalized: CGFloat) -> CGFloat {
-    normalized > 0 ? 0.05 : 0
-  }
-
-  func progressArcStart(for normalized: CGFloat) -> CGFloat {
-    return 0
-  }
-
-  func progressArcEnd(for normalized: CGFloat) -> CGFloat {
-    return max(0, min(1, normalized))
+    return normalized > 0 ? 0.05 : 0
   }
 
   func stripedArcStart(for normalized: CGFloat) -> CGFloat {

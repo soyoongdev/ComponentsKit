@@ -237,7 +237,8 @@ extension UKCircularProgress {
       model: CircularProgressVM
     ) {
       layer.isHidden = model.isStripesLayerHidden
-      layer.fillColor = model.color.main.uiColor.cgColor
+      layer.strokeColor = model.color.main.uiColor.cgColor
+      layer.lineWidth = model.stripeWidth
     }
 
     static func stripesMaskLayer(
