@@ -85,47 +85,6 @@ struct AlertContent: View {
   }
 }
 
-// MARK: - Helpers
-
-private struct AlertTitle: View {
-  let text: String
-
-  var body: some View {
-    Text(self.text)
-      .font(UniversalFont.mdHeadline.font)
-      .foregroundStyle(UniversalColor.foreground.color)
-      .multilineTextAlignment(.center)
-      .frame(maxWidth: .infinity)
-  }
-}
-
-private struct AlertMessage: View {
-  let text: String
-
-  var body: some View {
-    Text(self.text)
-      .font(UniversalFont.mdBody.font)
-      .foregroundStyle(UniversalColor.secondaryForeground.color)
-      .multilineTextAlignment(.center)
-      .frame(maxWidth: .infinity)
-  }
-}
-
-private struct AlertButton: View {
-  @Binding var isAlertPresented: Bool
-  let model: ButtonVM?
-  let action: (() -> Void)?
-
-  var body: some View {
-    if let model {
-      SUButton(model: model) {
-        self.action?()
-        self.isAlertPresented = false
-      }
-    }
-  }
-}
-
 // MARK: - Presentation Helpers
 
 extension View {
