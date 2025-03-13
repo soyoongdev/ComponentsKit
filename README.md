@@ -123,6 +123,74 @@ When the user switches the theme, apply it by assigning it to the `current` inst
 Theme.current = halloweenTheme
 ```
 
+**Handling Theme Changes**
+
+When changing themes dynamically, you may need to **update the UI** to reflect the new theme. Below are approaches for handling this in different environments.
+
+**SwiftUI**
+
+For SwiftUI apps, you can use `ThemeChangeObserver` to automatically refresh views when the theme updates.
+
+```swift
+@main
+struct Root: App {
+  var body: some Scene {
+    WindowGroup {
+      ThemeChangeObserver {
+        Content()
+      }
+    }
+  }
+}
+```
+
+We recommend using this helper in the root of your app to redraw everything at once.
+
+**UIKit**
+
+For UIKit apps, use the `observeThemeChange(_:)` method to update elements that depend on the properties from the library.
+
+```swift
+override func viewDidLoad() {
+    super.viewDidLoad()
+
+    style()
+
+    observeThemeChange { [weak self] in
+        guard let self else { return }
+        self.style()
+    }
+}
+
+func style() {
+  view.backgroundColor = UniversalColor.background.uiColor
+}
+```
+
+**Manually Handling Theme Changes**
+
+If you are not using the built-in helpers, you can listen for theme change notifications and manually update the UI:
+
+```swift
+NotificationCenter.default.addObserver(
+    self,
+    selector: #selector(handleThemeChange),
+    name: Theme.didChangeThemeNotification,
+    object: nil
+)
+
+@objc private func handleThemeChange() {
+    view.backgroundColor = UniversalColor.background.uiColor
+}
+```
+
+Don't forget to remove the observer when the view is deallocated:
+```swift
+deinit {
+    NotificationCenter.default.removeObserver(self, name: Theme.didChangeThemeNotification, object: nil)
+}
+```
+
 **Extend Colors**
 
 All colors from the theme can be used within the app. For example:
