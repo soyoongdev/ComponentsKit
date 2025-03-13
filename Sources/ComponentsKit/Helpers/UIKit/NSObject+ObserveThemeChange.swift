@@ -24,11 +24,13 @@ extension NSObject {
   ///
   /// func style() {
   ///   view.backgroundColor = UniversalColor.background.uiColor
+  ///   button.model = ButtonVM {
+  ///     $0.title = "Tap me"
+  ///     $0.color = .accent
+  ///   }
   ///   // ...
   /// }
   /// ```
-  ///
-  /// > Note: There is no need to update components from the library as they observe the changes internally.
   ///
   /// ## Cancellation
   ///

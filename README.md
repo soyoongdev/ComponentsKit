@@ -164,6 +164,10 @@ override func viewDidLoad() {
 
 func style() {
   view.backgroundColor = UniversalColor.background.uiColor
+  button.model = ButtonVM {
+    $0.title = "Tap me"
+    $0.color = .accent
+  }
 }
 ```
 
