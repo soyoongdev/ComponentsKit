@@ -1,5 +1,5 @@
-import Foundation
 import Combine
+import Foundation
 
 extension NSObject {
   /// Observes changes to the `.current` theme and updates dependent views.
@@ -68,7 +68,7 @@ extension NSObject {
     self.cancellables.append(cancellable)
     return cancellable
   }
-  
+
   fileprivate var cancellables: [Any] {
     get {
       objc_getAssociatedObject(self, Self.cancellablesKey) as? [Any] ?? []
@@ -77,6 +77,6 @@ extension NSObject {
       objc_setAssociatedObject(self, Self.cancellablesKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
     }
   }
-  
+
   private static let cancellablesKey = "themeChangeObserverCancellables"
 }

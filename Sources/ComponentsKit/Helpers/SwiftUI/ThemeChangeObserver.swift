@@ -30,11 +30,11 @@ import SwiftUI
 public struct ThemeChangeObserver<Content: View>: View {
   @State private var themeId = UUID()
   @ViewBuilder var content: () -> Content
-  
+
   public init(content: @escaping () -> Content) {
     self.content = content
   }
-  
+
   public var body: some View {
     self.content()
       .onReceive(NotificationCenter.default.publisher(
