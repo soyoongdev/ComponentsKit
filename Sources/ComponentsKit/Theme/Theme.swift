@@ -17,9 +17,21 @@ public struct Theme: Initializable, Updatable, Equatable {
   public init() {}
 }
 
-// MARK: - Theme + Shared
+// MARK: - Theme + Current
 
 extension Theme {
+  /// A notification that is triggered when a theme changes.
+  public static let didChangeThemeNotification = Notification.Name("didChangeThemeNotification")
+
   /// A current instance of `Theme` for global use.
-  public static var current: Self = .init()
+  ///
+  /// Triggers `Theme.didChangeThemeNotification` notification when the value changes.
+  public static var current = Self() {
+    didSet {
+      NotificationCenter.default.post(
+        name: Self.didChangeThemeNotification,
+        object: nil
+      )
+    }
+  }
 }
