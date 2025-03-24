@@ -132,10 +132,10 @@ public struct UniversalColor: Hashable {
   // MARK: - Properties
 
   /// The color used in light mode.
-  let light: ColorRepresentable
+  public let light: ColorRepresentable
 
   /// The color used in dark mode.
-  let dark: ColorRepresentable
+  public let dark: ColorRepresentable
 
   // MARK: - Initialization
 
