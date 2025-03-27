@@ -112,6 +112,13 @@ public struct SUTextInput<FocusValue: Hashable>: View {
               )
             }
           }
+          .onChange(of: geometry.size.width) { newValue in
+            self.textEditorPreferredHeight = TextInputHeightCalculator.preferredHeight(
+              for: self.text,
+              model: self.model,
+              width: newValue
+            )
+          }
       }
     )
     .clipShape(
