@@ -116,7 +116,7 @@ public struct SUTextInput<FocusValue: Hashable>: View {
     )
     .clipShape(
       RoundedRectangle(
-        cornerRadius: self.model.adaptedCornerRadius.value()
+        cornerRadius: self.model.adaptedCornerRadius()
       )
     )
   }
