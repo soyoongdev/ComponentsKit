@@ -203,16 +203,20 @@ Enim habitant laoreet inceptos scelerisque senectus, tellus molestie ut. Eros ri
   }
 
   static func suBody(body: ContentBody) -> some View {
-    Group {
-      switch body {
-      case .shortText:
-        Text(self.bodyShortText)
-      case .longText:
-        Text(self.bodyLongText)
+    HStack {
+      Group {
+        switch body {
+        case .shortText:
+          Text(self.bodyShortText)
+        case .longText:
+          Text(self.bodyLongText)
+        }
       }
+      .font(self.bodyFont.font)
+      .multilineTextAlignment(.leading)
+
+      Spacer()
     }
-    .font(self.bodyFont.font)
-    .multilineTextAlignment(.leading)
   }
 
   static func suFooter(
