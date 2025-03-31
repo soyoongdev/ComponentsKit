@@ -102,7 +102,7 @@ extension ButtonVM {
     case .medium:
       return .mdButton
     case .large:
-      return .mdButton
+      return .lgButton
     }
   }
   var height: CGFloat {
