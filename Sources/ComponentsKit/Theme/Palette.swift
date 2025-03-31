@@ -199,6 +199,14 @@ extension UniversalColor {
   public static var primary: Self {
     return Theme.current.colors.primary.main
   }
+  /// The primary background color.
+  public static var primaryBackground: Self {
+    return Theme.current.colors.primary.background
+  }
+  /// The primary contrast color.
+  public static var primaryContrast: Self {
+    return Theme.current.colors.primary.contrast
+  }
   /// The accent color.
   public static var accent: Self {
     return Theme.current.colors.accent.main
@@ -206,6 +214,10 @@ extension UniversalColor {
   /// The accent background color.
   public static var accentBackground: Self {
     return Theme.current.colors.accent.background
+  }
+  /// The accent contrast color.
+  public static var accentContrast: Self {
+    return Theme.current.colors.accent.contrast
   }
   /// The success state color, used for indicating positive actions or statuses.
   public static var success: Self {
@@ -215,6 +227,10 @@ extension UniversalColor {
   public static var successBackground: Self {
     return Theme.current.colors.success.background
   }
+  /// The success contrast color.
+  public static var successContrast: Self {
+    return Theme.current.colors.success.contrast
+  }
   /// The warning state color, used for indicating caution or non-critical alerts.
   public static var warning: Self {
     return Theme.current.colors.warning.main
@@ -223,6 +239,10 @@ extension UniversalColor {
   public static var warningBackground: Self {
     return Theme.current.colors.warning.background
   }
+  /// The warning contrast color.
+  public static var warningContrast: Self {
+    return Theme.current.colors.warning.contrast
+  }
   /// The danger state color, used for indicating errors, destructive actions, or critical alerts.
   public static var danger: Self {
     return Theme.current.colors.danger.main
@@ -230,5 +250,9 @@ extension UniversalColor {
   /// The danger background color.
   public static var dangerBackground: Self {
     return Theme.current.colors.danger.background
+  }
+  /// The danger contrast color.
+  public static var dangerContrast: Self {
+    return Theme.current.colors.danger.contrast
   }
 }
