@@ -1,6 +1,6 @@
 import SwiftUI
 
-/// A SwiftUI component that displays a badge.
+/// A SwiftUI component that is used to display status, notification counts, or labels.
 public struct SUBadge: View {
   // MARK: Properties
 

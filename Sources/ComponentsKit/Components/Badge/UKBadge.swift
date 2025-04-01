@@ -1,7 +1,7 @@
 import AutoLayout
 import UIKit
 
-/// A UIKit component that displays a badge.
+/// A UIKit component that is used to display status, notification counts, or labels.
 open class UKBadge: UIView, UKComponent {
   // MARK: - Properties
 
