@@ -21,13 +21,13 @@ open class UKCircularProgress: UIView, UKComponent {
 
   // MARK: - Subviews
 
-  /// The shape layer responsible for rendering the background of the circular progress indicator.
+  /// The shape layer responsible for rendering the background.
   public let backgroundLayer = CAShapeLayer()
 
-  /// The shape layer responsible for rendering the progress arc of the circular progress indicator.
+  /// The shape layer responsible for rendering the progress arc.
   public let progressLayer = CAShapeLayer()
 
-  /// The label used to display text inside the circular progress indicator.
+  /// The label used to display text.
   public let label = UILabel()
 
   // MARK: - UIView Properties
