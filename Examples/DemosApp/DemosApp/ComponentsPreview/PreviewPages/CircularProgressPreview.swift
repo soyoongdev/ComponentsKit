@@ -7,6 +7,7 @@ struct CircularProgressPreview: View {
   @State private var currentValue: CGFloat = Self.initialValue
   
   private let circularProgress = UKCircularProgress(
+    initialValue: Self.initialValue,
     model: Self.initialModel
   )
   
@@ -43,9 +44,9 @@ struct CircularProgressPreview: View {
           Text("8").tag(Optional<CGFloat>.some(8))
         }
         SizePicker(selection: self.$model.size)
-        Picker("Style", selection: self.$model.style) {
-          Text("Light").tag(CircularProgressVM.Style.light)
-          Text("Striped").tag(CircularProgressVM.Style.striped)
+        Picker("Shape", selection: self.$model.shape) {
+          Text("Circle").tag(CircularProgressVM.Shape.circle)
+          Text("Arc").tag(CircularProgressVM.Shape.arc)
         }
       }
       .onReceive(self.timer) { _ in
@@ -71,7 +72,7 @@ struct CircularProgressPreview: View {
   
   private static var initialModel = CircularProgressVM {
     $0.label = "0%"
-    $0.style = .light
+    $0.shape = .arc
   }
 }
 
