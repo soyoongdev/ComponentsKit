@@ -1,7 +1,7 @@
 import AutoLayout
 import UIKit
 
-/// A UIKit component that displays a circular progress indicator.
+/// A UIKit component that displays the progress of a task or operation in a circular form.
 open class UKCircularProgress: UIView, UKComponent {
   // MARK: - Properties
 

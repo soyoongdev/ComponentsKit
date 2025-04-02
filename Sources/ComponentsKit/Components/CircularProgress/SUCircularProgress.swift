@@ -1,6 +1,6 @@
 import SwiftUI
 
-/// A SwiftUI component that displays a circular progress.
+/// A SwiftUI component that displays the progress of a task or operation in a circular form.
 public struct SUCircularProgress: View {
   // MARK: - Properties
 
