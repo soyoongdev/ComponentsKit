@@ -4,11 +4,9 @@ import UIKit
 extension CircularProgressVM {
   /// Defines the style of line endings.
   public enum LineCap {
-    /// The line ends exactly at the endpoint with a flat edge.
-    case butt
     /// The line ends with a semicircular arc that extends beyond the endpoint, creating a rounded appearance.
     case rounded
-    /// The line ends with a square cap that extends beyond the endpoint by half the line width, similar to `butt` but with a protruding end.
+    /// The line ends exactly at the endpoint with a flat edge.
     case square
   }
 }
@@ -18,12 +16,10 @@ extension CircularProgressVM {
 extension CircularProgressVM.LineCap {
   var shapeLayerLineCap: CAShapeLayerLineCap {
     switch self {
-    case .butt:
-      return .butt
     case .rounded:
       return .round
     case .square:
-      return .square
+      return .butt
     }
   }
 }
@@ -33,12 +29,10 @@ extension CircularProgressVM.LineCap {
 extension CircularProgressVM.LineCap {
   var cgLineCap: CGLineCap {
     switch self {
-    case .butt:
-      return .butt
     case .rounded:
       return .round
     case .square:
-      return .square
+      return .butt
     }
   }
 }
