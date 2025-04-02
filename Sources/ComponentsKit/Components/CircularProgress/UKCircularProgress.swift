@@ -63,7 +63,7 @@ open class UKCircularProgress: UIView, UKComponent {
   /// Initializer.
   /// - Parameters:
   ///   - model: The model that defines the appearance properties.
-  public init(model: CircularProgressVM = .init()) {
+  public init(model: CircularProgressVM) {
     self.model = model
     super.init(frame: .zero)
 

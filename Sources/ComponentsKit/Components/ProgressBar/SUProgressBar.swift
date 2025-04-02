@@ -31,9 +31,7 @@ public struct SUProgressBar: View {
   /// Initializer.
   /// - Parameters:
   ///   - model: A model that defines the appearance properties.
-  public init(
-    model: ProgressBarVM = .init()
-  ) {
+  public init(model: ProgressBarVM) {
     self.model = model
   }
 

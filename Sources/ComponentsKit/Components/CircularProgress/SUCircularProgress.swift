@@ -32,7 +32,7 @@ public struct SUCircularProgress: View {
   /// Initializer.
   /// - Parameters:
   ///   - model: A model that defines the appearance properties.
-  public init(model: CircularProgressVM = .init()) {
+  public init(model: CircularProgressVM) {
     self.model = model
   }
 
