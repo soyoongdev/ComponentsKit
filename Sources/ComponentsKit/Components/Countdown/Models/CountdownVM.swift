@@ -5,6 +5,25 @@ public struct CountdownVM: ComponentVM {
   /// The color of the countdown.
   public var color: ComponentColor?
 
+  /// The locale used for localizing the countdown.
+  public var locale: Locale = .current
+
+  /// A dictionary containing localized representations of time units (days, hours, minutes, seconds) for various locales.
+  ///
+  /// This property can be used to override the default localizations for supported languages or to add
+  /// localizations for unsupported languages. By default, the library provides strings for the following locales:
+  /// - English ("en")
+  /// - Spanish ("es")
+  /// - French ("fr")
+  /// - German ("de")
+  /// - Chinese ("zh")
+  /// - Japanese ("ja")
+  /// - Russian ("ru")
+  /// - Arabic ("ar")
+  /// - Hindi ("hi")
+  /// - Portuguese ("pt")
+  public var localization: [Locale: UnitsLocalization] = [:]
+
   /// The font used for displaying the countdown numbers and trailing units.
   public var mainFont: UniversalFont?
 
@@ -28,25 +47,6 @@ public struct CountdownVM: ComponentVM {
 
   /// The target date until which the countdown runs.
   public var until: Date = Date().addingTimeInterval(3600 * 85)
-
-  /// The locale used for localizing the countdown.
-  public var locale: Locale = .current
-
-  /// A dictionary containing localized representations of time units (days, hours, minutes, seconds) for various locales.
-  ///
-  /// This property can be used to override the default localizations for supported languages or to add
-  /// localizations for unsupported languages. By default, the library provides strings for the following locales:
-  /// - English ("en")
-  /// - Spanish ("es")
-  /// - French ("fr")
-  /// - German ("de")
-  /// - Chinese ("zh")
-  /// - Japanese ("ja")
-  /// - Russian ("ru")
-  /// - Arabic ("ar")
-  /// - Hindi ("hi")
-  /// - Portuguese ("pt")
-  public var localization: [Locale: UnitsLocalization] = [:]
 
   /// Initializes a new instance of `CountdownVM` with default values.
   public init() {}
