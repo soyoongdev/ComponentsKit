@@ -8,10 +8,10 @@ public struct SUCircularProgress: View {
   public var model: CircularProgressVM
 
   /// The current progress value.
-  public var currentValue: CGFloat
+  public var currentValue: CGFloat?
 
   private var progress: CGFloat {
-    self.model.progress(for: self.currentValue)
+    self.currentValue.map { self.model.progress(for: $0) } ?? self.model.progress
   }
 
   // MARK: - Initializer
@@ -20,11 +20,19 @@ public struct SUCircularProgress: View {
   /// - Parameters:
   ///   - currentValue: Current progress.
   ///   - model: A model that defines the appearance properties.
+  @available(*, deprecated, message: "Set `currentValue` in the model instead.")
   public init(
     currentValue: CGFloat = 0,
     model: CircularProgressVM = .init()
   ) {
     self.currentValue = currentValue
+    self.model = model
+  }
+
+  /// Initializer.
+  /// - Parameters:
+  ///   - model: A model that defines the appearance properties.
+  public init(model: CircularProgressVM = .init()) {
     self.model = model
   }
 

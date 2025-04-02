@@ -4,12 +4,8 @@ import UIKit
 
 struct CircularProgressPreview: View {
   @State private var model = Self.initialModel
-  @State private var currentValue: CGFloat = Self.initialValue
   
-  private let circularProgress = UKCircularProgress(
-    initialValue: Self.initialValue,
-    model: Self.initialModel
-  )
+  private let circularProgress = UKCircularProgress(model: Self.initialModel)
   
   private let timer = Timer
     .publish(every: 0.5, on: .main, in: .common)
@@ -21,18 +17,14 @@ struct CircularProgressPreview: View {
         self.circularProgress
           .preview
           .onAppear {
-            self.circularProgress.currentValue = Self.initialValue
             self.circularProgress.model = Self.initialModel
           }
           .onChange(of: model) { newModel in
             self.circularProgress.model = newModel
           }
-          .onChange(of: self.currentValue) { newValue in
-            self.circularProgress.currentValue = newValue
-          }
       }
       PreviewWrapper(title: "SwiftUI") {
-        SUCircularProgress(currentValue: self.currentValue, model: self.model)
+        SUCircularProgress(model: self.model)
       }
       Form {
         ComponentColorPicker(selection: self.$model.color)
@@ -54,28 +46,25 @@ struct CircularProgressPreview: View {
         SizePicker(selection: self.$model.size)
       }
       .onReceive(self.timer) { _ in
-        if self.currentValue < self.model.maxValue {
+        if self.model.currentValue < self.model.maxValue {
           let step = (self.model.maxValue - self.model.minValue) / 100
-          self.currentValue = min(
+          self.model.currentValue = min(
             self.model.maxValue,
-            self.currentValue + CGFloat(Int.random(in: 1...20)) * step
+            self.model.currentValue + CGFloat(Int.random(in: 1...20)) * step
           )
         } else {
-          self.currentValue = self.model.minValue
+          self.model.currentValue = self.model.minValue
         }
-        self.model.label = "\(Int(self.currentValue))%"
+        self.model.label = "\(Int(self.model.currentValue))%"
       }
     }
   }
   
   // MARK: - Helpers
   
-  private static var initialValue: Double {
-    return 0.0
-  }
-  
   private static var initialModel = CircularProgressVM {
     $0.label = "0%"
+    $0.currentValue = 0.0
   }
 }
 
