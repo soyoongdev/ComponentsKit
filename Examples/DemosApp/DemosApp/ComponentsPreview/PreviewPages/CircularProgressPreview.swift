@@ -7,6 +7,7 @@ struct CircularProgressPreview: View {
   @State private var currentValue: CGFloat = Self.initialValue
   
   private let circularProgress = UKCircularProgress(
+    initialValue: Self.initialValue,
     model: Self.initialModel
   )
   
@@ -36,17 +37,21 @@ struct CircularProgressPreview: View {
       Form {
         ComponentColorPicker(selection: self.$model.color)
         CaptionFontPicker(selection: self.$model.font)
+        Picker("Line Cap", selection: self.$model.lineCap) {
+          Text("Rounded").tag(CircularProgressVM.LineCap.rounded)
+          Text("Square").tag(CircularProgressVM.LineCap.square)
+        }
         Picker("Line Width", selection: self.$model.lineWidth) {
           Text("Default").tag(Optional<CGFloat>.none)
           Text("2").tag(Optional<CGFloat>.some(2))
           Text("4").tag(Optional<CGFloat>.some(4))
           Text("8").tag(Optional<CGFloat>.some(8))
         }
-        SizePicker(selection: self.$model.size)
-        Picker("Style", selection: self.$model.style) {
-          Text("Light").tag(CircularProgressVM.Style.light)
-          Text("Striped").tag(CircularProgressVM.Style.striped)
+        Picker("Shape", selection: self.$model.shape) {
+          Text("Circle").tag(CircularProgressVM.Shape.circle)
+          Text("Arc").tag(CircularProgressVM.Shape.arc)
         }
+        SizePicker(selection: self.$model.size)
       }
       .onReceive(self.timer) { _ in
         if self.currentValue < self.model.maxValue {
@@ -71,7 +76,6 @@ struct CircularProgressPreview: View {
   
   private static var initialModel = CircularProgressVM {
     $0.label = "0%"
-    $0.style = .light
   }
 }
 
