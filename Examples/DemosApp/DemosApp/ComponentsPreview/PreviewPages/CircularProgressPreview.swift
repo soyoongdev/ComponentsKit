@@ -37,17 +37,22 @@ struct CircularProgressPreview: View {
       Form {
         ComponentColorPicker(selection: self.$model.color)
         CaptionFontPicker(selection: self.$model.font)
+        Picker("Line Cap", selection: self.$model.lineCap) {
+          Text("Butt").tag(CircularProgressVM.LineCap.butt)
+          Text("Rounded").tag(CircularProgressVM.LineCap.rounded)
+          Text("Square").tag(CircularProgressVM.LineCap.square)
+        }
         Picker("Line Width", selection: self.$model.lineWidth) {
           Text("Default").tag(Optional<CGFloat>.none)
           Text("2").tag(Optional<CGFloat>.some(2))
           Text("4").tag(Optional<CGFloat>.some(4))
           Text("8").tag(Optional<CGFloat>.some(8))
         }
-        SizePicker(selection: self.$model.size)
         Picker("Shape", selection: self.$model.shape) {
           Text("Circle").tag(CircularProgressVM.Shape.circle)
           Text("Arc").tag(CircularProgressVM.Shape.arc)
         }
+        SizePicker(selection: self.$model.size)
       }
       .onReceive(self.timer) { _ in
         if self.currentValue < self.model.maxValue {

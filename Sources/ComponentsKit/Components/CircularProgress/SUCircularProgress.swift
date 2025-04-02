@@ -46,7 +46,7 @@ public struct SUCircularProgress: View {
         self.model.color.background.color,
         style: StrokeStyle(
           lineWidth: self.model.circularLineWidth,
-          lineCap: .round
+          lineCap: self.model.lineCap.cgLineCap
         )
       )
       .frame(
@@ -69,7 +69,7 @@ public struct SUCircularProgress: View {
         self.model.color.main.color,
         style: StrokeStyle(
           lineWidth: self.model.circularLineWidth,
-          lineCap: .round
+          lineCap: self.model.lineCap.cgLineCap
         )
       )
       .frame(

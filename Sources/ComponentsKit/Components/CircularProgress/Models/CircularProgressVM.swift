@@ -13,6 +13,9 @@ public struct CircularProgressVM: ComponentVM {
   /// An optional label to display inside the circular progress.
   public var label: String?
 
+  /// The style of line endings.
+  public var lineCap: LineCap = .rounded
+
   /// The width of the circular progress stroke.
   public var lineWidth: CGFloat?
 

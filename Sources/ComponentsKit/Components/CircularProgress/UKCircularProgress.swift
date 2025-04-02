@@ -182,7 +182,7 @@ extension UKCircularProgress {
     ) {
       layer.fillColor = UIColor.clear.cgColor
       layer.strokeColor = model.color.background.cgColor
-      layer.lineCap = .round
+      layer.lineCap = model.lineCap.shapeLayerLineCap
       layer.lineWidth = model.circularLineWidth
     }
 
@@ -192,7 +192,7 @@ extension UKCircularProgress {
     ) {
       layer.fillColor = UIColor.clear.cgColor
       layer.strokeColor = model.color.main.uiColor.cgColor
-      layer.lineCap = .round
+      layer.lineCap = model.lineCap.shapeLayerLineCap
       layer.lineWidth = model.circularLineWidth
     }
 
