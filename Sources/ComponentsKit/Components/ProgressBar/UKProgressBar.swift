@@ -1,9 +1,9 @@
 import AutoLayout
 import UIKit
 
-/// A UIKit component that displays a progress bar.
+/// A UIKit component that visually represents the progress of a task or process using a horizontal bar.
 open class UKProgressBar: UIView, UKComponent {
-  // MARK: - Properties
+  // MARK: - Public Properties
 
   /// A model that defines the appearance properties.
   public var model: ProgressBarVM {
@@ -13,7 +13,7 @@ open class UKProgressBar: UIView, UKComponent {
   }
 
   /// The current progress value for the progress bar.
-  public var currentValue: CGFloat {
+  public var currentValue: CGFloat? {
     didSet {
       self.updateProgressWidthAndAppearance()
     }
@@ -39,7 +39,7 @@ open class UKProgressBar: UIView, UKComponent {
   // MARK: - Private Properties
 
   private var progress: CGFloat {
-    self.model.progress(for: self.currentValue)
+    self.currentValue.map { self.model.progress(for: $0) } ?? self.model.progress
   }
 
   // MARK: - UIView Properties
@@ -54,11 +54,24 @@ open class UKProgressBar: UIView, UKComponent {
   /// - Parameters:
   ///   - initialValue: The initial progress value. Defaults to `0`.
   ///   - model: A model that defines the appearance properties.
+  @available(*, deprecated, message: "Set `currentValue` in the model instead.")
   public init(
     initialValue: CGFloat = 0,
     model: ProgressBarVM = .init()
   ) {
     self.currentValue = initialValue
+    self.model = model
+    super.init(frame: .zero)
+
+    self.setup()
+    self.style()
+    self.layout()
+  }
+
+  /// Initializer.
+  /// - Parameters:
+  ///   - model: A model that defines the appearance properties.
+  public init(model: ProgressBarVM = .init()) {
     self.model = model
     super.init(frame: .zero)
 
@@ -138,9 +151,9 @@ open class UKProgressBar: UIView, UKComponent {
       self.setNeedsLayout()
     }
 
-    UIView.performWithoutAnimation {
+//    UIView.performWithoutAnimation {
       self.updateProgressWidthAndAppearance()
-    }
+//    }
   }
 
   private func updateProgressWidthAndAppearance() {
