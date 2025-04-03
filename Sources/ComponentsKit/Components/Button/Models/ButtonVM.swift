@@ -1,3 +1,4 @@
+import SwiftUI
 import UIKit
 
 /// A model that defines the appearance properties for a button component.
@@ -43,6 +44,29 @@ public struct ButtonVM: ComponentVM {
   /// Defaults to `.filled`.
   public var style: ButtonStyle = .filled
 
+  /// The loading VM used for the loading indicator.
+  ///
+  /// If not provided, a default loading view model is used.
+  public var loadingVM: LoadingVM?
+
+  /// A Boolean value indicating whether the button is currently in a loading state.
+  ///
+  /// Defaults to `false`.
+  public var isLoading: Bool = false
+
+  /// The source of the image to be displayed.
+  public var imageSrc: ImageSource?
+
+  /// The position of the image relative to the button's title.
+  ///
+  /// Defaults to `.leading`.
+  public var imageLocation: ImageLocation = .leading
+
+  /// The spacing between the button's title and its image or loading indicator.
+  ///
+  /// Defaults to `8.0`.
+  public var contentSpacing: CGFloat = 8.0
+
   /// Initializes a new instance of `ButtonVM` with default values.
   public init() {}
 }
@@ -50,6 +74,15 @@ public struct ButtonVM: ComponentVM {
 // MARK: Shared Helpers
 
 extension ButtonVM {
+  var preferredLoadingVM: LoadingVM {
+    return self.loadingVM ?? .init {
+      $0.color = .init(
+        main: foregroundColor,
+        contrast: self.color?.main ?? .background
+      )
+      $0.size = .small
+    }
+  }
   var backgroundColor: UniversalColor? {
     switch self.style {
     case .filled:
@@ -121,6 +154,18 @@ extension ButtonVM {
   }
 }
 
+extension ButtonVM {
+  public enum ImageSource: Hashable {
+    case sfSymbol(String)
+    case local(String, bundle: Bundle? = nil)
+  }
+
+  public enum ImageLocation {
+    case leading
+    case trailing
+  }
+}
+
 // MARK: UIKit Helpers
 
 extension ButtonVM {
@@ -153,5 +198,17 @@ extension ButtonVM {
 extension ButtonVM {
   var width: CGFloat? {
     return self.isFullWidth ? 10_000 : nil
+  }
+}
+
+extension ButtonVM {
+  var buttonImage: Image? {
+    guard let imageSrc = self.imageSrc else { return nil }
+    switch imageSrc {
+    case .sfSymbol(let name):
+      return Image(systemName: name)
+    case .local(let name, let bundle):
+      return Image(name, bundle: bundle)
+    }
   }
 }
