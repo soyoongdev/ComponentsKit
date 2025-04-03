@@ -23,7 +23,9 @@ struct ButtonPreview: View {
           Text("Custom: 20px").tag(ComponentRadius.custom(20))
         }
         ButtonFontPicker(selection: self.$model.font)
-        Toggle("Enabled", isOn: self.$model.isEnabled)
+        if !self.model.isLoading {
+          Toggle("Enabled", isOn: self.$model.isEnabled)
+        }
         Toggle("Full Width", isOn: self.$model.isFullWidth)
         Picker("Image Source", selection: self.$model.imageSrc) {
           Text("SF Symbol").tag(ButtonVM.ImageSource.sfSymbol("camera.fill"))

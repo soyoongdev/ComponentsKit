@@ -74,6 +74,10 @@ public struct ButtonVM: ComponentVM {
 // MARK: Shared Helpers
 
 extension ButtonVM {
+  private var isInteractive: Bool {
+    self.isEnabled && !self.isLoading
+  }
+
   var preferredLoadingVM: LoadingVM {
     return self.loadingVM ?? .init {
       $0.color = .init(
@@ -87,10 +91,10 @@ extension ButtonVM {
     switch self.style {
     case .filled:
       let color = self.color?.main ?? .content2
-      return color.enabled(self.isEnabled)
+      return color.enabled(self.isInteractive)
     case .light:
       let color = self.color?.background ?? .content1
-      return color.enabled(self.isEnabled)
+      return color.enabled(self.isInteractive)
     case .plain, .bordered:
       return nil
     }
@@ -102,7 +106,7 @@ extension ButtonVM {
     case .plain, .light, .bordered:
       self.color?.main ?? .foreground
     }
-    return color.enabled(self.isEnabled)
+    return color.enabled(self.isInteractive)
   }
   var borderWidth: CGFloat {
     switch self.style {
@@ -118,7 +122,7 @@ extension ButtonVM {
       return nil
     case .bordered:
       if let color {
-        return color.main.enabled(self.isEnabled)
+        return color.main.enabled(self.isInteractive)
       } else {
         return .divider
       }
@@ -193,6 +197,18 @@ extension ButtonVM {
   }
 }
 
+extension ButtonVM {
+  public var uiImage: UIImage? {
+    guard let imageSrc = self.imageSrc else { return nil }
+    switch imageSrc {
+    case .sfSymbol(let name):
+      return UIImage(systemName: name)?.withRenderingMode(.alwaysTemplate)
+    case .local(let name, let bundle):
+      return UIImage(named: name, in: bundle, compatibleWith: nil)?.withRenderingMode(.alwaysTemplate)
+    }
+  }
+}
+
 // MARK: SwiftUI Helpers
 
 extension ButtonVM {
@@ -206,9 +222,9 @@ extension ButtonVM {
     guard let imageSrc = self.imageSrc else { return nil }
     switch imageSrc {
     case .sfSymbol(let name):
-      return Image(systemName: name)
+      return Image(systemName: name).renderingMode(.template)
     case .local(let name, let bundle):
-      return Image(name, bundle: bundle)
+      return Image(name, bundle: bundle).renderingMode(.template)
     }
   }
 }
