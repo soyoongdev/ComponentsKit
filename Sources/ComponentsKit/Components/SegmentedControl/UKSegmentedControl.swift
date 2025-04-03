@@ -1,7 +1,7 @@
 import AutoLayout
 import UIKit
 
-/// A UIKit component with multiple segments that allows users to select them.
+/// A UIKit component that allows users to choose between multiple segments or options.
 open class UKSegmentedControl<ID: Hashable>: UIView, UKComponent {
   // MARK: Properties
 

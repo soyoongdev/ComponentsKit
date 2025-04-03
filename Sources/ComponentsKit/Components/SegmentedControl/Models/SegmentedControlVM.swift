@@ -1,7 +1,7 @@
 import SwiftUI
 import UIKit
 
-/// A model that defines the appearance properties for a segmented control component.
+/// A model that defines the data and appearance properties for a segmented control component.
 public struct SegmentedControlVM<ID: Hashable>: ComponentVM {
   /// The color of the segmented control.
   public var color: ComponentColor?
@@ -19,7 +19,7 @@ public struct SegmentedControlVM<ID: Hashable>: ComponentVM {
   /// Defaults to `true`.
   public var isEnabled: Bool = true
 
-  /// A Boolean value indicating whether the segmented control should take the full width of its superview.
+  /// A Boolean value indicating whether the segmented control should take the full width of its parent view.
   ///
   /// Defaults to `false`.
   public var isFullWidth: Bool = false

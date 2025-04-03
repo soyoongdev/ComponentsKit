@@ -1,6 +1,6 @@
 import Foundation
 
-/// A model that defines the appearance properties for an item in a segmented control.
+/// A model that defines the data and appearance properties for an item in a segmented control.
 public struct SegmentedControlItemVM<ID: Hashable>: Updatable {
   /// The unique identifier for the segmented control item.
   public var id: ID
