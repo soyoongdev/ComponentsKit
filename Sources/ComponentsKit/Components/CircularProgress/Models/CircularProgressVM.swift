@@ -7,6 +7,11 @@ public struct CircularProgressVM: ComponentVM {
   /// Defaults to `.accent`.
   public var color: ComponentColor = .accent
 
+  /// The current value of the circular progress.
+  ///
+  /// Defaults to `0`.
+  public var currentValue: CGFloat = 0
+
   /// The font used for the circular progress label text.
   public var font: UniversalFont?
 
@@ -103,6 +108,13 @@ extension CircularProgressVM {
 }
 
 extension CircularProgressVM {
+  var progress: CGFloat {
+    let range = self.maxValue - self.minValue
+    guard range > 0 else { return 0 }
+    let normalized = (self.currentValue - self.minValue) / range
+    return max(0, min(1, normalized))
+  }
+
   func progress(for currentValue: CGFloat) -> CGFloat {
     let range = self.maxValue - self.minValue
     guard range > 0 else { return 0 }
@@ -123,6 +135,7 @@ extension CircularProgressVM {
   func shouldRecalculateProgress(_ oldModel: Self) -> Bool {
     return self.minValue != oldModel.minValue
     || self.maxValue != oldModel.maxValue
+    || self.currentValue != oldModel.currentValue
   }
   func shouldUpdateShape(_ oldModel: Self) -> Bool {
     return self.shape != oldModel.shape

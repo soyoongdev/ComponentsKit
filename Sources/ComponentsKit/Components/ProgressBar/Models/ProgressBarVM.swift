@@ -7,26 +7,29 @@ public struct ProgressBarVM: ComponentVM {
   /// Defaults to `.accent`.
   public var color: ComponentColor = .accent
 
-  /// The visual style of the progress bar component.
+  /// The corner radius of the progress bar.
   ///
-  /// Defaults to `.striped`.
-  public var style: Style = .striped
+  /// Defaults to `.medium`.
+  public var cornerRadius: ComponentRadius = .medium
+
+  /// The current value of the progress bar.
+  public var currentValue: CGFloat = 0
+
+  /// The maximum value of the progress bar.
+  public var maxValue: CGFloat = 100
+
+  /// The minimum value of the progress bar.
+  public var minValue: CGFloat = 0
 
   /// The size of the progress bar.
   ///
   /// Defaults to `.medium`.
   public var size: ComponentSize = .medium
 
-  /// The minimum value of the progress bar.
-  public var minValue: CGFloat = 0
-
-  /// The maximum value of the progress bar.
-  public var maxValue: CGFloat = 100
-
-  /// The corner radius of the progress bar.
+  /// The visual style of the progress bar component.
   ///
-  /// Defaults to `.medium`.
-  public var cornerRadius: ComponentRadius = .medium
+  /// Defaults to `.striped`.
+  public var style: Style = .striped
 
   /// Initializes a new instance of `ProgressBarVM` with default values.
   public init() {}
@@ -139,6 +142,13 @@ extension ProgressBarVM {
 }
 
 extension ProgressBarVM {
+  var progress: CGFloat {
+    let range = self.maxValue - self.minValue
+    guard range > 0 else { return 0 }
+    let normalized = (self.currentValue - self.minValue) / range
+    return max(0, min(1, normalized))
+  }
+
   func progress(for currentValue: CGFloat) -> CGFloat {
     let range = self.maxValue - self.minValue
     guard range > 0 else { return 0 }

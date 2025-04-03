@@ -13,10 +13,14 @@ open class UKCircularProgress: UIView, UKComponent {
   }
 
   /// The current progress value.
-  public var currentValue: CGFloat {
+  public var currentValue: CGFloat? {
     didSet {
       self.updateProgress()
     }
+  }
+
+  private var progress: CGFloat {
+    self.currentValue.map { self.model.progress(for: $0) } ?? self.model.progress
   }
 
   // MARK: - Subviews
@@ -42,12 +46,25 @@ open class UKCircularProgress: UIView, UKComponent {
   /// - Parameters:
   ///   - initialValue: The initial progress value. Defaults to `0`.
   ///   - model: The model that defines the appearance properties.
+  @available(*, deprecated, message: "Set `currentValue` in the model instead.")
   public init(
     initialValue: CGFloat = 0,
     model: CircularProgressVM = .init()
   ) {
     self.model = model
     self.currentValue = initialValue
+    super.init(frame: .zero)
+
+    self.setup()
+    self.style()
+    self.layout()
+  }
+
+  /// Initializer.
+  /// - Parameters:
+  ///   - model: The model that defines the appearance properties.
+  public init(model: CircularProgressVM) {
+    self.model = model
     super.init(frame: .zero)
 
     self.setup()
@@ -72,7 +89,7 @@ open class UKCircularProgress: UIView, UKComponent {
       }
     }
 
-    self.progressLayer.strokeEnd = self.model.progress(for: self.currentValue)
+    self.progressLayer.strokeEnd = self.progress
     self.label.text = self.model.label
   }
 
@@ -132,7 +149,7 @@ open class UKCircularProgress: UIView, UKComponent {
     CATransaction.begin()
     CATransaction.setAnimationDuration(self.model.animationDuration)
     CATransaction.setAnimationTimingFunction(CAMediaTimingFunction(name: .linear))
-    self.progressLayer.strokeEnd = self.model.progress(for: self.currentValue)
+    self.progressLayer.strokeEnd = self.progress
     CATransaction.commit()
   }
 
