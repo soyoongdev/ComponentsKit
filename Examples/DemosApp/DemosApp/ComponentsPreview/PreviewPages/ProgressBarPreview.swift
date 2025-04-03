@@ -4,10 +4,9 @@ import UIKit
 
 struct ProgressBarPreview: View {
   @State private var model = Self.initialModel
-  @State private var currentValue: CGFloat = Self.initialValue
-
-  private let progressBar = UKProgressBar(initialValue: Self.initialValue, model: Self.initialModel)
-
+  
+  private let progressBar = UKProgressBar(model: Self.initialModel)
+  
   private let timer = Timer
     .publish(every: 0.5, on: .main, in: .common)
     .autoconnect()
@@ -18,7 +17,6 @@ struct ProgressBarPreview: View {
         self.progressBar
           .preview
           .onAppear {
-            self.progressBar.currentValue = self.currentValue
             self.progressBar.model = Self.initialModel
           }
           .onChange(of: self.model) { newValue in
@@ -26,7 +24,7 @@ struct ProgressBarPreview: View {
           }
       }
       PreviewWrapper(title: "SwiftUI") {
-        SUProgressBar(currentValue: self.currentValue, model: self.model)
+        SUProgressBar(model: self.model)
       }
       Form {
         ComponentColorPicker(selection: self.$model.color)
@@ -42,25 +40,20 @@ struct ProgressBarPreview: View {
       }
     }
     .onReceive(self.timer) { _ in
-      if self.currentValue < self.model.maxValue {
+      if self.model.currentValue < self.model.maxValue {
         let step = (self.model.maxValue - self.model.minValue) / 100
-        self.currentValue = min(
+        self.model.currentValue = min(
           self.model.maxValue,
-          self.currentValue + CGFloat(Int.random(in: 1...20)) * step
+          self.model.currentValue + CGFloat(Int.random(in: 1...20)) * step
         )
       } else {
-        self.currentValue = self.model.minValue
+        self.model.currentValue = self.model.minValue
       }
-      
-      self.progressBar.currentValue = self.currentValue
     }
   }
   
   // MARK: - Helpers
   
-  private static var initialValue: Double {
-    return 0.0
-  }
   private static var initialModel: ProgressBarVM {
     return .init()
   }
