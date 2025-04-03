@@ -232,7 +232,7 @@ extension UKButton {
         return
       }
 
-      if let _ = model.imageSrc {
+      if model.imageSrc != nil {
         switch model.imageLocation {
         case .leading:
           stackView.addArrangedSubview(imageView)
