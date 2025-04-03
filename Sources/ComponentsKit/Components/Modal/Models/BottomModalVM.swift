@@ -31,11 +31,12 @@ public struct BottomModalVM: ModalVM {
   /// A Boolean value indicating whether the modal should hide when it is swiped down.
   ///
   /// Defaults to `true`.
-  public var hidesOnSwap: Bool = true
+  public var hidesOnSwipe: Bool = true
 
   /// A Boolean value indicating whether the modal is draggable.
   ///
-  /// If `true`, the modal can be dragged vertically. Defaults to `true`.
+  /// If `true`, the modal can be dragged vertically allowing the user to pull the modal up or down
+  /// to interact or dismiss it. Defaults to `true`.
   public var isDraggable: Bool = true
 
   /// The style of the overlay displayed behind the modal.

@@ -48,6 +48,6 @@ public struct CenterModalVM: ModalVM {
   /// Defaults to `.fast`.
   public var transition: ModalTransition = .fast
 
-  /// Initializes a new instance of `BottomModalVM` with default values.
+  /// Initializes a new instance of `CenterModalVM` with default values.
   public init() {}
 }

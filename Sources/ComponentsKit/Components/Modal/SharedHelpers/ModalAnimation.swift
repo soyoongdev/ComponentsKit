@@ -10,7 +10,7 @@ enum ModalAnimation {
 
   static func bottomModalOffset(_ translation: CGFloat, model: BottomModalVM) -> CGFloat {
     if translation > 0 {
-      return model.hidesOnSwap
+      return model.hidesOnSwipe
       ? translation
       : (model.isDraggable ? Self.rubberBandClamp(translation) : 0)
     } else {
@@ -26,7 +26,7 @@ enum ModalAnimation {
     velocity: CGFloat,
     model: BottomModalVM
   ) -> Bool {
-    guard model.hidesOnSwap else {
+    guard model.hidesOnSwipe else {
       return false
     }
 

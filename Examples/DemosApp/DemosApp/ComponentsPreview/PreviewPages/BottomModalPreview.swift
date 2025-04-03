@@ -62,7 +62,7 @@ struct BottomModalPreview: View {
           footer: self.$contentFooter,
           additionalPickers: {
             Toggle("Draggable", isOn: self.$model.isDraggable)
-            Toggle("Hides On Swap", isOn: self.$model.hidesOnSwap)
+            Toggle("Hides On Swipe", isOn: self.$model.hidesOnSwipe)
           }
         )
       }
