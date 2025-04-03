@@ -7,31 +7,31 @@ public struct SliderVM: ComponentVM {
   /// Defaults to `.accent`.
   public var color: ComponentColor = .accent
 
-  /// The visual style of the slider component.
+  /// The corner radius of the slider track and handle.
   ///
-  /// Defaults to `.light`.
-  public var style: Style = .light
+  /// Defaults to `.full`.
+  public var cornerRadius: ComponentRadius = .full
+
+  /// The maximum value of the slider.
+  public var maxValue: CGFloat = 100
+
+  /// The minimum value of the slider.
+  public var minValue: CGFloat = 0
 
   /// The size of the slider.
   ///
   /// Defaults to `.medium`.
   public var size: ComponentSize = .medium
 
-  /// The minimum value of the slider.
-  public var minValue: CGFloat = 0
-
-  /// The maximum value of the slider.
-  public var maxValue: CGFloat = 100
-
-  /// The corner radius of the slider track and handle.
-  ///
-  /// Defaults to `.full`.
-  public var cornerRadius: ComponentRadius = .full
-
   /// The step value for the slider.
   ///
   /// Defaults to `1`.
   public var step: CGFloat = 1
+
+  /// The visual style of the slider component.
+  ///
+  /// Defaults to `.light`.
+  public var style: Style = .light
 
   /// Initializes a new instance of `SliderVM` with default values.
   public init() {}

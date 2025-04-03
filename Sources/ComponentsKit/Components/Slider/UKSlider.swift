@@ -1,7 +1,7 @@
 import AutoLayout
 import UIKit
 
-/// A UIKit component that displays a slider.
+/// A UIKit component that lets users select a value from a range by dragging a thumb along a track.
 open class UKSlider: UIView, UKComponent {
   // MARK: - Properties
 
