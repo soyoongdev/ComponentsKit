@@ -26,7 +26,7 @@ struct ButtonPreview: View {
         Toggle("Enabled", isOn: self.$model.isEnabled)
         Toggle("Full Width", isOn: self.$model.isFullWidth)
         Picker("Image Source", selection: self.$model.imageSrc) {
-          Text("SF Symbol").tag(ButtonVM.ImageSource.sfSymbol("star.fill"))
+          Text("SF Symbol").tag(ButtonVM.ImageSource.sfSymbol("camera.fill"))
           Text("Local").tag(ButtonVM.ImageSource.local("avatar_placeholder"))
           Text("None").tag(Optional<ButtonVM.ImageSource>.none)
         }
