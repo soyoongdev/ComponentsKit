@@ -1,6 +1,6 @@
 import SwiftUI
 
-/// A SwiftUI component with multiple segments that allows users to select them.
+/// A SwiftUI component that allows users to choose between multiple segments or options.
 public struct SUSegmentedControl<ID: Hashable>: View {
   // MARK: Properties
 

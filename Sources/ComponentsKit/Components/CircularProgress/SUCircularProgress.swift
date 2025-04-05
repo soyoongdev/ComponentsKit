@@ -1,6 +1,6 @@
 import SwiftUI
 
-/// A SwiftUI component that displays a circular progress.
+/// A SwiftUI component that displays the progress of a task or operation in a circular form.
 public struct SUCircularProgress: View {
   // MARK: - Properties
 
@@ -8,10 +8,10 @@ public struct SUCircularProgress: View {
   public var model: CircularProgressVM
 
   /// The current progress value.
-  public var currentValue: CGFloat
+  public var currentValue: CGFloat?
 
   private var progress: CGFloat {
-    self.model.progress(for: self.currentValue)
+    self.currentValue.map { self.model.progress(for: $0) } ?? self.model.progress
   }
 
   // MARK: - Initializer
@@ -20,6 +20,7 @@ public struct SUCircularProgress: View {
   /// - Parameters:
   ///   - currentValue: Current progress.
   ///   - model: A model that defines the appearance properties.
+  @available(*, deprecated, message: "Set `currentValue` in the model instead.")
   public init(
     currentValue: CGFloat = 0,
     model: CircularProgressVM = .init()
@@ -28,19 +29,34 @@ public struct SUCircularProgress: View {
     self.model = model
   }
 
+  /// Initializer.
+  /// - Parameters:
+  ///   - model: A model that defines the appearance properties.
+  public init(model: CircularProgressVM) {
+    self.model = model
+  }
+
   // MARK: - Body
 
   public var body: some View {
     ZStack {
       // Background part
-      Group {
-        switch self.model.style {
-        case .light:
-          self.lightBackground
-        case .striped:
-          self.stripedBackground
-        }
+      Path { path in
+        path.addArc(
+          center: self.model.center,
+          radius: self.model.radius,
+          startAngle: .radians(self.model.startAngle),
+          endAngle: .radians(self.model.endAngle),
+          clockwise: false
+        )
       }
+      .stroke(
+        self.model.color.background.color,
+        style: StrokeStyle(
+          lineWidth: self.model.circularLineWidth,
+          lineCap: self.model.lineCap.cgLineCap
+        )
+      )
       .frame(
         width: self.model.preferredSize.width,
         height: self.model.preferredSize.height
@@ -51,8 +67,8 @@ public struct SUCircularProgress: View {
         path.addArc(
           center: self.model.center,
           radius: self.model.radius,
-          startAngle: .radians(0),
-          endAngle: .radians(2 * .pi),
+          startAngle: .radians(self.model.startAngle),
+          endAngle: .radians(self.model.endAngle),
           clockwise: false
         )
       }
@@ -61,10 +77,9 @@ public struct SUCircularProgress: View {
         self.model.color.main.color,
         style: StrokeStyle(
           lineWidth: self.model.circularLineWidth,
-          lineCap: .round
+          lineCap: self.model.lineCap.cgLineCap
         )
       )
-      .rotationEffect(.degrees(-90))
       .frame(
         width: self.model.preferredSize.width,
         height: self.model.preferredSize.height
@@ -81,63 +96,5 @@ public struct SUCircularProgress: View {
       Animation.linear(duration: self.model.animationDuration),
       value: self.progress
     )
-  }
-
-  // MARK: - Subviews
-
-  var lightBackground: some View {
-    Path { path in
-      path.addArc(
-        center: self.model.center,
-        radius: self.model.radius,
-        startAngle: .radians(0),
-        endAngle: .radians(2 * .pi),
-        clockwise: false
-      )
-    }
-    .stroke(
-      self.model.color.background.color,
-      lineWidth: self.model.circularLineWidth
-    )
-  }
-
-  var stripedBackground: some View {
-    StripesShapeCircularProgress(model: self.model)
-      .stroke(
-        self.model.color.main.color,
-        style: StrokeStyle(lineWidth: self.model.stripeWidth)
-      )
-      .mask {
-        Path { maskPath in
-          maskPath.addArc(
-            center: self.model.center,
-            radius: self.model.radius,
-            startAngle: .radians(0),
-            endAngle: .radians(2 * .pi),
-            clockwise: false
-          )
-        }
-        .trim(
-          from: self.model.stripedArcStart(for: self.progress),
-          to: self.model.stripedArcEnd(for: self.progress)
-        )
-        .stroke(
-          style: StrokeStyle(
-            lineWidth: self.model.circularLineWidth,
-            lineCap: .round
-          )
-        )
-      }
-      .rotationEffect(.degrees(-90))
-  }
-}
-
-// MARK: - Helpers
-
-struct StripesShapeCircularProgress: Shape, @unchecked Sendable {
-  var model: CircularProgressVM
-
-  func path(in rect: CGRect) -> Path {
-    self.model.stripesPath(in: rect)
   }
 }

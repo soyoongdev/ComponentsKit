@@ -1,7 +1,7 @@
 import AutoLayout
 import UIKit
 
-/// A UIKit component that displays a slider.
+/// A UIKit component that lets users select a value from a range by dragging a thumb along a track.
 open class UKSlider: UIView, UKComponent {
   // MARK: - Properties
 
@@ -193,7 +193,13 @@ open class UKSlider: UIView, UKComponent {
   // MARK: - UIView Methods
 
   open override func sizeThatFits(_ size: CGSize) -> CGSize {
-    let width = self.superview?.bounds.width ?? size.width
+    let width: CGFloat
+    if let parentWidth = self.superview?.bounds.width,
+       parentWidth > 0 {
+      width = parentWidth
+    } else {
+      width = 10_000
+    }
     return CGSize(
       width: min(size.width, width),
       height: min(size.height, self.model.handleSize.height)

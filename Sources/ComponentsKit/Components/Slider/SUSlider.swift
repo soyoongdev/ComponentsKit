@@ -1,6 +1,6 @@
 import SwiftUI
 
-/// A SwiftUI component that displays a slider.
+/// A SwiftUI component that lets users select a value from a range by dragging a thumb along a track.
 public struct SUSlider: View {
   // MARK: - Properties
 

@@ -2,7 +2,7 @@ import AutoLayout
 import Combine
 import UIKit
 
-/// A UIKit component that displays a countdown.
+/// A UIKit timer component that counts down from a specified duration to zero.
 public class UKCountdown: UIView, UKComponent {
   // MARK: - Public Properties
 
@@ -12,6 +12,8 @@ public class UKCountdown: UIView, UKComponent {
       self.update(oldValue)
     }
   }
+
+  // MARK: - Subviews
 
   /// The main container stack view containing all time labels and colon labels.
   public let stackView = UIStackView()

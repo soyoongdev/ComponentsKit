@@ -1,6 +1,6 @@
 import SwiftUI
 
-/// A SwiftUI component that displays a countdown.
+/// A SwiftUI timer component that counts down from a specified duration to zero.
 public struct SUCountdown: View {
   // MARK: - Properties
 

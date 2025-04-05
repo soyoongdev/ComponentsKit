@@ -15,7 +15,7 @@ open class UKRadioGroup<ID: Hashable>: UIView, UKComponent, UIGestureRecognizerD
     }
   }
 
-  /// An identifier of the selected segment.
+  /// An identifier of the selected item.
   public var selectedId: ID? {
     didSet {
       guard self.selectedId != oldValue else { return }

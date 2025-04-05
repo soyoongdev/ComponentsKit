@@ -1,29 +1,37 @@
 import SwiftUI
 
-/// A SwiftUI component that displays a progress bar.
+/// A SwiftUI component that visually represents the progress of a task or process using a horizontal bar.
 public struct SUProgressBar: View {
   // MARK: - Properties
 
   /// A model that defines the appearance properties.
   public var model: ProgressBarVM
-  /// A binding to control the current value.
-  @Binding public var currentValue: CGFloat
+  /// The current progress value.
+  public var currentValue: CGFloat?
 
   private var progress: CGFloat {
-    self.model.progress(for: self.currentValue)
+    self.currentValue.map { self.model.progress(for: $0) } ?? self.model.progress
   }
 
   // MARK: - Initializer
 
   /// Initializer.
   /// - Parameters:
-  ///   - currentValue: A binding to the current value.
+  ///   - currentValue: The current progress value.
   ///   - model: A model that defines the appearance properties.
+  @available(*, deprecated, message: "Set `currentValue` in the model instead.")
   public init(
-    currentValue: Binding<CGFloat>,
+    currentValue: CGFloat,
     model: ProgressBarVM = .init()
   ) {
-    self._currentValue = currentValue
+    self.currentValue = currentValue
+    self.model = model
+  }
+
+  /// Initializer.
+  /// - Parameters:
+  ///   - model: A model that defines the appearance properties.
+  public init(model: ProgressBarVM) {
     self.model = model
   }
 

@@ -18,7 +18,7 @@ public struct InputFieldVM: ComponentVM {
 
   /// The font used for the input field's text.
   ///
-  /// If not provided, the font is automatically calculated based on the checkbox's size.
+  /// If not provided, the font is automatically calculated based on the input field's size.
   public var font: UniversalFont?
 
   /// A Boolean value indicating whether autocorrection is enabled for the input field.
