@@ -52,16 +52,18 @@ public struct SUButton: View {
 
   @ViewBuilder
   private var content: some View {
-    switch (self.model.isLoading, self.model.buttonImage, self.model.imageLocation) {
+    switch (self.model.isLoading, self.model.image, self.model.imageLocation) {
+    case (true, _, _) where self.model.title.isEmpty:
+      SULoading(model: self.model.preferredLoadingVM)
     case (true, _, _):
       SULoading(model: self.model.preferredLoadingVM)
       Text(self.model.title)
-    case (false, let image?, .leading):
-      image
+    case (false, let uiImage?, .leading):
+      Image(uiImage: uiImage)
       Text(self.model.title)
-    case (false, let image?, .trailing):
+    case (false, let uiImage?, .trailing):
       Text(self.model.title)
-      image
+      Image(uiImage: uiImage)
     default:
       Text(self.model.title)
     }

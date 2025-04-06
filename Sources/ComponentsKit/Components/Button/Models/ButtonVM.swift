@@ -209,13 +209,13 @@ extension ButtonVM {
 }
 
 extension ButtonVM {
-  var buttonImage: Image? {
-    guard let imageSrc else { return nil }
+  public var image: UIImage? {
+    guard let imageSrc = self.imageSrc else { return nil }
     switch imageSrc {
     case .sfSymbol(let name):
-      return Image(systemName: name).renderingMode(.template)
+      return UIImage(systemName: name)?.withRenderingMode(.alwaysTemplate)
     case .local(let name, let bundle):
-      return Image(name, bundle: bundle).renderingMode(.template)
+      return UIImage(named: name, in: bundle, compatibleWith: nil)?.withRenderingMode(.alwaysTemplate)
     }
   }
 }
