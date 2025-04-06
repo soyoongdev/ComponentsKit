@@ -22,6 +22,11 @@ struct ButtonPreview: View {
         ComponentRadiusPicker(selection: self.$model.cornerRadius) {
           Text("Custom: 20px").tag(ComponentRadius.custom(20))
         }
+        Picker("Content Spacing", selection: self.$model.contentSpacing) {
+          Text("4").tag(CGFloat(4))
+          Text("8").tag(CGFloat(8))
+          Text("12").tag(CGFloat(12))
+        }
         ButtonFontPicker(selection: self.$model.font)
         if !self.model.isLoading {
           Toggle("Enabled", isOn: self.$model.isEnabled)

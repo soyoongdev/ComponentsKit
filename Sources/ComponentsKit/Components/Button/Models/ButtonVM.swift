@@ -185,6 +185,7 @@ extension ButtonVM {
     || self.isLoading != oldModel?.isLoading
     || self.imageSrc != oldModel?.imageSrc
     || self.imageLocation != oldModel?.imageLocation
+    || self.contentSpacing != oldModel?.contentSpacing
   }
 }
 
