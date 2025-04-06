@@ -3,9 +3,6 @@ import UIKit
 
 /// A model that defines the appearance properties for a button component.
 public struct ButtonVM: ComponentVM {
-  /// The text displayed on the button.
-  public var title: String = ""
-
   /// The scaling factor for the button's press animation, with a value between 0 and 1.
   ///
   /// Defaults to `.medium`.
@@ -13,6 +10,11 @@ public struct ButtonVM: ComponentVM {
 
   /// The color of the button.
   public var color: ComponentColor?
+
+  /// The spacing between the button's title and its image or loading indicator.
+  ///
+  /// Defaults to `8.0`.
+  public var contentSpacing: CGFloat = 8.0
 
   /// The corner radius of the button.
   ///
@@ -24,6 +26,14 @@ public struct ButtonVM: ComponentVM {
   /// If not provided, the font is automatically calculated based on the button's size.
   public var font: UniversalFont?
 
+  /// The position of the image relative to the button's title.
+  ///
+  /// Defaults to `.leading`.
+  public var imageLocation: ImageLocation = .leading
+
+  /// The source of the image to be displayed.
+  public var imageSrc: ImageSource?
+
   /// A Boolean value indicating whether the button is enabled or disabled.
   ///
   /// Defaults to `true`.
@@ -33,6 +43,16 @@ public struct ButtonVM: ComponentVM {
   ///
   /// Defaults to `false`.
   public var isFullWidth: Bool = false
+
+  /// A Boolean value indicating whether the button is currently in a loading state.
+  ///
+  /// Defaults to `false`.
+  public var isLoading: Bool = false
+
+  /// The loading VM used for the loading indicator.
+  ///
+  /// If not provided, a default loading view model is used.
+  public var loadingVM: LoadingVM?
 
   /// The predefined size of the button.
   ///
@@ -44,28 +64,8 @@ public struct ButtonVM: ComponentVM {
   /// Defaults to `.filled`.
   public var style: ButtonStyle = .filled
 
-  /// The loading VM used for the loading indicator.
-  ///
-  /// If not provided, a default loading view model is used.
-  public var loadingVM: LoadingVM?
-
-  /// A Boolean value indicating whether the button is currently in a loading state.
-  ///
-  /// Defaults to `false`.
-  public var isLoading: Bool = false
-
-  /// The source of the image to be displayed.
-  public var imageSrc: ImageSource?
-
-  /// The position of the image relative to the button's title.
-  ///
-  /// Defaults to `.leading`.
-  public var imageLocation: ImageLocation = .leading
-
-  /// The spacing between the button's title and its image or loading indicator.
-  ///
-  /// Defaults to `8.0`.
-  public var contentSpacing: CGFloat = 8.0
+  /// The text displayed on the button.
+  public var title: String = ""
 
   /// Initializes a new instance of `ButtonVM` with default values.
   public init() {}
