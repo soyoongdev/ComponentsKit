@@ -74,6 +74,13 @@ open class UKButton: UIView, UKComponent {
 
   private func setup() {
     self.addSubview(self.stackView)
+    self.stackView.axis = .horizontal
+    self.stackView.alignment = .center
+    self.stackView.spacing = self.model.contentSpacing
+
+    self.stackView.addArrangedSubview(self.imageView)
+    self.stackView.addArrangedSubview(self.loaderView)
+    self.stackView.addArrangedSubview(self.titleLabel)
 
     if #available(iOS 17.0, *) {
       self.registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (view: Self, _: UITraitCollection) in
@@ -212,32 +219,21 @@ extension UKButton {
       titleLabel: UILabel,
       imageView: UIImageView
     ) {
-      stackView.axis = .horizontal
-      stackView.alignment = .center
       stackView.spacing = model.contentSpacing
 
-      for subview in stackView.arrangedSubviews {
-        stackView.removeArrangedSubview(subview)
-        subview.removeFromSuperview()
-      }
+      loaderView.isHidden = !model.isLoading
+      titleLabel.isHidden = false
+      imageView.isHidden = model.isLoading || (model.imageSrc == nil)
 
-      if model.isLoading {
-        stackView.addArrangedSubview(loaderView)
-        stackView.addArrangedSubview(titleLabel)
-        return
-      }
-
-      if model.imageSrc != nil {
-        switch model.imageLocation {
-        case .leading:
-          stackView.addArrangedSubview(imageView)
-          stackView.addArrangedSubview(titleLabel)
-        case .trailing:
-          stackView.addArrangedSubview(titleLabel)
-          stackView.addArrangedSubview(imageView)
-        }
-      } else {
-        stackView.addArrangedSubview(titleLabel)
+      switch (model.isLoading, model.imageSrc, model.imageLocation) {
+      case (false, .some(_), .leading):
+        stackView.removeArrangedSubview(imageView)
+        stackView.insertArrangedSubview(imageView, at: 0)
+      case (false, .some(_), .trailing):
+        stackView.removeArrangedSubview(imageView)
+        stackView.addArrangedSubview(imageView)
+      default:
+        break
       }
     }
 
