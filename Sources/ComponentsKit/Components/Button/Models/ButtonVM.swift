@@ -194,6 +194,9 @@ extension ButtonVM {
     return self.size != oldModel?.size
     || self.font != oldModel?.font
     || self.isFullWidth != oldModel?.isFullWidth
+    || self.isLoading != oldModel?.isLoading
+    || self.imageSrc != oldModel?.imageSrc
+    || self.imageLocation != oldModel?.imageLocation
   }
 }
 

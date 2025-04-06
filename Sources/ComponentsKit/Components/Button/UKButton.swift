@@ -119,10 +119,9 @@ open class UKButton: UIView, UKComponent {
 
     self.style()
 
-    if self.model.shouldUpdateSize(oldModel)
-        || self.model.isLoading != oldModel.isLoading
-        || self.model.imageSrc != oldModel.imageSrc
-        || self.model.imageLocation != oldModel.imageLocation {
+    if self.model.shouldUpdateSize(oldModel) {
+      Self.Style.imageView(self.imageView, model: self.model)
+      self.loaderView.model = self.model.preferredLoadingVM
       self.invalidateIntrinsicContentSize()
     }
   }
