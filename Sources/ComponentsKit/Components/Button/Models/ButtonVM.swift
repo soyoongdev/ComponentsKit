@@ -158,18 +158,6 @@ extension ButtonVM {
   }
 }
 
-extension ButtonVM {
-  public enum ImageSource: Hashable {
-    case sfSymbol(String)
-    case local(String, bundle: Bundle? = nil)
-  }
-
-  public enum ImageLocation {
-    case leading
-    case trailing
-  }
-}
-
 // MARK: UIKit Helpers
 
 extension ButtonVM {
