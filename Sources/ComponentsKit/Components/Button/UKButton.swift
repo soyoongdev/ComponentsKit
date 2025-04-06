@@ -219,7 +219,7 @@ extension UKButton {
       titleLabel: UILabel,
       imageView: UIImageView
     ) {
-      stackView.spacing = model.contentSpacing
+      stackView.spacing = model.title.isEmpty ? 0 : model.contentSpacing
 
       loaderView.isHidden = !model.isLoading
       titleLabel.isHidden = false

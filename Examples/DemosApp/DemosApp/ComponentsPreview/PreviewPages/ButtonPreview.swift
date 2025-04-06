@@ -37,7 +37,7 @@ struct ButtonPreview: View {
           Text("Local").tag(ButtonVM.ImageSource.local("avatar_placeholder"))
           Text("None").tag(Optional<ButtonVM.ImageSource>.none)
         }
-        if self.model.imageSrc != nil {
+        if self.model.imageSrc != nil && !self.model.title.isEmpty {
           Picker("Image Location", selection: self.$model.imageLocation) {
             Text("Leading").tag(ButtonVM.ImageLocation.leading)
             Text("Trailing").tag(ButtonVM.ImageLocation.trailing)
@@ -45,6 +45,12 @@ struct ButtonPreview: View {
         }
         Toggle("Loading", isOn: self.$model.isLoading)
         SizePicker(selection: self.$model.size)
+        Toggle("Show Title", isOn: Binding<Bool>(
+          get: { !self.model.title.isEmpty },
+          set: { newValue in
+            self.model.title = newValue ? "Button" : ""
+          }
+        ))
         Picker("Style", selection: self.$model.style) {
           Text("Filled").tag(ButtonStyle.filled)
           Text("Plain").tag(ButtonStyle.plain)

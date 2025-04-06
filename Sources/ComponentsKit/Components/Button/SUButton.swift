@@ -59,11 +59,19 @@ public struct SUButton: View {
       SULoading(model: self.model.preferredLoadingVM)
       Text(self.model.title)
     case (false, let uiImage?, .leading):
-      ButtonImageView(image: uiImage, size: self.model.height * 0.6)
-      Text(self.model.title)
+      if self.model.title.isEmpty {
+        ButtonImageView(image: uiImage, size: self.model.height * 0.6)
+      } else {
+        ButtonImageView(image: uiImage, size: self.model.height * 0.6)
+        Text(self.model.title)
+      }
     case (false, let uiImage?, .trailing):
-      Text(self.model.title)
-      ButtonImageView(image: uiImage, size: self.model.height * 0.6)
+      if self.model.title.isEmpty {
+        ButtonImageView(image: uiImage, size: self.model.height * 0.6)
+      } else {
+        Text(self.model.title)
+        ButtonImageView(image: uiImage, size: self.model.height * 0.6)
+      }
     default:
       Text(self.model.title)
     }
