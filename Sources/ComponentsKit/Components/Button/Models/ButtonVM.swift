@@ -195,7 +195,7 @@ extension ButtonVM {
     case .sfSymbol(let name):
       return UIImage(systemName: name)?.withRenderingMode(.alwaysTemplate)
     case .local(let name, let bundle):
-      return UIImage(named: name, in: bundle, compatibleWith: nil)?.withRenderingMode(.alwaysTemplate)
+      return UIImage(named: name, in: bundle, compatibleWith: nil)
     }
   }
 }
@@ -215,7 +215,7 @@ extension ButtonVM {
     case .sfSymbol(let name):
       return UIImage(systemName: name)?.withRenderingMode(.alwaysTemplate)
     case .local(let name, let bundle):
-      return UIImage(named: name, in: bundle, compatibleWith: nil)?.withRenderingMode(.alwaysTemplate)
+      return UIImage(named: name, in: bundle, compatibleWith: nil)
     }
   }
 }

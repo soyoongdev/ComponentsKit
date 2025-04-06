@@ -59,14 +59,26 @@ public struct SUButton: View {
       SULoading(model: self.model.preferredLoadingVM)
       Text(self.model.title)
     case (false, let uiImage?, .leading):
-      Image(uiImage: uiImage)
+      ButtonImageView(image: uiImage, size: self.model.height * 0.6)
       Text(self.model.title)
     case (false, let uiImage?, .trailing):
       Text(self.model.title)
-      Image(uiImage: uiImage)
+      ButtonImageView(image: uiImage, size: self.model.height * 0.6)
     default:
       Text(self.model.title)
     }
+  }
+}
+
+struct ButtonImageView: View {
+  let image: UIImage
+  let size: CGFloat
+
+  var body: some View {
+    Image(uiImage: self.image)
+      .resizable()
+      .aspectRatio(contentMode: .fit)
+      .frame(width: self.size, height: self.size)
   }
 }
 
