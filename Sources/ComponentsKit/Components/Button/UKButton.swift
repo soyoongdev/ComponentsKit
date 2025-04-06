@@ -18,7 +18,7 @@ open class UKButton: UIView, UKComponent {
   /// A Boolean value indicating whether the button is pressed.
   public private(set) var isPressed: Bool = false {
     didSet {
-      self.transform = self.isPressed && self.model.isEnabled
+      self.transform = self.isPressed && self.model.isInteractive
       ? .init(
         scaleX: self.model.animationScale.value,
         y: self.model.animationScale.value
@@ -164,7 +164,7 @@ open class UKButton: UIView, UKComponent {
 
     defer { self.isPressed = false }
 
-    if self.model.isEnabled,
+    if self.model.isInteractive,
        let location = touches.first?.location(in: self),
        self.bounds.contains(location) {
       self.action()
