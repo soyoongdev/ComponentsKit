@@ -32,14 +32,14 @@ open class UKButton: UIView, UKComponent {
   /// A label that displays the title from the model.
   public var titleLabel = UILabel()
 
-  /// A loader view, created with the preferred loading VM from the model.
-  public let loaderView: UKLoading
+  /// A loading indicator shown when the button is in a loading state.
+  public let loaderView = UKLoading()
 
-  /// A stack view that arranges the loader and title label.
+  /// A stack view that manages the layout of the button’s internal content.
   private let stackView = UIStackView()
 
-  /// A image view for displaying the image from the model.
-  public let imageView: UIImageView = UIImageView()
+  /// An optional image displayed alongside the title.
+  public let imageView = UIImageView()
 
   // MARK: UIView Properties
 
@@ -59,7 +59,6 @@ open class UKButton: UIView, UKComponent {
   ) {
     self.model = model
     self.action = action
-    self.loaderView = UKLoading(model: model.preferredLoadingVM)
     super.init(frame: .zero)
 
     self.setup()
@@ -95,9 +94,9 @@ open class UKButton: UIView, UKComponent {
       titleLabel: self.titleLabel,
       imageView: self.imageView
     )
+    Self.Style.imageView(self.imageView, model: self.model)
 
     self.loaderView.model = self.model.preferredLoadingVM
-
     self.loaderView.isHidden = !self.model.isLoading
   }
 
@@ -119,9 +118,6 @@ open class UKButton: UIView, UKComponent {
     guard self.model != oldModel else { return }
 
     self.style()
-
-    self.imageView.image = self.model.uiImage
-    self.imageView.tintColor = self.model.foregroundColor.uiColor
 
     if self.model.shouldUpdateSize(oldModel)
         || self.model.isLoading != oldModel.isLoading
@@ -244,6 +240,11 @@ extension UKButton {
       } else {
         stackView.addArrangedSubview(titleLabel)
       }
+    }
+
+    static func imageView(_ imageView: UIImageView, model: Model) {
+      imageView.image = model.uiImage
+      imageView.tintColor = model.foregroundColor.uiColor
     }
   }
 }

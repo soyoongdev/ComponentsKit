@@ -74,7 +74,7 @@ public struct ButtonVM: ComponentVM {
 // MARK: Shared Helpers
 
 extension ButtonVM {
-  private var isInteractive: Bool {
+  var isInteractive: Bool {
     self.isEnabled && !self.isLoading
   }
 
@@ -199,7 +199,7 @@ extension ButtonVM {
 
 extension ButtonVM {
   public var uiImage: UIImage? {
-    guard let imageSrc = self.imageSrc else { return nil }
+    guard let imageSrc else { return nil }
     switch imageSrc {
     case .sfSymbol(let name):
       return UIImage(systemName: name)?.withRenderingMode(.alwaysTemplate)
@@ -219,7 +219,7 @@ extension ButtonVM {
 
 extension ButtonVM {
   var buttonImage: Image? {
-    guard let imageSrc = self.imageSrc else { return nil }
+    guard let imageSrc else { return nil }
     switch imageSrc {
     case .sfSymbol(let name):
       return Image(systemName: name).renderingMode(.template)

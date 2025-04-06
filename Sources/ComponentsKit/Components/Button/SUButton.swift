@@ -31,10 +31,8 @@ public struct SUButton: View {
   public var body: some View {
     Button(action: self.action) {
       HStack(spacing: self.model.contentSpacing) {
-        self.content()
+        self.content
       }
-      .frame(maxWidth: self.model.width)
-      .frame(height: self.model.height)
     }
     .buttonStyle(CustomButtonStyle(model: self.model))
     .simultaneousGesture(DragGesture(minimumDistance: 0.0)
@@ -45,7 +43,7 @@ public struct SUButton: View {
         self.isPressed = false
       }
     )
-    .disabled(!self.model.isEnabled || self.model.isLoading)
+    .disabled(!self.model.isInteractive)
     .scaleEffect(
       self.isPressed ? self.model.animationScale.value : 1,
       anchor: .center
@@ -53,7 +51,7 @@ public struct SUButton: View {
   }
 
   @ViewBuilder
-  private func content() -> some View {
+  private var content: some View {
     switch (self.model.isLoading, self.model.buttonImage, self.model.imageLocation) {
     case (true, _, _):
       SULoading(model: self.model.preferredLoadingVM)
