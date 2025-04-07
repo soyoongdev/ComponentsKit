@@ -133,8 +133,7 @@ open class UKButton: UIView, UKComponent {
     self.style()
 
     self.loaderView.isHidden = !self.model.isLoading
-    self.titleLabel.isHidden = false
-    self.imageView.isHidden = self.model.isLoading || (self.model.imageSrc == nil)
+    self.titleLabel.isHidden = self.model.title.isEmpty
 
     switch (self.model.isLoading, self.model.imageSrc, self.model.imageLocation) {
     case (false, .some(_), .leading):
@@ -241,13 +240,14 @@ extension UKButton {
       titleLabel: UILabel,
       imageView: UIImageView
     ) {
-      stackView.spacing = model.title.isEmpty ? 0 : model.contentSpacing
+      stackView.spacing = model.contentSpacing
     }
 
     static func imageView(_ imageView: UIImageView, model: Model) {
       imageView.image = model.image
       imageView.tintColor = model.foregroundColor.uiColor
       imageView.contentMode = .scaleAspectFit
+      imageView.isHidden = model.isLoading || (model.imageSrc.isNil)
     }
   }
 }
