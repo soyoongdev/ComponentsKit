@@ -129,8 +129,6 @@ open class UKButton: UIView, UKComponent {
     self.style()
 
     if self.model.shouldUpdateSize(oldModel) {
-      Self.Style.imageView(self.imageView, model: self.model)
-      self.loaderView.model = self.model.preferredLoadingVM
       self.invalidateIntrinsicContentSize()
 
       for constraint in self.imageView.constraints {
@@ -138,8 +136,6 @@ open class UKButton: UIView, UKComponent {
           constraint.constant = self.model.imageSide
         }
       }
-      self.setNeedsLayout()
-      self.layoutIfNeeded()
     }
   }
 
