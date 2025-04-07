@@ -250,7 +250,7 @@ extension UKButton {
     static func imageView(_ imageView: UIImageView, model: Model) {
       imageView.image = model.uiImage
       imageView.tintColor = model.foregroundColor.uiColor
-      imageView.contentMode = .scaleAspectFill
+      imageView.contentMode = .scaleAspectFit
     }
   }
 }

@@ -60,17 +60,21 @@ public struct SUButton: View {
       Text(self.model.title)
     case (false, let uiImage?, .leading):
       if self.model.title.isEmpty {
-        ButtonImageView(image: uiImage, size: self.model.imageSide)
+        ButtonImageView(image: uiImage, tintColor: self.model.foregroundColor.uiColor)
+          .frame(width: self.model.imageSide, height: self.model.imageSide)
       } else {
-        ButtonImageView(image: uiImage, size: self.model.imageSide)
+        ButtonImageView(image: uiImage, tintColor: self.model.foregroundColor.uiColor)
+          .frame(width: self.model.imageSide, height: self.model.imageSide)
         Text(self.model.title)
       }
     case (false, let uiImage?, .trailing):
       if self.model.title.isEmpty {
-        ButtonImageView(image: uiImage, size: self.model.imageSide)
+        ButtonImageView(image: uiImage, tintColor: self.model.foregroundColor.uiColor)
+          .frame(width: self.model.imageSide, height: self.model.imageSide)
       } else {
         Text(self.model.title)
-        ButtonImageView(image: uiImage, size: self.model.imageSide)
+        ButtonImageView(image: uiImage, tintColor: self.model.foregroundColor.uiColor)
+          .frame(width: self.model.imageSide, height: self.model.imageSide)
       }
     default:
       Text(self.model.title)
@@ -78,15 +82,29 @@ public struct SUButton: View {
   }
 }
 
-struct ButtonImageView: View {
-  let image: UIImage
-  let size: CGFloat
+struct ButtonImageView: UIViewRepresentable {
+  class InternalImageView: UIImageView {
+    override var intrinsicContentSize: CGSize {
+      return self.bounds.size
+    }
+  }
 
-  var body: some View {
-    Image(uiImage: self.image)
-      .resizable()
-      .aspectRatio(contentMode: .fit)
-      .frame(width: self.size, height: self.size)
+  let image: UIImage
+  let tintColor: UIColor?
+
+  func makeUIView(context: Context) -> UIImageView {
+    let imageView = InternalImageView()
+    imageView.image = self.image
+    imageView.contentMode = .scaleAspectFit
+    imageView.tintColor = self.tintColor
+    return imageView
+  }
+
+  func updateUIView(_ uiView: UIImageView, context: Context) {
+    uiView.image = self.image
+    uiView.tintColor = self.tintColor
+    uiView.setNeedsLayout()
+    uiView.layoutIfNeeded()
   }
 }
 
