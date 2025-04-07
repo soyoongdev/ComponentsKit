@@ -58,24 +58,20 @@ public struct SUButton: View {
     case (true, _, _):
       SULoading(model: self.model.preferredLoadingVM)
       Text(self.model.title)
+    case (false, let uiImage?, .leading) where self.model.title.isEmpty:
+      ButtonImageView(image: uiImage, tintColor: self.model.imageTintColor)
+        .frame(width: self.model.imageSide, height: self.model.imageSide)
     case (false, let uiImage?, .leading):
-      if self.model.title.isEmpty {
-        ButtonImageView(image: uiImage, tintColor: self.model.imageTintColor)
-          .frame(width: self.model.imageSide, height: self.model.imageSide)
-      } else {
-        ButtonImageView(image: uiImage, tintColor: self.model.imageTintColor)
-          .frame(width: self.model.imageSide, height: self.model.imageSide)
-        Text(self.model.title)
-      }
+      ButtonImageView(image: uiImage, tintColor: self.model.imageTintColor)
+        .frame(width: self.model.imageSide, height: self.model.imageSide)
+      Text(self.model.title)
+    case (false, let uiImage?, .trailing) where self.model.title.isEmpty:
+      ButtonImageView(image: uiImage, tintColor: self.model.imageTintColor)
+        .frame(width: self.model.imageSide, height: self.model.imageSide)
     case (false, let uiImage?, .trailing):
-      if self.model.title.isEmpty {
-        ButtonImageView(image: uiImage, tintColor: self.model.imageTintColor)
-          .frame(width: self.model.imageSide, height: self.model.imageSide)
-      } else {
-        Text(self.model.title)
-        ButtonImageView(image: uiImage, tintColor: self.model.imageTintColor)
-          .frame(width: self.model.imageSide, height: self.model.imageSide)
-      }
+      Text(self.model.title)
+      ButtonImageView(image: uiImage, tintColor: self.model.imageTintColor)
+        .frame(width: self.model.imageSide, height: self.model.imageSide)
     default:
       Text(self.model.title)
     }
