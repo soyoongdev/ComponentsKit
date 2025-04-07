@@ -100,11 +100,9 @@ struct ButtonImageView: UIViewRepresentable {
     return imageView
   }
 
-  func updateUIView(_ uiView: UIImageView, context: Context) {
-    uiView.image = self.image
-    uiView.tintColor = self.tintColor
-    uiView.setNeedsLayout()
-    uiView.layoutIfNeeded()
+  func updateUIView(_ imageView: UIImageView, context: Context) {
+    imageView.image = self.image
+    imageView.tintColor = self.tintColor
   }
 }
 
