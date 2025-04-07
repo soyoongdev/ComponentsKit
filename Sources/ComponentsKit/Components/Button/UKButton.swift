@@ -41,6 +41,10 @@ open class UKButton: UIView, UKComponent {
   /// An optional image displayed alongside the title.
   public let imageView = UIImageView()
 
+  // MARK: - Layout Constraints
+
+  private var imageViewConstraints = LayoutConstraints()
+
   // MARK: UIView Properties
 
   open override var intrinsicContentSize: CGSize {
@@ -131,11 +135,8 @@ open class UKButton: UIView, UKComponent {
     if self.model.shouldUpdateSize(oldModel) {
       self.invalidateIntrinsicContentSize()
 
-      for constraint in self.imageView.constraints {
-        if constraint.firstAttribute == .width || constraint.firstAttribute == .height {
-          constraint.constant = self.model.imageSide
-        }
-      }
+      self.imageViewConstraints.width?.constant = self.model.imageSide
+      self.imageViewConstraints.height?.constant = self.model.imageSide
     }
   }
 
