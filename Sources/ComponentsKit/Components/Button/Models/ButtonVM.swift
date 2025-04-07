@@ -170,9 +170,9 @@ extension ButtonVM {
     guard let imageSrc else { return nil }
     switch imageSrc {
     case .sfSymbol(let name):
-      return UIImage(systemName: name)
+      return UIImage(systemName: name)?.withRenderingMode(.alwaysTemplate)
     case .local(let name, let bundle):
-      return UIImage(named: name, in: bundle, compatibleWith: nil)
+      return UIImage(named: name, in: bundle, compatibleWith: nil)?.withRenderingMode(.alwaysTemplate)
     }
   }
 }
