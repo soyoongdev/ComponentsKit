@@ -228,3 +228,9 @@ extension ButtonVM {
     }
   }
 }
+
+extension ButtonVM {
+  public var imageTintColor: UIColor? {
+    return self.foregroundColor.uiColor
+  }
+}
