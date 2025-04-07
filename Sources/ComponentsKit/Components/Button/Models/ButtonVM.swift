@@ -165,6 +165,18 @@ extension ButtonVM {
   }
 }
 
+extension ButtonVM {
+  var image: UIImage? {
+    guard let imageSrc else { return nil }
+    switch imageSrc {
+    case .sfSymbol(let name):
+      return UIImage(systemName: name)
+    case .local(let name, let bundle):
+      return UIImage(named: name, in: bundle, compatibleWith: nil)
+    }
+  }
+}
+
 // MARK: UIKit Helpers
 
 extension ButtonVM {
@@ -197,35 +209,11 @@ extension ButtonVM {
   }
 }
 
-extension ButtonVM {
-  public var uiImage: UIImage? {
-    guard let imageSrc else { return nil }
-    switch imageSrc {
-    case .sfSymbol(let name):
-      return UIImage(systemName: name)
-    case .local(let name, let bundle):
-      return UIImage(named: name, in: bundle, compatibleWith: nil)
-    }
-  }
-}
-
 // MARK: SwiftUI Helpers
 
 extension ButtonVM {
   var width: CGFloat? {
     return self.isFullWidth ? 10_000 : nil
-  }
-}
-
-extension ButtonVM {
-  public var image: UIImage? {
-    guard let imageSrc = self.imageSrc else { return nil }
-    switch imageSrc {
-    case .sfSymbol(let name):
-      return UIImage(systemName: name)
-    case .local(let name, let bundle):
-      return UIImage(named: name, in: bundle, compatibleWith: nil)
-    }
   }
 }
 
