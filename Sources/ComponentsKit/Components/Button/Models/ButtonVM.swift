@@ -149,6 +149,13 @@ extension ButtonVM {
     case .large: 52
     }
   }
+  var imageSide: CGFloat {
+    switch self.size {
+    case .small: 20
+    case .medium: 24
+    case .large: 28
+    }
+  }
   var horizontalPadding: CGFloat {
     return switch self.size {
     case .small: 16
@@ -195,7 +202,7 @@ extension ButtonVM {
     guard let imageSrc else { return nil }
     switch imageSrc {
     case .sfSymbol(let name):
-      return UIImage(systemName: name)?.withRenderingMode(.alwaysTemplate)
+      return UIImage(systemName: name)
     case .local(let name, let bundle):
       return UIImage(named: name, in: bundle, compatibleWith: nil)
     }
@@ -215,7 +222,7 @@ extension ButtonVM {
     guard let imageSrc = self.imageSrc else { return nil }
     switch imageSrc {
     case .sfSymbol(let name):
-      return UIImage(systemName: name)?.withRenderingMode(.alwaysTemplate)
+      return UIImage(systemName: name)
     case .local(let name, let bundle):
       return UIImage(named: name, in: bundle, compatibleWith: nil)
     }

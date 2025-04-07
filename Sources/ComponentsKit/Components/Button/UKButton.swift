@@ -111,6 +111,8 @@ open class UKButton: UIView, UKComponent {
 
   private func layout() {
     self.stackView.center()
+
+    self.imageView.size(width: self.model.imageSide, height: self.model.imageSide)
   }
 
   open override func layoutSubviews() {
@@ -130,6 +132,14 @@ open class UKButton: UIView, UKComponent {
       Self.Style.imageView(self.imageView, model: self.model)
       self.loaderView.model = self.model.preferredLoadingVM
       self.invalidateIntrinsicContentSize()
+
+      for constraint in self.imageView.constraints {
+        if constraint.firstAttribute == .width || constraint.firstAttribute == .height {
+          constraint.constant = self.model.imageSide
+        }
+      }
+      self.setNeedsLayout()
+      self.layoutIfNeeded()
     }
   }
 
@@ -240,11 +250,7 @@ extension UKButton {
     static func imageView(_ imageView: UIImageView, model: Model) {
       imageView.image = model.uiImage
       imageView.tintColor = model.foregroundColor.uiColor
-      imageView.contentMode = .scaleAspectFit
-      imageView.clipsToBounds = true
-
-      let imageSize = model.height * 0.6
-      _ = imageView.size(width: imageSize, height: imageSize)
+      imageView.contentMode = .scaleAspectFill
     }
   }
 }

@@ -60,17 +60,17 @@ public struct SUButton: View {
       Text(self.model.title)
     case (false, let uiImage?, .leading):
       if self.model.title.isEmpty {
-        ButtonImageView(image: uiImage, size: self.model.height * 0.6)
+        ButtonImageView(image: uiImage, size: self.model.imageSide)
       } else {
-        ButtonImageView(image: uiImage, size: self.model.height * 0.6)
+        ButtonImageView(image: uiImage, size: self.model.imageSide)
         Text(self.model.title)
       }
     case (false, let uiImage?, .trailing):
       if self.model.title.isEmpty {
-        ButtonImageView(image: uiImage, size: self.model.height * 0.6)
+        ButtonImageView(image: uiImage, size: self.model.imageSide)
       } else {
         Text(self.model.title)
-        ButtonImageView(image: uiImage, size: self.model.height * 0.6)
+        ButtonImageView(image: uiImage, size: self.model.imageSide)
       }
     default:
       Text(self.model.title)
