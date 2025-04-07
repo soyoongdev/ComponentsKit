@@ -18,6 +18,7 @@ struct ButtonPreview: View {
       }
       Form {
         AnimationScalePicker(selection: self.$model.animationScale)
+        ButtonFontPicker(selection: self.$model.font)
         ComponentOptionalColorPicker(selection: self.$model.color)
         ComponentRadiusPicker(selection: self.$model.cornerRadius) {
           Text("Custom: 20px").tag(ComponentRadius.custom(20))
@@ -27,21 +28,16 @@ struct ButtonPreview: View {
           Text("8").tag(CGFloat(8))
           Text("12").tag(CGFloat(12))
         }
-        ButtonFontPicker(selection: self.$model.font)
-        if !self.model.isLoading {
-          Toggle("Enabled", isOn: self.$model.isEnabled)
-        }
+        Toggle("Enabled", isOn: self.$model.isEnabled)
         Toggle("Full Width", isOn: self.$model.isFullWidth)
+        Picker("Image Location", selection: self.$model.imageLocation) {
+          Text("Leading").tag(ButtonVM.ImageLocation.leading)
+          Text("Trailing").tag(ButtonVM.ImageLocation.trailing)
+        }
         Picker("Image Source", selection: self.$model.imageSrc) {
           Text("SF Symbol").tag(ButtonVM.ImageSource.sfSymbol("camera.fill"))
           Text("Local").tag(ButtonVM.ImageSource.local("avatar_placeholder"))
           Text("None").tag(Optional<ButtonVM.ImageSource>.none)
-        }
-        if self.model.imageSrc != nil && !self.model.title.isEmpty {
-          Picker("Image Location", selection: self.$model.imageLocation) {
-            Text("Leading").tag(ButtonVM.ImageLocation.leading)
-            Text("Trailing").tag(ButtonVM.ImageLocation.trailing)
-          }
         }
         Toggle("Loading", isOn: self.$model.isLoading)
         SizePicker(selection: self.$model.size)
@@ -58,16 +54,6 @@ struct ButtonPreview: View {
           Text("Bordered with small border").tag(ButtonStyle.bordered(.small))
           Text("Bordered with medium border").tag(ButtonStyle.bordered(.medium))
           Text("Bordered with large border").tag(ButtonStyle.bordered(.large))
-        }
-        .onChange(of: self.model.imageLocation) { _ in
-          if self.model.isLoading {
-            self.model.isLoading = false
-          }
-        }
-        .onChange(of: self.model.imageSrc) { _ in
-          if self.model.isLoading {
-            self.model.isLoading = false
-          }
         }
       }
     }
