@@ -132,6 +132,21 @@ open class UKButton: UIView, UKComponent {
 
     self.style()
 
+    self.loaderView.isHidden = !self.model.isLoading
+    self.titleLabel.isHidden = false
+    self.imageView.isHidden = self.model.isLoading || (self.model.imageSrc == nil)
+
+    switch (self.model.isLoading, self.model.imageSrc, self.model.imageLocation) {
+    case (false, .some(_), .leading):
+      self.stackView.removeArrangedSubview(self.imageView)
+      self.stackView.insertArrangedSubview(self.imageView, at: 0)
+    case (false, .some(_), .trailing):
+      self.stackView.removeArrangedSubview(self.imageView)
+      self.stackView.addArrangedSubview(self.imageView)
+    default:
+      break
+    }
+
     if self.model.shouldUpdateSize(oldModel) {
       self.invalidateIntrinsicContentSize()
 
@@ -227,21 +242,6 @@ extension UKButton {
       imageView: UIImageView
     ) {
       stackView.spacing = model.title.isEmpty ? 0 : model.contentSpacing
-
-      loaderView.isHidden = !model.isLoading
-      titleLabel.isHidden = false
-      imageView.isHidden = model.isLoading || (model.imageSrc == nil)
-
-      switch (model.isLoading, model.imageSrc, model.imageLocation) {
-      case (false, .some(_), .leading):
-        stackView.removeArrangedSubview(imageView)
-        stackView.insertArrangedSubview(imageView, at: 0)
-      case (false, .some(_), .trailing):
-        stackView.removeArrangedSubview(imageView)
-        stackView.addArrangedSubview(imageView)
-      default:
-        break
-      }
     }
 
     static func imageView(_ imageView: UIImageView, model: Model) {
