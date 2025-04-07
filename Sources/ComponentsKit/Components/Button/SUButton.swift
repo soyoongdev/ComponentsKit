@@ -85,7 +85,7 @@ public struct SUButton: View {
 struct ButtonImageView: UIViewRepresentable {
   class InternalImageView: UIImageView {
     override var intrinsicContentSize: CGSize {
-      return self.bounds.size
+      return .zero
     }
   }
 
