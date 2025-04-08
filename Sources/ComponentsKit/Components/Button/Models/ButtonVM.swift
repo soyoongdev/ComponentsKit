@@ -1,4 +1,3 @@
-import SwiftUI
 import UIKit
 
 /// A model that defines the appearance properties for a button component.
@@ -224,11 +223,5 @@ extension ButtonVM {
 extension ButtonVM {
   var width: CGFloat? {
     return self.isFullWidth ? 10_000 : nil
-  }
-}
-
-extension ButtonVM {
-  var imageTintColor: UIColor? {
-    return self.foregroundColor.uiColor
   }
 }

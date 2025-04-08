@@ -79,15 +79,14 @@ open class UKButton: UIView, UKComponent {
   private func setup() {
     self.addSubview(self.stackView)
 
+    self.stackView.addArrangedSubview(self.loaderView)
+    self.stackView.addArrangedSubview(self.titleLabel)
     switch self.model.imageLocation {
     case .leading:
       self.stackView.insertArrangedSubview(self.imageView, at: 0)
     case .trailing:
       self.stackView.addArrangedSubview(self.imageView)
     }
-
-    self.stackView.addArrangedSubview(self.loaderView)
-    self.stackView.addArrangedSubview(self.titleLabel)
 
     if #available(iOS 17.0, *) {
       self.registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (view: Self, _: UITraitCollection) in
@@ -101,14 +100,9 @@ open class UKButton: UIView, UKComponent {
   private func style() {
     Self.Style.mainView(self, model: self.model)
     Self.Style.titleLabel(self.titleLabel, model: self.model)
-    Self.Style.configureStackView(
-      self.stackView,
-      model: self.model
-    )
+    Self.Style.configureStackView(self.stackView, model: self.model)
+    Self.Style.loaderView(self.loaderView, model: self.model)
     Self.Style.imageView(self.imageView, model: self.model)
-
-    self.loaderView.model = self.model.preferredLoadingVM
-    self.loaderView.isVisible = self.model.isLoading
   }
 
   // MARK: Layout
@@ -134,9 +128,6 @@ open class UKButton: UIView, UKComponent {
     guard self.model != oldModel else { return }
 
     self.style()
-
-    self.loaderView.isVisible = self.model.isLoading
-    self.titleLabel.isHidden = self.model.title.isEmpty
 
     if self.model.shouldUpdateImagePosition(oldModel) {
       self.stackView.removeArrangedSubview(self.imageView)
@@ -240,6 +231,7 @@ extension UKButton {
       label.text = model.title
       label.font = model.preferredFont.uiFont
       label.textColor = model.foregroundColor.uiColor
+      label.isHidden = model.title.isEmpty
     }
     static func configureStackView(
       _ stackView: UIStackView,
@@ -250,7 +242,10 @@ extension UKButton {
       stackView.alignment = .center
       stackView.spacing = model.contentSpacing
     }
-
+    static func loaderView(_ view: UKLoading, model: Model) {
+      view.model = model.preferredLoadingVM
+      view.isVisible = model.isLoading
+    }
     static func imageView(_ imageView: UIImageView, model: Model) {
       imageView.image = model.image
       imageView.contentMode = .scaleAspectFit
