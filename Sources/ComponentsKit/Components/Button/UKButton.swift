@@ -78,9 +78,6 @@ open class UKButton: UIView, UKComponent {
 
   private func setup() {
     self.addSubview(self.stackView)
-    self.stackView.axis = .horizontal
-    self.stackView.alignment = .center
-    self.stackView.spacing = self.model.contentSpacing
 
     self.stackView.addArrangedSubview(self.imageView)
     self.stackView.addArrangedSubview(self.loaderView)
@@ -242,6 +239,9 @@ extension UKButton {
       _ stackView: UIStackView,
       model: Model
     ) {
+      stackView.spacing = model.contentSpacing
+      stackView.axis = .horizontal
+      stackView.alignment = .center
       stackView.spacing = model.contentSpacing
     }
 
