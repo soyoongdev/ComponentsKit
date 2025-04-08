@@ -18,17 +18,17 @@ struct ButtonPreview: View {
       }
       Form {
         AnimationScalePicker(selection: self.$model.animationScale)
-        ButtonFontPicker(selection: self.$model.font)
         ComponentOptionalColorPicker(selection: self.$model.color)
-        ComponentRadiusPicker(selection: self.$model.cornerRadius) {
-          Text("Custom: 20px").tag(ComponentRadius.custom(20))
-        }
         Picker("Content Spacing", selection: self.$model.contentSpacing) {
           Text("4").tag(CGFloat(4))
           Text("8").tag(CGFloat(8))
           Text("12").tag(CGFloat(12))
         }
+        ComponentRadiusPicker(selection: self.$model.cornerRadius) {
+          Text("Custom: 20px").tag(ComponentRadius.custom(20))
+        }
         Toggle("Enabled", isOn: self.$model.isEnabled)
+        ButtonFontPicker(selection: self.$model.font)
         Toggle("Full Width", isOn: self.$model.isFullWidth)
         Picker("Image Location", selection: self.$model.imageLocation) {
           Text("Leading").tag(ButtonVM.ImageLocation.leading)
@@ -40,13 +40,13 @@ struct ButtonPreview: View {
           Text("None").tag(Optional<ButtonVM.ImageSource>.none)
         }
         Toggle("Loading", isOn: self.$model.isLoading)
-        SizePicker(selection: self.$model.size)
         Toggle("Show Title", isOn: Binding<Bool>(
           get: { !self.model.title.isEmpty },
           set: { newValue in
             self.model.title = newValue ? "Button" : ""
           }
         ))
+        SizePicker(selection: self.$model.size)
         Picker("Style", selection: self.$model.style) {
           Text("Filled").tag(ButtonStyle.filled)
           Text("Plain").tag(ButtonStyle.plain)
