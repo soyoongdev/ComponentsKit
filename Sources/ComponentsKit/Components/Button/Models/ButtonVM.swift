@@ -171,7 +171,7 @@ extension ButtonVM {
     case .sfSymbol(let name):
       return UIImage(systemName: name)?.withTintColor(
         self.foregroundColor.uiColor,
-        renderingMode: .alwaysTemplate
+        renderingMode: .alwaysOriginal
       )
     case .local(let name, let bundle):
       return UIImage(named: name, in: bundle, compatibleWith: nil)
