@@ -77,7 +77,6 @@ extension ButtonVM {
   var isInteractive: Bool {
     self.isEnabled && !self.isLoading
   }
-
   var preferredLoadingVM: LoadingVM {
     return self.loadingVM ?? .init {
       $0.color = .init(
@@ -170,9 +169,12 @@ extension ButtonVM {
     guard let imageSrc else { return nil }
     switch imageSrc {
     case .sfSymbol(let name):
-      return UIImage(systemName: name)?.withRenderingMode(.alwaysTemplate)
+      return UIImage(systemName: name)?.withTintColor(
+        self.foregroundColor.uiColor,
+        renderingMode: .alwaysTemplate
+      )
     case .local(let name, let bundle):
-      return UIImage(named: name, in: bundle, compatibleWith: nil)?.withRenderingMode(.alwaysTemplate)
+      return UIImage(named: name, in: bundle, compatibleWith: nil)
     }
   }
 }
@@ -203,7 +205,6 @@ extension ButtonVM {
     || self.isFullWidth != oldModel?.isFullWidth
     || self.isLoading != oldModel?.isLoading
     || self.imageSrc != oldModel?.imageSrc
-    || self.imageLocation != oldModel?.imageLocation
     || self.contentSpacing != oldModel?.contentSpacing
     || self.title != oldModel?.title
   }
@@ -218,7 +219,7 @@ extension ButtonVM {
 }
 
 extension ButtonVM {
-  public var imageTintColor: UIColor? {
+  var imageTintColor: UIColor? {
     return self.foregroundColor.uiColor
   }
 }

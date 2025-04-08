@@ -59,26 +59,28 @@ public struct SUButton: View {
       SULoading(model: self.model.preferredLoadingVM)
       Text(self.model.title)
     case (false, let uiImage?, .leading) where self.model.title.isEmpty:
-      ButtonImageView(image: uiImage, tintColor: self.model.imageTintColor)
+      ButtonImageView(image: uiImage)
         .frame(width: self.model.imageSide, height: self.model.imageSide)
     case (false, let uiImage?, .leading):
-      ButtonImageView(image: uiImage, tintColor: self.model.imageTintColor)
+      ButtonImageView(image: uiImage)
         .frame(width: self.model.imageSide, height: self.model.imageSide)
       Text(self.model.title)
     case (false, let uiImage?, .trailing) where self.model.title.isEmpty:
-      ButtonImageView(image: uiImage, tintColor: self.model.imageTintColor)
+      ButtonImageView(image: uiImage)
         .frame(width: self.model.imageSide, height: self.model.imageSide)
     case (false, let uiImage?, .trailing):
       Text(self.model.title)
-      ButtonImageView(image: uiImage, tintColor: self.model.imageTintColor)
+      ButtonImageView(image: uiImage)
         .frame(width: self.model.imageSide, height: self.model.imageSide)
-    default:
+    case (false, _, _):
       Text(self.model.title)
     }
   }
 }
 
-struct ButtonImageView: UIViewRepresentable {
+// MARK: - Helpers
+
+private struct ButtonImageView: UIViewRepresentable {
   class InternalImageView: UIImageView {
     override var intrinsicContentSize: CGSize {
       return .zero
@@ -86,19 +88,16 @@ struct ButtonImageView: UIViewRepresentable {
   }
 
   let image: UIImage
-  let tintColor: UIColor?
 
   func makeUIView(context: Context) -> UIImageView {
     let imageView = InternalImageView()
     imageView.image = self.image
     imageView.contentMode = .scaleAspectFit
-    imageView.tintColor = self.tintColor
     return imageView
   }
 
   func updateUIView(_ imageView: UIImageView, context: Context) {
     imageView.image = self.image
-    imageView.tintColor = self.tintColor
   }
 }
 

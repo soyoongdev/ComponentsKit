@@ -41,7 +41,7 @@ open class UKButton: UIView, UKComponent {
   /// An optional image displayed alongside the title.
   public let imageView = UIImageView()
 
-  // MARK: - Layout Constraints
+  // MARK: Private Properties
 
   private var imageViewConstraints = LayoutConstraints()
 
@@ -100,15 +100,12 @@ open class UKButton: UIView, UKComponent {
     Self.Style.titleLabel(self.titleLabel, model: self.model)
     Self.Style.configureStackView(
       self.stackView,
-      model: self.model,
-      loaderView: self.loaderView,
-      titleLabel: self.titleLabel,
-      imageView: self.imageView
+      model: self.model
     )
     Self.Style.imageView(self.imageView, model: self.model)
 
     self.loaderView.model = self.model.preferredLoadingVM
-    self.loaderView.isHidden = !self.model.isLoading
+    self.loaderView.isVisible = self.model.isLoading
   }
 
   // MARK: Layout
@@ -132,7 +129,7 @@ open class UKButton: UIView, UKComponent {
 
     self.style()
 
-    self.loaderView.isHidden = !self.model.isLoading
+    self.loaderView.isVisible = self.model.isLoading
     self.titleLabel.isHidden = self.model.title.isEmpty
 
     switch (self.model.isLoading, self.model.imageSrc, self.model.imageLocation) {
@@ -235,19 +232,15 @@ extension UKButton {
     }
     static func configureStackView(
       _ stackView: UIStackView,
-      model: Model,
-      loaderView: UKLoading,
-      titleLabel: UILabel,
-      imageView: UIImageView
+      model: Model
     ) {
       stackView.spacing = model.contentSpacing
     }
 
     static func imageView(_ imageView: UIImageView, model: Model) {
       imageView.image = model.image
-      imageView.tintColor = model.foregroundColor.uiColor
       imageView.contentMode = .scaleAspectFit
-      imageView.isHidden = model.isLoading || (model.imageSrc.isNil)
+      imageView.isHidden = model.isLoading || model.imageSrc.isNil
     }
   }
 }
