@@ -113,7 +113,10 @@ open class UKButton: UIView, UKComponent {
   private func layout() {
     self.stackView.center()
 
-    self.imageView.size(width: self.model.imageSide, height: self.model.imageSide)
+    self.imageViewConstraints = self.imageView.size(
+      width: self.model.imageSide,
+      height: self.model.imageSide
+    )
   }
 
   open override func layoutSubviews() {
@@ -132,22 +135,27 @@ open class UKButton: UIView, UKComponent {
     self.loaderView.isVisible = self.model.isLoading
     self.titleLabel.isHidden = self.model.title.isEmpty
 
-    switch (self.model.isLoading, self.model.imageSrc, self.model.imageLocation) {
-    case (false, .some(_), .leading):
+    if self.model.shouldUpdateImagePosition(oldModel) {
       self.stackView.removeArrangedSubview(self.imageView)
-      self.stackView.insertArrangedSubview(self.imageView, at: 0)
-    case (false, .some(_), .trailing):
-      self.stackView.removeArrangedSubview(self.imageView)
-      self.stackView.addArrangedSubview(self.imageView)
-    default:
-      break
+      switch self.model.imageLocation {
+      case .leading:
+        self.stackView.insertArrangedSubview(self.imageView, at: 0)
+      case .trailing:
+        self.stackView.addArrangedSubview(self.imageView)
+      }
     }
 
-    if self.model.shouldUpdateSize(oldModel) {
-      self.invalidateIntrinsicContentSize()
-
+    if self.model.shouldUpdateImageSize(oldModel) {
       self.imageViewConstraints.width?.constant = self.model.imageSide
       self.imageViewConstraints.height?.constant = self.model.imageSide
+
+      UIView.performWithoutAnimation {
+        self.layoutIfNeeded()
+      }
+    }
+
+    if self.model.shouldRecalculateSize(oldModel) {
+      self.invalidateIntrinsicContentSize()
     }
   }
 

@@ -199,14 +199,23 @@ extension ButtonVM {
 
     return .init(width: width, height: self.height)
   }
-  func shouldUpdateSize(_ oldModel: Self?) -> Bool {
-    return self.size != oldModel?.size
-    || self.font != oldModel?.font
-    || self.isFullWidth != oldModel?.isFullWidth
-    || self.isLoading != oldModel?.isLoading
-    || self.imageSrc != oldModel?.imageSrc
-    || self.contentSpacing != oldModel?.contentSpacing
-    || self.title != oldModel?.title
+  func shouldUpdateImagePosition(_ oldModel: Self?) -> Bool {
+    guard let oldModel else { return true }
+    return self.imageLocation != oldModel.imageLocation
+  }
+  func shouldUpdateImageSize(_ oldModel: Self?) -> Bool {
+    guard let oldModel else { return true }
+    return self.imageSide != oldModel.imageSide
+  }
+  func shouldRecalculateSize(_ oldModel: Self?) -> Bool {
+    guard let oldModel else { return true }
+    return self.size != oldModel.size
+    || self.font != oldModel.font
+    || self.isFullWidth != oldModel.isFullWidth
+    || self.isLoading != oldModel.isLoading
+    || self.imageSrc != oldModel.imageSrc
+    || self.contentSpacing != oldModel.contentSpacing
+    || self.title != oldModel.title
   }
 }
 
