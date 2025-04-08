@@ -79,7 +79,13 @@ open class UKButton: UIView, UKComponent {
   private func setup() {
     self.addSubview(self.stackView)
 
-    self.stackView.addArrangedSubview(self.imageView)
+    switch self.model.imageLocation {
+    case .leading:
+      self.stackView.insertArrangedSubview(self.imageView, at: 0)
+    case .trailing:
+      self.stackView.addArrangedSubview(self.imageView)
+    }
+
     self.stackView.addArrangedSubview(self.loaderView)
     self.stackView.addArrangedSubview(self.titleLabel)
 
