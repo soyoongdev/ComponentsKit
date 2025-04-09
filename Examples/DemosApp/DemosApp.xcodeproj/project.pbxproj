@@ -90,7 +90,7 @@
 				};
 			};
 			buildConfigurationList = 740D22222CD3BECA006731A5 /* Build configuration list for PBXProject "DemosApp" */;
-			compatibilityVersion = "Xcode 15.0";
+			compatibilityVersion = "Xcode 13.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
