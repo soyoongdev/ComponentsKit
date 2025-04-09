@@ -12,6 +12,12 @@
   A library with beautiful UI components to build SwiftUI and UIKit apps faster.
 </p>
 
+<p align="center">
+    <a href="https://swiftpackageindex.com/componentskit/ComponentsKit"><img src="https://img.shields.io/endpoint?url=https://swiftpackageindex.com/api/packages/componentskit/ComponentsKit/badge?type%3Dplatforms" alt="Platforms"></a>
+    <a href="https://swiftpackageindex.com/componentskit/ComponentsKit"><img src="https://img.shields.io/endpoint?url=https://swiftpackageindex.com/api/packages/componentskit/ComponentsKit/badge?type%3Dswift-versions" alt="Swift Versions"></a>
+    <a href="https://github.com/componentskit/ComponentsKit/blob/main/LICENSE"><img src="https://img.shields.io/github/license/componentskit/ComponentsKit" alt="License"></a>
+</p>
+
 ---
 
 ## Installation
