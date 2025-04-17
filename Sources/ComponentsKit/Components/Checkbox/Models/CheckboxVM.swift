@@ -56,7 +56,14 @@ extension CheckboxVM {
     return self.title.isNil ? 0.0 : 8.0
   }
   var checkmarkLineWidth: CGFloat {
-    return 1.5
+    switch self.size {
+    case .small:
+      return 1.5
+    case .medium:
+      return 1.75
+    case .large:
+      return 2.0
+    }
   }
   var checkboxSide: CGFloat {
     switch self.size {
