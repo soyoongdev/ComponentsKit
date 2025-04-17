@@ -39,11 +39,14 @@ public struct SUCard<Content: View>: View {
   public var body: some View {
     self.content()
       .padding(self.model.contentPaddings.edgeInsets)
-      .background(self.model.preferredBackgroundColor.color)
+      .background(self.model.backgroundColor.color)
       .cornerRadius(self.model.cornerRadius.value)
       .overlay(
         RoundedRectangle(cornerRadius: self.model.cornerRadius.value)
-          .stroke(UniversalColor.divider.color, lineWidth: self.model.borderWidth.value)
+          .stroke(
+            self.model.borderColor.color,
+            lineWidth: self.model.borderWidth.value
+          )
       )
       .shadow(self.model.shadow)
   }

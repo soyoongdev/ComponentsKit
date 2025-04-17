@@ -130,10 +130,10 @@ open class UKCard<Content: UIView>: UIView, UKComponent {
 extension UKCard {
   fileprivate enum Style {
     static func mainView(_ view: UIView, model: Model) {
-      view.backgroundColor = model.preferredBackgroundColor.uiColor
+      view.backgroundColor = model.backgroundColor.uiColor
       view.layer.cornerRadius = model.cornerRadius.value
       view.layer.borderWidth = model.borderWidth.value
-      view.layer.borderColor = UniversalColor.divider.cgColor
+      view.layer.borderColor = model.borderColor.cgColor
       view.shadow(model.shadow)
     }
   }

@@ -3,7 +3,10 @@ import Foundation
 /// A model that defines the appearance properties for a card component.
 public struct CardVM: ComponentVM {
   /// The background color of the card.
-  public var backgroundColor: UniversalColor?
+  public var backgroundColor: UniversalColor = .background
+
+  /// The border color of the card.
+  public var borderColor: UniversalColor = .divider
 
   /// The border thickness of the card.
   ///
@@ -27,12 +30,4 @@ public struct CardVM: ComponentVM {
 
   /// Initializes a new instance of `CardVM` with default values.
   public init() {}
-}
-
-// MARK: - Helpers
-
-extension CardVM {
-  var preferredBackgroundColor: UniversalColor {
-    return self.backgroundColor ?? .background
-  }
 }
