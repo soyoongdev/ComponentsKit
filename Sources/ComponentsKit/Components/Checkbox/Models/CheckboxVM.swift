@@ -56,23 +56,16 @@ extension CheckboxVM {
     return self.title.isNil ? 0.0 : 8.0
   }
   var checkmarkLineWidth: CGFloat {
-    switch self.size {
-    case .small:
-      return 1.5
-    case .medium:
-      return 2.0
-    case .large:
-      return 2.5
-    }
+    return 1.5
   }
   var checkboxSide: CGFloat {
     switch self.size {
     case .small:
-      return 16.0
-    case .medium:
       return 20.0
-    case .large:
+    case .medium:
       return 24.0
+    case .large:
+      return 28.0
     }
   }
   var checkboxCornerRadius: CGFloat {
@@ -104,6 +97,22 @@ extension CheckboxVM {
     case .large:
       return .lgBody
     }
+  }
+  var checkmarkPath: CGPath {
+    let path = UIBezierPath()
+    path.move(to: .init(
+      x: 7 / 24 * self.checkboxSide,
+      y: 12 / 24 * self.checkboxSide
+    ))
+    path.addLine(to: .init(
+      x: 11 / 24 * self.checkboxSide,
+      y: 16 / 24 * self.checkboxSide
+    ))
+    path.addLine(to: .init(
+      x: 17 / 24 * self.checkboxSide,
+      y: 8 / 24 * self.checkboxSide
+    ))
+    return path.cgPath
   }
 }
 
