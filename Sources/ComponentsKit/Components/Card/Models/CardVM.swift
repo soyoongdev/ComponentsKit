@@ -2,6 +2,11 @@ import Foundation
 
 /// A model that defines the appearance properties for a card component.
 public struct CardVM: ComponentVM {
+  /// The scaling factor for the card's tap animation, with a value between 0 and 1.
+  ///
+  /// Defaults to `.medium`.
+  public var animationScale: AnimationScale = .medium
+
   /// The background color of the card.
   public var backgroundColor: UniversalColor = .background
 
@@ -22,6 +27,11 @@ public struct CardVM: ComponentVM {
   ///
   /// Defaults to `.medium`.
   public var cornerRadius: ContainerRadius = .medium
+
+  /// A Boolean value indicating whether the card should allow to be tapped.
+  ///
+  /// Defaults to `true`.
+  public var isTappable: Bool = false
 
   /// The shadow of the card.
   ///

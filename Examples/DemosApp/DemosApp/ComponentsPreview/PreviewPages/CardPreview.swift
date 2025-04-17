@@ -15,6 +15,7 @@ struct CardPreview: View {
         SUCard(model: self.model, content: self.suCardContent)
       }
       Form {
+        AnimationScalePicker(selection: self.$model.animationScale)
         Picker("Background Color", selection: self.$model.backgroundColor) {
           Text("Background").tag(UniversalColor.background)
           Text("Secondary Background").tag(UniversalColor.secondaryBackground)
@@ -48,6 +49,7 @@ struct CardPreview: View {
           Text("Large").tag(Shadow.large)
           Text("Custom").tag(Shadow.custom(20.0, .zero, UniversalColor.accentBackground))
         }
+        Toggle("Tappable", isOn: self.$model.isTappable)
       }
     }
   }
