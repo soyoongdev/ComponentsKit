@@ -67,6 +67,8 @@ public struct InputFieldVM: ComponentVM {
   /// The title displayed on the input field.
   public var title: String?
 
+  public var titlePosition: TitlePosition = .inside
+
   /// Initializes a new instance of `InputFieldVM` with default values.
   public init() {}
 }
@@ -104,7 +106,16 @@ extension InputFieldVM {
     }
   }
   var spacing: CGFloat {
-    return self.title.isNotNilAndEmpty ? 12 : 0
+    guard self.title.isNotNilAndEmpty else {
+      return 0
+    }
+
+    switch self.titlePosition {
+    case .inside:
+      return 12
+    case .outside:
+      return 8
+    }
   }
   var backgroundColor: UniversalColor {
     return self.color?.background ?? .content1
