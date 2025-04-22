@@ -83,6 +83,12 @@ open class UKInputField: UIView, UKComponent {
 
     self.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.handleTap)))
     self.textField.addTarget(self, action: #selector(self.handleTextChange), for: .editingChanged)
+
+    if #available(iOS 17.0, *) {
+      self.registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (view: Self, _: UITraitCollection) in
+        view.handleTraitChanges()
+      }
+    }
   }
 
   @objc private func handleTap() {
@@ -168,8 +174,19 @@ open class UKInputField: UIView, UKComponent {
       height: min(size.height, self.model.height)
     )
   }
-
+  
+  open override func traitCollectionDidChange(
+    _ previousTraitCollection: UITraitCollection?
+  ) {
+    super.traitCollectionDidChange(previousTraitCollection)
+    self.handleTraitChanges()
+  }
+  
   // MARK: Helpers
+  
+  @objc private func handleTraitChanges() {
+    Self.Style.mainView(self, model: self.model)
+  }
 
   private func updateCornerRadius() {
     self.layer.cornerRadius = self.model.cornerRadius.value(for: self.bounds.height)
@@ -186,6 +203,8 @@ extension UKInputField {
     ) {
       view.backgroundColor = model.backgroundColor.uiColor
       view.layer.cornerRadius = model.cornerRadius.value(for: view.bounds.height)
+      view.layer.borderWidth = model.borderWidth
+      view.layer.borderColor = model.borderColor.cgColor
     }
     static func titleLabel(
       _ label: UILabel,

@@ -52,6 +52,10 @@ struct InputFieldPreview: View {
         Toggle("Required", isOn: self.$model.isRequired)
         Toggle("Secure Input", isOn: self.$model.isSecureInput)
         SizePicker(selection: self.$model.size)
+        Picker("Style", selection: self.$model.style) {
+          Text("Light").tag(InputFieldVM.Style.light)
+          Text("Bordered").tag(InputFieldVM.Style.bordered)
+        }
         SubmitTypePicker(selection: self.$model.submitType)
         UniversalColorPicker(
           title: "Tint Color",
@@ -65,6 +69,10 @@ struct InputFieldPreview: View {
             self.model.title = newValue ? "Title" : nil
           }
         ))
+        Picker("Title Position", selection: self.$model.titlePosition) {
+          Text("Inside").tag(InputFieldVM.TitlePosition.inside)
+          Text("Outside").tag(InputFieldVM.TitlePosition.outside)
+        }
       }
     }
     .toolbar {

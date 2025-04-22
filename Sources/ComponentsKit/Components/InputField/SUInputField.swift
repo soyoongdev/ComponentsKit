@@ -92,7 +92,16 @@ public struct SUInputField<FocusValue: Hashable>: View {
       }
       .clipShape(
         RoundedRectangle(
-          cornerRadius: self.model.cornerRadius.value()
+          cornerRadius: self.model.cornerRadius.value(),
+        )
+      )
+      .overlay(
+        RoundedRectangle(
+          cornerRadius: self.model.cornerRadius.value(),
+        )
+        .stroke(
+          self.model.borderColor.color,
+          lineWidth: self.model.borderWidth
         )
       )
     }

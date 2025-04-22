@@ -54,6 +54,8 @@ public struct InputFieldVM: ComponentVM {
   /// Defaults to `.medium`.
   public var size: ComponentSize = .medium
 
+  public var style: Style = .light
+
   /// The type of the submit button on the keyboard.
   ///
   /// Defaults to `.return`.
@@ -118,7 +120,12 @@ extension InputFieldVM {
     }
   }
   var backgroundColor: UniversalColor {
-    return self.color?.background ?? .content1
+    switch self.style {
+    case .light:
+      return self.color?.background ?? .content1
+    case .bordered:
+      return .background
+    }
   }
   var foregroundColor: UniversalColor {
     let color = self.color?.main ?? .foreground
@@ -130,6 +137,24 @@ extension InputFieldVM {
     } else {
       return .secondaryForeground.enabled(self.isEnabled)
     }
+  }
+  var borderWidth: CGFloat {
+    switch self.style {
+    case .light:
+      return 0
+    case .bordered:
+      switch self.size {
+      case .small:
+        return BorderWidth.small.value
+      case .medium:
+        return BorderWidth.medium.value
+      case .large:
+        return BorderWidth.large.value
+      }
+    }
+  }
+  var borderColor: UniversalColor {
+    return (self.color?.main ?? .content3).enabled(self.isEnabled)
   }
 }
 
