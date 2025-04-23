@@ -8,6 +8,14 @@ public struct InputFieldVM: ComponentVM {
   /// Defaults to `.sentences`, which capitalizes the first letter of each sentence.
   public var autocapitalization: TextAutocapitalization = .sentences
 
+  /// The caption displayed below the input field.
+  public var caption: String?
+
+  /// The font used for the input field's caption.
+  ///
+  /// If not provided, the font is automatically calculated based on the input field's size.
+  public var captionFont: UniversalFont?
+
   /// The color of the input field.
   public var color: ComponentColor?
 
@@ -54,6 +62,11 @@ public struct InputFieldVM: ComponentVM {
   /// Defaults to `.medium`.
   public var size: ComponentSize = .medium
 
+  /// The visual style of the input field.
+  ///
+  /// Defaults to `.light`.
+  public var style: Style = .light
+
   /// The type of the submit button on the keyboard.
   ///
   /// Defaults to `.return`.
@@ -66,6 +79,16 @@ public struct InputFieldVM: ComponentVM {
 
   /// The title displayed on the input field.
   public var title: String?
+
+  /// The font used for the input field's title.
+  ///
+  /// If not provided, the font is automatically calculated based on the input field's size.
+  public var titleFont: UniversalFont?
+
+  /// The position of the title relative to the input field.
+  ///
+  /// Defaults to `.inside`.
+  public var titlePosition: TitlePosition = .inside
 
   /// Initializes a new instance of `InputFieldVM` with default values.
   public init() {}
@@ -88,6 +111,34 @@ extension InputFieldVM {
       return .lgBody
     }
   }
+  var preferredTitleFont: UniversalFont {
+    if let titleFont {
+      return titleFont
+    }
+
+    switch self.size {
+    case .small:
+      return .smBody
+    case .medium:
+      return .mdBody
+    case .large:
+      return .lgBody
+    }
+  }
+  var preferredCaptionFont: UniversalFont {
+    if let captionFont {
+      return captionFont
+    }
+
+    switch self.size {
+    case .small:
+      return .smCaption
+    case .medium:
+      return .mdCaption
+    case .large:
+      return .lgCaption
+    }
+  }
   var height: CGFloat {
     return switch self.size {
     case .small: 40
@@ -104,14 +155,23 @@ extension InputFieldVM {
     }
   }
   var spacing: CGFloat {
-    return self.title.isNotNilAndEmpty ? 12 : 0
+    switch self.titlePosition {
+    case .inside:
+      return 12
+    case .outside:
+      return 8
+    }
   }
   var backgroundColor: UniversalColor {
-    return self.color?.background ?? .content1
+    switch self.style {
+    case .light, .faded:
+      return self.color?.background ?? .content1
+    case .bordered:
+      return .background
+    }
   }
   var foregroundColor: UniversalColor {
-    let color = self.color?.main ?? .foreground
-    return color.enabled(self.isEnabled)
+    return (self.color?.main ?? .foreground).enabled(self.isEnabled)
   }
   var placeholderColor: UniversalColor {
     if let color {
@@ -119,6 +179,27 @@ extension InputFieldVM {
     } else {
       return .secondaryForeground.enabled(self.isEnabled)
     }
+  }
+  var captionColor: UniversalColor {
+    return (self.color?.main ?? .secondaryForeground).enabled(self.isEnabled)
+  }
+  var borderWidth: CGFloat {
+    switch self.style {
+    case .light:
+      return 0
+    case .bordered, .faded:
+      switch self.size {
+      case .small:
+        return BorderWidth.small.value
+      case .medium:
+        return BorderWidth.medium.value
+      case .large:
+        return BorderWidth.large.value
+      }
+    }
+  }
+  var borderColor: UniversalColor {
+    return (self.color?.main ?? .content3).enabled(self.isEnabled)
   }
 }
 
@@ -146,7 +227,7 @@ extension InputFieldVM {
     attributedString.append(NSAttributedString(
       string: title,
       attributes: [
-        .font: self.preferredFont.uiFont,
+        .font: self.preferredTitleFont.uiFont,
         .foregroundColor: self.foregroundColor.uiColor
       ]
     ))
@@ -160,21 +241,23 @@ extension InputFieldVM {
       attributedString.append(NSAttributedString(
         string: "*",
         attributes: [
-          .font: self.preferredFont.uiFont,
-          .foregroundColor: UniversalColor.danger.uiColor
+          .font: self.preferredTitleFont.uiFont,
+          .foregroundColor: UniversalColor.danger.enabled(self.isEnabled).uiColor
         ]
       ))
     }
     return attributedString
+  }
+  func shouldUpdateTitlePosition(_ oldModel: Self) -> Bool {
+    return self.titlePosition != oldModel.titlePosition
   }
   func shouldUpdateLayout(_ oldModel: Self) -> Bool {
     return self.size != oldModel.size
     || self.horizontalPadding != oldModel.horizontalPadding
     || self.spacing != oldModel.spacing
     || self.cornerRadius != oldModel.cornerRadius
-  }
-  func shouldUpdateCornerRadius(_ oldModel: Self) -> Bool {
-    return self.cornerRadius != oldModel.cornerRadius
+    || self.titlePosition != oldModel.titlePosition
+    || self.title.isNilOrEmpty != oldModel.title.isNilOrEmpty
   }
 }
 

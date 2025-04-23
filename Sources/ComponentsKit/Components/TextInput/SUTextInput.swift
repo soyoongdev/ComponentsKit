@@ -158,7 +158,7 @@ extension View {
   @ViewBuilder
   fileprivate func applyFocus<FocusValue: Hashable>(
     globalFocus: FocusState<FocusValue>.Binding?,
-    localFocus: FocusValue,
+    localFocus: FocusValue
   ) -> some View {
     if let globalFocus {
       self.focused(globalFocus, equals: localFocus)
