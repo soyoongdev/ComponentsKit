@@ -242,7 +242,7 @@ extension InputFieldVM {
         string: "*",
         attributes: [
           .font: self.preferredTitleFont.uiFont,
-          .foregroundColor: UniversalColor.danger.uiColor
+          .foregroundColor: UniversalColor.danger.enabled(self.isEnabled).uiColor
         ]
       ))
     }
