@@ -40,7 +40,7 @@ open class UKInputField: UIView, UKComponent {
   public var textFieldContainer = UIView()
   /// A stack view that contains `textField` and `titleLabel` when it is inside.
   public var horizontalStackView = UIStackView()
-  /// A stack view that contains `textFieldContainer` and `titleLabel` when it is outside.
+  /// A stack view that contains `textFieldContainer`, `captionLabel` and `titleLabel` when it is outside.
   public var verticalStackView = UIStackView()
 
   // MARK: Private Properties
