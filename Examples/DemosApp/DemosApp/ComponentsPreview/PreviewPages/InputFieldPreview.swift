@@ -62,9 +62,9 @@ struct InputFieldPreview: View {
         Toggle("Secure Input", isOn: self.$model.isSecureInput)
         SizePicker(selection: self.$model.size)
         Picker("Style", selection: self.$model.style) {
-          Text("Light").tag(InputFieldVM.Style.light)
-          Text("Bordered").tag(InputFieldVM.Style.bordered)
-          Text("Faded").tag(InputFieldVM.Style.faded)
+          Text("Light").tag(InputStyle.light)
+          Text("Bordered").tag(InputStyle.bordered)
+          Text("Faded").tag(InputStyle.faded)
         }
         SubmitTypePicker(selection: self.$model.submitType)
         UniversalColorPicker(
