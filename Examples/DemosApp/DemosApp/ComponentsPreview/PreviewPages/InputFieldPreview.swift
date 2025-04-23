@@ -46,7 +46,7 @@ struct InputFieldPreview: View {
             return self.model.placeholder != nil
           },
           set: { newValue in
-            self.model.placeholder = newValue ? "Placeholder" : nil
+            self.model.placeholder = newValue ? Self.placeholder : nil
           }
         ))
         Toggle("Required", isOn: self.$model.isRequired)
@@ -66,7 +66,7 @@ struct InputFieldPreview: View {
             return self.model.title != nil
           },
           set: { newValue in
-            self.model.title = newValue ? "Title" : nil
+            self.model.title = newValue ? Self.title : nil
           }
         ))
         Picker("Title Position", selection: self.$model.titlePosition) {
@@ -87,9 +87,12 @@ struct InputFieldPreview: View {
     }
   }
 
+  private static let title = "Title"
+  private static let placeholder = "Placeholder"
   private static var initialModel: InputFieldVM {
     return .init {
-      $0.title = "Title"
+      $0.title = Self.title
+      $0.placeholder = Self.placeholder
     }
   }
 }

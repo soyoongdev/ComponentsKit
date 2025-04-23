@@ -3,7 +3,7 @@ import UIKit
 
 /// A UIKit component that displays a field to input a text.
 open class UKInputField: UIView, UKComponent {
-  // MARK: Properties
+  // MARK: Public Properties
 
   /// A closure that is triggered when the text changes.
   public var onValueChange: (String) -> Void
@@ -28,15 +28,23 @@ open class UKInputField: UIView, UKComponent {
     }
   }
 
-  private var titleLabelConstraints: LayoutConstraints?
-  private var inputFieldConstraints: LayoutConstraints?
-
   // MARK: Subviews
 
   /// A label that displays the title from the model.
   public var titleLabel = UILabel()
   /// An underlying text field from the standard library.
   public var textField = UITextField()
+  /// A view that contains `horizontalStackView` and `titleLabel` whet it is outside.
+  public var textFieldContainer = UIView()
+  /// A stack view that contains `textField` and `titleLabel` whet it is inside.
+  public var horizontalStackView = UIStackView()
+  /// A stack view that contains `textFieldContainer`.
+  public var verticalStackView = UIStackView()
+
+  // MARK: Private Properties
+
+  private var textFieldContainerConstraints = LayoutConstraints()
+  private var horizontalStackViewConstraints = LayoutConstraints()
 
   // MARK: UIView Properties
 
@@ -78,10 +86,18 @@ open class UKInputField: UIView, UKComponent {
   // MARK: Setup
 
   private func setup() {
-    self.addSubview(self.titleLabel)
-    self.addSubview(self.textField)
+    self.addSubview(self.verticalStackView)
+    switch self.model.titlePosition {
+    case .inside:
+      self.horizontalStackView.addArrangedSubview(self.titleLabel)
+    case .outside:
+      self.verticalStackView.addArrangedSubview(self.titleLabel)
+    }
+    self.verticalStackView.addArrangedSubview(self.textFieldContainer)
+    self.horizontalStackView.addArrangedSubview(self.textField)
+    self.textFieldContainer.addSubview(self.horizontalStackView)
 
-    self.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.handleTap)))
+    self.textFieldContainer.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.handleTap)))
     self.textField.addTarget(self, action: #selector(self.handleTextChange), for: .editingChanged)
 
     if #available(iOS 17.0, *) {
@@ -102,7 +118,9 @@ open class UKInputField: UIView, UKComponent {
   // MARK: Style
 
   private func style() {
-    Self.Style.mainView(self, model: self.model)
+    Self.Style.textFieldContainer(self.textFieldContainer, model: self.model)
+    Self.Style.horizontalStackView(self.horizontalStackView, model: self.model)
+    Self.Style.verticalStackView(self.verticalStackView, model: self.model)
     Self.Style.textField(self.textField, model: self.model)
     Self.Style.titleLabel(self.titleLabel, model: self.model)
   }
@@ -110,25 +128,16 @@ open class UKInputField: UIView, UKComponent {
   // MARK: Layout
 
   private func layout() {
-    self.titleLabelConstraints = self.titleLabel.leading(self.model.horizontalPadding)
-    self.titleLabel.centerVertically()
+    self.verticalStackView.allEdges()
 
-    self.textField.trailing(self.model.horizontalPadding)
-    self.textField.vertically()
+    self.textFieldContainerConstraints = self.textFieldContainer.height(self.model.height)
+    self.textFieldContainer.horizontally()
 
-    self.inputFieldConstraints = self.textField.after(
-      self.titleLabel,
-      padding: self.model.spacing
-    )
+    self.horizontalStackView.vertically()
+    self.horizontalStackViewConstraints = self.horizontalStackView.horizontally(self.model.horizontalPadding)
 
     self.textField.setContentHuggingPriority(.defaultLow, for: .horizontal)
     self.titleLabel.setContentHuggingPriority(.defaultHigh, for: .horizontal)
-  }
-
-  open override func layoutSubviews() {
-    super.layoutSubviews()
-
-    self.updateCornerRadius()
   }
 
   // MARK: Update
@@ -138,10 +147,19 @@ open class UKInputField: UIView, UKComponent {
 
     self.style()
 
-    self.inputFieldConstraints?.leading?.constant = self.model.spacing
-    self.titleLabelConstraints?.leading?.constant = self.model.horizontalPadding
-    if self.model.shouldUpdateCornerRadius(oldModel) {
-      self.updateCornerRadius()
+    self.horizontalStackViewConstraints.leading?.constant = self.model.horizontalPadding
+    self.horizontalStackViewConstraints.trailing?.constant = -self.model.horizontalPadding
+    self.textFieldContainerConstraints.height?.constant = self.model.height
+
+    if self.model.shouldUpdateTitlePosition(oldModel) {
+      switch self.model.titlePosition {
+      case .inside:
+        self.verticalStackView.removeArrangedSubview(self.titleLabel)
+        self.horizontalStackView.insertArrangedSubview(self.titleLabel, at: 0)
+      case .outside:
+        self.horizontalStackView.removeArrangedSubview(self.titleLabel)
+        self.verticalStackView.insertArrangedSubview(self.titleLabel, at: 0)
+      }
     }
     if self.model.shouldUpdateLayout(oldModel) {
       self.setNeedsLayout()
@@ -169,27 +187,26 @@ open class UKInputField: UIView, UKComponent {
     } else {
       width = 10_000
     }
+
+    let height = self.verticalStackView.sizeThatFits(UIView.layoutFittingCompressedSize).height
+
     return .init(
       width: min(size.width, width),
-      height: min(size.height, self.model.height)
+      height: min(size.height, height)
     )
   }
-  
+
   open override func traitCollectionDidChange(
     _ previousTraitCollection: UITraitCollection?
   ) {
     super.traitCollectionDidChange(previousTraitCollection)
     self.handleTraitChanges()
   }
-  
-  // MARK: Helpers
-  
-  @objc private func handleTraitChanges() {
-    Self.Style.mainView(self, model: self.model)
-  }
 
-  private func updateCornerRadius() {
-    self.layer.cornerRadius = self.model.cornerRadius.value(for: self.bounds.height)
+  // MARK: Helpers
+
+  @objc private func handleTraitChanges() {
+    Self.Style.textFieldContainer(self.textFieldContainer, model: self.model)
   }
 }
 
@@ -197,24 +214,25 @@ open class UKInputField: UIView, UKComponent {
 
 extension UKInputField {
   fileprivate enum Style {
-    static func mainView(
+    static func textFieldContainer(
       _ view: UIView,
-      model: InputFieldVM
+      model: Model
     ) {
       view.backgroundColor = model.backgroundColor.uiColor
-      view.layer.cornerRadius = model.cornerRadius.value(for: view.bounds.height)
+      view.layer.cornerRadius = model.cornerRadius.value(for: model.height)
       view.layer.borderWidth = model.borderWidth
       view.layer.borderColor = model.borderColor.cgColor
     }
     static func titleLabel(
       _ label: UILabel,
-      model: InputFieldVM
+      model: Model
     ) {
       label.attributedText = model.nsAttributedTitle
+      label.isVisible = model.title.isNotNilAndEmpty
     }
     static func textField(
       _ textField: UITextField,
-      model: InputFieldVM
+      model: Model
     ) {
       textField.font = model.preferredFont.uiFont
       textField.textColor = model.foregroundColor.uiColor
@@ -226,6 +244,22 @@ extension UKInputField {
       textField.isEnabled = model.isEnabled
       textField.autocorrectionType = model.autocorrectionType
       textField.autocapitalizationType = model.autocapitalization.textAutocapitalizationType
+    }
+    static func horizontalStackView(
+      _ stackView: UIStackView,
+      model: Model
+    ) {
+      stackView.axis = .horizontal
+      stackView.spacing = model.spacing
+    }
+    static func verticalStackView(
+      _ stackView: UIStackView,
+      model: Model
+    ) {
+      stackView.axis = .vertical
+      stackView.spacing = model.spacing
+      stackView.alignment = .leading
+      stackView.distribution = .fillProportionally
     }
   }
 }

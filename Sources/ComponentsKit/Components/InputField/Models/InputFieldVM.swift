@@ -108,10 +108,6 @@ extension InputFieldVM {
     }
   }
   var spacing: CGFloat {
-    guard self.title.isNotNilAndEmpty else {
-      return 0
-    }
-
     switch self.titlePosition {
     case .inside:
       return 12
@@ -203,14 +199,16 @@ extension InputFieldVM {
     }
     return attributedString
   }
+  func shouldUpdateTitlePosition(_ oldModel: Self) -> Bool {
+    return self.titlePosition != oldModel.titlePosition
+  }
   func shouldUpdateLayout(_ oldModel: Self) -> Bool {
     return self.size != oldModel.size
     || self.horizontalPadding != oldModel.horizontalPadding
     || self.spacing != oldModel.spacing
     || self.cornerRadius != oldModel.cornerRadius
-  }
-  func shouldUpdateCornerRadius(_ oldModel: Self) -> Bool {
-    return self.cornerRadius != oldModel.cornerRadius
+    || self.titlePosition != oldModel.titlePosition
+    || self.title.isNilOrEmpty != oldModel.title.isNilOrEmpty
   }
 }
 
