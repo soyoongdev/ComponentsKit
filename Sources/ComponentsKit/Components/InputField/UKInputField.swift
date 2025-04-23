@@ -34,6 +34,8 @@ open class UKInputField: UIView, UKComponent {
   public var titleLabel = UILabel()
   /// An underlying text field from the standard library.
   public var textField = UITextField()
+  /// A label that displays the caption from the model.
+  public var captionLabel = UILabel()
   /// A view that contains `horizontalStackView` and `titleLabel` whet it is outside.
   public var textFieldContainer = UIView()
   /// A stack view that contains `textField` and `titleLabel` whet it is inside.
@@ -94,6 +96,7 @@ open class UKInputField: UIView, UKComponent {
       self.verticalStackView.addArrangedSubview(self.titleLabel)
     }
     self.verticalStackView.addArrangedSubview(self.textFieldContainer)
+    self.verticalStackView.addArrangedSubview(self.captionLabel)
     self.horizontalStackView.addArrangedSubview(self.textField)
     self.textFieldContainer.addSubview(self.horizontalStackView)
 
@@ -123,6 +126,7 @@ open class UKInputField: UIView, UKComponent {
     Self.Style.verticalStackView(self.verticalStackView, model: self.model)
     Self.Style.textField(self.textField, model: self.model)
     Self.Style.titleLabel(self.titleLabel, model: self.model)
+    Self.Style.captionLabel(self.captionLabel, model: self.model)
   }
 
   // MARK: Layout
@@ -244,6 +248,15 @@ extension UKInputField {
       textField.isEnabled = model.isEnabled
       textField.autocorrectionType = model.autocorrectionType
       textField.autocapitalizationType = model.autocapitalization.textAutocapitalizationType
+    }
+    static func captionLabel(
+      _ label: UILabel,
+      model: Model
+    ) {
+      label.text = model.caption
+      label.isVisible = model.caption.isNotNilAndEmpty
+      label.textColor = model.captionColor.uiColor
+      label.font = model.preferredCaptionFont.uiFont
     }
     static func horizontalStackView(
       _ stackView: UIStackView,

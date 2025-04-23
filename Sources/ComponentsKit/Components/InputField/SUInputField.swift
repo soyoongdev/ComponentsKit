@@ -104,6 +104,12 @@ public struct SUInputField<FocusValue: Hashable>: View {
           lineWidth: self.model.borderWidth
         )
       )
+
+      if let caption = self.model.caption, caption.isNotEmpty {
+        Text(caption)
+          .font(self.model.preferredCaptionFont.font)
+          .foregroundStyle(self.model.captionColor.color)
+      }
     }
   }
 }

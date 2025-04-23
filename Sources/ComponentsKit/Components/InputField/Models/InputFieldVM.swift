@@ -8,6 +8,10 @@ public struct InputFieldVM: ComponentVM {
   /// Defaults to `.sentences`, which capitalizes the first letter of each sentence.
   public var autocapitalization: TextAutocapitalization = .sentences
 
+  public var caption: String?
+
+  public var captionFont: UniversalFont?
+
   /// The color of the input field.
   public var color: ComponentColor?
 
@@ -69,6 +73,8 @@ public struct InputFieldVM: ComponentVM {
   /// The title displayed on the input field.
   public var title: String?
 
+  public var titleFont: UniversalFont?
+
   public var titlePosition: TitlePosition = .inside
 
   /// Initializes a new instance of `InputFieldVM` with default values.
@@ -90,6 +96,34 @@ extension InputFieldVM {
       return .mdBody
     case .large:
       return .lgBody
+    }
+  }
+  var preferredTitleFont: UniversalFont {
+    if let titleFont {
+      return titleFont
+    }
+
+    switch self.size {
+    case .small:
+      return .smBody
+    case .medium:
+      return .mdBody
+    case .large:
+      return .lgBody
+    }
+  }
+  var preferredCaptionFont: UniversalFont {
+    if let captionFont {
+      return captionFont
+    }
+
+    switch self.size {
+    case .small:
+      return .smCaption
+    case .medium:
+      return .mdCaption
+    case .large:
+      return .lgCaption
     }
   }
   var height: CGFloat {
@@ -124,8 +158,7 @@ extension InputFieldVM {
     }
   }
   var foregroundColor: UniversalColor {
-    let color = self.color?.main ?? .foreground
-    return color.enabled(self.isEnabled)
+    return (self.color?.main ?? .foreground).enabled(self.isEnabled)
   }
   var placeholderColor: UniversalColor {
     if let color {
@@ -133,6 +166,9 @@ extension InputFieldVM {
     } else {
       return .secondaryForeground.enabled(self.isEnabled)
     }
+  }
+  var captionColor: UniversalColor {
+    return (self.color?.main ?? .secondaryForeground).enabled(self.isEnabled)
   }
   var borderWidth: CGFloat {
     switch self.style {
@@ -178,7 +214,7 @@ extension InputFieldVM {
     attributedString.append(NSAttributedString(
       string: title,
       attributes: [
-        .font: self.preferredFont.uiFont,
+        .font: self.preferredTitleFont.uiFont,
         .foregroundColor: self.foregroundColor.uiColor
       ]
     ))
@@ -192,7 +228,7 @@ extension InputFieldVM {
       attributedString.append(NSAttributedString(
         string: "*",
         attributes: [
-          .font: self.preferredFont.uiFont,
+          .font: self.preferredTitleFont.uiFont,
           .foregroundColor: UniversalColor.danger.uiColor
         ]
       ))
