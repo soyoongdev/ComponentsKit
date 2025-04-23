@@ -8,8 +8,12 @@ public struct InputFieldVM: ComponentVM {
   /// Defaults to `.sentences`, which capitalizes the first letter of each sentence.
   public var autocapitalization: TextAutocapitalization = .sentences
 
+  /// The caption displayed below the input field.
   public var caption: String?
 
+  /// The font used for the input field's caption.
+  ///
+  /// If not provided, the font is automatically calculated based on the input field's size.
   public var captionFont: UniversalFont?
 
   /// The color of the input field.
@@ -58,6 +62,9 @@ public struct InputFieldVM: ComponentVM {
   /// Defaults to `.medium`.
   public var size: ComponentSize = .medium
 
+  /// The visual style of the input field.
+  ///
+  /// Defaults to `.light`.
   public var style: Style = .light
 
   /// The type of the submit button on the keyboard.
@@ -73,8 +80,14 @@ public struct InputFieldVM: ComponentVM {
   /// The title displayed on the input field.
   public var title: String?
 
+  /// The font used for the input field's title.
+  ///
+  /// If not provided, the font is automatically calculated based on the input field's size.
   public var titleFont: UniversalFont?
 
+  /// The position of the title relative to the input field.
+  ///
+  /// Defaults to `.inside`.
   public var titlePosition: TitlePosition = .inside
 
   /// Initializes a new instance of `InputFieldVM` with default values.
