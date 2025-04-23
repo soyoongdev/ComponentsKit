@@ -124,6 +124,15 @@ public struct SUTextInput<FocusValue: Hashable>: View {
         cornerRadius: self.model.adaptedCornerRadius()
       )
     )
+    .overlay(
+      RoundedRectangle(
+        cornerRadius: self.model.cornerRadius.value()
+      )
+      .stroke(
+        self.model.borderColor.color,
+        lineWidth: self.model.borderWidth
+      )
+    )
   }
 }
 

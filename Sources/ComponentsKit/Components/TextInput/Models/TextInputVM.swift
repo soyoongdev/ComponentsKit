@@ -52,6 +52,11 @@ public struct TextInputVM: ComponentVM {
   /// Defaults to `.medium`.
   public var size: ComponentSize = .medium
 
+  /// The visual style of the text input.
+  ///
+  /// Defaults to `.light`.
+  public var style: InputStyle = .light
+
   /// The type of the submit button on the keyboard.
   ///
   /// Defaults to `.return`.
@@ -89,7 +94,12 @@ extension TextInputVM {
   }
 
   var backgroundColor: UniversalColor {
-    return self.color?.background ?? .content1
+    switch self.style {
+    case .light, .faded:
+      return self.color?.background ?? .content1
+    case .bordered:
+      return .background
+    }
   }
 
   var foregroundColor: UniversalColor {
@@ -103,6 +113,26 @@ extension TextInputVM {
     } else {
       return .secondaryForeground.enabled(self.isEnabled)
     }
+  }
+
+  var borderWidth: CGFloat {
+    switch self.style {
+    case .light:
+      return 0
+    case .bordered, .faded:
+      switch self.size {
+      case .small:
+        return BorderWidth.small.value
+      case .medium:
+        return BorderWidth.medium.value
+      case .large:
+        return BorderWidth.large.value
+      }
+    }
+  }
+
+  var borderColor: UniversalColor {
+    return (self.color?.main ?? .content3).enabled(self.isEnabled)
   }
 
   var minTextInputHeight: CGFloat {
