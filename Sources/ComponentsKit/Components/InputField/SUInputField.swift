@@ -92,12 +92,12 @@ public struct SUInputField<FocusValue: Hashable>: View {
       }
       .clipShape(
         RoundedRectangle(
-          cornerRadius: self.model.cornerRadius.value(),
+          cornerRadius: self.model.cornerRadius.value()
         )
       )
       .overlay(
         RoundedRectangle(
-          cornerRadius: self.model.cornerRadius.value(),
+          cornerRadius: self.model.cornerRadius.value()
         )
         .stroke(
           self.model.borderColor.color,
@@ -120,7 +120,7 @@ extension View {
   @ViewBuilder
   fileprivate func applyFocus<FocusValue: Hashable>(
     globalFocus: FocusState<FocusValue>.Binding?,
-    localFocus: FocusValue,
+    localFocus: FocusValue
   ) -> some View {
     if let globalFocus {
       self.focused(globalFocus, equals: localFocus)
