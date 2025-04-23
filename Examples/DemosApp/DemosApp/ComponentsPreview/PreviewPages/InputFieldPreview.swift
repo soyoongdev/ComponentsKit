@@ -64,6 +64,7 @@ struct InputFieldPreview: View {
         Picker("Style", selection: self.$model.style) {
           Text("Light").tag(InputFieldVM.Style.light)
           Text("Bordered").tag(InputFieldVM.Style.bordered)
+          Text("Faded").tag(InputFieldVM.Style.faded)
         }
         SubmitTypePicker(selection: self.$model.submitType)
         UniversalColorPicker(
@@ -99,7 +100,7 @@ struct InputFieldPreview: View {
 
   private static let title = "Email"
   private static let placeholder = "Enter your email"
-  private static let caption = "We'll send you a verification code"
+  private static let caption = "Your email address will be used to send a verification code"
   private static var initialModel: InputFieldVM {
     return .init {
       $0.title = Self.title

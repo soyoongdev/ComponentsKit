@@ -151,7 +151,7 @@ extension InputFieldVM {
   }
   var backgroundColor: UniversalColor {
     switch self.style {
-    case .light:
+    case .light, .faded:
       return self.color?.background ?? .content1
     case .bordered:
       return .background
@@ -174,7 +174,7 @@ extension InputFieldVM {
     switch self.style {
     case .light:
       return 0
-    case .bordered:
+    case .bordered, .faded:
       switch self.size {
       case .small:
         return BorderWidth.small.value

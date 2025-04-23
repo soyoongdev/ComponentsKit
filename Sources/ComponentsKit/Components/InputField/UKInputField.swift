@@ -257,6 +257,7 @@ extension UKInputField {
       label.isVisible = model.caption.isNotNilAndEmpty
       label.textColor = model.captionColor.uiColor
       label.font = model.preferredCaptionFont.uiFont
+      label.numberOfLines = 0
     }
     static func horizontalStackView(
       _ stackView: UIStackView,
