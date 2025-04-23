@@ -36,11 +36,11 @@ open class UKInputField: UIView, UKComponent {
   public var textField = UITextField()
   /// A label that displays the caption from the model.
   public var captionLabel = UILabel()
-  /// A view that contains `horizontalStackView` and `titleLabel` whet it is outside.
+  /// A view that contains `horizontalStackView` to have paddings.
   public var textFieldContainer = UIView()
-  /// A stack view that contains `textField` and `titleLabel` whet it is inside.
+  /// A stack view that contains `textField` and `titleLabel` when it is inside.
   public var horizontalStackView = UIStackView()
-  /// A stack view that contains `textFieldContainer`.
+  /// A stack view that contains `textFieldContainer` and `titleLabel` when it is outside.
   public var verticalStackView = UIStackView()
 
   // MARK: Private Properties
