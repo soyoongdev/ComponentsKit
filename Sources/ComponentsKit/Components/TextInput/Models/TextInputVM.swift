@@ -147,7 +147,7 @@ extension TextInputVM {
 
   var maxTextInputHeight: CGFloat {
     if let maxRows {
-      return self.height(forRows: maxRows)
+      return self.height(forRows: max(maxRows, self.minRows))
     } else {
       return 10_000
     }
