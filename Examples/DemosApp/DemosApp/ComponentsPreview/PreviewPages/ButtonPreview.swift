@@ -51,6 +51,7 @@ struct ButtonPreview: View {
           Text("Filled").tag(ButtonStyle.filled)
           Text("Plain").tag(ButtonStyle.plain)
           Text("Light").tag(ButtonStyle.light)
+          Text("Minimal").tag(ButtonStyle.minimal)
           Text("Bordered with small border").tag(ButtonStyle.bordered(.small))
           Text("Bordered with medium border").tag(ButtonStyle.bordered(.medium))
           Text("Bordered with large border").tag(ButtonStyle.bordered(.large))

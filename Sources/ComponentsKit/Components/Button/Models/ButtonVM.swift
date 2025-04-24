@@ -93,7 +93,7 @@ extension ButtonVM {
     case .light:
       let color = self.color?.background ?? .content1
       return color.enabled(self.isInteractive)
-    case .plain, .bordered:
+    case .plain, .bordered, .minimal:
       return nil
     }
   }
@@ -101,14 +101,14 @@ extension ButtonVM {
     let color = switch self.style {
     case .filled:
       self.color?.contrast ?? .foreground
-    case .plain, .light, .bordered:
+    case .plain, .light, .bordered, .minimal:
       self.color?.main ?? .foreground
     }
     return color.enabled(self.isInteractive)
   }
   var borderWidth: CGFloat {
     switch self.style {
-    case .filled, .plain, .light:
+    case .filled, .plain, .light, .minimal:
       return 0.0
     case .bordered(let borderWidth):
       return borderWidth.value
@@ -116,7 +116,7 @@ extension ButtonVM {
   }
   var borderColor: UniversalColor? {
     switch self.style {
-    case .filled, .plain, .light:
+    case .filled, .plain, .light, .minimal:
       return nil
     case .bordered:
       if let color {
@@ -140,11 +140,16 @@ extension ButtonVM {
       return .lgButton
     }
   }
-  var height: CGFloat {
-    return switch self.size {
-    case .small: 36
-    case .medium: 44
-    case .large: 52
+  var height: CGFloat? {
+    switch self.style {
+    case .minimal:
+      return nil
+    case .light, .filled, .bordered, .plain:
+      return switch self.size {
+      case .small: 36
+      case .medium: 44
+      case .large: 52
+      }
     }
   }
   var imageSide: CGFloat {
@@ -155,10 +160,15 @@ extension ButtonVM {
     }
   }
   var horizontalPadding: CGFloat {
-    return switch self.size {
-    case .small: 16
-    case .medium: 20
-    case .large: 24
+    switch self.style {
+    case .minimal:
+      return 0
+    case .light, .filled, .bordered, .plain:
+      return switch self.size {
+      case .small: 16
+      case .medium: 20
+      case .large: 24
+      }
     }
   }
 }
@@ -196,7 +206,7 @@ extension ButtonVM {
       width = contentSize.width + 2 * self.horizontalPadding
     }
 
-    return .init(width: width, height: self.height)
+    return .init(width: width, height: self.height ?? contentSize.height)
   }
   func shouldUpdateImagePosition(_ oldModel: Self?) -> Bool {
     guard let oldModel else { return true }
