@@ -3,8 +3,9 @@ import SwiftUI
 import UIKit
 
 struct ButtonPreview: View {
+  private static let title = "Button"
   @State private var model = ButtonVM {
-    $0.title = "Button"
+    $0.title = Self.title
   }
   
   var body: some View {
@@ -43,19 +44,11 @@ struct ButtonPreview: View {
         Toggle("Show Title", isOn: Binding<Bool>(
           get: { !self.model.title.isEmpty },
           set: { newValue in
-            self.model.title = newValue ? "Button" : ""
+            self.model.title = newValue ? Self.title : ""
           }
         ))
         SizePicker(selection: self.$model.size)
-        Picker("Style", selection: self.$model.style) {
-          Text("Filled").tag(ButtonStyle.filled)
-          Text("Plain").tag(ButtonStyle.plain)
-          Text("Light").tag(ButtonStyle.light)
-          Text("Minimal").tag(ButtonStyle.minimal)
-          Text("Bordered with small border").tag(ButtonStyle.bordered(.small))
-          Text("Bordered with medium border").tag(ButtonStyle.bordered(.medium))
-          Text("Bordered with large border").tag(ButtonStyle.bordered(.large))
-        }
+        ButtonStylePicker(selection: self.$model.style)
       }
     }
   }

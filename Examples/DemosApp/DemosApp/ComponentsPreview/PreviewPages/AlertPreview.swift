@@ -115,14 +115,7 @@ struct AlertPreview: View {
       ComponentRadiusPicker(selection: buttonVM.cornerRadius) {
         Text("Custom: 20px").tag(ComponentRadius.custom(20))
       }
-      Picker("Style", selection: buttonVM.style) {
-        Text("Filled").tag(ButtonStyle.filled)
-        Text("Plain").tag(ButtonStyle.plain)
-        Text("Light").tag(ButtonStyle.light)
-        Text("Bordered with small border").tag(ButtonStyle.bordered(.small))
-        Text("Bordered with medium border").tag(ButtonStyle.bordered(.medium))
-        Text("Bordered with large border").tag(ButtonStyle.bordered(.large))
-      }
+      ButtonStylePicker(selection: buttonVM.style)
     }
   }
   
