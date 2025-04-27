@@ -143,11 +143,14 @@ public class UKAlertController: UKCenterModalController {
         self.buttonsStackView.removeArrangedSubview(self.secondaryButton)
         self.buttonsStackView.insertArrangedSubview(self.secondaryButton, at: 0)
         self.buttonsStackView.axis = .horizontal
+        self.buttonsStackView.distribution = .fillEqually
       case .vertical:
         self.buttonsStackView.axis = .vertical
+        self.buttonsStackView.distribution = .fillProportionally
       }
     } else {
       self.buttonsStackView.axis = .vertical
+      self.buttonsStackView.distribution = .fillProportionally
     }
   }
 }
@@ -173,7 +176,6 @@ extension UKAlertController {
     }
 
     static func buttonsStackView(_ stackView: UIStackView) {
-      stackView.distribution = .fillEqually
       stackView.spacing = AlertVM.buttonsSpacing
     }
   }
