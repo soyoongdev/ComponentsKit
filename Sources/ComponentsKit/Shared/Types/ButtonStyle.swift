@@ -10,4 +10,6 @@ public enum ButtonStyle: Hashable {
   case light
   /// A button with a transparent background and a border.
   case bordered(BorderWidth)
+  /// A button with no background or padding, sized strictly to fit its content.
+  case minimal
 }
