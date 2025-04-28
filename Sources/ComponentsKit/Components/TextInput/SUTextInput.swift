@@ -55,14 +55,23 @@ public struct SUTextInput<FocusValue: Hashable>: View {
       TextEditor(text: self.$text)
         .contentMargins(self.model.contentPadding)
         .transparentScrollBackground()
-        .frame(minHeight: self.model.minTextInputHeight)
-        .frame(height: max(
-          self.model.minTextInputHeight,
-          min(
-            self.model.maxTextInputHeight,
-            self.textEditorPreferredHeight
+        .frame(
+          minHeight: self.model.minTextInputHeight,
+          idealHeight: max(
+            self.model.minTextInputHeight,
+            min(
+              self.model.maxTextInputHeight,
+              self.textEditorPreferredHeight
+            )
+          ),
+          maxHeight: max(
+            self.model.minTextInputHeight,
+            min(
+              self.model.maxTextInputHeight,
+              self.textEditorPreferredHeight
+            )
           )
-        ))
+        )
         .lineSpacing(0)
         .font(self.model.preferredFont.font)
         .foregroundStyle(self.model.foregroundColor.color)
@@ -122,6 +131,15 @@ public struct SUTextInput<FocusValue: Hashable>: View {
     .clipShape(
       RoundedRectangle(
         cornerRadius: self.model.adaptedCornerRadius()
+      )
+    )
+    .overlay(
+      RoundedRectangle(
+        cornerRadius: self.model.cornerRadius.value()
+      )
+      .stroke(
+        self.model.borderColor.color,
+        lineWidth: self.model.borderWidth
       )
     )
   }

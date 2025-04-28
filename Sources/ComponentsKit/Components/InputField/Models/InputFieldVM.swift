@@ -65,7 +65,7 @@ public struct InputFieldVM: ComponentVM {
   /// The visual style of the input field.
   ///
   /// Defaults to `.light`.
-  public var style: Style = .light
+  public var style: InputStyle = .light
 
   /// The type of the submit button on the keyboard.
   ///

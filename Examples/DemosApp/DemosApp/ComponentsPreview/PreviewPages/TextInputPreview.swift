@@ -60,6 +60,7 @@ struct TextInputPreviewPreview: View {
           }
         ))
         SizePicker(selection: self.$model.size)
+        InputStylePicker(selection: self.$model.style)
         SubmitTypePicker(selection: self.$model.submitType)
         UniversalColorPicker(
           title: "Tint Color",

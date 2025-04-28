@@ -79,6 +79,12 @@ open class UKTextInput: UIView, UKComponent {
     self.addSubview(self.placeholderLabel)
 
     self.textView.delegate = self
+
+    if #available(iOS 17.0, *) {
+      self.registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (view: Self, _: UITraitCollection) in
+        view.handleTraitChanges()
+      }
+    }
   }
 
   // MARK: - Style
@@ -157,7 +163,18 @@ open class UKTextInput: UIView, UKComponent {
     return CGSize(width: width, height: height)
   }
 
-  // MARK: - Helpers
+  open override func traitCollectionDidChange(
+    _ previousTraitCollection: UITraitCollection?
+  ) {
+    super.traitCollectionDidChange(previousTraitCollection)
+    self.handleTraitChanges()
+  }
+
+  // MARK: Helpers
+
+  @objc private func handleTraitChanges() {
+    Self.Style.mainView(self, model: self.model)
+  }
 
   private func handleTextChanges() {
     self.onValueChange(self.text)
@@ -187,6 +204,8 @@ extension UKTextInput {
     static func mainView(_ view: UIView, model: TextInputVM) {
       view.backgroundColor = model.backgroundColor.uiColor
       view.layer.cornerRadius = model.adaptedCornerRadius(for: view.bounds.height)
+      view.layer.borderColor = model.borderColor.cgColor
+      view.layer.borderWidth = model.borderWidth
     }
 
     static func textView(
