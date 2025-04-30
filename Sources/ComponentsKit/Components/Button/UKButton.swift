@@ -2,7 +2,7 @@ import AutoLayout
 import UIKit
 
 /// A UIKit component that performs an action when it is tapped by a user.
-open class UKButton: UIView, UKComponent {
+open class UKButton: FullWidthComponent, UKComponent {
   // MARK: Properties
 
   /// A closure that is triggered when the button is tapped.

@@ -2,7 +2,7 @@ import AutoLayout
 import UIKit
 
 /// A UIKit component that visually represents the progress of a task or process using a horizontal bar.
-open class UKProgressBar: UIView, UKComponent {
+open class UKProgressBar: FullWidthComponent, UKComponent {
   // MARK: - Public Properties
 
   /// A model that defines the appearance properties.

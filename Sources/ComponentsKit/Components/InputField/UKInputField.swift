@@ -2,7 +2,7 @@ import AutoLayout
 import UIKit
 
 /// A UIKit component that displays a field to input a text.
-open class UKInputField: UIView, UKComponent {
+open class UKInputField: FullWidthComponent, UKComponent {
   // MARK: Public Properties
 
   /// A closure that is triggered when the text changes.
@@ -139,6 +139,8 @@ open class UKInputField: UIView, UKComponent {
 
     self.horizontalStackView.vertically()
     self.horizontalStackViewConstraints = self.horizontalStackView.horizontally(self.model.horizontalPadding)
+
+    self.captionLabel.horizontally()
 
     self.textField.setContentHuggingPriority(.defaultLow, for: .horizontal)
     self.titleLabel.setContentHuggingPriority(.defaultHigh, for: .horizontal)
