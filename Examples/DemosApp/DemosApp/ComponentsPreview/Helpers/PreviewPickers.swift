@@ -23,7 +23,7 @@ struct AutocapitalizationPicker: View {
   @Binding var selection: TextAutocapitalization
 
   var body: some View {
-    Picker("Autocapitalization", selection: $selection) {
+    Picker("Autocapitalization", selection: self.$selection) {
       Text("Never").tag(TextAutocapitalization.never)
       Text("Characters").tag(TextAutocapitalization.characters)
       Text("Words").tag(TextAutocapitalization.words)
@@ -36,13 +36,29 @@ struct AutocapitalizationPicker: View {
 
 struct BorderWidthPicker: View {
   @Binding var selection: BorderWidth
-  
+
   var body: some View {
     Picker("Border Width", selection: self.$selection) {
       Text("None").tag(BorderWidth.none)
       Text("Small").tag(BorderWidth.small)
       Text("Medium").tag(BorderWidth.medium)
       Text("Large").tag(BorderWidth.large)
+    }
+  }
+}
+
+struct ButtonStylePicker: View {
+  @Binding var selection: ComponentsKit.ButtonStyle
+
+  var body: some View {
+    Picker("Style", selection: $selection) {
+      Text("Filled").tag(ButtonStyle.filled)
+      Text("Plain").tag(ButtonStyle.plain)
+      Text("Light").tag(ButtonStyle.light)
+      Text("Minimal").tag(ButtonStyle.minimal)
+      Text("Bordered with small border").tag(ButtonStyle.bordered(.small))
+      Text("Bordered with medium border").tag(ButtonStyle.bordered(.medium))
+      Text("Bordered with large border").tag(ButtonStyle.bordered(.large))
     }
   }
 }
@@ -203,13 +219,25 @@ struct CaptionFontPicker: View {
   }
 }
 
+struct InputStylePicker: View {
+  @Binding var selection: InputStyle
+
+  var body: some View {
+    Picker("Style", selection: self.$selection) {
+      Text("Light").tag(InputStyle.light)
+      Text("Bordered").tag(InputStyle.bordered)
+      Text("Faded").tag(InputStyle.faded)
+    }
+  }
+}
+
 // MARK: - KeyboardTypePicker
 
 struct KeyboardTypePicker: View {
   @Binding var selection: UIKeyboardType
 
   var body: some View {
-    Picker("Keyboard Type", selection: $selection) {
+    Picker("Keyboard Type", selection: self.$selection) {
       Text("Default").tag(UIKeyboardType.default)
       Text("asciiCapable").tag(UIKeyboardType.asciiCapable)
       Text("numbersAndPunctuation").tag(UIKeyboardType.numbersAndPunctuation)
@@ -260,7 +288,7 @@ struct SubmitTypePicker: View {
   @Binding var selection: SubmitType
 
   var body: some View {
-    Picker("Submit Type", selection: $selection) {
+    Picker("Submit Type", selection: self.$selection) {
       Text("done").tag(SubmitType.done)
       Text("go").tag(SubmitType.go)
       Text("join").tag(SubmitType.join)

@@ -34,6 +34,15 @@ struct InputFieldPreview: View {
       Form {
         AutocapitalizationPicker(selection: self.$model.autocapitalization)
         Toggle("Autocorrection Enabled", isOn: self.$model.isAutocorrectionEnabled)
+        Toggle("Caption", isOn: .init(
+          get: {
+            return self.model.caption != nil
+          },
+          set: { newValue in
+            self.model.caption = newValue ? Self.caption : nil
+          }
+        ))
+        CaptionFontPicker(title: "Caption Font", selection: self.$model.captionFont)
         ComponentOptionalColorPicker(selection: self.$model.color)
         ComponentRadiusPicker(selection: self.$model.cornerRadius) {
           Text("Custom: 20px").tag(ComponentRadius.custom(20))
@@ -46,12 +55,13 @@ struct InputFieldPreview: View {
             return self.model.placeholder != nil
           },
           set: { newValue in
-            self.model.placeholder = newValue ? "Placeholder" : nil
+            self.model.placeholder = newValue ? Self.placeholder : nil
           }
         ))
         Toggle("Required", isOn: self.$model.isRequired)
         Toggle("Secure Input", isOn: self.$model.isSecureInput)
         SizePicker(selection: self.$model.size)
+        InputStylePicker(selection: self.$model.style)
         SubmitTypePicker(selection: self.$model.submitType)
         UniversalColorPicker(
           title: "Tint Color",
@@ -62,9 +72,14 @@ struct InputFieldPreview: View {
             return self.model.title != nil
           },
           set: { newValue in
-            self.model.title = newValue ? "Title" : nil
+            self.model.title = newValue ? Self.title : nil
           }
         ))
+        BodyFontPicker(title: "Title Font", selection: self.$model.titleFont)
+        Picker("Title Position", selection: self.$model.titlePosition) {
+          Text("Inside").tag(InputFieldVM.TitlePosition.inside)
+          Text("Outside").tag(InputFieldVM.TitlePosition.outside)
+        }
       }
     }
     .toolbar {
@@ -79,9 +94,14 @@ struct InputFieldPreview: View {
     }
   }
 
+  private static let title = "Email"
+  private static let placeholder = "Enter your email"
+  private static let caption = "Your email address will be used to send a verification code"
   private static var initialModel: InputFieldVM {
     return .init {
-      $0.title = "Title"
+      $0.title = Self.title
+      $0.placeholder = Self.placeholder
+      $0.caption = Self.caption
     }
   }
 }

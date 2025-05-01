@@ -14,7 +14,7 @@ public struct SUInputField<FocusValue: Hashable>: View {
   ///
   /// When the `localFocus` value matches `globalFocus`, this input field becomes focused.
   /// This enables centralized focus management for multiple text inputs and input fields within a single view.
-  @FocusState.Binding public var globalFocus: FocusValue
+  public let globalFocus: FocusState<FocusValue>.Binding?
 
   /// The unique value for this field to match against the global focus state to determine whether this input field is focused.
   ///
@@ -24,7 +24,7 @@ public struct SUInputField<FocusValue: Hashable>: View {
   ///
   /// - Warning: The `localFocus` value must be unique to each text input and input field, to ensure that different
   /// text inputs and input fields within the same view can be independently focused based on the shared `globalFocus`.
-  public var localFocus: FocusValue
+  public let localFocus: FocusValue
 
   // MARK: Initialization
 
@@ -41,7 +41,7 @@ public struct SUInputField<FocusValue: Hashable>: View {
     model: InputFieldVM = .init()
   ) {
     self._text = text
-    self._globalFocus = globalFocus
+    self.globalFocus = globalFocus
     self.localFocus = localFocus
     self.model = model
   }
@@ -49,46 +49,84 @@ public struct SUInputField<FocusValue: Hashable>: View {
   // MARK: Body
 
   public var body: some View {
-    HStack(spacing: self.model.spacing) {
-      if let title = self.model.attributedTitle {
+    VStack(alignment: .leading, spacing: self.model.spacing) {
+      if let title = self.model.attributedTitle,
+         self.model.titlePosition == .outside {
         Text(title)
-          .font(self.model.preferredFont.font)
       }
 
-      Group {
-        if self.model.isSecureInput {
-          SecureField(text: self.$text, label: {
-            Text(self.model.placeholder ?? "")
-              .foregroundStyle(self.model.placeholderColor.color)
-          })
-        } else {
-          TextField(text: self.$text, label: {
-            Text(self.model.placeholder ?? "")
-              .foregroundStyle(self.model.placeholderColor.color)
-          })
+      HStack(spacing: self.model.spacing) {
+        if let title = self.model.attributedTitle,
+           self.model.titlePosition == .inside {
+          Text(title)
         }
+
+        Group {
+          if self.model.isSecureInput {
+            SecureField(text: self.$text, label: {
+              Text(self.model.placeholder ?? "")
+                .foregroundStyle(self.model.placeholderColor.color)
+            })
+          } else {
+            TextField(text: self.$text, label: {
+              Text(self.model.placeholder ?? "")
+                .foregroundStyle(self.model.placeholderColor.color)
+            })
+          }
+        }
+        .tint(self.model.tintColor.color)
+        .font(self.model.preferredFont.font)
+        .foregroundStyle(self.model.foregroundColor.color)
+        .applyFocus(globalFocus: self.globalFocus, localFocus: self.localFocus)
+        .disabled(!self.model.isEnabled)
+        .keyboardType(self.model.keyboardType)
+        .submitLabel(self.model.submitType.submitLabel)
+        .autocorrectionDisabled(!self.model.isAutocorrectionEnabled)
+        .textInputAutocapitalization(self.model.autocapitalization.textInputAutocapitalization)
       }
-      .tint(self.model.tintColor.color)
-      .font(self.model.preferredFont.font)
-      .foregroundStyle(self.model.foregroundColor.color)
-      .focused(self.$globalFocus, equals: self.localFocus)
-      .disabled(!self.model.isEnabled)
-      .keyboardType(self.model.keyboardType)
-      .submitLabel(self.model.submitType.submitLabel)
-      .autocorrectionDisabled(!self.model.isAutocorrectionEnabled)
-      .textInputAutocapitalization(self.model.autocapitalization.textInputAutocapitalization)
-    }
-    .padding(.horizontal, self.model.horizontalPadding)
-    .frame(height: self.model.height)
-    .background(self.model.backgroundColor.color)
-    .onTapGesture {
-      self.globalFocus = self.localFocus
-    }
-    .clipShape(
-      RoundedRectangle(
-        cornerRadius: self.model.cornerRadius.value()
+      .padding(.horizontal, self.model.horizontalPadding)
+      .frame(height: self.model.height)
+      .background(self.model.backgroundColor.color)
+      .onTapGesture {
+        self.globalFocus?.wrappedValue = self.localFocus
+      }
+      .clipShape(
+        RoundedRectangle(
+          cornerRadius: self.model.cornerRadius.value()
+        )
       )
-    )
+      .overlay(
+        RoundedRectangle(
+          cornerRadius: self.model.cornerRadius.value()
+        )
+        .stroke(
+          self.model.borderColor.color,
+          lineWidth: self.model.borderWidth
+        )
+      )
+
+      if let caption = self.model.caption, caption.isNotEmpty {
+        Text(caption)
+          .font(self.model.preferredCaptionFont.font)
+          .foregroundStyle(self.model.captionColor.color)
+      }
+    }
+  }
+}
+
+// MARK: Helpers
+
+extension View {
+  @ViewBuilder
+  fileprivate func applyFocus<FocusValue: Hashable>(
+    globalFocus: FocusState<FocusValue>.Binding?,
+    localFocus: FocusValue
+  ) -> some View {
+    if let globalFocus {
+      self.focused(globalFocus, equals: localFocus)
+    } else {
+      self
+    }
   }
 }
 
@@ -106,7 +144,25 @@ extension SUInputField where FocusValue == Bool {
     model: InputFieldVM = .init()
   ) {
     self._text = text
-    self._globalFocus = isFocused
+    self.globalFocus = isFocused
+    self.localFocus = true
+    self.model = model
+  }
+}
+
+// MARK: - No Focus Value
+
+extension SUInputField where FocusValue == Bool {
+  /// Initializer.
+  /// - Parameters:
+  ///   - text: A Binding value to control the inputted text.
+  ///   - model: A model that defines the appearance properties.
+  public init(
+    text: Binding<String>,
+    model: InputFieldVM = .init()
+  ) {
+    self._text = text
+    self.globalFocus = nil
     self.localFocus = true
     self.model = model
   }

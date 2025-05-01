@@ -2,7 +2,7 @@ import AutoLayout
 import UIKit
 
 /// A UIKit component that lets users select a value from a range by dragging a thumb along a track.
-open class UKSlider: UIView, UKComponent {
+open class UKSlider: FullWidthComponent, UKComponent {
   // MARK: - Properties
 
   /// A closure that is triggered when the `currentValue` changes.
