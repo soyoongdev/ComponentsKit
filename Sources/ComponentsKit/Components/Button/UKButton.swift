@@ -251,6 +251,7 @@ extension UKButton {
       imageView.contentMode = .scaleAspectFit
       imageView.isHidden = model.isLoading || model.imageSrc.isNil
       imageView.tintColor = model.foregroundColor.uiColor
+      imageView.isUserInteractionEnabled = true
     }
   }
 }

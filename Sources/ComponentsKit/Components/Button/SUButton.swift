@@ -107,6 +107,7 @@ private struct ButtonImageView: UIViewRepresentable {
     imageView.image = self.image
     imageView.tintColor = self.tintColor
     imageView.contentMode = .scaleAspectFit
+    imageView.isUserInteractionEnabled = true
     return imageView
   }
 
