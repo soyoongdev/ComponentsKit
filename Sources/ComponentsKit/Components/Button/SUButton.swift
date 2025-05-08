@@ -124,10 +124,10 @@ private struct CustomButtonStyle: SwiftUI.ButtonStyle {
     configuration.label
       .font(self.model.preferredFont.font)
       .lineLimit(1)
-      .contentShape(.rect)
       .padding(.horizontal, self.model.horizontalPadding)
       .frame(maxWidth: self.model.width)
       .frame(height: self.model.height)
+      .contentShape(.rect)
       .foregroundStyle(self.model.foregroundColor.color)
       .background(self.model.backgroundColor?.color ?? .clear)
       .clipShape(
