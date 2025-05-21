@@ -1,3 +1,4 @@
+#if canImport(UIKit)
 import UIKit
 
 /// A base-class for views whose intrinsic content size depends on the
@@ -26,3 +27,4 @@ open class FullWidthComponent: UIView {
     }
   }
 }
+#endif

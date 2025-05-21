@@ -1,4 +1,5 @@
 import Foundation
+#if canImport(UIKit)
 import UIKit
 
 /// A model that defines the data and appearance properties for a radio group component.
@@ -149,3 +150,4 @@ extension RadioGroupVM {
     return nil
   }
 }
+#endif

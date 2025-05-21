@@ -1,3 +1,4 @@
+#if canImport(UIKit)
 import UIKit
 
 /// A controller that presents an alert with a title, message, and up to two action buttons.
@@ -180,3 +181,4 @@ extension UKAlertController {
     }
   }
 }
+#endif

@@ -1,4 +1,5 @@
 import SwiftUI
+#if canImport(UIKit)
 import UIKit
 
 /// The autocapitalization behavior applied during text input.
@@ -42,3 +43,4 @@ extension TextAutocapitalization {
     }
   }
 }
+#endif

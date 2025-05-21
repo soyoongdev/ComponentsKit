@@ -1,4 +1,5 @@
 import SwiftUI
+#if canImport(UIKit)
 import UIKit
 
 extension CircularProgressVM {
@@ -36,3 +37,4 @@ extension CircularProgressVM.LineCap {
     }
   }
 }
+#endif

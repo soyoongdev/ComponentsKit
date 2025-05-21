@@ -5,7 +5,10 @@ import PackageDescription
 let package = Package(
   name: "ComponentsKit",
   platforms: [
-    .iOS(.v15)
+    .iOS(.v15),
+    .watchOS(.v8),
+    .macOS(.v12),
+    .visionOS(.v1)
   ],
   products: [
     .library(
@@ -20,8 +23,18 @@ let package = Package(
     .target(
       name: "ComponentsKit",
       dependencies: [
-        .product(name: "AutoLayout", package: "AutoLayout")
+        .product(
+          name: "AutoLayout",
+          package: "AutoLayout",
+          condition: .when(platforms: [
+            .iOS,
+            .watchOS,
+            .visionOS,
+            .macCatalyst
+          ])
+        )
       ],
+      path: "Sources/ComponentsKit",
       resources: [
         .process("Resources/PrivacyInfo.xcprivacy")
       ]

@@ -1,3 +1,4 @@
+#if canImport(UIKit)
 import UIKit
 
 /// A UIKit component that shows that a task is in progress.
@@ -174,3 +175,4 @@ open class UKLoading: UIView, UKComponent {
     self.shapeLayer.strokeColor = self.model.color.main.uiColor.cgColor
   }
 }
+#endif

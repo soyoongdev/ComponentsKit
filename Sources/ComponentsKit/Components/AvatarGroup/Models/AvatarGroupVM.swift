@@ -1,3 +1,4 @@
+#if canImport(UIKit)
 import UIKit
 
 /// A model that defines the appearance properties for an avatar group component.
@@ -111,3 +112,4 @@ extension AvatarGroupVM {
     return self.itemSize.width - self.padding * 2
   }
 }
+#endif

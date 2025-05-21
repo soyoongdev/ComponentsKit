@@ -1,4 +1,5 @@
 import Combine
+#if canImport(UIKit)
 import UIKit
 
 /// A UIKit component that displays a profile picture, initials or fallback icon for a user.
@@ -116,3 +117,4 @@ open class UKAvatar: UIImageView, UKComponent {
     self.imageManager.update(model: self.model, size: self.bounds.size)
   }
 }
+#endif

@@ -1,4 +1,5 @@
 import SwiftUI
+#if canImport(UIKit)
 import UIKit
 
 /// A model that defines the data and appearance properties for a segmented control component.
@@ -148,3 +149,4 @@ extension SegmentedControlVM {
     return nil
   }
 }
+#endif

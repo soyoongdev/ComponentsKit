@@ -1,3 +1,4 @@
+#if canImport(UIKit)
 import UIKit
 
 /// A model that defines the appearance properties for an avatar component.
@@ -129,3 +130,4 @@ extension AvatarVM {
     }
   }
 }
+#endif

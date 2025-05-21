@@ -1,3 +1,4 @@
+#if canImport(UIKit)
 import UIKit
 
 extension UIEdgeInsets {
@@ -6,3 +7,4 @@ extension UIEdgeInsets {
     self.init(top: inset, left: inset, bottom: inset, right: inset)
   }
 }
+#endif

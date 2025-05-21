@@ -1,4 +1,5 @@
 import SwiftUI
+#if canImport(UIKit)
 import UIKit
 
 /// Defines shadow options for components.
@@ -75,3 +76,4 @@ extension View {
     )
   }
 }
+#endif

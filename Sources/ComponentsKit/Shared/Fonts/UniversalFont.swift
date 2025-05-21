@@ -1,4 +1,5 @@
 import SwiftUI
+#if canImport(UIKit)
 import UIKit
 
 /// A structure that represents an universal font that can be used in both UIKit and SwiftUI,
@@ -208,3 +209,4 @@ extension UniversalFont {
     return Theme.current.layout.typography.caption.large
   }
 }
+#endif

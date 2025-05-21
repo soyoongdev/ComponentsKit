@@ -1,4 +1,5 @@
 import SwiftUI
+#if canImport(UIKit)
 import UIKit
 
 /// A model that defines the appearance properties for a text input component.
@@ -187,3 +188,4 @@ extension TextInputVM {
     return self.isAutocorrectionEnabled ? .yes : .no
   }
 }
+#endif

@@ -83,7 +83,11 @@ struct SUBottomModal<Header: View, Body: View, Footer: View>: View {
   // MARK: - Helpers
 
   private var screenHeight: CGFloat {
-    return UIScreen.main.bounds.height
+#if os(iOS)
+    UIScreen.main.bounds.height
+#else
+    0
+#endif
   }
 }
 

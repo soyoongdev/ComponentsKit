@@ -1,3 +1,4 @@
+#if canImport(UIKit)
 import UIKit
 
 /// A model that defines the appearance properties for a button component.
@@ -235,3 +236,4 @@ extension ButtonVM {
     return self.isFullWidth ? 10_000 : nil
   }
 }
+#endif

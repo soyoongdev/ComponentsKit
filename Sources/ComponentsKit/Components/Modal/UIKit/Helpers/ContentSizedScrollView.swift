@@ -1,3 +1,4 @@
+#if canImport(UIKit)
 import UIKit
 
 /// A custom `UIScrollView` subclass that automatically adjusts its intrinsic content size
@@ -17,3 +18,4 @@ final class ContentSizedScrollView: UIScrollView {
     )
   }
 }
+#endif

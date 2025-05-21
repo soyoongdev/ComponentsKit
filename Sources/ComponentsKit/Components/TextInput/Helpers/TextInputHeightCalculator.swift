@@ -1,3 +1,4 @@
+#if canImport(UIKit)
 import UIKit
 
 struct TextInputHeightCalculator {
@@ -26,3 +27,4 @@ struct TextInputHeightCalculator {
     self.textView.textContainer.lineFragmentPadding = 0
   }
 }
+#endif

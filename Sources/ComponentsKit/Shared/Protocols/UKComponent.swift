@@ -1,3 +1,4 @@
+#if canImport(UIKit)
 import UIKit
 
 /// A protocol that defines a UIKit component with a configurable model.
@@ -19,3 +20,4 @@ public protocol UKComponent: UIView {
   /// - Parameter oldModel: The previous model before the update.
   func update(_ oldModel: Model)
 }
+#endif

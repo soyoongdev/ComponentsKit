@@ -1,3 +1,4 @@
+#if canImport(UIKit)
 import UIKit
 
 struct CountdownWidthCalculator {
@@ -22,3 +23,4 @@ struct CountdownWidthCalculator {
     label.numberOfLines = 0
   }
 }
+#endif

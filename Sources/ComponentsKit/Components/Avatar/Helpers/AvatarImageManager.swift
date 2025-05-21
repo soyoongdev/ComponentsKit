@@ -1,4 +1,5 @@
 import SwiftUI
+#if canImport(UIKit)
 import UIKit
 
 final class AvatarImageManager: ObservableObject {
@@ -55,3 +56,4 @@ final class AvatarImageManager: ObservableObject {
     }
   }
 }
+#endif

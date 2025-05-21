@@ -1,3 +1,4 @@
+#if canImport(UIKit)
 import UIKit
 
 /// A model that defines the appearance properties for an avatar in the group.
@@ -11,3 +12,4 @@ public struct AvatarItemVM: ComponentVM {
   /// Initializes a new instance of `AvatarItemVM` with default values.
   public init() {}
 }
+#endif

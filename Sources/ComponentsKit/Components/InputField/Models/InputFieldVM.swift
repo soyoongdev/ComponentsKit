@@ -1,4 +1,5 @@
 import SwiftUI
+#if canImport(UIKit)
 import UIKit
 
 /// A model that defines the appearance properties for an input field component.
@@ -272,3 +273,4 @@ extension InputFieldVM {
     return AttributedString(nsAttributedTitle)
   }
 }
+#endif

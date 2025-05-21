@@ -1,3 +1,4 @@
+#if canImport(UIKit)
 import UIKit
 
 /// A UIKit component that displays a separating line.
@@ -64,3 +65,4 @@ open class UKDivider: UIView, UKComponent {
     }
   }
 }
+#endif

@@ -1,3 +1,4 @@
+#if canImport(UIKit)
 import UIKit
 
 struct AlertButtonsOrientationCalculator {
@@ -45,3 +46,4 @@ struct AlertButtonsOrientationCalculator {
     }
   }
 }
+#endif

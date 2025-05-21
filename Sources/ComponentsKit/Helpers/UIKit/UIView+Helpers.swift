@@ -1,3 +1,4 @@
+#if canImport(UIKit)
 import UIKit
 
 extension UIView {
@@ -15,6 +16,12 @@ extension UIView {
 extension UIView {
   /// A helper to get bounds of the device's screen.
   public var screenBounds: CGRect {
-    return self.window?.windowScene?.screen.bounds ?? UIScreen.main.bounds
+#if os(visionOS)
+    return self.window?.bounds ?? .zero
+#else
+    return self.window?.windowScene?.screen.bounds
+    ?? UIScreen.main.bounds
+#endif
   }
 }
+#endif

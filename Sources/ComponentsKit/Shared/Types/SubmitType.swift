@@ -1,4 +1,5 @@
 import SwiftUI
+#if canImport(UIKit)
 import UIKit
 
 /// Specifies the text string that displays in the Return key of a keyboard.
@@ -76,3 +77,4 @@ extension SubmitType {
     }
   }
 }
+#endif

@@ -1,4 +1,5 @@
 import SwiftUI
+#if canImport(UIKit)
 import UIKit
 
 /// Defines padding values for each edge.
@@ -77,3 +78,4 @@ extension Paddings {
     )
   }
 }
+#endif

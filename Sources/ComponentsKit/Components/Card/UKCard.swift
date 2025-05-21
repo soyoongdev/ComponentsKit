@@ -1,3 +1,4 @@
+#if canImport(UIKit) && canImport(AutoLayout)
 import AutoLayout
 import UIKit
 
@@ -196,3 +197,4 @@ extension UKCard {
     }
   }
 }
+#endif

@@ -1,3 +1,4 @@
+#if canImport(UIKit)
 import UIKit
 
 /// A center-aligned modal controller.
@@ -125,3 +126,4 @@ extension UIViewController {
     self.present(vc as UIViewController, animated: false)
   }
 }
+#endif

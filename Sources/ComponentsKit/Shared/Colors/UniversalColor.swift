@@ -1,4 +1,5 @@
 import SwiftUI
+#if canImport(UIKit)
 import UIKit
 
 /// A structure that represents an universal color that can be used in both UIKit and SwiftUI,
@@ -229,3 +230,4 @@ public struct UniversalColor: Hashable {
     )
   }
 }
+#endif

@@ -1,3 +1,4 @@
+#if canImport(UIKit) && canImport(AutoLayout)
 import AutoLayout
 import Combine
 import UIKit
@@ -263,3 +264,4 @@ extension UKCountdown {
     }
   }
 }
+#endif
