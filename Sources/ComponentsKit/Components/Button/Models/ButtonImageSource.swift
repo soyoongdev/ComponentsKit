@@ -1,7 +1,7 @@
 import Foundation
 
-/// Defines the image source options for a button.
 extension ButtonVM {
+  /// Defines the image source options for a button.
   public enum ImageSource: Hashable {
     /// An image loaded from a system SF Symbol.
     ///
