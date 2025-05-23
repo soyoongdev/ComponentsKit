@@ -271,6 +271,7 @@ extension View {
     return self.centerModal(
       item: item,
       model: model,
+      onDismiss: onDismiss,
       header: { _ in EmptyView() },
       body: body,
       footer: { _ in EmptyView() }

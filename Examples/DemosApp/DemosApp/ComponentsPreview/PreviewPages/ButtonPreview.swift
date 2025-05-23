@@ -35,6 +35,11 @@ struct ButtonPreview: View {
           Text("Leading").tag(ButtonVM.ImageLocation.leading)
           Text("Trailing").tag(ButtonVM.ImageLocation.trailing)
         }
+        Picker("Image Rendering Mode", selection: self.$model.imageRenderingMode) {
+          Text("Default").tag(Optional<ImageRenderingMode>.none)
+          Text("Template").tag(ImageRenderingMode.template)
+          Text("Original").tag(ImageRenderingMode.original)
+        }
         Picker("Image Source", selection: self.$model.imageSrc) {
           Text("SF Symbol").tag(ButtonVM.ImageSource.sfSymbol("camera.fill"))
           Text("Local").tag(ButtonVM.ImageSource.local("avatar_placeholder"))

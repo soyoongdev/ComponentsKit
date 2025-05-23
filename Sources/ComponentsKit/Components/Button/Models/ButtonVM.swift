@@ -30,6 +30,9 @@ public struct ButtonVM: ComponentVM {
   /// Defaults to `.leading`.
   public var imageLocation: ImageLocation = .leading
 
+  /// Defines how image is rendered.
+  public var imageRenderingMode: ImageRenderingMode?
+
   /// The source of the image to be displayed.
   public var imageSrc: ImageSource?
 
@@ -164,10 +167,18 @@ extension ButtonVM {
     case .minimal:
       return 0
     case .light, .filled, .bordered, .plain:
-      return switch self.size {
-      case .small: 16
-      case .medium: 20
-      case .large: 24
+      if self.title.isNotEmpty || self.isLoading {
+        return switch self.size {
+        case .small: 16
+        case .medium: 20
+        case .large: 24
+        }
+      } else {
+        return switch self.size {
+        case .small: 8
+        case .medium: 10
+        case .large: 12
+        }
       }
     }
   }
@@ -176,15 +187,14 @@ extension ButtonVM {
 extension ButtonVM {
   var image: UIImage? {
     guard let imageSrc else { return nil }
-    switch imageSrc {
+
+    let image = switch imageSrc {
     case .sfSymbol(let name):
-      return UIImage(systemName: name)?.withTintColor(
-        self.foregroundColor.uiColor,
-        renderingMode: .alwaysOriginal
-      )
+      UIImage(systemName: name)
     case .local(let name, let bundle):
-      return UIImage(named: name, in: bundle, compatibleWith: nil)
+      UIImage(named: name, in: bundle, compatibleWith: nil)
     }
+    return image?.withRenderingMode(self.imageRenderingMode)
   }
 }
 

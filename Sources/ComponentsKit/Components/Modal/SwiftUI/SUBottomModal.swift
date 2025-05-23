@@ -309,6 +309,7 @@ extension View {
     return self.bottomModal(
       item: item,
       model: model,
+      onDismiss: onDismiss,
       header: { _ in EmptyView() },
       body: body,
       footer: { _ in EmptyView() }
