@@ -58,6 +58,7 @@ public struct SUCard<Content: View>: View {
       )
       .shadow(self.model.shadow)
       .observeSize { self.contentSize = $0 }
+      .contentShape(.rect)
       .gesture(
         DragGesture(minimumDistance: 0.0)
           .onChanged { _ in
