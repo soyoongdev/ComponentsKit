@@ -138,15 +138,10 @@ open class UKCard<Content: UIView>: UIView, UKComponent {
     _ touches: Set<UITouch>,
     with event: UIEvent?
   ) {
-    guard self.model.isTappable,
-          let touch = touches.first,
-          touch.view == self
-    else {
-      super.touchesBegan(touches, with: event)
-      return
-    }
-
     super.touchesBegan(touches, with: event)
+
+    guard self.model.isTappable else { return }
+
     self.isPressed = true
   }
 
@@ -154,21 +149,17 @@ open class UKCard<Content: UIView>: UIView, UKComponent {
     _ touches: Set<UITouch>,
     with event: UIEvent?
   ) {
-    guard self.model.isTappable,
-          let touch = touches.first,
-          touch.view == self
-    else {
-      super.touchesEnded(touches, with: event)
-      return
-    }
+    super.touchesEnded(touches, with: event)
+
+    guard self.model.isTappable else { return }
 
     defer { self.isPressed = false }
 
-    let location = touch.location(in: self)
-    if bounds.contains(location) {
+    if self.model.isTappable,
+       let location = touches.first?.location(in: self),
+       self.bounds.contains(location) {
       self.onTap()
     }
-    super.touchesEnded(touches, with: event)
   }
 
   open override func touchesCancelled(
