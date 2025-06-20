@@ -51,27 +51,30 @@ public struct SUCard<Content: View>: View {
       .cornerRadius(self.model.cornerRadius.value)
       .overlay(
         RoundedRectangle(cornerRadius: self.model.cornerRadius.value)
-          .stroke(
+          .strokeBorder(
             self.model.borderColor.color,
             lineWidth: self.model.borderWidth.value
           )
       )
       .shadow(self.model.shadow)
       .observeSize { self.contentSize = $0 }
-      .simultaneousGesture(DragGesture(minimumDistance: 0.0)
-        .onChanged { _ in
-          guard self.model.isTappable else { return }
-          self.isPressed = true
-        }
-        .onEnded { value in
-          guard self.model.isTappable else { return }
-
-          defer { self.isPressed = false }
-
-          if CGRect(origin: .zero, size: self.contentSize).contains(value.location) {
-            self.onTap()
+      .contentShape(.rect)
+      .gesture(
+        DragGesture(minimumDistance: 0.0)
+          .onChanged { _ in
+            guard self.model.isTappable else { return }
+            self.isPressed = true
           }
-        }
+          .onEnded { value in
+            guard self.model.isTappable else { return }
+
+            defer { self.isPressed = false }
+
+            if CGRect(origin: .zero, size: self.contentSize)
+              .contains(value.location) {
+              self.onTap()
+            }
+          }
       )
       .scaleEffect(
         self.isPressed ? self.model.animationScale.value : 1,
